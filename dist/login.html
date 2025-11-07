@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quality Assurance Unit FKIP ULM - Homepage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+            max-width: 900px;
+            margin: 60px auto;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .profile {
+            flex: 1.2;
+            padding: 40px 32px;
+            background: #e3f2fd;
+        }
+        .profile h2 {
+            margin-top: 0;
+            color: #1565c0;
+        }
+        .profile p {
+            color: #333;
+            line-height: 1.6;
+        }
+        .login-form {
+            flex: 1;
+            padding: 40px 32px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .login-form h3 {
+            margin-bottom: 24px;
+            color: #1565c0;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .login-form input[type="email"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+            border: 1px solid #bdbdbd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .login-form button {
+            padding: 10px;
+            background: #1565c0;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .login-form button:hover {
+            background: #0d47a1;
+        }
+        @media (max-width: 700px) {
+            .container {
+                flex-direction: column;
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .profile, .login-form {
+                padding: 24px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <h2>E-SPMI:  <br> Quality Assurance Unit FKIP ULM</h2>
+            <p>
+                The Quality Assurance Unit (QAU) of FKIP ULM is committed to maintaining and improving the quality of education, research, and community service within the Faculty of Teacher Training and Education, Lambung Mangkurat University. QAU FKIP ULM develops, implements, and monitors quality standards to ensure academic excellence and continuous improvement in all faculty activities.
+            </p>
+        </div>
+        <div class="login-form">
+            <h3>Login</h3>
+            <!-- <form action="login_process.php" method="post"> -->
+                <label for="email">Username (Email)</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+
+                
+                <a href="index.html"><button type="submit">Login</button></a>
+            <!-- </form> -->
+        </div>
+    </div>
+</body>
+</html>
