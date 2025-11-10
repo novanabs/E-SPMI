@@ -169,7 +169,8 @@
                             </a>
                         </li>
                         <!-- E-SPMI -->
-                        <li class="nav-item">
+                        <li
+                            class="nav-item {{ Route::is('penetapan*') | Route::is('pelaksanaan*') | Route::is('evaluasi*') | Route::is('pengendalian*') | Route::is('peningkatan*') ? 'menu-open' : '' }}">
                             <!---menu-open -->
                             <a href="#" class="nav-link">
                                 <i class="nav-icon bi bi-clipboard-check-fill"></i>
@@ -180,31 +181,36 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="1_penetapan.html" class="nav-link">
+                                    <a href="{{ route('penetapan.index') }}"
+                                        class="nav-link {{ Route::is('penetapan*') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Penetapan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="2_pelaksaan.html" class="nav-link">
+                                    <a href="{{ route('pelaksanaan.index') }}"
+                                        class="nav-link {{ Route::is('pelaksanaan*') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Pelaksanaan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="3_evaluasi.html" class="nav-link">
+                                    <a href="{{ route('evaluasi.index') }}"
+                                        class="nav-link {{ Route::is('evaluasi*') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Evaluasi</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="4_pengendalian.html" class="nav-link">
+                                    <a href="{{ route('pengendalian.index') }}"
+                                        class="nav-link {{ Route::is('pengendalian*') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Pengendalian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="5_peningkatan.html" class="nav-link">
+                                    <a href="{{ route('peningkatan.index') }}"
+                                        class="nav-link {{ Route::is('peningkatan*') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-circle"></i>
                                         <p>Peningkatan</p>
                                     </a>
@@ -212,22 +218,22 @@
                             </ul>
                         </li>
                         <!-- DOKUMEN -->
-                        <li class="nav-item">
-                            <a href="" class="nav-link disabled-link">
+                        <li class="nav-item pe-none">
+                            <a href="" class="nav-link disabled-link text-secondary">
                                 <i class="nav-icon bi bi-journal-bookmark-fill"></i>
                                 <p>Dokumen</p>
                             </a>
                         </li>
                         <!-- AKREDITASI -->
-                        <li class="nav-item">
-                            <a href="" class="nav-link disabled-link">
+                        <li class="nav-item pe-none">
+                            <a href="" class="nav-link disabled-link text-secondary">
                                 <i class="nav-icon bi bi-trophy-fill"></i>
                                 <p>Akreditasi</p>
                             </a>
                         </li>
                         <!-- SURVEY -->
-                        <li class="nav-item">
-                            <a href="" class="nav-link disabled-link">
+                        <li class="nav-item pe-none">
+                            <a href="" class="nav-link disabled-link text-secondary">
                                 <i class="nav-icon bi bi-list-check"></i>
                                 <p>Survey</p>
                             </a>
@@ -253,8 +259,17 @@
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item">
-                                    <a href="#">Home</a>
+                                    <a href="{{ route('dashboard.index') }}">Home</a>
                                 </li>
+                                @if (Route::is('penetapan*') |
+                                        Route::is('pelaksanaan*') |
+                                        Route::is('evaluasi*') |
+                                        Route::is('pengendalian*') |
+                                        Route::is('peningkatan*'))
+                                    <li class="breadcrumb-item">
+                                        E-SPMI
+                                    </li>
+                                @endif
                                 <li class="breadcrumb-item active" aria-current="page">
                                     @yield('title', 'E-SPMI')
                                 </li>

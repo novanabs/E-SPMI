@@ -7,8 +7,5 @@ use PhpParser\Node\Expr\FuncCall;
 
 class PageController extends Controller
 {
-    public function profil()
-    {
-        return view('profile');
-    }
+
 }
