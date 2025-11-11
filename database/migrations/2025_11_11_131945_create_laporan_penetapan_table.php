@@ -10,16 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('laporan_penetapan', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('homebase');
-            $table->enum('role', ['admin_jurusan', 'admin_FKIP', 'pimpinan']);
-            $table->string('email')->unique();
-            $table->string('password');
+            $table->string('link_bukti_laporan');
+            $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
-
     }
 
     /**
@@ -27,8 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('laporan_penetapan');
     }
 };
