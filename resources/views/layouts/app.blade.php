@@ -156,7 +156,7 @@
                         <!-- DASHBOARD -->
                         <li class="nav-item">
                             <a href="{{ route('dashboard.index') }}"
-                                class="nav-link {{ Route::is('dashboard.index') ? 'active' : '' }}">
+                                class="nav-link {{ Route::is('dashboard.index') || Route::is('dashboard') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-palette"></i>
                                 <p>Dashboard</p>
                             </a>

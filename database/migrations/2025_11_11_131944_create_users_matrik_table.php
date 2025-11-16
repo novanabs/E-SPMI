@@ -18,7 +18,9 @@ return new class extends Migration {
             $table->integer('nilai_total')->nullable();
             $table->text('isian')->nullable();
             $table->string('link_bukti')->nullable();
-
+            $table->enum('kepemilikan_kriteria', ['jurusan', 'fakultas']);
+            $table->string('temuan')->nullable();
+            $table->string('saran')->nullable();
             $table->timestamps();
         });
     }

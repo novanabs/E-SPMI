@@ -14,7 +14,7 @@ use App\Http\Controllers\EvaluasiLaporanController;
 
 Route::get('/', function () {
     return view('dashboard');
-});
+})->name('dashboard');
 
 Route::get('/profil', function () {
     return view('profil');
