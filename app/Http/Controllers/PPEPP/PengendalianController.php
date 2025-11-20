@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\PPEPP;
 
 use Illuminate\Http\Request;
-
-class PeningkatanController extends Controller
+use Illuminate\Routing\Controller;
+class PengendalianController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('5-peningkatan');
+        return view('PPEPP.pengendalian.index');
     }
 
     /**

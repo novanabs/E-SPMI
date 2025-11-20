@@ -114,11 +114,25 @@
                 <ul class="navbar-nav ms-auto">
                     <!--begin::User Menu Dropdown-->
                     <li class="nav-item dropdown user-menu">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="{{ asset('img/user2-160x160.jpg') }}" class="user-image rounded-circle shadow"
-                                alt="User Image" />
-                            <span class="d-none d-md-inline">Ananda Setiawan</span>
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                            aria-expanded="false">
+                            {{-- <img src="{{ asset('img/user2-160x160.jpg') }}" class="user-image rounded-circle shadow"
+                                alt="User Image" /> --}}
+                            <span class="d-none d-md-inline">
+                                @auth
+                                    {{ auth()->user()->name }} <i class="bi bi-caret-down"></i>
+                                @else
+                                    Belum Login <i class="bi bi-caret-down"></i>
+                                @endauth
+                            </span>
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/login-jurusan">Login Jurusan</a></li>
+                            <li><a class="dropdown-item" href="/login-admin">Login FKIP (Admin)</a></li>
+                            <li><a class="dropdown-item" href="/login-pimpinan">Login Pimpinan</a></li>
+                            <hr class="my-0">
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
                     </li>
                     <!--end::User Menu Dropdown-->
                 </ul>
@@ -163,7 +177,8 @@
                         </li>
                         <!-- PROFILE -->
                         <li class="nav-item">
-                            <a href="{{ route('profil') }}" class="nav-link {{ Route::is('profil') ? 'active' : '' }}">
+                            <a href="{{ route('profil') }}"
+                                class="nav-link {{ Route::is('profil') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-person-fill"></i>
                                 <p>Profil</p>
                             </a>
@@ -317,8 +332,12 @@
     <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
+
     <script src="{{ asset('js/adminlte.js') }}"></script>
     <!--end::Script-->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 <!--end::Body-->
 

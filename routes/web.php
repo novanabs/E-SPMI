@@ -1,16 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\DokumenController;
-use App\Http\Controllers\EvaluasiController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PenetapanController;
-use App\Http\Controllers\PelaksanaanController;
-use App\Http\Controllers\PeningkatanController;
-use App\Http\Controllers\PengendalianController;
 use App\Http\Controllers\EvaluasiLamdikController;
+use App\Http\Controllers\PPEPP\EvaluasiController;
 use App\Http\Controllers\EvaluasiLaporanController;
+use App\Http\Controllers\PPEPP\PenetapanController;
+use App\Http\Controllers\PPEPP\PelaksanaanController;
+use App\Http\Controllers\PPEPP\PeningkatanController;
+use App\Http\Controllers\PPEPP\PengendalianController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -30,3 +31,29 @@ Route::resource('penetapan', PenetapanController::class);
 Route::resource('pengendalian', PengendalianController::class);
 Route::resource('peningkatan', PeningkatanController::class);
 Route::resource('survey', SurveyController::class);
+
+
+// Login by URL
+Route::get('/login-jurusan', function () {
+    Auth::logout();
+    Auth::loginUsingId(1);
+    return redirect('/');
+});
+
+Route::get('/login-admin', function () {
+    Auth::logout();
+    Auth::loginUsingId(3);
+    return redirect('/');
+});
+
+Route::get('/login-pimpinan', function () {
+    Auth::logout();
+    Auth::loginUsingId(5);
+    return redirect('/');
+});
+
+// Ini sementara log-out lewat sini
+Route::get('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+});

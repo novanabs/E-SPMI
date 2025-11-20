@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('link_bukti_laporan');
-            $table->string('nama_mitra');
-            $table->string('link_bukti_kerjasama');
+            $table->string('nama_mitra')->nullable();
+            $table->string('link_bukti_kerjasama')->nullable();
             $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

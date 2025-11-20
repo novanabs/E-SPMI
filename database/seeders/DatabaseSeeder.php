@@ -15,7 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            UsersTableSeeder::class,
+            KriteriaSeeder::class,
+            PenetapanSeeder::class,
+            PelaksanaanSeeder::class,
+            EvaluasiSeeder::class,
+            PengendalianSeeder::class,
+            PeningkatanSeeder::class,
+            DokumenFakultasSeeder::class
+        ]);
 
     }
 }

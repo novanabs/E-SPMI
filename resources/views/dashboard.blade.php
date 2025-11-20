@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Dashboard - Statistik')
 
 @section('content')
 
-    <h1>Dashboard Statistik FKIP ULM</h1>
     <div class="row stats">
         <div class="col-6 card">
             <h2>Statistik Akreditasi</h2>
@@ -15,9 +14,9 @@
             <canvas id="dosenChart"></canvas>
         </div>
         <!-- <div class="col-4 card">
-                            <h2>Data Mahasiswa</h2>
-                            <canvas id="mahasiswaChart"></canvas>
-                        </div> -->
+                                <h2>Data Mahasiswa</h2>
+                                <canvas id="mahasiswaChart"></canvas>
+                            </div> -->
     </div>
 
     <script>
