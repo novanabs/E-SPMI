@@ -52,6 +52,6 @@ class KriteriaSeeder extends Seeder
             ],
         ];
 
-        DB::table('kriteria')->insert($data);
+        DB::table('kriteria')->insertOrIgnore($data);
     }
 }

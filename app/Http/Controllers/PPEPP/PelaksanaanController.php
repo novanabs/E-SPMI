@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PPEPP;
 
+use App\Models\Pelaksanaan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -12,7 +13,13 @@ class PelaksanaanController extends Controller
      */
     public function index()
     {
-        return view('PPEPP.pelaksanaan.index');
+        if (!auth()->check()) {
+            return redirect()->route('login-jurusan');
+        }
+
+        $id = auth()->id();
+        $data = Pelaksanaan::where('id_users', $id)->latest()->paginate(10);
+        return view('PPEPP.pelaksanaan.index', compact('data'));
     }
 
     /**

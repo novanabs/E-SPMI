@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PPEPP;
 
+use App\Models\Penetapan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 class PenetapanController extends Controller
@@ -11,7 +12,14 @@ class PenetapanController extends Controller
      */
     public function index()
     {
-        return view('PPEPP.penetapan.index');
+
+        if (!auth()->check()) {
+            return redirect()->route('login-jurusan');
+        }
+
+        $id = auth()->id();
+        $data = Penetapan::where('id_users', $id)->latest()->paginate(10);
+        return view('PPEPP.penetapan.index', compact('data'));
     }
 
     /**

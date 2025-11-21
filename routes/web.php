@@ -38,19 +38,19 @@ Route::get('/login-jurusan', function () {
     Auth::logout();
     Auth::loginUsingId(1);
     return redirect('/');
-});
+})->name('login-jurusan');
 
 Route::get('/login-admin', function () {
     Auth::logout();
     Auth::loginUsingId(3);
     return redirect('/');
-});
+})->name('login-admin');
 
 Route::get('/login-pimpinan', function () {
     Auth::logout();
     Auth::loginUsingId(5);
     return redirect('/');
-});
+})->name('login-pimpinan');
 
 // Ini sementara log-out lewat sini
 Route::get('/logout', function () {

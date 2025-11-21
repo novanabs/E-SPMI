@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pengendalian;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,15 @@ class PengendalianSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Pengendalian::firstOrCreate([
+            'name' => 'Laporan Pengendalian Jurusan Pendidikan Komputer',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'id_users' => '1',
+        ]);
+        Pengendalian::firstOrCreate([
+            'name' => 'Laporan Pengendalian FKIP',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'id_users' => '3',
+        ]);
     }
 }

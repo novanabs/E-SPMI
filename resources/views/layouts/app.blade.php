@@ -180,7 +180,7 @@
                             <a href="{{ route('profil') }}"
                                 class="nav-link {{ Route::is('profil') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-person-fill"></i>
-                                <p>Profil</p>
+                                <p>Profil UPM</p>
                             </a>
                         </li>
                         <!-- E-SPMI -->

@@ -14,42 +14,50 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        User::firstOrCreate([
+            'email' => 'pilkom@ulm.ac.id',
+        ], [
             'name' => 'Admin Jurusan Pendidikan Komputer',
             'homebase' => 'Pendidikan Komputer',
-            'email' => 'pilkom@ulm.ac.id',
             'password' => Hash::make('12345'),
             'role' => 'admin_jurusan',
         ]);
 
-        User::create([
-            'name' => 'Admin Jurusan Pendidikan Ekonomi',
-            'homebase' => 'Pendidikan Ekonomi',
-            'email' => 'penko@ulm.ac.id',
-            'password' => Hash::make('12345'),
-            'role' => 'admin_jurusan',
-        ]);
+        User::firstOrCreate(
+            [
+                'email' => 'penko@ulm.ac.id',
+            ],
+            [
+                'name' => 'Admin Jurusan Pendidikan Ekonomi',
+                'homebase' => 'Pendidikan Ekonomi',
+                'password' => Hash::make('12345'),
+                'role' => 'admin_jurusan',
+            ]
+        );
 
-        User::create([
+        User::firstOrCreate([
+            'email' => 'upmfkip1@ulm.ac.id',
+        ], [
             'name' => 'Admin 1 UPM FKIP ULM',
             'homebase' => 'UPM FKIP ULM',
-            'email' => 'upmfkip1@ulm.ac.id',
             'password' => Hash::make('12345'),
             'role' => 'admin_FKIP',
         ]);
 
-        User::create([
+        User::firstOrCreate([
+            'email' => 'upmfkip2@ulm.ac.id',
+        ], [
             'name' => 'Admin 2 UPM FKIP ULM',
             'homebase' => 'UPM FKIP ULM',
-            'email' => 'upmfkip2@ulm.ac.id',
             'password' => Hash::make('12345'),
             'role' => 'admin_FKIP',
         ]);
 
-        User::create([
+        User::firstOrCreate([
+            'email' => 'pimpinanfkip@ulm.ac.id',
+        ], [
             'name' => 'Pimpinan FKIP',
             'homebase' => 'FKIP',
-            'email' => 'pimpinanfkip@ulm.ac.id',
             'password' => Hash::make('12345'),
             'role' => 'pimpinan',
         ]);
