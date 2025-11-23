@@ -38,6 +38,9 @@ class PenetapanController extends Controller
         $request->validate([
             'name' => 'required',
             'link_bukti_dokumen' => 'required'
+        ], [
+            'name.required' => 'Nama dokumen wajib diisi.',
+            'link_bukti_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 
         $data = $request->merge([
@@ -74,6 +77,9 @@ class PenetapanController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'link_bukti_dokumen' => 'required|string',
+        ], [
+            'name.required' => 'Nama dokumen wajib diisi.',
+            'link_bukti_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 
         Penetapan::where('id', $id)->update(

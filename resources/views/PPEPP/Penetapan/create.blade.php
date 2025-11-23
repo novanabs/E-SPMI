@@ -9,12 +9,23 @@
         @csrf
         <div class="form-group mb-3">
             <label for="name">Nama Dokumen</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Dokumen">
+            <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Dokumen"
+                value="{{ old('name') }}">
+            @error('name')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="link_bukti_dokumen">Link Dokumen</label>
             <input type="text" class="form-control" id="link_bukti_dokumen" name="link_bukti_dokumen"
-                placeholder="Masukkan Link Dokumen">
+                placeholder="Masukkan Link Dokumen" value="{{ old('link_bukti_dokumen') }}">
+            @error('link_bukti_dokumen')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <button type="submit" class="mt-3 btn btn-sm btn-primary">Simpan</button>

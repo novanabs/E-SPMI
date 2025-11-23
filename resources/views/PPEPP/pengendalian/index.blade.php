@@ -24,6 +24,7 @@
                     <th>No</th>
                     <th>Nama Dokumen</th>
                     <th>Waktu Unggah</th>
+                    <th>Link Laporan</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -33,9 +34,20 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $item->created_at->translatedFormat('l, d M Y') }}</td>
                         <td>
                             <a href="{{ $item->link_bukti_laporan }}" class="btn btn-sm btn-primary" target="_blank">Link</a>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-warning btn-sm" href="{{ route('pengendalian.edit', $item->id) }}">
+                                    Edit
+                                </a>
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="confirmDelete('{{ route('pengendalian.destroy', $item->id) }}')">
+                                    Hapus
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty

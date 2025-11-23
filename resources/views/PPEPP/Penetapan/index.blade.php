@@ -15,6 +15,7 @@
                     <th>No</th>
                     <th>Nama Dokumen</th>
                     <th>Waktu Unggah</th>
+                    <th>Link Dokumen</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -24,9 +25,11 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $item->created_at->translatedFormat('l, d M Y') }}</td>
                         <td>
                             <a href="{{ $item->link_bukti_dokumen }}" class="btn btn-sm btn-primary" target="_blank">Link</a>
+                        </td>
+                        <td>
                             <a class="btn btn-warning btn-sm" href="{{ route('penetapan.edit', $item->id) }}">
                                 Edit
                             </a>

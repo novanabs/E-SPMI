@@ -27,7 +27,7 @@ class PelaksanaanController extends Controller
      */
     public function create()
     {
-        //
+        return view('ppepp.pelaksanaan.create');
     }
 
     /**
@@ -35,7 +35,21 @@ class PelaksanaanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'link_bukti_laporan' => 'required',
+        ], [
+            'name.required' => 'Nama laporan wajib diisi.',
+            'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+        ]);
+
+        $data = $request->merge([
+            'id_users' => auth()->id()
+        ]);
+
+        Pelaksanaan::create($data->all());
+
+        return redirect()->route('pelaksanaan.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -51,7 +65,8 @@ class PelaksanaanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Pelaksanaan::findOrFail($id);
+        return view('ppepp.pelaksanaan.edit', compact('data'));
     }
 
     /**
@@ -59,7 +74,21 @@ class PelaksanaanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'link_bukti_laporan' => 'required',
+            'nama_mitra' => 'nullable',
+            'link_bukti_kerjasama' => 'nullable'
+        ], [
+            'name.required' => 'Nama laporan wajib diisi.',
+            'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+        ]);
+
+        Pelaksanaan::where('id', $id)->update(
+            $validated
+        );
+
+        return redirect()->route('pelaksanaan.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
@@ -67,6 +96,9 @@ class PelaksanaanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Pelaksanaan::findOrFail($id);
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }

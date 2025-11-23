@@ -13,9 +13,9 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Laporan</th>
                     <th>Aspek</th>
                     <th>Jenis Laporan</th>
+                    <th>Waktu Unggah</th>
                     <th>Link Laporan</th>
                     <th>Action</th>
                 </tr>
@@ -25,15 +25,22 @@
                 @forelse ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->name }}</td>
                         <td>{{ $item->aspek }}</td>
                         <td>{{ $item->jenis_laporan }}</td>
+                        <td>{{ $item->created_at->translatedFormat('l, d M Y') }}</td>
                         <td>
                             <a href="{{ $item->link_bukti_laporan }}" class="btn btn-sm btn-primary" target="_blank">Link</a>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-warning">Edit</button>
-                            <button class="btn btn-sm btn-danger">Hapus</button>
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-warning btn-sm" href="{{ route('evaluasi.edit', $item->id) }}">
+                                    Edit
+                                </a>
+                                <button class="btn btn-danger btn-sm"
+                                    onclick="confirmDelete('{{ route('evaluasi.destroy', $item->id) }}')">
+                                    Hapus
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 @empty
