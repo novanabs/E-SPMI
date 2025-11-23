@@ -6,10 +6,10 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Dokumen {{ auth()->user()->homebase }}</h3>
-        <button class="btn btn-primary" id="btnTambah">Tambah Dokumen</button>
+        <a href="{{ route('penetapan.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a>
     </div>
     <div class="table-responsive">
-        <table id="akreditasiTable" class="table table-bordered table-striped">
+        <table id="penetapanTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>No</th>
@@ -26,34 +26,14 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->created_at->format('d-m-Y') }}</td>
                         <td>
-                            {{-- <a href="" class="btn btn-info btn-sm">Lihat</a> --}}
-                            {{-- <button class="btn btn-sm btn-info">Lihat</button>
-                            <button class="btn btn-sm btn-warning">Edit</button>
-
-                            <button class="btn btn-sm btn-danger">Hapus</button> --}}
-                            <!-- Tombol -->
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#pdfModal">
-                                Lihat
+                            <a href="{{ $item->link_bukti_dokumen }}" class="btn btn-sm btn-primary" target="_blank">Link</a>
+                            <a class="btn btn-warning btn-sm" href="{{ route('penetapan.edit', $item->id) }}">
+                                Edit
+                            </a>
+                            <button class="btn btn-danger btn-sm"
+                                onclick="confirmDelete('{{ route('penetapan.destroy', $item->id) }}')">
+                                Hapus
                             </button>
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="pdfModal" tabindex="-1">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">{{ $item->name }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <iframe src="{{ $item->link_bukti_dokumen }}" width="100%" height="600px"
-                                                style="border: none;"></iframe>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </td>
                     </tr>
                 @empty
@@ -63,24 +43,25 @@
                 @endforelse
             </tbody>
         </table>
-
-        <script>
-            $(document).ready(function() {
-                $('#akreditasiTable').DataTable({
-                    language: {
-                        search: "Cari:",
-                        lengthMenu: "Tampilkan _MENU_ data",
-                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
-                        paginate: {
-                            first: "Pertama",
-                            last: "Terakhir",
-                            next: "Berikutnya",
-                            previous: "Sebelumnya"
-                        }
-                    }
-                });
-            });
-        </script>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#penetapanTable').DataTable({
+                pageLength: 10, // Jumlah data per halaman
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data",
+                    info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                    paginate: {
+                        first: "Pertama",
+                        last: "Terakhir",
+                        next: "Berikutnya",
+                        previous: "Sebelumnya"
+                    }
+                }
+            });
+        });
+    </script>
 
 @endsection

@@ -18,7 +18,7 @@ class PenetapanController extends Controller
         }
 
         $id = auth()->id();
-        $data = Penetapan::where('id_users', $id)->latest()->paginate(10);
+        $data = Penetapan::where('id_users', $id)->latest()->get();
         return view('PPEPP.penetapan.index', compact('data'));
     }
 
@@ -27,7 +27,7 @@ class PenetapanController extends Controller
      */
     public function create()
     {
-        //
+        return view('ppepp.penetapan.create');
     }
 
     /**
@@ -35,7 +35,18 @@ class PenetapanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'link_bukti_dokumen' => 'required'
+        ]);
+
+        $data = $request->merge([
+            'id_users' => auth()->id()
+        ]);
+
+        Penetapan::create($data->all());
+
+        return redirect()->route('penetapan.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -51,7 +62,8 @@ class PenetapanController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Penetapan::findOrFail($id);
+        return view('ppepp.penetapan.edit', compact('data'));
     }
 
     /**
@@ -59,7 +71,16 @@ class PenetapanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'link_bukti_dokumen' => 'required|string',
+        ]);
+
+        Penetapan::where('id', $id)->update(
+            $validated
+        );
+
+        return redirect()->route('penetapan.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
@@ -67,6 +88,9 @@ class PenetapanController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Penetapan::findOrFail($id);
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }

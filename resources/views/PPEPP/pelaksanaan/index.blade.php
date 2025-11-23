@@ -5,17 +5,18 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Dokumen {{ auth()->user()->homebase }}</h3>
-        <button class="btn btn-primary" id="btnTambah">Tambah Dokumen</button>
+        <h3>Daftar Laporan {{ auth()->user()->homebase }}</h3>
+        <button class="btn btn-sm btn-primary" id="btnTambah">Tambah</button>
     </div>
     <div class="table-responsive">
         <table id="akreditasiTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Dokumen</th>
+                    <th>Nama Laporan</th>
+                    <th>Link Laporan</th>
                     <th>Nama Mitra</th>
-                    <th>Waktu Unggah</th>
+                    <th>Dokumen Kerjasama</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -26,67 +27,24 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->name }}</td>
                         <td>
+                            <a href="{{ $item->link_bukti_laporan }}" class="btn btn-sm btn-warning" target="_blank">Link</a>
+                        </td>
+                        <td>
                             @if ($item->nama_mitra)
                                 {{ $item->nama_mitra }}
                             @else
                                 -
                             @endif
                         </td>
-                        <td>{{ $item->created_at->format('d-m-Y') }}</td>
                         <td>
-                            {{-- <a href="" class="btn btn-info btn-sm">Lihat</a> --}}
-                            {{-- <button class="btn btn-sm btn-info">Lihat</button>
-                            <button class="btn btn-sm btn-warning">Edit</button>
-
-                            <button class="btn btn-sm btn-danger">Hapus</button> --}}
-                            <!-- Tombol -->
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#pdfModal">
-                                Bukti Laporan
-                            </button>
                             @if ($item->link_bukti_kerjasama)
-                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#pdfModal2">
-                                    Bukti Kerjasama
-                                </button>
+                                <a href="{{ $item->link_bukti_kerjasama }}" class="btn btn-sm btn-primary"
+                                    target="_blank">Link</a>
                             @endif
-
-
-                            <!-- Modal -->
-                            <div class="modal fade" id="pdfModal" tabindex="-1">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">{{ $item->name }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <iframe src="{{ $item->link_bukti_laporan }}" width="100%" height="600px"
-                                                style="border: none;"></iframe>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal -->
-                            <div class="modal fade" id="pdfModal2" tabindex="-2">
-                                <div class="modal-dialog modal-xl">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Bukti Kerjasama {{ auth()->user()->homebase }} &
-                                                {{ $item->nama_mitra }}
-                                            </h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <iframe src="{{ $item->link_bukti_kerjasama }}" width="100%" height="600px"
-                                                style="border: none;"></iframe>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-warning">Edit</button>
+                            <button class="btn btn-sm btn-danger">Hapus</button>
                         </td>
                     </tr>
                 @empty

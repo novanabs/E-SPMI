@@ -20,55 +20,55 @@ class EvaluasiSeeder extends Seeder
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'AMI',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Monev_jurusan',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Survey',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'AMI',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Monev_jurusan',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Survey',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'AMI',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Monev_jurusan',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Survey',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
 
@@ -76,55 +76,55 @@ class EvaluasiSeeder extends Seeder
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'AMI',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Monev_jurusan',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Survey',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'AMI',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Monev_jurusan',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Survey',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'AMI',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Monev_jurusan',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Survey',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
     }

@@ -49,6 +49,15 @@
 
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {{-- Swaet Alert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Data Table --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,12 +100,37 @@
         canvas {
             max-width: 100%;
         }
+
+        /* Floating Alert */
+        .floating-alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            width: auto;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 8px 14px;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
     </style>
+
+
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+
+    @if (session('success'))
+        <div class="alert alert-success floating-alert fade show" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <!--begin::Header-->
@@ -337,6 +371,59 @@
     <!--end::Script-->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Hilangkan Alert Otomatis
+        document.addEventListener("DOMContentLoaded", function() {
+            const alert = document.querySelector(".floating-alert");
+            if (alert) {
+                setTimeout(() => {
+                    alert.style.opacity = "0"; // Fade out effect
+                    setTimeout(() => {
+                        alert.remove(); // Hapus elemen setelah animasi selesai
+                    }, 500);
+                }, 2500); // 3 detik sebelum hilang
+            }
+        });
+    </script>
+
+    {{-- Sweet Alert --}}
+    <script>
+        function confirmDelete(url) {
+            Swal.fire({
+                title: 'Yakin hapus?',
+                text: "Data yang dihapus tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // buat form sementara untuk submit DELETE
+                    const form = document.createElement('form');
+                    form.action = url;
+                    form.method = 'POST';
+
+                    const csrf = document.createElement('input');
+                    csrf.type = 'hidden';
+                    csrf.name = '_token';
+                    csrf.value = '{{ csrf_token() }}';
+                    form.appendChild(csrf);
+
+                    const method = document.createElement('input');
+                    method.type = 'hidden';
+                    method.name = '_method';
+                    method.value = 'DELETE';
+                    form.appendChild(method);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            })
+        }
+    </script>
+
 
 </body>
 <!--end::Body-->

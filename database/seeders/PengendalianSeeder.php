@@ -15,12 +15,12 @@ class PengendalianSeeder extends Seeder
     {
         Pengendalian::firstOrCreate([
             'name' => 'Laporan Pengendalian Jurusan Pendidikan Komputer',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Pengendalian::firstOrCreate([
             'name' => 'Laporan Pengendalian FKIP',
-            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/preview',
+            'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
     }

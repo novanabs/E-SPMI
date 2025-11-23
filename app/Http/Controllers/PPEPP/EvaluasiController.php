@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PPEPP;
 
+use App\Models\Evaluasi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -12,7 +13,13 @@ class EvaluasiController extends Controller
      */
     public function index()
     {
-        return view('PPEPP.evaluasi.3-evaluasi');
+        if (!auth()->check()) {
+            return redirect()->route('login-jurusan');
+        }
+
+        $id = auth()->id();
+        $data = Evaluasi::where('id_users', $id)->latest()->paginate(10);
+        return view('PPEPP.evaluasi.3-evaluasi', compact('data'));
     }
 
     /**
