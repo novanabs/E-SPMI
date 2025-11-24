@@ -5,12 +5,15 @@
 @section('content')
 
     <h3>Tambah Dokumen Penetapan</h3>
+    <p class="text-danger my-3">*Wajib</p>
     <form action="{{ route('penetapan.store') }}" method="POST">
         @csrf
         <div class="form-group mb-3">
-            <label for="name">Nama Dokumen</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama Dokumen"
-                value="{{ old('name') }}">
+            <label for="name">Nama Dokumen <span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('name')
+                is-invalid
+            @enderror"
+                id="name" name="name" placeholder="Masukkan Nama Dokumen" value="{{ old('name') }}">
             @error('name')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -18,9 +21,13 @@
             @enderror
         </div>
         <div class="form-group">
-            <label for="link_bukti_dokumen">Link Dokumen</label>
-            <input type="text" class="form-control" id="link_bukti_dokumen" name="link_bukti_dokumen"
-                placeholder="Masukkan Link Dokumen" value="{{ old('link_bukti_dokumen') }}">
+            <label for="link_bukti_dokumen">Link Dokumen <span class="text-danger">*</span></label>
+            <input type="text"
+                class="form-control @error('link_bukti_dokumen')
+                is-invalid
+            @enderror"
+                id="link_bukti_dokumen" name="link_bukti_dokumen" placeholder="Masukkan Link Dokumen"
+                value="{{ old('link_bukti_dokumen') }}">
             @error('link_bukti_dokumen')
                 <div class="invalid-feedback">
                     {{ $message }}

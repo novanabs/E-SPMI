@@ -37,23 +37,23 @@ Route::resource('survey', SurveyController::class);
 Route::get('/login-jurusan', function () {
     Auth::logout();
     Auth::loginUsingId(1);
-    return redirect('/');
+    return redirect()->back();
 })->name('login-jurusan');
 
 Route::get('/login-admin', function () {
     Auth::logout();
     Auth::loginUsingId(3);
-    return redirect('/');
+    return redirect()->back();
 })->name('login-admin');
 
 Route::get('/login-pimpinan', function () {
     Auth::logout();
     Auth::loginUsingId(5);
-    return redirect('/');
+    return redirect()->back();
 })->name('login-pimpinan');
 
 // Ini sementara log-out lewat sini
 Route::get('/logout', function () {
     Auth::logout();
-    return redirect('/');
+    return redirect()->back();
 });

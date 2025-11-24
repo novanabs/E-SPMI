@@ -26,7 +26,7 @@ class PengendalianController extends Controller
      */
     public function create()
     {
-        //
+        return view('ppepp.pengendalian.create');
     }
 
     /**
@@ -34,7 +34,20 @@ class PengendalianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'link_bukti_laporan' => 'required'
+        ], [
+            'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+        ]);
+
+        $data = $request->merge([
+            'id_users' => auth()->id()
+        ]);
+
+        Pengendalian::create($data->all());
+
+        return redirect()->route('pengendalian.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -50,7 +63,8 @@ class PengendalianController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Pengendalian::findOrFail($id);
+        return view('ppepp.pengendalian.edit', compact('data'));
     }
 
     /**
@@ -58,7 +72,18 @@ class PengendalianController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'link_bukti_laporan' => 'required|string',
+        ], [
+            'link_bukti_laporan.required' => 'Link Laporan wajib diisi.',
+        ]);
+
+        Pengendalian::where('id', $id)->update(
+            $validated
+        );
+
+        return redirect()->route('pengendalian.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
@@ -66,6 +91,9 @@ class PengendalianController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Pengendalian::findOrFail($id);
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }

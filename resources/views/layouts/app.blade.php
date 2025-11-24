@@ -305,7 +305,7 @@
                         <div class="col-sm-6">
                             <h3 class="mb-0">@yield('title', 'E-SPMI')</h3>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6" hidden>
                             <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('dashboard.index') }}">Home</a>
@@ -334,6 +334,9 @@
             <div class="app-content">
                 <!--begin::Container-->
                 <div class="container-fluid">
+                    @if (Request::is('*/create') || Request::is('*/edit'))
+                        <a href="{{ url()->previous() }}" class="btn btn-sm btn-primary">Kembali</a>
+                    @endif
                     <div class="container">
                         @yield('content')
                     </div>

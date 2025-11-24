@@ -8,7 +8,7 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <h3>Laporan Pengendalian {{ auth()->user()->homebase }}</h3>
-        <button class="btn btn-sm btn-primary" id="btnTambah">Tambah</button>
+        <a href="{{ route('pengendalian.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a>
     </div>
     <p class="text-muted nb-3">
         <strong>Petunjuk:</strong> Hasil dari rapat tinjauan manajemen menggunakan laporan rencana tindak lanjut.
@@ -36,7 +36,8 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->created_at->translatedFormat('l, d M Y') }}</td>
                         <td>
-                            <a href="{{ $item->link_bukti_laporan }}" class="btn btn-sm btn-primary" target="_blank">Link</a>
+                            <a href="{{ $item->link_bukti_laporan }}" class="btn btn-sm btn-primary"
+                                target="_blank">Link</a>
                         </td>
                         <td>
                             <div class="d-flex gap-2">

@@ -27,7 +27,7 @@ class EvaluasiController extends Controller
      */
     public function create()
     {
-        //
+        return view('ppepp.evaluasi.create');
     }
 
     /**
@@ -35,7 +35,24 @@ class EvaluasiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $request->validate([
+            'aspek' => 'required',
+            'jenis_laporan' => 'required',
+            'link_bukti_laporan' => 'required',
+        ], [
+            'aspek.required' => 'Aspek wajib diisi.',
+            'jenis_laporan.required' => 'Jenis laporan wajib diisi.',
+            'link_bukti_laporan.required' => 'Link bukti laporan wajib diisi.'
+        ]);
+
+        $data = $request->merge([
+            'id_users' => auth()->id()
+        ]);
+
+        Evaluasi::create($data->all());
+
+        return redirect()->route('evaluasi.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -51,7 +68,8 @@ class EvaluasiController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Evaluasi::findOrFail($id);
+        return view('ppepp.evaluasi.edit', compact('data'));
     }
 
     /**
@@ -59,7 +77,21 @@ class EvaluasiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'aspek' => 'required',
+            'jenis_laporan' => 'required',
+            'link_bukti_laporan' => 'required',
+        ], [
+            'aspek.required' => 'Aspek wajib diisi.',
+            'jenis_laporan.required' => 'Jenis laporan wajib diisi.',
+            'link_bukti_laporan.required' => 'Link bukti laporan wajib diisi.'
+        ]);
+
+        Evaluasi::where('id', $id)->update(
+            $validated
+        );
+
+        return redirect()->route('evaluasi.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
@@ -67,6 +99,9 @@ class EvaluasiController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Evaluasi::findOrFail($id);
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }

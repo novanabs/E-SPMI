@@ -5,13 +5,16 @@
 @section('content')
 
     <h3>Tambah Laporan Pelaksanaan</h3>
+    <p class="text-danger my-3">*Wajib</p>
     <form action="{{ route('pelaksanaan.update', $data->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group mb-3">
-            <label for="name">Nama laporan</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Masukkan Nama laporan"
-                value="{{ old('name', $data->name) }}">
+            <label for="name">Nama laporan <span class="text-danger">*</span></label>
+            <input type="text" class="form-control @error('name')
+                is-invalid
+            @enderror"
+                id="name" name="name" placeholder="Masukkan Nama laporan" value="{{ old('name', $data->name) }}">
             @error('name')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -19,9 +22,13 @@
             @enderror
         </div>
         <div class="form-group mb-3">
-            <label for="link_bukti_laporan">Link bukti laporan</label>
-            <input type="text" class="form-control" id="link_bukti_laporan" name="link_bukti_laporan"
-                placeholder="Masukkan Link laporan" value="{{ old('link_bukti_laporan', $data->link_bukti_laporan) }}">
+            <label for="link_bukti_laporan">Link bukti laporan <span class="text-danger">*</span></label>
+            <input type="text"
+                class="form-control @error('link_bukti_laporan')
+                is-invalid
+            @enderror"
+                id="link_bukti_laporan" name="link_bukti_laporan" placeholder="Masukkan Link laporan"
+                value="{{ old('link_bukti_laporan', $data->link_bukti_laporan) }}">
             @error('link_bukti_laporan')
                 <div class="invalid-feedback">
                     {{ $message }}

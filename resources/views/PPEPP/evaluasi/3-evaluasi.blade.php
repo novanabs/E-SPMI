@@ -5,8 +5,8 @@
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Daftar LAPORAN FKIP</h2>
-        <button class="btn btn-sm btn-primary" id="btnTambah">Tambah</button>
+        <h2>Daftar Laporan Evaluasi {{ auth()->user()->homebase }}</h2>
+        <a href="{{ route('evaluasi.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a>
     </div>
     <div class="table-responsive">
         <table id="akreditasiTable" class="table table-bordered table-striped">
