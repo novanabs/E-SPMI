@@ -1,22 +1,23 @@
 @extends('layouts.app')
 
-@section('title', 'Penetapan')
+@section('title', 'Jurusan')
 
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Dokumen {{ auth()->user()->homebase }}</h3>
-        <a href="{{ route('penetapan.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a>
+        <h3>Daftar Jurusan</h3>
+        {{-- <a href="{{ route('jurusan.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a> --}}
     </div>
     <div class="table-responsive">
         <table id="penetapanTable" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Nama Dokumen</th>
-                    <th>Waktu Unggah</th>
-                    <th>Link Dokumen</th>
-                    <th>Action</th>
+                    <th>Nama</th> <!-- Homebase -->
+                    <th>Email</th>
+                    <th>Ketua Jurusan</th>
+                    <th>PPEPP</th>
+                    {{-- <th>Action</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -24,20 +25,21 @@
                 @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->created_at->translatedFormat('l, d M Y') }}</td>
-                        <td>
-                            <a href="{{ $item->link_bukti_dokumen }}" class="btn btn-sm btn-primary" target="_blank">Link</a>
-                        </td>
-                        <td>
-                            <a class="btn btn-warning btn-sm" href="{{ route('penetapan.edit', $item->id) }}">
+                        <td>{{ $item->homebase }}</td>
+                        <td>{{ $item->email }}</td>
+                        <td>{{ $item->ketua }}</td>
+                        <td><a class="btn btn-primary btn-sm" href="{{ route('jurusan.show', $item->id) }}">
+                                Lihat
+                            </a></td>
+                        {{-- <td>
+                            <a class="btn btn-warning btn-sm" href="{{ route('jurusan.edit', $item->id) }}">
                                 Edit
                             </a>
                             <button class="btn btn-danger btn-sm"
-                                onclick="confirmDelete('{{ route('penetapan.destroy', $item->id) }}')">
+                                onclick="confirmDelete('{{ route('jurusan.destroy', $item->id) }}')">
                                 Hapus
                             </button>
-                        </td>
+                        </td> --}}
                     </tr>
                 @endforeach
             </tbody>

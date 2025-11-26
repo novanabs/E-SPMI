@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <!-- Contoh data, ganti dengan data dinamis sesuai kebutuhan -->
-                @forelse ($data as $item)
+                @foreach ($data as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $item->name }}</td>
@@ -51,11 +51,7 @@
                             </div>
                         </td>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center text-muted">Tidak ada data</td>
-                    </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
 
@@ -71,7 +67,8 @@
                             last: "Terakhir",
                             next: "Berikutnya",
                             previous: "Sebelumnya"
-                        }
+                        },
+                        emptyTable: "Tidak ada data"
                     }
                 });
             });

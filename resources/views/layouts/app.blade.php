@@ -232,40 +232,55 @@
                                 <li class="nav-item">
                                     <a href="{{ route('penetapan.index') }}"
                                         class="nav-link {{ Route::is('penetapan*') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i
+                                            class="nav-icon bi bi-circle{{ Route::is('penetapan*') ? '-fill' : '' }}"></i>
                                         <p>Penetapan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('pelaksanaan.index') }}"
                                         class="nav-link {{ Route::is('pelaksanaan*') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i
+                                            class="nav-icon bi bi-circle{{ Route::is('pelaksanaan*') ? '-fill' : '' }}"></i>
                                         <p>Pelaksanaan</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('evaluasi.index') }}"
                                         class="nav-link {{ Route::is('evaluasi*') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i
+                                            class="nav-icon bi bi-circle{{ Route::is('evaluasi*') ? '-fill' : '' }}"></i>
                                         <p>Evaluasi</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('pengendalian.index') }}"
                                         class="nav-link {{ Route::is('pengendalian*') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i
+                                            class="nav-icon bi bi-circle{{ Route::is('pengendalian*') ? '-fill' : '' }}"></i>
                                         <p>Pengendalian</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('peningkatan.index') }}"
                                         class="nav-link {{ Route::is('peningkatan*') ? 'active' : '' }}">
-                                        <i class="nav-icon bi bi-circle"></i>
+                                        <i
+                                            class="nav-icon bi bi-circle{{ Route::is('peningkatan*') ? '-fill' : '' }}"></i>
                                         <p>Peningkatan</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+                        <!-- JURUSAN, khusus di liat oleh FKIP -->
+                        @if (auth()->user()->role == 'admin_FKIP')
+                            <li class="nav-item">
+                                <a href="{{ route('jurusan.index') }}"
+                                    class="nav-link {{ Route::is('jurusan*') ? 'active' : '' }}">
+                                    <i class="nav-icon bi bi-boxes"></i>
+                                    <p>Jurusan</p>
+                                </a>
+                            </li>
+                        @endif
                         <!-- DOKUMEN -->
                         <li class="nav-item pe-none">
                             <a href="" class="nav-link disabled-link text-secondary">
@@ -334,7 +349,7 @@
             <div class="app-content">
                 <!--begin::Container-->
                 <div class="container-fluid">
-                    @if (Request::is('*/create') || Request::is('*/edit'))
+                    @if (Request::is('*/create') || Request::is('*/edit') || Request::is('*jurusan/*'))
                         <a href="{{ url()->previous() }}" class="btn btn-sm btn-primary">Kembali</a>
                     @endif
                     <div class="container">

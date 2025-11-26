@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JurusanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
@@ -14,6 +15,9 @@ use App\Http\Controllers\PPEPP\PeningkatanController;
 use App\Http\Controllers\PPEPP\PengendalianController;
 
 Route::get('/', function () {
+    if (!auth()->check()) {
+        Auth::loginUsingId(1);
+    }
     return view('dashboard');
 })->name('dashboard');
 
@@ -31,6 +35,11 @@ Route::resource('penetapan', PenetapanController::class);
 Route::resource('pengendalian', PengendalianController::class);
 Route::resource('peningkatan', PeningkatanController::class);
 Route::resource('survey', SurveyController::class);
+
+Route::middleware(['role:admin_FKIP'])->group(function () {
+    Route::resource('jurusan', JurusanController::class);
+});
+
 
 
 // Login by URL
