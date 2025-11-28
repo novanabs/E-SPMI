@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             EvaluasiSeeder::class,
             PengendalianSeeder::class,
             PeningkatanSeeder::class,
-            DokumenFakultasSeeder::class
+            DokumenSeeder::class
         ]);
 
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\PimpinanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
@@ -35,6 +36,7 @@ Route::resource('penetapan', PenetapanController::class);
 Route::resource('pengendalian', PengendalianController::class);
 Route::resource('peningkatan', PeningkatanController::class);
 Route::resource('survey', SurveyController::class);
+Route::resource('pimpinan', PimpinanController::class);
 
 Route::middleware(['role:admin_FKIP'])->group(function () {
     Route::resource('jurusan', JurusanController::class);
@@ -58,7 +60,7 @@ Route::get('/login-admin', function () {
 Route::get('/login-pimpinan', function () {
     Auth::logout();
     Auth::loginUsingId(5);
-    return redirect()->back();
+    return view('dashboard');
 })->name('login-pimpinan');
 
 // Ini sementara log-out lewat sini

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dokumen;
 use Illuminate\Http\Request;
 
 class DokumenController extends Controller
@@ -11,7 +12,13 @@ class DokumenController extends Controller
      */
     public function index()
     {
-        return view('dokumen');
+        if (!auth()->check()) {
+            return redirect()->route('login-jurusan');
+        }
+
+        $id = auth()->id();
+        $data = Dokumen::all();
+        return view('dokumen.index', compact('data'));
     }
 
     /**
@@ -19,7 +26,7 @@ class DokumenController extends Controller
      */
     public function create()
     {
-        //
+        return view('dokumen.create');
     }
 
     /**
@@ -27,7 +34,22 @@ class DokumenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'deskripsi' => 'nullable',
+            'link_dokumen' => 'required'
+        ], [
+            'name.required' => 'Nama dokumen wajib diisi.',
+            'link_dokumen.required' => 'Link dokumen wajib diisi.',
+        ]);
+
+        $data = $request->merge([
+            'id_users' => auth()->id()
+        ]);
+
+        Dokumen::create($data->all());
+
+        return redirect()->route('dokumen.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -43,7 +65,8 @@ class DokumenController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Dokumen::findOrFail($id);
+        return view('dokumen.edit', compact('data'));
     }
 
     /**
@@ -51,7 +74,20 @@ class DokumenController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'deskripsi' => 'nullable',
+            'link_dokumen' => 'required|string',
+        ], [
+            'name.required' => 'Nama dokumen wajib diisi.',
+            'link_dokumen.required' => 'Link dokumen wajib diisi.',
+        ]);
+
+        Dokumen::where('id', $id)->update(
+            $validated
+        );
+
+        return redirect()->route('dokumen.index')->with('success', 'Data berhasil diupdate!');
     }
 
     /**
@@ -59,6 +95,9 @@ class DokumenController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $data = Dokumen::findOrFail($id);
+        $data->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus!');
     }
 }
