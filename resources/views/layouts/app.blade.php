@@ -152,7 +152,7 @@
                             aria-expanded="false">
                             {{-- <img src="{{ asset('img/user2-160x160.jpg') }}" class="user-image rounded-circle shadow"
                                 alt="User Image" /> --}}
-                            <span class="d-none d-md-inline">
+                            <span class="d-inline d-md-inline">
                                 @auth
                                     {{ auth()->user()->name }} <i class="bi bi-caret-down"></i>
                                 @else
@@ -288,7 +288,7 @@
                                             <a href="{{ route('jurusan.index') }}"
                                                 class="nav-link {{ Route::is('jurusan*') ? 'active' : '' }}">
                                                 <i class="nav-icon bi bi-boxes"></i>
-                                                <p>Jurusan</p>
+                                                <p>PPEPP Jurusan</p>
                                             </a>
                                         </li>
                                     @endif

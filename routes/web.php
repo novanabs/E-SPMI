@@ -60,7 +60,7 @@ Route::get('/login-admin', function () {
 Route::get('/login-pimpinan', function () {
     Auth::logout();
     Auth::loginUsingId(5);
-    return view('dashboard');
+    return redirect()->back();
 })->name('login-pimpinan');
 
 // Ini sementara log-out lewat sini

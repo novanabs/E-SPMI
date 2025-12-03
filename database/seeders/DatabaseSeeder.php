@@ -23,7 +23,10 @@ class DatabaseSeeder extends Seeder
             EvaluasiSeeder::class,
             PengendalianSeeder::class,
             PeningkatanSeeder::class,
-            DokumenSeeder::class
+            DokumenSeeder::class,
+            LEDSeeder::class,
+            LEDSeeder2::class,
+            UsersMatrikSeeder::class,
         ]);
 
     }

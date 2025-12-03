@@ -10,11 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('kriteria', function (Blueprint $table) {
-            $table->id();
-            $table->unique('name');
-            $table->text('deskripsi')->nullable();
-            $table->timestamps();
+        Schema::table('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
+            // Untuk isian, karena tidak menggunakan 4 pilihan
+            $table->longText('harkat_penskoran')->nullable();
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('kriteria');
+        Schema::table('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
+            //
+        });
     }
 };

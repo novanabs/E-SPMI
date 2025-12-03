@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
             $table->id();
-            $table->string('nomor')->nullable();
-            $table->string('kriteria')->nullable();
-            $table->string('elemen')->nullable();
-            $table->string('poin')->nullable();
+            $table->unique('nomor');
+            $table->string('id_kriteria');
+            $table->string('elemen');
+            $table->string('poin');
             $table->text('indikator')->nullable();
             $table->json('option_pilihan_ganda')->nullable();
             $table->enum('jenis', ['pilihan_ganda', 'isian']);
