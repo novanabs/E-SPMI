@@ -19,7 +19,7 @@ class EvaluasiController extends Controller
 
         $id = auth()->id();
         $data = Evaluasi::where('id_users', $id)->latest()->paginate(10);
-        return view('PPEPP.evaluasi.3-evaluasi', compact('data'));
+        return view('PPEPP.evaluasi.index', compact('data'));
     }
 
     /**
@@ -37,12 +37,12 @@ class EvaluasiController extends Controller
     {
         // dd($request);
         $request->validate([
-            'aspek' => 'required',
-            'jenis_laporan' => 'required',
+            'aspek'              => 'required',
+            'jenis_laporan'      => 'required',
             'link_bukti_laporan' => 'required',
         ], [
-            'aspek.required' => 'Aspek wajib diisi.',
-            'jenis_laporan.required' => 'Jenis laporan wajib diisi.',
+            'aspek.required'              => 'Aspek wajib diisi.',
+            'jenis_laporan.required'      => 'Jenis laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link bukti laporan wajib diisi.'
         ]);
 
@@ -78,12 +78,12 @@ class EvaluasiController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'aspek' => 'required',
-            'jenis_laporan' => 'required',
+            'aspek'              => 'required',
+            'jenis_laporan'      => 'required',
             'link_bukti_laporan' => 'required',
         ], [
-            'aspek.required' => 'Aspek wajib diisi.',
-            'jenis_laporan.required' => 'Jenis laporan wajib diisi.',
+            'aspek.required'              => 'Aspek wajib diisi.',
+            'jenis_laporan.required'      => 'Jenis laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link bukti laporan wajib diisi.'
         ]);
 

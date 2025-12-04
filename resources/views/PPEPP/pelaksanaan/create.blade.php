@@ -46,7 +46,7 @@
         </div>
         <div class="form-group">
             <label for="link_bukti_kerjasama">Link bukti kerjasama (Opsional)</label>
-            <input type="text" class="form-control" id="link_bukti_kerjasama" name="link_bukti_kerjasama"
+            <input type="url" class="form-control" id="link_bukti_kerjasama" name="link_bukti_kerjasama"
                 placeholder="Masukkan Link bukti kerjasama" value="{{ old('link_bukti_kerjasama') }}">
             @error('link_bukti_kerjasama')
                 <div class="invalid-feedback">

@@ -29,8 +29,8 @@ Route::get('/profil', function () {
 Route::resource('dashboard', DashboardController::class);
 Route::resource('dokumen', DokumenController::class);
 Route::resource('evaluasi', EvaluasiController::class);
-Route::resource('evaluasi.lamdik', EvaluasiLamdikController::class);
-Route::resource('evaluasi.laporan', EvaluasiLaporanController::class);
+Route::resource('evaluasi_lamdik', EvaluasiLamdikController::class);
+Route::resource('evaluasi_laporan', EvaluasiLaporanController::class);
 Route::resource('pelaksanaan', PelaksanaanController::class);
 Route::resource('penetapan', PenetapanController::class);
 Route::resource('pengendalian', PengendalianController::class);
@@ -67,4 +67,9 @@ Route::get('/login-pimpinan', function () {
 Route::get('/logout', function () {
     Auth::logout();
     return redirect()->back();
+});
+
+// Ini sementara log-out lewat sini
+Route::get('/lamdik-old', function () {
+    return view('EvaluasiLamdik.indexOld');
 });

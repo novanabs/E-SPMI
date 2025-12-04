@@ -36,7 +36,7 @@
         </div>
         <div class="form-group">
             <label for="link_bukti_laporan">Link Bukti Laporan <span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('link_bukti_laporan') is-invalid @enderror"
+            <input type="url" class="form-control @error('link_bukti_laporan') is-invalid @enderror"
                 id="link_bukti_laporan" name="link_bukti_laporan" placeholder="Masukkan Link Bukti Laporan"
                 value="{{ old('link_bukti_laporan') }}">
             @error('link_bukti_laporan')

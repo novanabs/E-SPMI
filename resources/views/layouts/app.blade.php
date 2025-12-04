@@ -255,14 +255,36 @@
                                                 <p>Pelaksanaan</p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
-                                            <a href="{{ route('evaluasi.index') }}"
-                                                class="nav-link {{ Route::is('evaluasi*') ? 'active' : '' }}">
+                                        <li
+                                            class="nav-item has-treeview {{ Route::is('evaluasi*') ? 'menu-open' : '' }}">
+                                            <a href="#" class="nav-link">
                                                 <i
                                                     class="nav-icon bi bi-circle{{ Route::is('evaluasi*') ? '-fill' : '' }}"></i>
-                                                <p>Evaluasi</p>
+                                                <p>
+                                                    Evaluasi
+                                                    <i class="nav-arrow bi bi-chevron-right"></i>
+                                                </p>
                                             </a>
+
+                                            <ul class="nav nav-treeview">
+                                                <li class="nav-item">
+                                                    <a href="{{ route('evaluasi.index') }}"
+                                                        class="nav-link {{ Route::is('evaluasi.index') ? 'active' : '' }}">
+                                                        <i class="bi bi-dot nav-icon"></i>
+                                                        <p>Evaluasi Diri (PPEPP)</p>
+                                                    </a>
+                                                </li>
+
+                                                <li class="nav-item">
+                                                    <a href="{{ route('evaluasi_lamdik.index') }}"
+                                                        class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
+                                                        <i class="bi bi-dot nav-icon"></i>
+                                                        <p>Laporan (Lamdik)</p>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </li>
+
                                         <li class="nav-item">
                                             <a href="{{ route('pengendalian.index') }}"
                                                 class="nav-link {{ Route::is('pengendalian*') ? 'active' : '' }}">

@@ -11,7 +11,7 @@ class EvaluasiLaporanController extends Controller
      */
     public function index()
     {
-        return view('3-evaluasi-laporan');
+        return view('EvaluasiLaporan.index');
     }
 
     /**

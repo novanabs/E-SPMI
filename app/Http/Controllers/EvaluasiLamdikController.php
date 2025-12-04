@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MatriksLED;
 use Illuminate\Http\Request;
 
 class EvaluasiLamdikController extends Controller
@@ -11,7 +12,15 @@ class EvaluasiLamdikController extends Controller
      */
     public function index()
     {
-        return view('3-evaluasi-lamdik');
+        $data = MatriksLED::with('kriteria')->orderBy('nomor', 'asc')   // atau 'desc'
+            ->get();
+
+        return view('EvaluasiLamdik.index', compact('data'));
+    }
+
+    public function indexOld()
+    {
+        return view('EvaluasiLamdik.indexOld');
     }
 
     /**
@@ -27,7 +36,7 @@ class EvaluasiLamdikController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

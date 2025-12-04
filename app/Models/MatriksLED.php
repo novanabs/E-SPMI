@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Kriteria;
 use Illuminate\Database\Eloquent\Model;
 
 class MatriksLED extends Model
@@ -18,4 +19,10 @@ class MatriksLED extends Model
         'option_pilihan_ganda', // Ini berarti nullable
         'jenis' // (pilihan ganda, isian)
     ];
+
+    public function kriteria()
+    {
+        return $this->belongsTo(Kriteria::class, 'id_kriteria');
+    }
+
 }

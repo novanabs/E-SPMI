@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
             $table->id();
-            $table->unique('nomor');
+            $table->integer('nomor')->unique();
             $table->string('id_kriteria');
             $table->string('elemen');
             $table->string('poin');

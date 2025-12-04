@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->enum('jenis_assesment', ['mandiri', 'UPM']);
-            $table->enum('jawaban', [4, 3, 2, 1])->nullable();
-            $table->integer('nilai_total')->nullable();
+            $table->enum('jawaban', [4, 3, 2, 1]);
+            $table->integer('nilai_total');
             $table->text('isian')->nullable();
             $table->string('link_bukti')->nullable();
             $table->enum('kepemilikan_kriteria', ['jurusan', 'fakultas']);

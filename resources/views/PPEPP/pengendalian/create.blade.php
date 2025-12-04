@@ -15,7 +15,7 @@
         </div>
         <div class="form-group">
             <label for="link_bukti_laporan">Link Laporan <span class="text-danger">*</span></label>
-            <input type="text"
+            <input type="url"
                 class="form-control @error('link_bukti_laporan')
                 is-invalid
             @enderror"

@@ -22,7 +22,7 @@
         </div>
         <div class="form-group">
             <label for="link_bukti_dokumen">Link Dokumen <span class="text-danger">*</span></label>
-            <input type="text"
+            <input type="url"
                 class="form-control @error('link_bukti_dokumen')
                 is-invalid
             @enderror"
