@@ -26,17 +26,21 @@ Route::get('/profil', function () {
     return view('profil');
 })->name('profil');
 
-Route::resource('dashboard', DashboardController::class);
-Route::resource('dokumen', DokumenController::class);
-Route::resource('evaluasi', EvaluasiController::class);
-Route::resource('evaluasi_lamdik', EvaluasiLamdikController::class);
-Route::resource('evaluasi_laporan', EvaluasiLaporanController::class);
-Route::resource('pelaksanaan', PelaksanaanController::class);
-Route::resource('penetapan', PenetapanController::class);
-Route::resource('pengendalian', PengendalianController::class);
-Route::resource('peningkatan', PeningkatanController::class);
-Route::resource('survey', SurveyController::class);
-Route::resource('pimpinan', PimpinanController::class);
+Route::middleware('auth')->group(function () {
+
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('dokumen', DokumenController::class);
+    Route::resource('evaluasi', EvaluasiController::class);
+    Route::resource('evaluasi_lamdik', EvaluasiLamdikController::class);
+    Route::resource('evaluasi_laporan', EvaluasiLaporanController::class);
+    Route::resource('pelaksanaan', PelaksanaanController::class);
+    Route::resource('penetapan', PenetapanController::class);
+    Route::resource('pengendalian', PengendalianController::class);
+    Route::resource('peningkatan', PeningkatanController::class);
+    Route::resource('survey', SurveyController::class);
+    Route::resource('pimpinan', PimpinanController::class);
+
+});
 
 Route::middleware(['role:admin_FKIP'])->group(function () {
     Route::resource('jurusan', JurusanController::class);
@@ -45,6 +49,12 @@ Route::middleware(['role:admin_FKIP'])->group(function () {
 
 
 // Login by URL
+Route::get('/login', function () {
+    Auth::logout();
+    Auth::loginUsingId(1);
+    return redirect()->back();
+})->name('login');
+
 Route::get('/login-jurusan', function () {
     Auth::logout();
     Auth::loginUsingId(1);

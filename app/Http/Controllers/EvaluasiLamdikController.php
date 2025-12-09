@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MatriksLED;
+use App\Models\UsersMatrik;
 use Illuminate\Http\Request;
 
 class EvaluasiLamdikController extends Controller
@@ -12,8 +13,11 @@ class EvaluasiLamdikController extends Controller
      */
     public function index()
     {
-        $data = MatriksLED::with('kriteria')->orderBy('nomor', 'asc')   // atau 'desc'
+        $data = MatriksLED::with(['kriteria', 'userMatrik'])->orderBy('nomor', 'asc')   // atau 'desc'
             ->get();
+
+        // dd($data->first()->userMatrik);
+
 
         return view('EvaluasiLamdik.index', compact('data'));
     }
@@ -36,7 +40,29 @@ class EvaluasiLamdikController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+
+        $validated = $request->validate([
+            'jawaban'              => 'required|integer',
+            'link_bukti'           => 'nullable|url',
+            'temuan'               => 'nullable',
+            'saran'                => 'nullable',
+            'nilai_total'          => 'required|numeric',
+            'id_matriks_led'       => 'required|integer',
+            'kepemilikan_kriteria' => 'required|string|in:jurusan,fakultas',
+            'id_users'             => 'required|integer',
+        ]);
+
+        UsersMatrik::updateOrCreate(
+            [
+                'id_users'       => $validated['id_users'],
+                'id_matriks_led' => $validated['id_matriks_led'],
+            ],
+            $validated
+        );
+
+        return redirect()->route('evaluasi_lamdik.index')
+            ->with('success', 'Data berhasil ditambahkan');
+
     }
 
     /**

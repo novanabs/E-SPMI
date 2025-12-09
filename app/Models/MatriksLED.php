@@ -25,4 +25,9 @@ class MatriksLED extends Model
         return $this->belongsTo(Kriteria::class, 'id_kriteria');
     }
 
+    public function userMatrik()
+    {
+        return $this->hasOne(UsersMatrik::class, 'id_matriks_led')->where('id_users', auth()->id());
+    }
+
 }

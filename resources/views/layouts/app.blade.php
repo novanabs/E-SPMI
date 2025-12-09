@@ -484,6 +484,31 @@
         }
     </script>
 
+    {{-- simpan sidebar --}}
+
+    <script>
+        document.querySelector('[data-lte-toggle="sidebar"]').addEventListener("click", function() {
+            setTimeout(() => {
+                const isCollapsed = document.body.classList.contains("sidebar-collapse");
+                localStorage.setItem("sidebarCollapsed", isCollapsed ? "1" : "0");
+            }, 10); // tunggu AdminLTE selesai toggle
+        });
+    </script>
+
+    <script>
+        window.addEventListener("DOMContentLoaded", function() {
+            const saved = localStorage.getItem("sidebarCollapsed");
+
+            if (saved === "1") {
+                document.body.classList.add("sidebar-collapse");
+            } else {
+                document.body.classList.remove("sidebar-collapse");
+            }
+        });
+    </script>
+
+
+
 
 </body>
 <!--end::Body-->

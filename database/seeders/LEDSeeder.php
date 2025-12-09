@@ -441,7 +441,7 @@ class LEDSeeder extends Seeder
             ],
             [
                 'nomor'                => 58,
-                'id_kriteria'          => 6,
+                'id_kriteria'          => 7,
                 'elemen'               => ' Evaluasi Penelitian dan Tindak Lanjut ',
                 'poin'                 => ' 1.50 ',
                 'indikator'            => ' UPPS/PS melakukan evaluasi dan tindak lanjut terhadap penelitian, dengan ketentuan sebagai berikut. (a) Evaluasi (1) dilakukan terhadap elemen-elemen penelitian dengan cara mengidentiﬁkasi minimal kelebihan dan kelemahannya, (2) dilakukan berdasarkan pada parameter tertentu secara kuantitatif/kualitatif, (3) dilakukan secara komprehensif berbasis kondisi nyata dengan menggunakan metode yang sesuai, (4) didokumenta- sikan secara lengkap dan sahih. (b) Tindak lanjut (1) didasarkan pada hasil evaluasi, (2) dirumuskan secara spesiﬁk, terukur, realistis, dan berbasis waktu, (3)  dimonitor untuk memastikan tindak lanjut benar-benar diimplementasikan, dan (4) didukung bukti pelaksanaan yang lengkap dan sahih.    ',
@@ -450,7 +450,7 @@ class LEDSeeder extends Seeder
             ],
             [
                 'nomor'                => 61,
-                'id_kriteria'          => 7,
+                'id_kriteria'          => 8,
                 'elemen'               => ' Evaluasi Pengabdian kepada Masyarakat  dan Tindak Lanjut ',
                 'poin'                 => ' 1.50 ',
                 'indikator'            => ' UPPS/PS melakukan evaluasi dan tindak lanjut terhadap PkM, dengan ketentuan sebagai berikut. (a) Evaluasi (1) dilakukan terhadap elemenelemen PkM dengan cara mengidentiﬁkasi minimal kelebihan dan kelemahannya, (2) dilakukan berdasarkan pada parameter tertentu secara kuantitatif/kualitatif, (3) dilakukan secara komprehensif berbasis kondisi nyata dengan menggunakan metode yang sesuai, (4) didokumenta- sikan secara lengkap dan sahih. (b) Tindak lanjut (1) didasarkan pada hasil evaluasi, (2) dirumuskan secara spesiﬁk, terukur, realistis, dan berbasis waktu, (3) dimonitor untuk memastikan tindak lanjut benar-benar diimplementasikan, dan (4) didukung bukti pelaksanaan yang lengkap dan sahih. ',
@@ -459,7 +459,7 @@ class LEDSeeder extends Seeder
             ],
             [
                 'nomor'                => 62,
-                'id_kriteria'          => 8,
+                'id_kriteria'          => 9,
                 'elemen'               => ' Terbentuknya unsur pelaksana penjaminan mutu ',
                 'poin'                 => ' 1.25',
                 'indikator'            => '   UPPS memiliki unsur pelaksana penjaminan mutu di UPPS yang tercermin dari  aspek (a) surat keputusan pembentukan unit penjaminan mutu,  (b) struktur organisasi penjaminan mutu, (c) deskripsi kerja personil yang ada dalam struktur organisasi, dan (d) personil yang kompeten dalam bidang penjaminan mutu.    ',
@@ -468,7 +468,7 @@ class LEDSeeder extends Seeder
             ],
             [
                 'nomor'                => 63,
-                'id_kriteria'          => 8,
+                'id_kriteria'          => 9,
                 'elemen'               => ' Ketersediaan perangkat penjaminan mutu ',
                 'poin'                 => ' 1.25 ',
                 'indikator'            => ' PT/UPPS  menetapkan perangkat SPMI yang minimal mencakup: (a) kebijakan SPMI; (b) pedoman penerapan siklus PPEPP standar pendidikan tinggi dalam SPMI; (c) standar dan/atau  kriteria penyelenggaraan pendidikan dan pengelolaan perguruan tinggi; dan (d)  tata cara pendokumentasian implementasi SPMI ',
@@ -477,7 +477,7 @@ class LEDSeeder extends Seeder
             ],
             [
                 'nomor'                => 64,
-                'id_kriteria'          => 8,
+                'id_kriteria'          => 9,
                 'elemen'               => ' Pelaksanaan penjaminan mutu dengan siklus PPEPP ',
                 'poin'                 => ' 2.50 ',
                 'indikator'            => ' UPPS memiliki dan melaksanakan Sistem Penjaminan Mutu Internal (SPMI) dengan mengikuti siklus Penetapan, Pelaksanaan, Evaluasi, Pengendalian, dan Peningkatan (PPEPP).  ',
@@ -486,7 +486,7 @@ class LEDSeeder extends Seeder
             ],
             [
                 'nomor'                => 65,
-                'id_kriteria'          => 8,
+                'id_kriteria'          => 9,
                 'elemen'               => ' Evaluasi Penjaminan Mutu dan Tindak Lanjut ',
                 'poin'                 => ' 1.50 ',
                 'indikator'            => ' PT/UPPS melakukan evaluasi dan tindak lanjut terhadap penjaminan mutu, dengan ketentuan sebagai berikut. (a) Evaluasi (1) dilakukan terhadap elemenelemen penjaminan mutu dengan cara mengidentiﬁkasi minimal kelebihan dan kelemahannya, (2) dilakukan berdasarkan pada parameter tertentu secara kuantitatif/kualitatif, (3) dilakukan secara komprehensif berbasis kondisi nyata dengan menggunakan metode yang sesuai, (4) didokumenta- sikan secara lengkap dan sahih. (b) Tindak lanjut (1) didasarkan pada hasil evaluasi, (2) dirumuskan secara spesiﬁk, terukur, realistis, dan berbasis waktu, (3) dimonitor untuk memastikan tindak lanjut benar-benar diimplementasikan, dan (4) didukung bukti pelaksanaan yang lengkap dan sahih. ',

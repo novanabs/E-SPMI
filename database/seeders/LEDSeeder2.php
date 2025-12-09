@@ -171,7 +171,7 @@ TEXT,
                 'nomor'                => 20,
                 'id_kriteria'          => 4,
                 'elemen'               => ' Beban kerja  DTPS',
-                'poin'                 => ' ### ',
+                'poin'                 => ' 1.25 ',
                 'indikator'            => 'Beban Kerja dalam satu tahun terakhir memungkinkan DTPS bekerja secara maksimal. ',
                 'harkat_penskoran'     =>
                     <<<TEXT

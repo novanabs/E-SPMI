@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\MatriksLED;
 use Illuminate\Database\Eloquent\Model;
 
 class UsersMatrik extends Model
@@ -9,7 +11,6 @@ class UsersMatrik extends Model
     protected $table = 'users_matrik';
 
     protected $fillable = [
-        'jenis_assesment',
         'jawaban',
         'nilai_total',
         'isian',
@@ -20,4 +21,14 @@ class UsersMatrik extends Model
         'temuan',
         'saran'
     ];
+
+    public function matriksLed()
+    {
+        return $this->belongsTo(MatriksLED::class, 'id_matriks_led');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id_users');
+    }
 }
