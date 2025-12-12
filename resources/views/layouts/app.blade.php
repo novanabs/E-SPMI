@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>PPEPP UPM FKIP ULM | Dashboard</title>
+    <title>E-SPMI UPM FKIP ULM</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -13,7 +13,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('img/ulm.ico') }}">
     <!--end::Accessibility Meta Tags-->
     <!--begin::Primary Meta Tags-->
-    <meta name="title" content="PPEPP UPM FKIP ULM | Dashboard" />
+    <meta name="title" content="E-SPMI UPM FKIP ULM" />
     <meta name="author" content="UPM FKIP ULM" />
     <meta name="description"
         content="Dashboard PPEPP UPM FKIP ULM menyediakan sistem pengelolaan evaluasi, pemantauan, pengendalian, dan peningkatan mutu pendidikan serta manajemen evaluasi diri berbasis web. Mempermudah pengelolaan data, monitoring, dan pelaporan mutu di lingkungan FKIP ULM." />
