@@ -11,6 +11,10 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_kriteria')->change();
+        });
+
+        Schema::table('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
             $table->foreign('id_kriteria')
                 ->references('id')
                 ->on('kriteria')
@@ -25,7 +29,8 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
-            //
+            $table->dropForeign(['id_kriteria']);
+            $table->string('id_kriteria')->change();
         });
     }
 };
