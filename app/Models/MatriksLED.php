@@ -30,4 +30,10 @@ class MatriksLED extends Model
         return $this->hasOne(UsersMatrik::class, 'id_matriks_led')->where('id_users', auth()->id());
     }
 
+    public function userMatrikByUser()
+    {
+        return $this->hasOne(UsersMatrik::class, 'id_matriks_led');
+    }
+
+
 }

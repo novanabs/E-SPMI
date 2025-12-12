@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\MatriksLED;
 use App\Models\UsersMatrik;
 use Illuminate\Http\Request;
@@ -61,7 +62,7 @@ class EvaluasiLamdikController extends Controller
         );
 
         return redirect()->route('evaluasi_lamdik.index')
-            ->with('success', 'Data berhasil ditambahkan');
+            ->with('success', 'Data berhasil diperbarui');
 
     }
 

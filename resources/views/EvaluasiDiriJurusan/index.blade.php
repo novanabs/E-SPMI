@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'PPEPP Jurusan')
+@section('title', 'Evaluasi Diri Jurusan')
 
 @section('content')
 
@@ -16,7 +16,7 @@
                     <th>Nama</th> <!-- Homebase -->
                     <th>Email</th>
                     <th>Ketua Jurusan</th>
-                    <th>PPEPP</th>
+                    <th>Evaluasi Diri</th>
                     {{-- <th>Action</th> --}}
                 </tr>
             </thead>
@@ -28,9 +28,13 @@
                         <td>{{ $item->homebase }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->ketua }}</td>
-                        <td><a class="btn btn-primary btn-sm" href="{{ route('jurusan.show', $item->id) }}">
-                                Lihat
-                            </a></td>
+                        <td><a class="btn btn-primary btn-sm" href="{{ route('evaluasi_diri_jurusan.show', $item->id) }}">
+                                Bandingkan
+                            </a>
+                            <a class="btn btn-success btn-sm" href="{{ route('evaluasi_diri_jurusan.edit', $item->id) }}">
+                                Isi Evaluasi
+                            </a>
+                        </td>
                         {{-- <td>
                             <a class="btn btn-warning btn-sm" href="{{ route('jurusan.edit', $item->id) }}">
                                 Edit

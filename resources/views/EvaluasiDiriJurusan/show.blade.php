@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Evaluasi Diri ' . (auth()->user()->homebase ?? ''))
+@section('title', 'Evaluasi Diri ' . ($user->homebase ?? ''))
 
 @section('content')
 
@@ -238,7 +238,7 @@
 
                         {{-- Atur warna navigasi --}}
                         @php
-                            $jawaban = $item->userMatrik->jawaban ?? null;
+                            $jawaban = $item->userMatrikByUser->jawaban ?? null;
 
                             // Background color
                             $color = match (true) {
@@ -265,17 +265,17 @@
                             data-content="{{ $item->indikator }}" data-pilihan='@json($item->option_pilihan_ganda)'
                             data-poin="{{ $item->poin }}" data-harkat_penskoran="{{ $item->harkat_penskoran }}"
                             data-jenis="{{ $item->jenis }}" {{-- Ini data dari users matrik --}}
-                            data-link_bukti="{{ $item->userMatrik->link_bukti ?? '' }}"
-                            data-temuan="{{ $item->userMatrik->temuan ?? '' }}"
-                            data-saran="{{ $item->userMatrik->saran ?? '' }}"
-                            data-jawaban="{{ $item->userMatrik->jawaban ?? 0 }}"
+                            data-link_bukti="{{ $item->userMatrikByUser->link_bukti ?? '' }}"
+                            data-temuan="{{ $item->userMatrikByUser->temuan ?? '' }}"
+                            data-saran="{{ $item->userMatrikByUser->saran ?? '' }}"
+                            data-jawaban="{{ $item->userMatrikByUser->jawaban ?? 0 }}"
                             data-color="{{ $jawaban == 4 ? 'green' : ($jawaban < 4 && $jawaban > 1 ? 'yellow' : ($jawaban == 1 ? 'red' : 'none')) }}"
-                            data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}">
+                            data-nilai_total="{{ $item->userMatrikByUser->nilai_total ?? 0 }}">
 
                             <span class="me-2" style="width: 30px;">{{ $item->nomor }}.</span>
                             <span>{{ $item->elemen }} ({{ $item->poin }}) => (Skor:
-                                {{ $item->userMatrik->jawaban ?? 0 }},Total:
-                                {{ $item->userMatrik->nilai_total ?? 0 }})</span>
+                                {{ $item->userMatrikByUser->jawaban ?? 0 }},Total:
+                                {{ $item->userMatrikByUser->nilai_total ?? 0 }})</span>
                         </button>
                     @endforeach
 
@@ -355,7 +355,7 @@
                 var jenis = btn.dataset.jenis
                 var id_matriks_led = btn.dataset.id
 
-                // Ini yang dari userMatrik
+                // Ini yang dari userMatrikByUser
                 var link_bukti = btn.dataset.link_bukti;
                 var saran = btn.dataset.saran;
                 var temuan = btn.dataset.temuan;

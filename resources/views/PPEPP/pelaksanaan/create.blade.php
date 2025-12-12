@@ -55,7 +55,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="mt-3 btn btn-sm btn-primary">Simpan</button>
+        <button type="submit" class="mt-3 btn btn-sm btn-success"><i class="bi bi-floppy"></i> Simpan</button>
     </form>
 
 @endsection

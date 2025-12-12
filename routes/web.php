@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AkreditasiController;
+use App\Http\Controllers\EvaluasiDiriJurusan;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
 use Illuminate\Support\Facades\Auth;
@@ -39,12 +41,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('peningkatan', PeningkatanController::class);
     Route::resource('survey', SurveyController::class);
     Route::resource('pimpinan', PimpinanController::class);
+    Route::resource('akreditasi', AkreditasiController::class);
+    Route::resource('evaluasi_diri_jurusan', EvaluasiDiriJurusan::class);
+
+
 
 });
 
 Route::middleware(['role:admin_FKIP'])->group(function () {
     Route::resource('jurusan', JurusanController::class);
 });
+
 
 
 
@@ -55,11 +62,17 @@ Route::get('/login', function () {
     return redirect()->back();
 })->name('login');
 
-Route::get('/login-jurusan', function () {
+Route::get('/login-jurusan-pilkom', function () {
     Auth::logout();
     Auth::loginUsingId(1);
     return redirect()->back();
-})->name('login-jurusan');
+})->name('login-jurusan-pilkom');
+
+Route::get('/login-jurusan-penko', function () {
+    Auth::logout();
+    Auth::loginUsingId(2);
+    return redirect()->back();
+})->name('login-jurusan-penko');
 
 Route::get('/login-admin', function () {
     Auth::logout();
@@ -83,3 +96,4 @@ Route::get('/logout', function () {
 Route::get('/lamdik-old', function () {
     return view('EvaluasiLamdik.indexOld');
 });
+

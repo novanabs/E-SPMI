@@ -161,7 +161,10 @@
                             </span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/login-jurusan">Login Jurusan</a></li>
+                            <li><a class="dropdown-item" href="/login-jurusan-pilkom">Login Jurusan (Pend.
+                                    Komputer)</a></li>
+                            <li><a class="dropdown-item" href="/login-jurusan-penko">Login Jurusan (Pend.
+                                    Ekonomi)</a></li>
                             <li><a class="dropdown-item" href="/login-admin">Login FKIP (Admin)</a></li>
                             <li><a class="dropdown-item" href="/login-pimpinan">Login Pimpinan</a></li>
                             <hr class="my-0">
@@ -229,12 +232,12 @@
                             @else
                                 <!-- E-SPMI -->
                                 <li
-                                    class="nav-item {{ Route::is('penetapan*') | Route::is('pelaksanaan*') | Route::is('evaluasi*') | Route::is('pengendalian*') | Route::is('peningkatan*') ? 'menu-open' : '' }}">
+                                    class="nav-item {{ Route::is('penetapan*') | Route::is('pelaksanaan*') | Route::is('evaluasi.*') | Route::is('evaluasi_lamdik*') | Route::is('pengendalian*') | Route::is('peningkatan*') ? 'menu-open' : '' }}">
                                     <!---menu-open -->
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon bi bi-clipboard-check-fill"></i>
                                         <p>
-                                            E-SPMI
+                                            PPEPP
                                             <i class="nav-arrow bi bi-chevron-right"></i>
                                         </p>
                                     </a>
@@ -255,35 +258,48 @@
                                                 <p>Pelaksanaan</p>
                                             </a>
                                         </li>
-                                        <li
-                                            class="nav-item has-treeview {{ Route::is('evaluasi*') ? 'menu-open' : '' }}">
-                                            <a href="#" class="nav-link">
-                                                <i
-                                                    class="nav-icon bi bi-circle{{ Route::is('evaluasi*') ? '-fill' : '' }}"></i>
-                                                <p>
-                                                    Evaluasi
-                                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                                </p>
-                                            </a>
 
-                                            <ul class="nav nav-treeview">
-                                                <li class="nav-item">
-                                                    <a href="{{ route('evaluasi.index') }}"
-                                                        class="nav-link {{ Route::is('evaluasi.index') ? 'active' : '' }}">
-                                                        <i class="bi bi-dot nav-icon"></i>
-                                                        <p>Evaluasi Diri (PPEPP)</p>
-                                                    </a>
-                                                </li>
+                                        @if (auth()->user()->role == 'admin_jurusan')
+                                            <li
+                                                class="nav-item has-treeview {{ Route::is('evaluasi*') ? 'menu-open' : '' }}">
+                                                <a href="#" class="nav-link">
+                                                    <i
+                                                        class="nav-icon bi bi-circle{{ Route::is('evaluasi*') ? '-fill' : '' }}"></i>
+                                                    <p>
+                                                        Evaluasi
+                                                        <i class="nav-arrow bi bi-chevron-right"></i>
+                                                    </p>
+                                                </a>
 
-                                                <li class="nav-item">
-                                                    <a href="{{ route('evaluasi_lamdik.index') }}"
-                                                        class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
-                                                        <i class="bi bi-dot nav-icon"></i>
-                                                        <p>Laporan (Lamdik)</p>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                                <ul class="nav nav-treeview">
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('evaluasi.index') }}"
+                                                            class="nav-link {{ Route::is('evaluasi.index') ? 'active' : '' }}">
+                                                            <i class="bi bi-dot nav-icon"></i>
+                                                            <p>Laporan (PPEPP)</p>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('evaluasi_lamdik.index') }}"
+                                                            class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
+                                                            <i class="bi bi-dot nav-icon"></i>
+                                                            <p>Evaluasi Diri (Lamdik)</p>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        @else
+                                            <li class="nav-item">
+                                                <a href="{{ route('evaluasi.index') }}"
+                                                    class="nav-link {{ Route::is('evaluasi.index') ? 'active' : '' }}">
+                                                    <i
+                                                        class="nav-icon bi bi-circle{{ Route::is('evaluasi*') ? '-fill' : '' }}"></i>
+                                                    <p>Evaluasi</p>
+                                                </a>
+                                            </li>
+                                        @endif
+
 
                                         <li class="nav-item">
                                             <a href="{{ route('pengendalian.index') }}"
@@ -313,6 +329,13 @@
                                                 <p>PPEPP Jurusan</p>
                                             </a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a href="{{ route('evaluasi_diri_jurusan.index') }}"
+                                                class="nav-link {{ Route::is('evaluasi_diri_jurusan*') ? 'active' : '' }}">
+                                                <i class="nav-icon bi bi-bar-chart-line"></i>
+                                                <p>Evaluasi Diri Jurusan</p>
+                                            </a>
+                                        </li>
                                     @endif
                                 @endif
                             @endif
@@ -331,14 +354,15 @@
                             </a>
                         </li>
                         <!-- AKREDITASI -->
-                        <li class="nav-item pe-none">
-                            <a href="" class="nav-link disabled-link text-secondary">
+                        <li class="nav-item" hidden>
+                            <a href="{{ route('akreditasi.index') }}"
+                                class="nav-link {{ Route::is('akreditasi.*') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-trophy-fill"></i>
                                 <p>Akreditasi</p>
                             </a>
                         </li>
                         <!-- SURVEY -->
-                        <li class="nav-item pe-none">
+                        <li class="nav-item pe-none" hidden>
                             <a href="" class="nav-link disabled-link text-secondary">
                                 <i class="nav-icon bi bi-list-check"></i>
                                 <p>Survey</p>
@@ -392,7 +416,7 @@
                 <!--begin::Container-->
                 <div class="container-fluid">
                     @if (Request::is('*/create') || Request::is('*/edit') || Request::is('*jurusan/*') || Request::is('*pimpinan/*'))
-                        <a href="{{ url()->previous() }}" class="btn btn-sm btn-primary">Kembali</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">Kembali</a>
                     @endif
                     <div class="container">
                         @yield('content')

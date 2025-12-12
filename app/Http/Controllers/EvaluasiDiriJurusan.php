@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\MatriksLED;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class AkreditasiController extends Controller
+class EvaluasiDiriJurusan extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('akreditasi.index');
+
+        $data = User::where('role', 'admin_jurusan')->get();
+        return view('EvaluasiDiriJurusan.index', compact('data'));
     }
 
     /**
@@ -35,7 +40,20 @@ class AkreditasiController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $data = MatriksLED::with([
+            'kriteria',
+            'userMatrikByUser' => function ($q) use ($id) {
+                $q->where('id_users', $id);
+            }
+        ])
+            ->orderBy('nomor', 'asc')
+            ->get();
+
+        // dd($data->first()->userMatrikByUser);
+
+        return view('EvaluasiDiriJurusan.show', compact('data', 'user'));
     }
 
     /**
