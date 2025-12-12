@@ -11,8 +11,12 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('matriks_lembar_evaluasi_diri', function (Blueprint $table) {
-            $table->foreignId('id_kriteria')->constrained('kriteria')->onDelete('cascade');
+            $table->foreign('id_kriteria')
+                ->references('id')
+                ->on('kriteria')
+                ->onDelete('cascade');
         });
+
     }
 
     /**
