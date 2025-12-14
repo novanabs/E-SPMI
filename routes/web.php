@@ -72,7 +72,7 @@ Route::middleware(['auth', 'role:admin_jurusan'])->group(function () {
 // Auth role pimpinan
 Route::middleware(['auth', 'role:pimpinan'])->group(function () {
     Route::resource('pimpinan', PimpinanController::class);
-    Route::get('/pimpinan/perbandingan/evaluasi-diri-jurusan', [PimpinanController::class, 'perbandingan'])->name('evaluasi_diri_jurusan.perbandingan');
+    Route::get('/evaluasi-diri-jurusan', [PimpinanController::class, 'perbandingan'])->name('evaluasi_diri_jurusan.perbandingan');
     Route::get('/pimpinan/perbandingan/evaluasi-diri-jurusan/{id}', [PimpinanController::class, 'perbandinganJurusan'])->name('evaluasi_diri_jurusan.perbandinganJurusan');
 });
 
