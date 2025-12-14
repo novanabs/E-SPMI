@@ -245,6 +245,13 @@
                                         <p>PPEPP</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('evaluasi_diri_jurusan.index') }}"
+                                        class="nav-link {{ Route::is('evaluasi_diri_jurusan.index') ? 'active' : '' }}">
+                                        <i class="nav-icon bi bi-bar-chart-line"></i>
+                                        <p>Evaluasi Diri Jurusan</p>
+                                    </a>
+                                </li>
                             @else
                                 <!-- E-SPMI -->
                                 <li
@@ -301,6 +308,15 @@
                                                             class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
                                                             <p>Evaluasi Diri (Lamdik)</p>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        {{-- Harus mengambil id dari UPM --}}
+                                                        <a href="{{ route('evaluasi_lamdik.show', auth()->user()->id) }}"
+                                                            class="nav-link {{ Route::is('evaluasi_lamdik.show') ? 'active' : '' }}">
+                                                            <i class="bi bi-dot nav-icon"></i>
+                                                            <p>Evaluasi oleh UPM</p>
                                                         </a>
                                                     </li>
                                                 </ul>

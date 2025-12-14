@@ -171,6 +171,11 @@
                             <p class="mb-0" id="peringkat"></p>
                         </div>
 
+                        <a class="btn btn-primary btn-sm mt-3"
+                            href="{{ route('evaluasi_lamdik.show', auth()->user()->id) }}">
+                            Bandingkan
+                        </a>
+
                     </div>
                 </div>
             </div>

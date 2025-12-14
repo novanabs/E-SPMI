@@ -76,9 +76,28 @@ class EvaluasiLamdikController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $idJurusan)
     {
-        //
+        $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
+
+        $idUserUpm = $userUpm?->id; // aman, tidak error kalau null
+
+        $data = MatriksLED::with([
+            'kriteria',
+            'userMatrik'       => function ($q) use ($idJurusan) {
+                $q->where('id_users', $idJurusan);
+            },
+            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan) {
+                $q->where('id_users', $idUserUpm)
+                    ->where('id_user_jurusan', $idJurusan);
+            }
+
+        ])->orderBy('nomor', 'asc')->get();
+
+
+        return view('EvaluasiLamdik.show', compact('data'));
+
+
     }
 
     /**
@@ -86,7 +105,7 @@ class EvaluasiLamdikController extends Controller
      */
     public function edit(string $id)
     {
-        //
+
     }
 
     /**
