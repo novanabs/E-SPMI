@@ -27,10 +27,9 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header">
-                <a href="../index2.html"
-                    class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
+                <div class="link-dark text-center">
                     <h2 class="mb-0">Reset Password</h2>
-                </a>
+                </div>
             </div>
             <div class="card-body login-card-body">
                 <form action="{{ route('update.auth') }}" method="post">
