@@ -133,6 +133,16 @@
         <p class="loading-text">Memuat...</p>
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="row">
         <!-- Kiri: col-9 berisi dua row -->
         <div class="col-md-9 d-flex flex-column">
@@ -360,6 +370,10 @@
                 var saran = btn.dataset.saran;
                 var temuan = btn.dataset.temuan;
                 var jawaban = btn.dataset.jawaban;
+                var nilai_total = btn.dataset.nilai_total;
+                console.log("jawaban:", nilai_total);
+                console.log(typeof nilai_total); // number
+
                 console.log("jawaban:", jawaban);
 
 
@@ -407,24 +421,24 @@
                 </div>
 
                <div class="mb-3">
-    <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
+    <label for="temuan" class="form-label" hidden><strong>Temuan (Opsional)</strong></label>
     <textarea class="form-control" id="temuan" name="temuan" rows="3"
-        placeholder="Masukkan temuan">${temuan}</textarea>
+        placeholder="Masukkan temuan" hidden>${temuan}</textarea>
 </div>
 
 <div class="mb-3">
-    <label for="saran" class="form-label"><strong>Saran (Opsional)</strong></label>
+    <label for="saran" class="form-label" hidden><strong>Saran (Opsional)</strong></label>
     <textarea class="form-control" id="saran" name="saran" rows="3"
-        placeholder="Masukkan saran">${saran}</textarea>
+        placeholder="Masukkan saran" hidden>${saran}</textarea>
 </div>
 
 
-                <input type="hidden" name="nilai_total" id="nilai_total">
+                <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
                 <input type="hidden" name="id_matriks_led" id="id_matriks_led">
                 <input type="hidden" name="kepemilikan_kriteria" id="kepemilikan_kriteria" value="{{ $for }}">
                 <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
 
-                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
             `);
 
                     const skorInput = document.getElementById("skor");
@@ -502,24 +516,24 @@
                 </div>
 
                 <div class="mb-3">
-    <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
+    <label for="temuan" class="form-label" hidden><strong>Temuan (Opsional)</strong></label>
     <textarea class="form-control" id="temuan" name="temuan" rows="3"
-        placeholder="Masukkan temuan">${temuan}</textarea>
+        placeholder="Masukkan temuan" hidden>${temuan}</textarea>
 </div>
 
 <div class="mb-3">
-    <label for="saran" class="form-label"><strong>Saran (Opsional)</strong></label>
+    <label for="saran" class="form-label" hidden><strong>Saran (Opsional)</strong></label>
     <textarea class="form-control" id="saran" name="saran" rows="3"
-        placeholder="Masukkan saran">${saran}</textarea>
+        placeholder="Masukkan saran" hidden>${saran}</textarea>
 </div>
 
 
-                <input type="hidden" name="nilai_total" id="nilai_total">
+                <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
                 <input type="hidden" name="id_matriks_led" id="id_matriks_led">
                 <input type="hidden" name="kepemilikan_kriteria" id="kepemilikan_kriteria" value="{{ $for }}">
                 <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
 
-                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
             `);
 
                     // --- Hitung nilai total ketika skor dipilih ---
@@ -589,24 +603,24 @@
                 </div>
 
                 <div class="mb-3">
-    <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
+    <label for="temuan" class="form-label" hidden><strong>Temuan (Opsional)</strong></label>
     <textarea class="form-control" id="temuan" name="temuan" rows="3"
-        placeholder="Masukkan temuan">${temuan}</textarea>
+        placeholder="Masukkan temuan" hidden>${temuan}</textarea>
 </div>
 
 <div class="mb-3">
-    <label for="saran" class="form-label"><strong>Saran (Opsional)</strong></label>
+    <label for="saran" class="form-label" hidden><strong>Saran (Opsional)</strong></label>
     <textarea class="form-control" id="saran" name="saran" rows="3"
-        placeholder="Masukkan saran">${saran}</textarea>
+        placeholder="Masukkan saran" hidden>${saran}</textarea>
 </div>
 
 
-                <input type="hidden" name="nilai_total" id="nilai_total">
+                <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
                 <input type="hidden" name="id_matriks_led" id="id_matriks_led">
                 <input type="hidden" name="kepemilikan_kriteria" id="kepemilikan_kriteria" value="{{ $for }}">
                 <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
 
-                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
             `);
                     document.getElementById("id_matriks_led").value = id_matriks_led;
 

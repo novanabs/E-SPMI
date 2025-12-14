@@ -28,10 +28,12 @@
                         <td>{{ $item->homebase }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->ketua }}</td>
-                        <td><a class="btn btn-primary btn-sm" href="{{ route('evaluasi_diri_jurusan.show', $item->id) }}">
+                        <td><a class="btn btn-primary btn-sm mt-1"
+                                href="{{ route('evaluasi_diri_jurusan.show', $item->id) }}">
                                 Bandingkan
                             </a>
-                            <a class="btn btn-success btn-sm" href="{{ route('evaluasi_diri_jurusan.edit', $item->id) }}">
+                            <a class="btn btn-success btn-sm mt-1"
+                                href="{{ route('evaluasi_diri_jurusan.edit.custom', $item->id) }}">
                                 Isi Evaluasi
                             </a>
                         </td>

@@ -14,8 +14,15 @@ class EvaluasiLamdikController extends Controller
      */
     public function index()
     {
-        $data = MatriksLED::with(['kriteria', 'userMatrik'])->orderBy('nomor', 'asc')   // atau 'desc'
-            ->get();
+        $idUser = auth()->id();
+
+        $data = MatriksLED::with([
+            'kriteria',
+            'userMatrik' => function ($q) use ($idUser) {
+                $q->where('id_users', $idUser);
+            }
+        ])->orderBy('nomor', 'asc')->get();
+
 
         // dd($data->first()->userMatrik);
 

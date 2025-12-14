@@ -27,7 +27,7 @@ class MatriksLED extends Model
 
     public function userMatrik()
     {
-        return $this->hasOne(UsersMatrik::class, 'id_matriks_led')->where('id_users', auth()->id());
+        return $this->hasOne(UsersMatrik::class, 'id_matriks_led');
     }
 
     public function userMatrikByUser()

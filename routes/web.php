@@ -4,6 +4,7 @@ use App\Http\Controllers\AkreditasiController;
 use App\Http\Controllers\EvaluasiDiriJurusan;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SurveyController;
@@ -29,7 +30,6 @@ Route::get('/profil', function () {
 })->name('profil');
 
 Route::middleware('auth')->group(function () {
-
     Route::resource('dashboard', DashboardController::class);
     Route::resource('dokumen', DokumenController::class);
     Route::resource('evaluasi', EvaluasiController::class);
@@ -42,11 +42,31 @@ Route::middleware('auth')->group(function () {
     Route::resource('survey', SurveyController::class);
     Route::resource('pimpinan', PimpinanController::class);
     Route::resource('akreditasi', AkreditasiController::class);
+});
+
+// Auth role admin FKIP
+Route::middleware(['auth', 'role:admin_FKIP'])->group(function () {
+    // GANTI URL EDIT RESOURCE
+    Route::get(
+        '/isi-evaluasi/{evaluasi_diri_jurusan}',
+        [EvaluasiDiriJurusan::class, 'edit']
+    )->name('evaluasi_diri_jurusan.edit.custom');
+
+    Route::post(
+        '/admin/reset-password/{user}',
+        [UserController::class, 'resetPassword']
+    );
+
     Route::resource('evaluasi_diri_jurusan', EvaluasiDiriJurusan::class);
+    Route::resource('user', UserController::class);
+});
 
-
+// Auth role admin Jurusan
+Route::middleware(['auth', 'role:admin_jurusan'])->group(function () {
 
 });
+
+
 
 Route::middleware(['role:admin_FKIP'])->group(function () {
     Route::resource('jurusan', JurusanController::class);
