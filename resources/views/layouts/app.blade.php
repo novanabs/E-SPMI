@@ -169,13 +169,13 @@
                             </span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/login-jurusan-pilkom">Login Jurusan (Pend.
+                            {{-- <li><a class="dropdown-item" href="/login-jurusan-pilkom">Login Jurusan (Pend.
                                     Komputer)</a></li>
                             <li><a class="dropdown-item" href="/login-jurusan-penko">Login Jurusan (Pend.
                                     Ekonomi)</a></li>
                             <li><a class="dropdown-item" href="/login-admin">Login FKIP (Admin)</a></li>
                             <li><a class="dropdown-item" href="/login-pimpinan">Login Pimpinan</a></li>
-                            <hr class="my-0">
+                            <hr class="my-0"> --}}
                             @if (auth()->check())
                                 <li><a class="dropdown-item" href="{{ route('reset.password') }}">Reset Password</a>
                                 </li>

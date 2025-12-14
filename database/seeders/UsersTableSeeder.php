@@ -17,10 +17,10 @@ class UsersTableSeeder extends Seeder
         User::firstOrCreate([
             'email' => 'pilkom@ulm.ac.id',
         ], [
-            'name' => 'Admin Jurusan Pendidikan Komputer',
+            'name'     => 'Admin Jurusan Pendidikan Komputer',
             'homebase' => 'Pendidikan Komputer',
             'password' => Hash::make('12345'),
-            'role' => 'admin_jurusan',
+            'role'     => 'admin_jurusan',
         ]);
 
         User::firstOrCreate(
@@ -28,38 +28,38 @@ class UsersTableSeeder extends Seeder
                 'email' => 'penko@ulm.ac.id',
             ],
             [
-                'name' => 'Admin Jurusan Pendidikan Ekonomi',
+                'name'     => 'Admin Jurusan Pendidikan Ekonomi',
                 'homebase' => 'Pendidikan Ekonomi',
                 'password' => Hash::make('12345'),
-                'role' => 'admin_jurusan',
+                'role'     => 'admin_jurusan',
             ]
         );
 
         User::firstOrCreate([
             'email' => 'upmfkip1@ulm.ac.id',
         ], [
-            'name' => 'Admin 1 UPM FKIP ULM',
+            'name'     => 'Admin 1 UPM FKIP ULM',
             'homebase' => 'UPM FKIP ULM',
             'password' => Hash::make('12345'),
-            'role' => 'admin_FKIP',
+            'role'     => 'admin_FKIP',
         ]);
 
-        User::firstOrCreate([
-            'email' => 'upmfkip2@ulm.ac.id',
-        ], [
-            'name' => 'Admin 2 UPM FKIP ULM',
-            'homebase' => 'UPM FKIP ULM',
-            'password' => Hash::make('12345'),
-            'role' => 'admin_FKIP',
-        ]);
+        // User::firstOrCreate([
+        //     'email' => 'upmfkip2@ulm.ac.id',
+        // ], [
+        //     'name' => 'Admin 2 UPM FKIP ULM',
+        //     'homebase' => 'UPM FKIP ULM',
+        //     'password' => Hash::make('12345'),
+        //     'role' => 'admin_FKIP',
+        // ]);
 
         User::firstOrCreate([
             'email' => 'pimpinanfkip@ulm.ac.id',
         ], [
-            'name' => 'Pimpinan FKIP',
+            'name'     => 'Pimpinan FKIP',
             'homebase' => 'FKIP',
             'password' => Hash::make('12345'),
-            'role' => 'pimpinan',
+            'role'     => 'pimpinan',
         ]);
     }
 }
