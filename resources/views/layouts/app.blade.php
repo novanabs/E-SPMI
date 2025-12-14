@@ -130,6 +130,7 @@
 <!--end::Head-->
 <!--begin::Body-->
 
+
 <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
 
     @if (session('success'))
@@ -175,7 +176,15 @@
                             <li><a class="dropdown-item" href="/login-admin">Login FKIP (Admin)</a></li>
                             <li><a class="dropdown-item" href="/login-pimpinan">Login Pimpinan</a></li>
                             <hr class="my-0">
-                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            @if (auth()->check())
+                                <li><a class="dropdown-item" href="{{ route('reset.password') }}">Reset Password</a>
+                                </li>
+                                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            @else
+                                <li><a class="dropdown-item" href="/login">Login</a></li>
+                            @endif
+
+
                         </ul>
                     </li>
                     <!--end::User Menu Dropdown-->
@@ -353,20 +362,21 @@
                                     @endif
                                 @endif
                             @endif
+                            <!-- DOKUMEN -->
+                            <li class="nav-item">
+                                <a href="{{ route('dokumen.index') }}"
+                                    class="nav-link {{ Route::is('dokumen.*') ? 'active' : '' }}">
+                                    <i class="nav-icon bi bi-journal-bookmark-fill"></i>
+                                    <p>Dokumen</p>
+                                </a>
+                            </li>
                         @endif
 
 
 
 
 
-                        <!-- DOKUMEN -->
-                        <li class="nav-item">
-                            <a href="{{ route('dokumen.index') }}"
-                                class="nav-link {{ Route::is('dokumen.*') ? 'active' : '' }}">
-                                <i class="nav-icon bi bi-journal-bookmark-fill"></i>
-                                <p>Dokumen</p>
-                            </a>
-                        </li>
+
 
                         <!-- AKREDITASI -->
                         <li class="nav-item" hidden>

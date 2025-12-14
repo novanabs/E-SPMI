@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkreditasiController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluasiDiriJurusan;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
@@ -19,9 +20,9 @@ use App\Http\Controllers\PPEPP\PeningkatanController;
 use App\Http\Controllers\PPEPP\PengendalianController;
 
 Route::get('/', function () {
-    if (!auth()->check()) {
-        Auth::loginUsingId(1);
-    }
+    // if (!auth()->check()) {
+    //     Auth::loginUsingId(1);
+    // }
     return view('dashboard');
 })->name('dashboard');
 
@@ -29,8 +30,10 @@ Route::get('/profil', function () {
     return view('profil');
 })->name('profil');
 
+Route::resource('dashboard', DashboardController::class);
+
 Route::middleware('auth')->group(function () {
-    Route::resource('dashboard', DashboardController::class);
+
     Route::resource('dokumen', DokumenController::class);
     Route::resource('evaluasi', EvaluasiController::class);
     Route::resource('evaluasi_lamdik', EvaluasiLamdikController::class);
@@ -76,11 +79,23 @@ Route::middleware(['role:admin_FKIP'])->group(function () {
 
 
 // Login by URL
-Route::get('/login', function () {
-    Auth::logout();
-    Auth::loginUsingId(1);
-    return redirect()->back();
-})->name('login');
+// Route::get('/login', function () {
+//     Auth::logout();
+//     Auth::loginUsingId(1);
+//     return redirect()->back();
+// })->name('login');
+Route::get(
+    '/login',
+    [AuthController::class, 'index']
+)->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])->name('login.auth');
+
+// Halaman Reset Password
+Route::get('/reset-password', function () {
+    return view('auth.reset-password');
+})->name('reset.password');
+Route::post('/update-password', [AuthController::class, 'updatePassword'])->name('update.auth');
 
 Route::get('/login-jurusan-pilkom', function () {
     Auth::logout();
