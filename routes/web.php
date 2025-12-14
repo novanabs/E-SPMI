@@ -43,7 +43,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('pengendalian', PengendalianController::class);
     Route::resource('peningkatan', PeningkatanController::class);
     Route::resource('survey', SurveyController::class);
-    Route::resource('pimpinan', PimpinanController::class);
     Route::resource('akreditasi', AkreditasiController::class);
 });
 
@@ -62,6 +61,7 @@ Route::middleware(['auth', 'role:admin_FKIP'])->group(function () {
 
     Route::resource('evaluasi_diri_jurusan', EvaluasiDiriJurusan::class);
     Route::resource('user', UserController::class);
+    Route::resource('jurusan', JurusanController::class);
 });
 
 // Auth role admin Jurusan
@@ -69,11 +69,18 @@ Route::middleware(['auth', 'role:admin_jurusan'])->group(function () {
 
 });
 
-
-
-Route::middleware(['role:admin_FKIP'])->group(function () {
-    Route::resource('jurusan', JurusanController::class);
+// Auth role pimpinan
+Route::middleware(['auth', 'role:pimpinan'])->group(function () {
+    Route::resource('pimpinan', PimpinanController::class);
+    Route::get('/pimpinan/perbandingan/evaluasi-diri-jurusan', [PimpinanController::class, 'perbandingan'])->name('evaluasi_diri_jurusan.perbandingan');
+    Route::get('/pimpinan/perbandingan/evaluasi-diri-jurusan/{id}', [PimpinanController::class, 'perbandinganJurusan'])->name('evaluasi_diri_jurusan.perbandinganJurusan');
 });
+
+
+
+// Route::middleware(['role:admin_FKIP'])->group(function () {
+
+// });
 
 
 
