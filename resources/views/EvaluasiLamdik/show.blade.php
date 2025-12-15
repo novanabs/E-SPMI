@@ -232,7 +232,7 @@
             document.getElementById("peringkat_fkip").innerHTML = hasilFKIP.peringkat;
 
             // Selisih
-            document.getElementById("selisih").innerHTML = Math.abs(totalJurusan - totalFKIP)
+            document.getElementById("selisih").innerHTML = Math.abs(totalJurusan - totalFKIP).toFixed(2);
         });
     </script>
 
