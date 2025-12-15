@@ -37,6 +37,7 @@
                 <div class="link-dark text-center">
                     <img class="mb-2" src="{{ asset('img/ulm.ico') }}" alt="Logo ULM" height="100px">
                     <h2 class="mb-0"><b>E-SPMI</b></h2>
+                    <p class="mb-0">Sistem Penjaminan Mutu Internal</p>
                     <p class="mb-0 fw-semibold">UPM FKIP ULM</p>
                 </div>
             </div>
