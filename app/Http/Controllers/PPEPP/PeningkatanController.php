@@ -26,7 +26,7 @@ class PeningkatanController extends Controller
      */
     public function create()
     {
-        return view('ppepp.peningkatan.create');
+        return view('PPEPP.peningkatan.create');
     }
 
     /**
@@ -35,7 +35,7 @@ class PeningkatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name'               => 'required',
             'link_bukti_laporan' => 'required'
         ], [
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
@@ -64,7 +64,7 @@ class PeningkatanController extends Controller
     public function edit(string $id)
     {
         $data = Peningkatan::findOrFail($id);
-        return view('ppepp.peningkatan.edit', compact('data'));
+        return view('PPEPP.peningkatan.edit', compact('data'));
     }
 
     /**
@@ -73,7 +73,7 @@ class PeningkatanController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
+            'name'               => 'required|string',
             'link_bukti_laporan' => 'required|string',
         ], [
             'link_bukti_laporan.required' => 'Link Laporan wajib diisi.',

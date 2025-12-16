@@ -27,7 +27,7 @@ class EvaluasiController extends Controller
      */
     public function create()
     {
-        return view('ppepp.evaluasi.create');
+        return view('PPEPP.evaluasi.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class EvaluasiController extends Controller
     public function edit(string $id)
     {
         $data = Evaluasi::findOrFail($id);
-        return view('ppepp.evaluasi.edit', compact('data'));
+        return view('PPEPP.evaluasi.edit', compact('data'));
     }
 
     /**

@@ -27,7 +27,7 @@ class PelaksanaanController extends Controller
      */
     public function create()
     {
-        return view('ppepp.pelaksanaan.create');
+        return view('PPEPP.pelaksanaan.create');
     }
 
     /**
@@ -36,10 +36,10 @@ class PelaksanaanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name'               => 'required',
             'link_bukti_laporan' => 'required',
         ], [
-            'name.required' => 'Nama laporan wajib diisi.',
+            'name.required'               => 'Nama laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
         ]);
 
@@ -66,7 +66,7 @@ class PelaksanaanController extends Controller
     public function edit(string $id)
     {
         $data = Pelaksanaan::findOrFail($id);
-        return view('ppepp.pelaksanaan.edit', compact('data'));
+        return view('PPEPP.pelaksanaan.edit', compact('data'));
     }
 
     /**
@@ -75,12 +75,12 @@ class PelaksanaanController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required',
-            'link_bukti_laporan' => 'required',
-            'nama_mitra' => 'nullable',
+            'name'                 => 'required',
+            'link_bukti_laporan'   => 'required',
+            'nama_mitra'           => 'nullable',
             'link_bukti_kerjasama' => 'nullable'
         ], [
-            'name.required' => 'Nama laporan wajib diisi.',
+            'name.required'               => 'Nama laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
         ]);
 

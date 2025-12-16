@@ -27,7 +27,7 @@ class PenetapanController extends Controller
      */
     public function create()
     {
-        return view('ppepp.penetapan.create');
+        return view('PPEPP.penetapan.create');
     }
 
     /**
@@ -36,10 +36,10 @@ class PenetapanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name'               => 'required',
             'link_bukti_dokumen' => 'required'
         ], [
-            'name.required' => 'Nama dokumen wajib diisi.',
+            'name.required'               => 'Nama dokumen wajib diisi.',
             'link_bukti_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 
@@ -66,7 +66,7 @@ class PenetapanController extends Controller
     public function edit(string $id)
     {
         $data = Penetapan::findOrFail($id);
-        return view('ppepp.penetapan.edit', compact('data'));
+        return view('PPEPP.penetapan.edit', compact('data'));
     }
 
     /**
@@ -75,10 +75,10 @@ class PenetapanController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
+            'name'               => 'required|string',
             'link_bukti_dokumen' => 'required|string',
         ], [
-            'name.required' => 'Nama dokumen wajib diisi.',
+            'name.required'               => 'Nama dokumen wajib diisi.',
             'link_bukti_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 
