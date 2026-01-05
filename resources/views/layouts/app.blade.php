@@ -297,7 +297,7 @@
                                                 <ul class="nav nav-treeview">
                                                     <li class="nav-item">
                                                         <a href="{{ route('evaluasi.index') }}"
-                                                            class="nav-link {{ Route::is('evaluasi.index') ? 'active' : '' }}">
+                                                            class="nav-link {{ Route::is('evaluasi.*') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
                                                             <p>Laporan (PPEPP)</p>
                                                         </a>

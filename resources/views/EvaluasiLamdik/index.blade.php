@@ -232,6 +232,15 @@
                 <span>Skor <strong>1</strong> (Kurang)</span>
             </div>
 
+            {{-- Tombol navigasi next prev --}}
+            <div class="card shadow-sm mb-3 mt-3 p-2">
+                <div class="d-flex justify-content-between gap-2">
+                    <button id="btnPrev" class="btn btn-secondary w-50"><i class="bi bi-chevron-double-left"></i></button>
+                    <button id="btnNext" class="btn btn-secondary w-50"><i
+                            class="bi bi-chevron-double-right"></i></button>
+                </div>
+            </div>
+
             <div class="card shadow-sm mb-3 mt-3" style="max-height: 50vh; overflow-y: auto;">
                 <div class="card-header bg-primary text-white">
                     <strong>Navigasi Elemen</strong>
@@ -288,7 +297,9 @@
                             data-saran="{{ $item->userMatrik->saran ?? '' }}"
                             data-jawaban="{{ $item->userMatrik->jawaban ?? 0 }}"
                             data-color="{{ $jawaban == 4 ? 'green' : ($jawaban < 4 && $jawaban > 1 ? 'yellow' : ($jawaban == 1 ? 'red' : 'none')) }}"
-                            data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}">
+                            data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}" {{-- Ambil data sub item --}}
+                            data-subitem="{{ $item->subItemElemen }}"
+                            data-usersubitems="{{ $item->userSubItemElements }}">
 
                             <span class="me-2" style="width: 30px;">{{ $item->nomor }}.</span>
                             <span>{{ $item->elemen }} ({{ $item->poin }}) => (Skor:
@@ -302,6 +313,9 @@
                     <!-- Anda dapat mengulangi header kriteria + elemen sesuai kebutuhan -->
                 </div>
             </div>
+
+
+
 
         </div>
     </div>
@@ -358,17 +372,15 @@
         document.querySelectorAll(".nav-item-btn").forEach(btn => {
             btn.addEventListener("click", () => {
 
+                localStorage.setItem('lastElement', btn.dataset.id);
+                console.log('ID tersimpan:', btn.dataset.id);
+
                 // --- Isi konten utama ---
                 var poin = parseFloat(btn.dataset.poin);
                 // var kepemilikan_kriteria = document.getElementById('kepemilikan_kriteria').value;
                 document.getElementById("content-title").innerText = btn.dataset.title;
                 document.getElementById("content-body").innerText = btn.dataset.content;
                 document.getElementById("content-poin").innerText = poin;
-
-
-
-
-
 
                 var jenis = btn.dataset.jenis
                 var id_matriks_led = btn.dataset.id
@@ -384,12 +396,23 @@
 
                 console.log("jawaban:", jawaban);
 
-
-
-
                 const jsonString = btn.dataset.pilihan;
                 let pilihan = JSON.parse(JSON.parse(jsonString));
                 let harkat_penskoran = btn.dataset.harkat_penskoran;
+
+                // Sub Item Elemen
+                const subItems = JSON.parse(btn.dataset.subitem || '[]');
+                console.log(subItems);
+
+                // Ini jawaban dari sub item elemen
+                const userSubItems = JSON.parse(btn.dataset.usersubitems || '[]');
+                console.log(userSubItems);
+
+                // Gabung dengan mapping
+                const userSubItemMap = {};
+                userSubItems.forEach(item => {
+                    userSubItemMap[item.id_sub_item_elemen] = item;
+                });
 
 
                 let container = document.getElementById('kriteriaForm');
@@ -410,9 +433,39 @@
                     container.insertAdjacentHTML('beforeend', `<pre class='harkat_penskoran'>` +
                         harkat_penskoran + `</pre>`);
 
+                    subItems.forEach(item => {
+                        const userData = userSubItemMap[item.id] || null;
+                        const nilai = userData ? userData.nilai : '';
+
+                        container.insertAdjacentHTML(
+                            'beforeend',
+                            `
+        <div class="mb-3 variabel-item">
+            <label for="variabel_${item.id}" class="form-label">
+                <strong>${item.variabel}</strong> : ${item.deskripsi}
+            </label>
+
+            <input
+                type="number"
+                class="form-control"
+                id="variabel_${item.id}"
+                name="variabel[${item.id}]"
+                value="${nilai}"
+                min="0"
+                inputmode="numeric"
+                required
+            >
+        </div>
+        `
+                        );
+                    });
+
                     container.insertAdjacentHTML('beforeend', `
+                    <div class="text-end">
+                    <a class="btn btn-sm btn-primary" hidden>Hitung</a>
+                    </div>
                 <div class="mb-3">
-                    <label for="skor" class="form-label"><strong>Skor (1,2,3,4)</strong></label>
+                    <label for="skor" class="form-label"><strong>Skor</strong></label>
                     <input type="number" class="form-control" id="skor" name="jawaban" value='${parseInt(jawaban)}'
                         placeholder="Masukkan skor" required>
                 </div>
@@ -654,6 +707,80 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const navItems = Array.from(document.querySelectorAll(".nav-item-btn"));
+            const total = navItems.length;
+            let currentIndex = 0;
+
+            const btnPrev = document.getElementById("btnPrev");
+            const btnNext = document.getElementById("btnNext");
+
+            function activate(index) {
+                if (index < 0 || index >= total) return;
+
+                currentIndex = index;
+                const activeBtn = navItems[currentIndex];
+
+                activeBtn.click();
+
+                activeBtn.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                    inline: "nearest"
+                });
+
+                updateButtonState();
+            }
+            navItems.forEach((btn, index) => {
+                btn.addEventListener("click", () => {
+                    currentIndex = index;
+                    updateButtonState();
+                });
+            });
+
+            btnNext.addEventListener("click", () => {
+                if (currentIndex < total - 1) {
+                    activate(currentIndex + 1);
+                }
+            });
+
+            btnPrev.addEventListener("click", () => {
+                if (currentIndex > 0) {
+                    activate(currentIndex - 1);
+                }
+            });
+
+            function updateButtonState() {
+                btnPrev.disabled = currentIndex === 0;
+                btnNext.disabled = currentIndex === total - 1;
+            }
+
+            const lastId = localStorage.getItem("lastElement");
+
+            if (lastId) {
+                const foundIndex = navItems.findIndex(
+                    btn => btn.dataset.id === lastId
+                );
+
+                console.log('Ini adalah ID yang disimpan', lastId)
+                console.log('Ini adalah index yang ditemukan', foundIndex)
+
+                if (foundIndex !== -1) {
+                    activate(foundIndex);
+                    return;
+                }
+            }
+
+            if (total > 0) {
+                activate(0);
+            }
+        });
+    </script>
+
+
 
     {{-- Ini yang membuat terklik --}}
 

@@ -80,6 +80,25 @@ class EvaluasiDiriJurusan extends Controller
 
         ])->orderBy('nomor', 'asc')->get();
 
+        // $data = MatriksLED::with([
+        //     'kriteria',
+        //     'subItemElemen',
+
+        //     'userMatrik'       => function ($q) use ($id) {
+        //         $q->where('id_users', $id);
+        //     },
+
+        //     'userMatrikByUser' => function ($q) use ($idUserLogin, $id) {
+        //         $q->where('id_users', $idUserLogin)
+        //             ->where('id_user_jurusan', $id);
+        //     },
+
+        // ])
+        //     ->where('nomor', 7)
+        //     ->first();   // ⬅️ satu data saja
+
+        // dd($data);
+
 
         return view('EvaluasiDiriJurusan.show', compact('data', 'user'));
     }

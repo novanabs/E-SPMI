@@ -11,13 +11,19 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('password_changed')
-                ->default(false)
-                ->after('password');
 
-            $table->string('generated_password')
-                ->nullable()
-                ->after('password_changed');
+            if (!Schema::hasColumn('users', 'password_changed')) {
+                $table->boolean('password_changed')
+                    ->default(false)
+                    ->after('password');
+            }
+
+            if (!Schema::hasColumn('users', 'generated_password')) {
+                $table->string('generated_password')
+                    ->nullable()
+                    ->after('password_changed');
+            }
+
         });
     }
 
@@ -27,7 +33,13 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            if (Schema::hasColumn('users', 'generated_password')) {
+                $table->dropColumn('generated_password');
+            }
 
+            if (Schema::hasColumn('users', 'password_changed')) {
+                $table->dropColumn('password_changed');
+            }
         });
     }
 };
