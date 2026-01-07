@@ -150,8 +150,11 @@
             <div class="mb-3">
                 <div class="card shadow-sm">
 
-                    <div class="card-header py-2">
+                    <div class="card-header py-2 d-flex justify-content-between">
                         <h5 class="mb-0">Hasil Akreditasi</h5>
+                        <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
+                            Export PDF
+                        </button>
                     </div>
 
                     <div class="card-body py-2">
@@ -178,6 +181,8 @@
                                 Bandingkan
                             </a>
                         @endif
+
+
 
                     </div>
                 </div>
@@ -319,6 +324,59 @@
 
         </div>
     </div>
+
+    <div class="modal fade" id="previewPdfModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Preview Laporan Evaluasi Diri {{ auth()->user()->homebase ?? '' }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" id="previewPdfContent">
+                    <div class="text-center text-muted">
+                        Memuat preview...
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="{{ url('/export/export-pdf') }}" target="_blank" class="btn btn-primary">
+                        Export
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewPdf() {
+            const modal = new bootstrap.Modal(document.getElementById('previewPdfModal'));
+            const content = document.getElementById('previewPdfContent');
+            console.log('CONTENT:', content);
+            modal.show();
+
+            content.innerHTML = '<div class="text-center text-muted">Memuat preview...</div>';
+
+            fetch('/export/preview')
+                .then(res => res.text())
+                .then(html => {
+                    console.log(html);
+                    content.innerHTML = html;
+                })
+                .catch(() => {
+                    content.innerHTML = '<div class="text-danger">Gagal memuat preview</div>';
+                });
+
+
+        }
+    </script>
+
+
 
     {{-- Hitung Akreditasi --}}
     <script>

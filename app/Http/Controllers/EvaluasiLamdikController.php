@@ -149,8 +149,6 @@ class EvaluasiLamdikController extends Controller
 
 
         return view('EvaluasiLamdik.show', compact('data'));
-
-
     }
 
     /**

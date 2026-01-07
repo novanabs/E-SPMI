@@ -3,6 +3,7 @@
 use App\Http\Controllers\AkreditasiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluasiDiriJurusan;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,23 @@ Route::middleware('auth')->group(function () {
     Route::resource('peningkatan', PeningkatanController::class);
     Route::resource('survey', SurveyController::class);
     Route::resource('akreditasi', AkreditasiController::class);
+
+    // Masalah nya karena tadi mnenggunaan /akreditasi/---
+
+    Route::get('/export/preview', [ExportController::class, 'previewPdf']);
+    Route::get('/export/preview/perbandingan', [ExportController::class, 'previewPdfPerbandingan']);
+    Route::get('/export/preview/perbandingan/upm/{id}', [ExportController::class, 'previewPdfPerbandinganUpm']);
+
+    Route::get('/export/export-pdf', [ExportController::class, 'exportPdf']);
+    Route::get('/export/export-pdf/perbandingan', [ExportController::class, 'exportPdfPerbandingan']);
+    Route::get('/export/export-pdf/perbandingan/upm/{id}', [ExportController::class, 'exportPdfPerbandinganUpm']);
+
+    // routes/web.php
+    Route::get('/debug-fetch', function () {
+        return response('<h2>HELLO DARI LARAVEL</h2>', 200);
+    });
+
+
 });
 
 // Auth role admin FKIP

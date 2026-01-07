@@ -10,7 +10,7 @@
             <div class="card shadow-sm h-100 w-100">
 
                 <div class="card-header py-2">
-                    <h5 class="mb-0">Penilaian Mandiri Jurusan</h5>
+                    <h5 class="mb-0">Penilaian Mandiri Jurusan {{ $user->id }}</h5>
                 </div>
 
                 <div class="card-body py-2">
@@ -79,7 +79,10 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3>Daftar Elemen</h3>
         {{-- <a href="{{ route('jurusan.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a> --}}
-        <a class="btn btn-success btn-sm" href="{{ route('evaluasi_diri_jurusan.edit.custom', $user->id) }}">
+        <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
+            Export PDF
+        </button>
+        <a class="btn btn-success btn-sm ms-2" href="{{ route('evaluasi_diri_jurusan.edit.custom', $user->id) }}">
             Isi Evaluasi
         </a>
     </div>
@@ -137,6 +140,36 @@
                 @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="modal fade" id="previewPdfModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Preview Laporan Evaluasi Diri {{ auth()->user()->homebase ?? '' }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body" id="previewPdfContent">
+                    <div class="text-center text-muted">
+                        Memuat preview...
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="{{ url('/export/export-pdf/perbandingan/upm/' . $user->id) }}" target="_blank"
+                        class="btn btn-primary">
+                        Export
+                    </a>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <script>
@@ -231,6 +264,32 @@
             // Selisih
             document.getElementById("selisih").innerHTML = Math.abs(totalJurusan - totalFKIP).toFixed(2);
         });
+    </script>
+
+    {{-- Ini script untuk Export --}}
+    <script>
+        const jurusanId = {{ $user->id }};
+
+        function previewPdf() {
+            const modal = new bootstrap.Modal(document.getElementById('previewPdfModal'));
+            const content = document.getElementById('previewPdfContent');
+            console.log('CONTENT:', content);
+            modal.show();
+
+            content.innerHTML = '<div class="text-center text-muted">Memuat preview...</div>';
+
+            fetch(`/export/preview/perbandingan/upm/${jurusanId}`)
+                .then(res => res.text())
+                .then(html => {
+                    console.log(html);
+                    content.innerHTML = html;
+                })
+                .catch(() => {
+                    content.innerHTML = '<div class="text-danger">Gagal memuat preview</div>';
+                });
+
+
+        }
     </script>
 
 @endsection
