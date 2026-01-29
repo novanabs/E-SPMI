@@ -222,8 +222,8 @@
                         aria-label="Main navigation" data-accordion="false" id="navigation">
                         <!-- DASHBOARD -->
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.index') }}"
-                                class="nav-link {{ Route::is('dashboard.index') || Route::is('dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('akreditasi.index') }}"
+                                class="nav-link {{ Route::is('akreditasi.index') || Route::is('akreditasi') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-palette"></i>
                                 <p>Dashboard</p>
                             </a>

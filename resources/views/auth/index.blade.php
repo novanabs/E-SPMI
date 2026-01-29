@@ -31,63 +31,74 @@
 </head>
 
 <body class="login-page bg-body-secondary">
-    <div class="login-box">
-        <div class="card card-outline card-primary">
-            <div class="card-header">
-                <div class="link-dark text-center">
-                    <img class="mb-2" src="{{ asset('img/ulm.ico') }}" alt="Logo ULM" height="100px">
-                    <h2 class="mb-0"><b>E-SPMI</b></h2>
-                    <p class="mb-0">Sistem Penjaminan Mutu Internal</p>
-                    <p class="mb-0 fw-semibold">UPM FKIP ULM</p>
+
+    <div class="container d-flex justify-content-center align-items-center" style="min-height:100vh;">
+        <div class="card border-0 shadow-sm overflow-hidden" style="max-width: 950px; width:100%; border-radius:10px;">
+            <div class="row g-0">
+
+                <!-- LEFT PANEL -->
+                <div class="col-md-6 p-4 d-flex flex-column justify-content-center" style="background:#dff1ff;">
+                    <h4 class="fw-bold text-primary mb-2">
+                        E-SPMI:<br>Quality Assurance Unit FKIP ULM
+                    </h4>
+
+                    <p class="text-secondary mb-0" style="font-size:14px; line-height:1.7;">
+                        The Quality Assurance Unit (QAU) of FKIP ULM is committed to maintaining
+                        and improving the quality of education, research, and community service within the
+                        Faculty of Teacher Training and Education, Lambung Mangkurat University.
+                        QAU FKIP ULM develops, implements, and monitors quality standards to ensure academic
+                        excellence and continuous improvement in all faculty activities.
+                    </p>
                 </div>
-            </div>
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Login</p>
-                <form action="{{ route('login.auth') }}" method="post">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" placeholder="Email"
-                            class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
-                        @error('email')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="Password" class="form-label">Password</label>
-                        <div class="input-group">
-                            <input type="password" name="password" placeholder="Password"
-                                class="form-control @error('password') is-invalid @enderror" id="password-input">
-                            <button type="button" class="btn btn-outline-primary" id="toggle-password">
-                                <i class="bi bi-eye-slash" id="toggle-icon"></i>
-                            </button>
-                        </div>
-                        @error('password')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <!--begin::Row-->
-                    <div class="row">
 
-                        <!-- /.col -->
-                        <div class="mt-2 mb-2">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                <!-- RIGHT PANEL -->
+                <div class="col-md-6 p-4 bg-white d-flex flex-column justify-content-center">
+                    <h5 class="fw-bold text-primary mb-4">Login</h5>
+
+                    <form action="{{ route('login.auth') }}" method="post">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Username (Email)</label>
+                            <input type="email" name="email" placeholder="Enter your email"
+                                class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-                        <!-- /.col -->
-                    </div>
-                    <!--end::Row-->
-                </form>
-                <a href="#" data-bs-toggle="tooltip"
-                    title="Silahkan hubungi admin UPM untuk melakukan reset password">
-                    Lupa Password
-                </a>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <div class="input-group">
+                                <input type="password" name="password" placeholder="Enter your password"
+                                    class="form-control @error('password') is-invalid @enderror" id="password-input">
+
+                                <button type="button" class="btn btn-outline-primary" id="toggle-password">
+                                    <i class="bi bi-eye-slash" id="toggle-icon"></i>
+                                </button>
+                            </div>
+
+                            @error('password')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <button type="submit" class="btn btn-primary px-4">
+                            Login
+                        </button>
+                    </form>
+
+                    <a href="#" class="mt-3 text-decoration-none small" data-bs-toggle="tooltip"
+                        title="Silahkan hubungi admin UPM untuk melakukan reset password">
+                        Lupa Password
+                    </a>
+                </div>
 
             </div>
-            <!-- /.login-card-body -->
         </div>
     </div>
 
@@ -116,8 +127,7 @@
                 toggleIcon.classList.remove('bi-eye');
                 toggleIcon.classList.add('bi-eye-slash');
             }
-        })
+        });
     </script>
-
 
 </body>
