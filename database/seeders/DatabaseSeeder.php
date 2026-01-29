@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             LEDSeeder::class,
             LEDSeeder2::class,
             UsersMatrikSeeder::class,
+            AkreditasiSeeder::class
         ]);
 
     }

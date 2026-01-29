@@ -35,11 +35,11 @@ class DokumenController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'deskripsi' => 'nullable',
+            'name'         => 'required',
+            'deskripsi'    => 'nullable',
             'link_dokumen' => 'required'
         ], [
-            'name.required' => 'Nama dokumen wajib diisi.',
+            'name.required'         => 'Nama dokumen wajib diisi.',
             'link_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 
@@ -75,11 +75,11 @@ class DokumenController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name' => 'required|string',
-            'deskripsi' => 'nullable',
+            'name'         => 'required|string',
+            'deskripsi'    => 'nullable',
             'link_dokumen' => 'required|string',
         ], [
-            'name.required' => 'Nama dokumen wajib diisi.',
+            'name.required'         => 'Nama dokumen wajib diisi.',
             'link_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 

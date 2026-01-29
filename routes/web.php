@@ -20,18 +20,16 @@ use App\Http\Controllers\PPEPP\PelaksanaanController;
 use App\Http\Controllers\PPEPP\PeningkatanController;
 use App\Http\Controllers\PPEPP\PengendalianController;
 
-Route::get('/', function () {
-    // if (!auth()->check()) {
-    //     Auth::loginUsingId(1);
-    // }
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/', [AkreditasiController::class, 'index'])
+    ->name('akreditasi');
+
 
 Route::get('/profil', function () {
     return view('profil');
 })->name('profil');
 
 Route::resource('dashboard', DashboardController::class);
+Route::resource('akreditasi', AkreditasiController::class);
 
 Route::middleware('auth')->group(function () {
 
@@ -44,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('pengendalian', PengendalianController::class);
     Route::resource('peningkatan', PeningkatanController::class);
     Route::resource('survey', SurveyController::class);
-    Route::resource('akreditasi', AkreditasiController::class);
+
 
     // Masalah nya karena tadi mnenggunaan /akreditasi/---
 
