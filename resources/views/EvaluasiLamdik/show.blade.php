@@ -65,7 +65,7 @@
             <div class="card shadow-sm h-100 w-100">
 
                 <div class="card-header py-2">
-                    <h5 class="mb-0 text-now text-center">Selisih</h5>
+                    <h5 class="mb-0 text-now text-center text-nowrap">Selisih</h5>
                 </div>
 
                 <div class="card-body py-2 d-flex align-items-center justify-content-center">

@@ -4,7 +4,8 @@
 
 @section('content')
 
-    <div class="row align-items-stretch mb-3">
+    <div class="row align-items-stretch g-3 py-3 py-md-0 my-2 my-md-0">
+
 
         <div class="col-md-5 d-flex">
             <div class="card shadow-sm h-100 w-100">
@@ -64,7 +65,7 @@
             <div class="card shadow-sm h-100 w-100">
 
                 <div class="card-header py-2">
-                    <h5 class="mb-0">Selisih</h5>
+                    <h5 class="mb-0 text-now text-center text-nowrap">Selisih</h5>
                 </div>
 
                 <div class="card-body py-2 d-flex align-items-center justify-content-center">
