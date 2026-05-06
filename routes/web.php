@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('pengendalian', PengendalianController::class);
     Route::resource('peningkatan', PeningkatanController::class);
     Route::resource('survey', SurveyController::class);
+    Route::resource('syarat_unggul', SyaratController::class);
 
 
     // Masalah nya karena tadi mnenggunaan /akreditasi/---

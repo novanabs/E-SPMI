@@ -255,7 +255,7 @@
                             @else
                                 <!-- E-SPMI -->
                                 <li
-                                    class="nav-item {{ Route::is('penetapan*') | Route::is('pelaksanaan*') | Route::is('evaluasi.*') | Route::is('evaluasi_lamdik*') | Route::is('pengendalian*') | Route::is('peningkatan*') ? 'menu-open' : '' }}">
+                                    class="nav-item {{ Route::is('penetapan*') | Route::is('pelaksanaan*') | Route::is('evaluasi.*') | Route::is('evaluasi_lamdik*') | Route::is('pengendalian*') | Route::is('peningkatan*') | Route::is('syarat_unggul.index') ? 'menu-open' : '' }}">
                                     <!---menu-open -->
                                     <a href="#" class="nav-link">
                                         <i class="nav-icon bi bi-clipboard-check-fill"></i>
@@ -284,7 +284,7 @@
 
                                         @if (auth()->user()->role == 'admin_jurusan')
                                             <li
-                                                class="nav-item has-treeview {{ Route::is('evaluasi*') ? 'menu-open' : '' }}">
+                                                class="nav-item has-treeview {{ Route::is('evaluasi*') | Route::is('syarat_unggul.index') ? 'menu-open' : '' }}">
                                                 <a href="#" class="nav-link">
                                                     <i
                                                         class="nav-icon bi bi-circle{{ Route::is('evaluasi*') ? '-fill' : '' }}"></i>
@@ -308,6 +308,14 @@
                                                             class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
                                                             <p>Evaluasi Diri (Lamdik)</p>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="nav-item">
+                                                        <a href="{{ route('syarat_unggul.index') }}"
+                                                            class="nav-link {{ Route::is('syarat_unggul.index') ? 'active' : '' }}">
+                                                            <i class="bi bi-dot nav-icon"></i>
+                                                            <p>Syarat Unggul</p>
                                                         </a>
                                                     </li>
 

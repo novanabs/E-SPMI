@@ -38,6 +38,7 @@
 
                 <!-- LEFT PANEL -->
                 <div class="col-md-6 p-4 d-flex flex-column justify-content-center" style="background:#dff1ff;">
+                    <img src="{{ asset('img/ulm.png') }}" alt="Logo" width="100" class="mx-auto d-block mb-3">
                     <h4 class="fw-bold text-primary mb-2">
                         E-SPMI:<br>Quality Assurance Unit FKIP ULM
                     </h4>
