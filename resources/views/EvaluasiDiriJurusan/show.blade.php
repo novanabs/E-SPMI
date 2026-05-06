@@ -11,7 +11,7 @@
             <div class="card shadow-sm h-100 w-100">
 
                 <div class="card-header py-2">
-                    <h5 class="mb-0">Penilaian Mandiri Jurusan {{ $user->id }}</h5>
+                    <h5 class="mb-0">Penilaian Mandiri Jurusan </h5>
                 </div>
 
                 <div class="card-body py-2">

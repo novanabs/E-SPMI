@@ -14,6 +14,7 @@
         @endif
     </div>
 
+
     <div class="table-responsive">
         <table id="akreditasiTable" class="table table-bordered table-striped">
             <thead>

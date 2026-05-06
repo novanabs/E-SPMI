@@ -47,7 +47,6 @@ class MatriksLED extends Model
         );
     }
 
-
     public function userSubItemElements()
     {
         return $this->hasMany(

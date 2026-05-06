@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubItemElemen;
-use App\Models\User;
 use App\Models\MatriksLED;
+use App\Models\SubItemElemen;
+use App\Models\SyaratUnggul;
+use App\Models\User;
 use App\Models\UsersMatrik;
-use Illuminate\Http\Request;
 use App\Models\UserSubItemElemen;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -30,10 +31,168 @@ class EvaluasiLamdikController extends Controller
             }
         ])->orderBy('nomor', 'asc')->get();
 
-        // dd($data->first()->userMatrik);
+        // dd($data->first()->userMatrik->nilai_total);
+
+        // Ini untuk mengetahui syarat unggul
+
+        $dataSyaratUnggul = SyaratUnggul::with([
+            'matriks.subItemElemen',
+            'matriks.userSubItemElements',
+            'matriks.userMatrik'
+        ])->get();
+
+        foreach ($dataSyaratUnggul as $item) {
+
+            $item->memenuhi_3_tahun = false;
+            $item->memenuhi_5_tahun = false;
+
+            $matriks = $item->matriks;
+
+            if (!$matriks)
+                continue;
+
+            /* =========================
+               🔥 AMBIL RELASI (FIX)
+            ========================= */
+            $subItems = $matriks->subItemElemen ?? collect();
+            $userValues = $matriks->userSubItemElements ?? collect();
+
+            // 🔥 mapping id_sub_item → nilai
+            $nilaiMap = $userValues->pluck('nilai', 'id_sub_item_elemen');
+
+            /* =========================
+               🔥 ELEMEN 1
+            ========================= */
+            if ($item->nomor == 1) {
+
+                $NDS3 = $NDL = $NDLK = $NDGB = 0;
+
+                foreach ($subItems as $sub) {
+                    $id = $sub->id;
+                    $var = $sub->variabel;
+                    $nilai = (float) ($nilaiMap[$id] ?? 0);
+
+                    if ($var == 'NDS3')
+                        $NDS3 = $nilai;
+                    if ($var == 'NDL')
+                        $NDL = $nilai;
+                    if ($var == 'NDLK')
+                        $NDLK = $nilai;
+                    if ($var == 'NDGB')
+                        $NDGB = $nilai;
+                }
+
+                $totalLektor = $NDL + $NDLK + $NDGB;
+
+                if ($NDS3 >= 1 && $totalLektor >= 2) {
+                    $item->memenuhi_3_tahun = true;
+                }
+
+                if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) {
+                    $item->memenuhi_5_tahun = true;
+                }
+            }
+
+            /* =========================
+               🔥 ELEMEN 2,3,4
+            ========================= */ elseif (in_array($item->nomor, [2, 3, 4])) {
+
+                $nilai = (float) ($matriks->userMatrik->jawaban ?? 0);
+
+                if ($nilai >= 3.0)
+                    $item->memenuhi_3_tahun = true;
+                if ($nilai >= 3.5)
+                    $item->memenuhi_5_tahun = true;
+            }
+
+            /* =========================
+               🔥 ELEMEN 5
+            ========================= */ elseif ($item->nomor == 5) {
+
+                $NM = $NKM3 = $NKM5 = 0;
+
+                foreach ($subItems as $sub) {
+                    $id = $sub->id;
+                    $var = $sub->variabel;
+                    $nilai = (float) ($nilaiMap[$id] ?? 0);
+
+                    if ($var == 'NM')
+                        $NM = $nilai;
+                    if ($var == 'NKM_3')
+                        $NKM3 = $nilai;
+                    if ($var == 'NKM_5')
+                        $NKM5 = $nilai;
+                }
+
+                if ($NM > 0) {
+
+                    if (($NKM3 / $NM) * 100 >= 15) {
+                        $item->memenuhi_3_tahun = true;
+                    }
+
+                    if (($NKM5 / $NM) * 100 >= 25) {
+                        $item->memenuhi_5_tahun = true;
+                    }
+                }
+            }
+
+            /* =========================
+               🔥 ELEMEN 6
+            ========================= */ elseif ($item->nomor == 6) {
+
+                $NDTPS = $NDTPUB3 = $NDTPUB5 = 0;
+
+                foreach ($subItems as $sub) {
+                    $id = $sub->id;
+                    $var = $sub->variabel;
+                    $nilai = (float) ($nilaiMap[$id] ?? 0);
+
+                    if ($var == 'NDTPS')
+                        $NDTPS = $nilai;
+                    if ($var == 'NDTPUB_3')
+                        $NDTPUB3 = $nilai;
+                    if ($var == 'NDTPUB_5')
+                        $NDTPUB5 = $nilai;
+                }
+
+                if ($NDTPS > 0) {
+
+                    if (($NDTPUB3 / $NDTPS) * 100 >= 20) {
+                        $item->memenuhi_3_tahun = true;
+                    }
+
+                    if (($NDTPUB5 / $NDTPS) * 100 >= 20) {
+                        $item->memenuhi_5_tahun = true;
+                    }
+                }
+            }
+        }
+
+        /* =========================
+           🔥 GLOBAL CHECK
+        ========================= */
+        $syarat3 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_3_tahun);
+        $syarat5 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_5_tahun);
+
+        /* =========================
+           🔥 DEBUG
+        ========================= */
+        // dd($data->map(function ($i) {
+        //     return [
+        //         'elemen'  => $i->nomor,
+        //         '3_tahun' => $i->memenuhi_3_tahun,
+        //         '5_tahun' => $i->memenuhi_5_tahun,
+        //     ];
+        // }), $syarat3, $syarat5);
+
+        // dd($syarat3, $syarat5);
+
+        // nanti baru return view
+        // return view('syarat.index', compact('data', 'syarat3', 'syarat5'));
 
 
-        return view('EvaluasiLamdik.index', compact('data'));
+
+        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5'));
     }
 
     public function indexOld()

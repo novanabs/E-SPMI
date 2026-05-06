@@ -504,9 +504,52 @@ class SubItemElemenSeeder extends Seeder
                 'variabel'     => 'NPkDTPS',
                 'deskripsi'    => 'Jumlah judul PkM DTPS dalam 3 tahun terakhir.'
             ],
+            // 🔥 TAMBAHAN BARU
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'NM',
+                'deskripsi'    => 'Jumlah total mahasiswa'
+            ],
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'NKM_3',
+                'deskripsi'    => 'Jumlah mahasiswa yang memiliki karya inovatif (3 tahun)'
+            ],
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'NKM_5',
+                'deskripsi'    => 'Jumlah mahasiswa yang memiliki karya inovatif (5 tahun)'
+            ],
+
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'NDTPS',
+                'deskripsi'    => 'Jumlah Dosen Tetap Program Studi'
+            ],
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'NDTPUB_3',
+                'deskripsi'    => 'Jumlah DTPS yang memiliki publikasi (3 tahun)'
+            ],
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'NDTPUB_5',
+                'deskripsi'    => 'Jumlah DTPS yang memiliki publikasi (5 tahun)'
+            ],
+
         ];
 
-        DB::table('sub_item_elemen')->insertOrIgnore($data);
+        foreach ($data as $item) {
+            DB::table('sub_item_elemen')->updateOrInsert(
+                [
+                    'nomor_elemen' => $item['nomor_elemen'],
+                    'variabel'     => $item['variabel']
+                ],
+                [
+                    'deskripsi' => $item['deskripsi']
+                ]
+            );
+        }
 
     }
 }

@@ -2,23 +2,24 @@
 
 use App\Http\Controllers\AkreditasiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\EvaluasiDiriJurusan;
+use App\Http\Controllers\EvaluasiLamdikController;
+use App\Http\Controllers\EvaluasiLaporanController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
+use App\Http\Controllers\PPEPP\EvaluasiController;
+use App\Http\Controllers\PPEPP\PelaksanaanController;
+use App\Http\Controllers\PPEPP\PenetapanController;
+use App\Http\Controllers\PPEPP\PengendalianController;
+use App\Http\Controllers\PPEPP\PeningkatanController;
+use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\SyaratController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SurveyController;
-use App\Http\Controllers\DokumenController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EvaluasiLamdikController;
-use App\Http\Controllers\PPEPP\EvaluasiController;
-use App\Http\Controllers\EvaluasiLaporanController;
-use App\Http\Controllers\PPEPP\PenetapanController;
-use App\Http\Controllers\PPEPP\PelaksanaanController;
-use App\Http\Controllers\PPEPP\PeningkatanController;
-use App\Http\Controllers\PPEPP\PengendalianController;
 
 Route::get('/', [AkreditasiController::class, 'index'])
     ->name('akreditasi');
@@ -155,3 +156,5 @@ Route::get('/lamdik-old', function () {
     return view('EvaluasiLamdik.indexOld');
 });
 
+// Ini untuk controller SyaratUnggul
+Route::get('/syarat-unggul', [SyaratController::class, 'index']);

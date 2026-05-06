@@ -151,7 +151,8 @@
                 <div class="card shadow-sm">
 
                     <div class="card-header py-2 d-flex justify-content-between">
-                        <h5 class="mb-0">Hasil Akreditasi</h5>
+                        <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
+                            {{ $syarat5 }}</h5>
                         <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
                             Export PDF
                         </button>
@@ -159,32 +160,201 @@
 
                     <div class="card-body py-2">
 
-                        <div class="d-flex">
-                            <p class="mb-1 me-2">Nilai Akreditasi:</p>
-                            <p class="mb-1 fw-bold" id="total_nilai_semua"></p>
+                        <div class="row">
+
+                            <!-- KIRI: RADAR CHART -->
+                            <div class="col-md-6">
+                                <canvas id="radarChart"></canvas>
+                            </div>
+
+                            <!-- KANAN: HASIL -->
+                            <div class="col-md-6 d-flex flex-column">
+
+                                <div class="d-flex">
+                                    <p class="mb-1 me-2">Nilai Akreditasi:</p>
+                                    <p class="mb-1 fw-bold" id="total_nilai_semua"></p>
+                                </div>
+
+                                <div class="d-flex">
+                                    <p class="mb-1 me-2">Status Akreditasi:</p>
+                                    <p class="mb-1 fw-bold" id="status"></p>
+                                </div>
+
+                                <div class="d-flex">
+                                    <p class="mb-0 me-2">Masa Berlaku:</p>
+                                    <p class="mb-0 fw-bold" id="masa"></p>
+                                </div>
+
+                                @if (auth()->user()->role == 'admin_jurusan')
+                                    <a class="btn btn-primary btn-sm mt-3 mb-3"
+                                        href="{{ route('evaluasi_lamdik.show', auth()->user()->id) }}">
+                                        Bandingkan
+                                    </a>
+                                @endif
+
+                                @php
+                                    $currentKriteria1 = null;
+                                    $nomorKriteria = 0;
+                                    $peraspek = [];
+                                    $aktual = [];
+                                @endphp
+
+                                <div>
+                                    Aspek
+                                </div>
+
+                                @php
+                                    $peraspek = [];
+                                    $aktual = [];
+
+                                    foreach ($data as $item) {
+                                        $namaAspek = $item->kriteria->name;
+                                        $nilai_aktual = $item->userMatrik->nilai_total ?? 0;
+
+                                        if (!isset($peraspek[$namaAspek])) {
+                                            $peraspek[$namaAspek] = 0;
+                                            $aktual[$namaAspek] = 0;
+                                        }
+
+                                        $peraspek[$namaAspek] += $item->poin * 4;
+                                        $aktual[$namaAspek] += $nilai_aktual;
+                                    }
+                                @endphp
+
+
+
+                                <table class="table table-bordered text-center align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Aspek</th>
+                                            <th>Nilai Aktual</th>
+                                            <th>Nilai Maks</th>
+                                            <th>Persentase</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php $no = 1; @endphp
+
+                                        @foreach ($peraspek as $aspek => $nilaiMaks)
+                                            @php
+                                                $nilaiAkt = $aktual[$aspek] ?? 0;
+                                                $persen = $nilaiMaks > 0 ? ($nilaiAkt / $nilaiMaks) * 100 : 0;
+
+                                                $warna = 'text-danger'; // default merah
+
+                                                if ($persen >= 80) {
+                                                    $warna = 'text-success';
+                                                } elseif ($persen >= 60) {
+                                                    $warna = 'text-warning';
+                                                }
+                                            @endphp
+
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td class="text-start">{{ $aspek }}</td>
+                                                <td>{{ $nilaiAkt }}</td>
+                                                <td>{{ $nilaiMaks }}</td>
+
+                                                <td>
+                                                    <span class="fw-bold {{ $warna }}">
+                                                        {{ number_format($persen, 2) }}%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
-
-                        <div class="d-flex">
-                            <p class="mb-1 me-2">Status:</p>
-                            <p class="mb-1" id="status"></p>
-                        </div>
-
-                        <div class="d-flex">
-                            <p class="mb-0 me-2">Peringkat:</p>
-                            <p class="mb-0" id="peringkat"></p>
-                        </div>
-
-
-                        @if (auth()->user()->role == 'admin_jurusan')
-                            <a class="btn btn-primary btn-sm mt-3"
-                                href="{{ route('evaluasi_lamdik.show', auth()->user()->id) }}">
-                                Bandingkan
-                            </a>
-                        @endif
-
-
 
                     </div>
+
+
+                    <script>
+                        // Ambil data dari Laravel
+                        const maxData = @json($peraspek);
+                        const actualData = @json($aktual);
+
+                        const labels = [
+                            'Aspek 1',
+                            'Aspek 2',
+                            'Aspek 3',
+                            'Aspek 4',
+                            'Aspek 5',
+                            'Aspek 6',
+                            'Aspek 7',
+                            'Aspek 8',
+                            'Aspek 9'
+                        ];
+
+                        // Ambil urutan data dari object Laravel
+                        const keys = Object.keys(maxData);
+
+                        // Hitung persentase
+                        const dataValues = keys.map(key => {
+                            const max = maxData[key] ?? 0;
+                            const actual = actualData[key] ?? 0;
+
+                            if (max === 0) return 0;
+                            return (actual / max) * 100;
+                        });
+
+                        // Hitung rata-rata
+                        const total = dataValues.length ?
+                            dataValues.reduce((a, b) => a + b, 0) / dataValues.length :
+                            0;
+
+                        // // Tentukan status & peringkat
+                        // let status = '';
+                        // let peringkat = '';
+
+                        // if (total >= 85) {
+                        //     status = 'Sangat Baik';
+                        //     peringkat = 'A';
+                        // } else if (total >= 70) {
+                        //     status = 'Baik';
+                        //     peringkat = 'B';
+                        // } else {
+                        //     status = 'Cukup';
+                        //     peringkat = 'C';
+                        // }
+
+                        // // Tampilkan ke HTML
+                        // document.getElementById('total_nilai_semua').innerText = total.toFixed(2);
+                        // document.getElementById('status').innerText = status;
+                        // document.getElementById('peringkat').innerText = peringkat;
+
+                        // Chart
+                        const data = {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Capaian (%)',
+                                data: dataValues,
+                                fill: true,
+                            }]
+                        };
+
+                        const config = {
+                            type: 'radar',
+                            data: data,
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    r: {
+                                        min: 0,
+                                        max: 100
+                                    }
+                                }
+                            }
+                        };
+
+                        new Chart(
+                            document.getElementById('radarChart'),
+                            config
+                        );
+                    </script>
                 </div>
             </div>
 
@@ -357,7 +527,7 @@
         function previewPdf() {
             const modal = new bootstrap.Modal(document.getElementById('previewPdfModal'));
             const content = document.getElementById('previewPdfContent');
-            console.log('CONTENT:', content);
+            // console.log('CONTENT:', content);
             modal.show();
 
             content.innerHTML = '<div class="text-center text-muted">Memuat preview...</div>';
@@ -365,7 +535,7 @@
             fetch('/export/preview')
                 .then(res => res.text())
                 .then(html => {
-                    console.log(html);
+                    // console.log(html);
                     content.innerHTML = html;
                 })
                 .catch(() => {
@@ -376,10 +546,14 @@
         }
     </script>
 
-
+    {{-- Ini untuk syarat unggul --}}
+    <script>
+        let syarat3 = {{ $syarat3 ? 'true' : 'false' }};
+        let syarat5 = {{ $syarat5 ? 'true' : 'false' }};
+    </script>
 
     {{-- Hitung Akreditasi --}}
-    <script>
+    {{-- <script>
         function hitungAkreditasi(NA) {
             let status = "";
             let peringkat = "";
@@ -403,24 +577,71 @@
                 peringkat
             };
         }
+    </script> --}}
+
+    <script>
+        function hitungAkreditasi(NA, syarat3, syarat5) {
+            let status = "";
+            let masa = "";
+
+            if (NA >= 361) {
+
+                if (syarat5) {
+                    status = "Terakreditasi Unggul";
+                    masa = "5 Tahun";
+                } else if (syarat3) {
+                    status = "Terakreditasi Unggul";
+                    masa = "3 Tahun";
+                } else {
+                    status = "Terakreditasi";
+                    masa = "5 Tahun";
+                }
+
+            } else if (NA >= 321 && NA < 361) {
+
+                if (syarat3) {
+                    status = "Terakreditasi Unggul";
+                    masa = "3 Tahun";
+                } else {
+                    status = "Terakreditasi";
+                    masa = "5 Tahun";
+                }
+
+            } else if (NA >= 200 && NA < 321) {
+
+                status = "Terakreditasi";
+                masa = "5 Tahun";
+
+            } else {
+
+                status = "Tidak Terakreditasi";
+                masa = "-";
+            }
+
+            return {
+                status,
+                masa
+            };
+        }
     </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let total = 0;
 
+            // Ini data total mengambil dari button
             document.querySelectorAll(".nav-item-btn").forEach(btn => {
                 let nilai_total_users_matriks = parseFloat(btn.dataset.nilai_total);
                 total += nilai_total_users_matriks;
-                console.log(total);
+                // console.log(total);
             });
 
             document.getElementById("total_nilai_semua").innerText = total;
 
-            let hasil = hitungAkreditasi(total);
+            let hasil = hitungAkreditasi(total, syarat3, syarat5);
 
             document.getElementById("status").innerText = hasil.status;
-            document.getElementById("peringkat").innerText = hasil.peringkat;
+            document.getElementById("masa").innerText = hasil.masa;
         });
     </script>
 
@@ -431,7 +652,8 @@
             btn.addEventListener("click", () => {
 
                 localStorage.setItem('lastElement', btn.dataset.id);
-                console.log('ID tersimpan:', btn.dataset.id);
+                // console.log('ID tersimpan:', btn.dataset.id);
+                console.log('Isi btn:', btn.dataset);
 
                 // --- Isi konten utama ---
                 var poin = parseFloat(btn.dataset.poin);
@@ -449,10 +671,10 @@
                 var temuan = btn.dataset.temuan;
                 var jawaban = btn.dataset.jawaban;
                 var nilai_total = btn.dataset.nilai_total;
-                console.log("jawaban:", nilai_total);
-                console.log(typeof nilai_total); // number
+                // console.log("jawaban:", nilai_total);
+                // console.log(typeof nilai_total); // number
 
-                console.log("jawaban:", jawaban);
+                // console.log("jawaban:", jawaban);
 
                 const jsonString = btn.dataset.pilihan;
                 let pilihan = JSON.parse(JSON.parse(jsonString));
@@ -464,7 +686,7 @@
 
                 // Ini jawaban dari sub item elemen
                 const userSubItems = JSON.parse(btn.dataset.usersubitems || '[]');
-                console.log(userSubItems);
+                // console.log(userSubItems);
 
                 // Gabung dengan mapping
                 const userSubItemMap = {};
@@ -475,287 +697,120 @@
 
                 let container = document.getElementById('kriteriaForm');
 
-                // console.log(pilihan == null)
-                // console.log(typeof(harkat_penskoran))
-                // console.log(harkat_penskoran == "")
+                console.log("pilihan == null", pilihan == null)
+                console.log("typeof(harkat_penskoran)", typeof(harkat_penskoran))
+                console.log("harkat_penskoran == ", harkat_penskoran == "")
 
-                if (pilihan === null) {
-                    // Reset isi form
-                    container.innerHTML = `
-                @csrf
-                <div class="mt-3 mb-3">
-                    <label class="form-label"><strong>Harkat Penskoran</strong></label>
-                </div>
-            `;
+                // RESET FORM
+                container.innerHTML = `
+    @csrf
+    <div class="mt-3 mb-3">
+        <label class="form-label"><strong>Harkat Penskoran</strong></label>
+    </div>
+`;
 
-                    container.insertAdjacentHTML('beforeend', `<pre class='harkat_penskoran'>` +
-                        harkat_penskoran + `</pre>`);
+                // HARKAT
+                container.insertAdjacentHTML(
+                    'beforeend',
+                    `<pre class='harkat_penskoran'>${harkat_penskoran ?? '-'}</pre>`
+                );
 
+                // =======================
+                // 🔥 SUB ITEM (VARIABEL)
+                // =======================
+                if (subItems && subItems.length > 0) {
                     subItems.forEach(item => {
                         const userData = userSubItemMap[item.id] || null;
                         const nilai = userData ? userData.nilai : '';
 
-                        container.insertAdjacentHTML(
-                            'beforeend',
-                            `
-        <div class="mb-3 variabel-item">
-            <label for="variabel_${item.id}" class="form-label">
-                <strong>${item.variabel}</strong> : ${item.deskripsi}
-            </label>
+                        container.insertAdjacentHTML('beforeend', `
+            <div class="mb-3 variabel-item">
+                <label class="form-label">
+                    <strong>${item.variabel}</strong> : ${item.deskripsi}
+                </label>
 
-            <input
-                type="number"
-                class="form-control"
-                id="variabel_${item.id}"
-                name="variabel[${item.id}]"
-                value="${nilai}"
-                min="0"
-                inputmode="numeric"
-                required
-            >
-        </div>
-        `
-                        );
+                <input
+                    type="number"
+                    class="form-control variabel-input"
+                    name="variabel[${item.id}]"
+                    value="${nilai}"
+                    min="0"
+                >
+            </div>
+        `);
                     });
-
-                    container.insertAdjacentHTML('beforeend', `
-                    <div class="text-end">
-                    <a class="btn btn-sm btn-primary" hidden>Hitung</a>
-                    </div>
-                <div class="mb-3">
-                    <label for="skor" class="form-label"><strong>Skor</strong></label>
-                    <input type="number" class="form-control" id="skor" name="jawaban" value='${parseInt(jawaban)}'
-                        placeholder="Masukkan skor" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="bukti" class="form-label"><strong>Link Bukti (Opsional)</strong></label>
-                    <div class="input-group">
-        <input type="url" class="form-control" id="bukti" name="link_bukti"
-            value="${link_bukti}" placeholder="Masukkan link bukti">
-
-           ${link_bukti ? `<a href="${link_bukti}" target="_blank" class="btn btn-outline-primary">↗</a>` : ''}
-
-    </div>
-                </div>
-
-               <div class="mb-3">
-    <label for="temuan" class="form-label" hidden><strong>Temuan (Opsional)</strong></label>
-    <textarea class="form-control" id="temuan" name="temuan" rows="3"
-        placeholder="Masukkan temuan" hidden>${temuan}</textarea>
-</div>
-
-<div class="mb-3">
-    <label for="saran" class="form-label" hidden><strong>Saran (Opsional)</strong></label>
-    <textarea class="form-control" id="saran" name="saran" rows="3"
-        placeholder="Masukkan saran" hidden>${saran}</textarea>
-</div>
-
-
-                <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
-                <input type="hidden" name="id_matriks_led" id="id_matriks_led">
-                <input type="hidden" name="kepemilikan_kriteria" id="kepemilikan_kriteria" value="{{ $for }}">
-                <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
-
-                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
-            `);
-
-                    const skorInput = document.getElementById("skor");
-                    const nilaiTotalInput = document.getElementById("nilai_total");
-
-                    skorInput.addEventListener("input", function() {
-                        let skor = parseFloat(this.value);
-                        let poinValue = parseFloat(poin);
-
-                        if (!isNaN(skor) && !isNaN(poinValue)) {
-                            nilaiTotalInput.value = poinValue * skor;
-                        } else {
-                            nilaiTotalInput.value = "";
-                        }
-                    });
-
-
-                } else if (pilihan != null && harkat_penskoran != "") {
-                    container.innerHTML = `
-                @csrf
-                <div class="mt-3 mb-3">
-                    <label class="form-label"><strong>Harkat Penskoran</strong></label>
-                </div>
-            `;
-
-
-
-
-                    let wrapper = container.querySelector(".mb-3");
-
-                    wrapper.insertAdjacentHTML('beforeend', `
-    <pre class="harkat_penskoran">${harkat_penskoran}</pre>
-`);
-                    wrapper.insertAdjacentHTML('beforeend', `
-    <label class="form-label"><strong>Pilihan Penilaian</strong></label>
-`);
-
-                    // --- Generate pilihan penilaian ---
-                    Object.keys(pilihan)
-                        .sort((a, b) => b - a) // urut skor terbesar
-                        .forEach(skor => {
-
-                            let id = "kriteria_" + skor;
-
-                            let isChecked = (parseInt(jawaban) === parseInt(skor)) ? "checked" : "";
-
-
-                            let html = `
-                        <div class="form-check">
-                            <input class="form-check-input skor-radio" 
-                                   type="radio" required 
-                                   name="jawaban" 
-                                   value="${skor}" 
-                                   id="${id}" ${isChecked}>
-                            <label class="form-check-label" for="${id}">
-                                <strong>Skor ${skor}.</strong> ${pilihan[skor]}
-                            </label>
-                        </div>
-                    `;
-
-                            wrapper.insertAdjacentHTML('beforeend', html);
-                        });
-
-                    // --- Input bukti + nilai akhir ---
-                    container.insertAdjacentHTML('beforeend', `
-                <div class="mb-3 mt-3">
-                    <label for="bukti" class="form-label"><strong>Link Bukti (Opsional)</strong></label>
-                    <div class="input-group">
-        <input type="url" class="form-control" id="bukti" name="link_bukti"
-            value="${link_bukti}" placeholder="Masukkan link bukti">
-
-            ${link_bukti ? `<a href="${link_bukti}" target="_blank" class="btn btn-outline-primary">↗</a>` : ''}
-
-    </div>
-                </div>
-
-                <div class="mb-3">
-    <label for="temuan" class="form-label" hidden><strong>Temuan (Opsional)</strong></label>
-    <textarea class="form-control" id="temuan" name="temuan" rows="3"
-        placeholder="Masukkan temuan" hidden>${temuan}</textarea>
-</div>
-
-<div class="mb-3">
-    <label for="saran" class="form-label" hidden><strong>Saran (Opsional)</strong></label>
-    <textarea class="form-control" id="saran" name="saran" rows="3"
-        placeholder="Masukkan saran" hidden>${saran}</textarea>
-</div>
-
-
-                <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
-                <input type="hidden" name="id_matriks_led" id="id_matriks_led">
-                <input type="hidden" name="kepemilikan_kriteria" id="kepemilikan_kriteria" value="{{ $for }}">
-                <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
-
-                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
-            `);
-
-                    // --- Hitung nilai total ketika skor dipilih ---
-                    document.querySelectorAll(".skor-radio").forEach(radio => {
-                        radio.addEventListener("change", function() {
-                            let skorDipilih = parseInt(this.value);
-                            let nilaitotal = poin * skorDipilih;
-
-                            document.getElementById("nilai_total").value = nilaitotal;
-
-                            console.log("Nilai total:", nilaiAkhir);
-                        });
-                    });
-
-
-                } else {
-
-                    // Reset isi form
-                    container.innerHTML = `
-                @csrf
-                <div class="mt-3 mb-3">
-                    <label class="form-label"><strong>Pilihan Penilaian</strong></label>
-                </div>
-            `;
-
-                    let wrapper = container.querySelector(".mb-3");
-
-                    // --- Generate pilihan penilaian ---
-                    Object.keys(pilihan)
-                        .sort((a, b) => b - a) // urut skor terbesar
-                        .forEach(skor => {
-
-                            let id = "kriteria_" + skor;
-
-                            let isChecked = (parseInt(jawaban) === parseInt(skor)) ? "checked" : "";
-
-
-                            let html = `
-                        <div class="form-check">
-                            <input class="form-check-input skor-radio" 
-                                   type="radio" required 
-                                   name="jawaban" 
-                                   value="${skor}" 
-                                   id="${id}" ${isChecked}>
-                            <label class="form-check-label" for="${id}">
-                                <strong>Skor ${skor}.</strong> ${pilihan[skor]}
-                            </label>
-                        </div>
-                    `;
-
-                            wrapper.insertAdjacentHTML('beforeend', html);
-                        });
-
-
-
-                    // --- Input bukti + nilai akhir ---
-                    container.insertAdjacentHTML('beforeend', `
-                <div class="mb-3 mt-3">
-                    <label for="bukti" class="form-label"><strong>Link Bukti (Opsional)</strong></label>
-                    <div class="input-group">
-        <input type="url" class="form-control" id="bukti" name="link_bukti"
-            value="${link_bukti}" placeholder="Masukkan link bukti">
-
-            ${link_bukti ? `<a href="${link_bukti}" target="_blank" class="btn btn-outline-primary">↗</a>` : ''}
-
-    </div>
-                </div>
-
-                <div class="mb-3">
-    <label for="temuan" class="form-label" hidden><strong>Temuan (Opsional)</strong></label>
-    <textarea class="form-control" id="temuan" name="temuan" rows="3"
-        placeholder="Masukkan temuan" hidden>${temuan}</textarea>
-</div>
-
-<div class="mb-3">
-    <label for="saran" class="form-label" hidden><strong>Saran (Opsional)</strong></label>
-    <textarea class="form-control" id="saran" name="saran" rows="3"
-        placeholder="Masukkan saran" hidden>${saran}</textarea>
-</div>
-
-
-                <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
-                <input type="hidden" name="id_matriks_led" id="id_matriks_led">
-                <input type="hidden" name="kepemilikan_kriteria" id="kepemilikan_kriteria" value="{{ $for }}">
-                <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
-
-                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
-            `);
-                    document.getElementById("id_matriks_led").value = id_matriks_led;
-
-                    // --- Hitung nilai total ketika skor dipilih ---
-                    document.querySelectorAll(".skor-radio").forEach(radio => {
-                        radio.addEventListener("change", function() {
-                            let skorDipilih = parseInt(this.value);
-                            let nilaitotal = poin * skorDipilih;
-
-                            document.getElementById("nilai_total").value = nilaitotal;
-
-                        });
-                    });
-
-
                 }
+
+                // =======================
+                // 🔥 PILIHAN SKOR (RADIO)
+                // =======================
+                container.insertAdjacentHTML('beforeend', `
+    <div class="mb-3 mt-3">
+        <label class="form-label"><strong>Pilih Skor</strong></label>
+    </div>
+`);
+
+                let pilihanFinal = pilihan && Object.keys(pilihan).length > 0 ?
+                    pilihan : {
+                        1: "",
+                        2: "",
+                        3: "",
+                        4: ""
+                    }; // default kalau kosong
+
+                Object.keys(pilihanFinal)
+                    .sort((a, b) => b - a)
+                    .forEach(skor => {
+
+                        let id = "kriteria_" + skor;
+                        let isChecked = (parseInt(jawaban) === parseInt(skor)) ? "checked" : "";
+
+                        container.insertAdjacentHTML('beforeend', `
+            <div class="form-check">
+                <input class="form-check-input skor-radio"
+                       type="radio"
+                       name="jawaban"
+                       value="${skor}"
+                       id="${id}"
+                       ${isChecked}>
+                <label class="form-check-label" for="${id}">
+                    <strong>Skor ${skor}</strong> ${pilihanFinal[skor] ?? ''}
+                </label>
+            </div>
+        `);
+                    });
+
+                // =======================
+                // 🔥 BUKTI + FIELD LAIN
+                // =======================
+                container.insertAdjacentHTML('beforeend', `
+    <div class="mb-3 mt-3">
+        <label class="form-label"><strong>Link Bukti</strong></label>
+        <div class="input-group">
+            <input type="url" class="form-control" name="link_bukti"
+                value="${link_bukti}" placeholder="Masukkan link">
+
+            ${link_bukti ? `<a href="${link_bukti}" target="_blank" class="btn btn-outline-primary">↗</a>` : ''}
+        </div>
+    </div>
+
+    <input type="hidden" name="nilai_total" id="nilai_total" value="${nilai_total}">
+    <input type="hidden" name="id_matriks_led" id="id_matriks_led" value="${id_matriks_led}">
+    <input type="hidden" name="kepemilikan_kriteria" value="{{ $for }}">
+    <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
+
+    <button type="submit" class="btn btn-sm btn-success">Simpan</button>
+`);
+
+                // =======================
+                // 🔥 HITUNG NILAI TOTAL
+                // =======================
+                document.querySelectorAll(".skor-radio").forEach(radio => {
+                    radio.addEventListener("change", function() {
+                        let skor = parseInt(this.value);
+                        document.getElementById("nilai_total").value = poin * skor;
+                    });
+                });
 
                 document.getElementById("id_matriks_led").value = id_matriks_led;
 
@@ -823,8 +878,8 @@
                     btn => btn.dataset.id === lastId
                 );
 
-                console.log('Ini adalah ID yang disimpan', lastId)
-                console.log('Ini adalah index yang ditemukan', foundIndex)
+                // console.log('Ini adalah ID yang disimpan', lastId)
+                // console.log('Ini adalah index yang ditemukan', foundIndex)
 
                 if (foundIndex !== -1) {
                     activate(foundIndex);
@@ -856,7 +911,7 @@
 
                 // SIMPAN ID TERAKHIR
                 localStorage.setItem('lastElement', btn.dataset.id);
-                console.log('ID tersimpan:', btn.dataset.id);
+                // console.log('ID tersimpan:', btn.dataset.id);
             });
         });
     </script>
@@ -879,7 +934,7 @@
                     behavior: "auto",
                     block: "center"
                 });
-                console.log("Memuat elemen:", selector);
+                // console.log("Memuat elemen:", selector);
             }
         });
     </script>
@@ -930,15 +985,15 @@
 
                 document.querySelectorAll('.nav-item-btn').forEach(btn => {
                     let color = btn.dataset.color;
-                    console.log("filter:", filter);
-                    console.log("color:", color);
+                    // console.log("filter:", filter);
+                    // console.log("color:", color);
 
                     if (filter === "" || filter === color) {
                         btn.style.display = "flex";
-                        console.log('if pertama')
+                        // console.log('if pertama')
                     } else {
                         btn.style.display = "none";
-                        console.log('if kedua')
+                        // console.log('if kedua')
                     }
                 });
 
