@@ -18,7 +18,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 1,
                 'id_kriteria'          => 1,
                 'elemen'               => 'Ketepatan Rumusan Visi Keilmuan PS',
-                'poin'                 => '1',
+                'poin'                 => '1.25',
                 'indikator'            =>
                     'PS memiliki  visi keilmuan yang dirumuskan (a) secara tepat sebagai visi keilmuan, (b) menunjukkan kekhasan PS, (c) berwawasan ke depan, (d) relevan dengan perkembangan IPTEKS dan kebutuhan masyarakat, dan (e) selaras dengan visi kelembagaan PT/UPPS.',
                 'option_pilihan_ganda' => json_encode([
@@ -34,7 +34,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 2,
                 'id_kriteria'          => 1,
                 'elemen'               => 'Sosialisasi dan Tingkat Pemahaman Visi Keilmuan PS',
-                'poin'                 => '1.25',
+                'poin'                 => '1.30',
                 'indikator'            =>
                     'Dalam tiga tahun terakhir, PS (a) melakukan sosialisasi visi keilmuan kepada para pemangku kepentingan melalui (1) rapat PS, (2) kuliah umum PS, (3) flyer/banner/ papan, dll, (4) website PS, (5) media sosial PS, (b) mengukur, menganalisis dan mengevaluasi pemahaman pemangku kepentingan terhadap visi keilmuan tersebut secara periodik, dan (c) menindaklanjuti hasil evaluasi tersebut.  ',
                 'option_pilihan_ganda' => json_encode([
@@ -52,7 +52,7 @@ class LEDSeeder extends Seeder
                 'elemen'               => 'Peran Visi Keilmuan sebagai Rujukan Pengembangan Kurikulum, Pembelajaran, Penelitian, dan PkM',
                 'poin'                 => '1.50',
                 'indikator'            =>
-                    'Visi keilmuan PS menjadi rujukan (a) pengembangan kurikulum; (b) pelaksanaan pembelajaran; (c) pelaksanaan penelitian, dan (d) pelaksanaan PkM.',
+                    'Visi keilmuan PS  menjadi rujukan  (a) pengembangan kurikulum; (b) pembelajaran; (c) penelitian, dan (d) PkM',
                 'option_pilihan_ganda' => json_encode([
                     4 => 'Visi keilmuan PS menjadi rujukan bagi 4 kegiatan.',
                     3 => 'Visi keilmuan PS menjadi rujukan bagi 3 kegiatan.',
@@ -68,12 +68,12 @@ class LEDSeeder extends Seeder
                 'elemen'               => 'Evaluasi Visi Keilmuan PS dan Tindak Lanjut',
                 'poin'                 => '1.50',
                 'indikator'            =>
-                    'PS melakukan evaluasi dan refleksi terhadap kriteria visi keilmuan serta tindak lanjut, dengan ketentuan sebagai berikut. (a) Evaluasi dan Refleksi (1) dilakukan terhadap elemen-elemen visi keilmuan dengan cara mengidentifikasi minimal kelebihan dan kelemahannya, (2) dilakukan berdasarkan pada parameter tertentu secara kuantitatif/kualitatif, (3) dilakukan secara komprehensif berbasis kondisi nyata dengan menggunakan metode yang sesuai, (4) didokumentasikan secara lengkap dan sahih. (b) Tindak lanjut (1) didasarkan pada hasil evaluasi, (2) dirumuskan secara spesifik, terukur, realistis, dan berbasis waktu, (3) dimonitor untuk memastikan tindak lanjut benar-benar diimplementasikan, (4) didukung bukti pelaksanaan yang lengkap dan sahih, dan (5) digunakan sebagai dasar pengembangan program berkelanjutan.',
+                    'PS melakukan evaluasi dan tindak lanjut terhadap visi keilmuan, dengan ketentuan sebagai berikut. (a) Evaluasi (1) dilakukan terhadap elemenelemen visi keilmuan dengan cara mengidentiﬁkasi minimal kelebihan dan kelemahannya, (2) dilakukan berdasarkan pada parameter tertentu secara kuantitatif/kualitatif, (3) dilakukan secara komprehensif berbasis kondisi nyata dengan menggunakan metode yang sesuai, (4) didokumenta- sikan secara lengkap dan sahih. (b) Tindak lanjut (1) didasarkan pada hasil evaluasi, (2) dirumuskan secara spesiﬁk, terukur, realistis, dan berbasis waktu, (3) dimonitor untuk memastikan tindak lanjut benar-benar diimplementasikan, dan (4) didukung bukti pelaksanaan yang lengkap dan sahih.',
                 'option_pilihan_ganda' => json_encode([
-                    4 => 'a. PS melakukan evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi 4 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi 5 aspek.',
-                    3 => 'a. PS melakukan evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi 3 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi 4 aspek.',
-                    2 => 'a. PS melakukan evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi 2 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi 3 aspek.',
-                    1 => 'a. PS melakukan evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi < 2 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi dan refleksi terhadap visi keilmuannya dengan memenuhi < 3 aspek.'
+                    4 => 'a. PS melakukan evaluasi terhadap visi keilmuannya dengan memenuhi  4 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi terhadap visi keilmuannya dengan memenuhi  4 aspek. ',
+                    3 => 'a. PS melakukan evaluasi terhadap visi keilmuannya dengan memenuhi  3 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi terhadap visi keilmuannya dengan memenuhi  3 aspek. ',
+                    2 => 'a. PS melakukan evaluasi terhadap visi keilmuannya dengan memenuhi  2 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi terhadap visi keilmuannya dengan memenuhi  aspek 2 aspek. ',
+                    1 => 'a. PS melakukan evaluasi terhadap visi keilmuannya dengan memenuhi  < 2 aspek. b. PS melakukan tindak lanjut berdasarkan hasil evaluasi terhadap visi keilmuannya dengan memenuhi  < 2 aspek. '
                 ]),
                 'jenis'                => 'pilihan_ganda',
             ],
@@ -123,7 +123,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 9,
                 'id_kriteria'          => 3,
                 'elemen'               => 'Pelaksanaan seleksi mahasiswa baru',
-                'poin'                 => '1.25',
+                'poin'                 => '1.50',
                 'indikator'            => 'PT/UPPS melaksanakan seleksi calon mahasiswa baru yang mencerminkan prinsip (a) kualitas, (b) keadilan, (c) inklusifitas, (d) transparansi, (e) akuntabilitas, dan (f) fleksibilitas.',
                 'option_pilihan_ganda' => json_encode([
                     4 => 'PT/UPPS melaksanakan seleksi mahasiswa baru yang memenuhi 6 prinsip.',
@@ -179,7 +179,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 15,
                 'id_kriteria'          => 3,
                 'elemen'               => 'Produktivitas karya inovatif mahasiswa',
-                'poin'                 => '2.50',
+                'poin'                 => '2.00',
                 'indikator'            => 'Dalam 5 tahun terakhir, mahasiswa menghasilkan karya inovatif dan/atau publikasi ilmiah yang relevan dengan bidang keilmuan PS pada jurnal nasional terakreditasi minimal Sinta 4. PKIM = Persentase jumlah mahasiswa memiliki karya inovatif yang  berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya dalam 5 tahun terakhir. ',
                 'option_pilihan_ganda' => json_encode([
                     4 => 'Dalam 5 tahun terakhir, ≥ 25% mahasiswa memiliki karya inovatif yang  berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya. ',
@@ -290,7 +290,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 28,
                 'id_kriteria'          => 5,
                 'elemen'               => ' Ketersediaan dan aksesibilitas teknologi informasi  ',
-                'poin'                 => ' 1.25',
+                'poin'                 => ' 1.00 ',
                 'indikator'            => ' PT/UPPS menyediakan infrastruktur dan teknologi informasi (TI) untuk mendukung kegiatan akademik dan administrasi yang memenuhi aspek (a) kelengkapan, (b) kualitas, (c) kemutakhiran, (d) keterintegrasian, (e) keterawatan,  dan (f) aksesibilitas.     ',
                 'option_pilihan_ganda' => json_encode([4 => ' PT/UPPS menyediakan infrastruktur teknologi informasi (TI) untuk mendukung kegiatan akademik dan administrasi yang memenuhi 6 aspek.  ', 3 => ' PT/UPPS menyediakan infrastruktur teknologi informasi (TI) untuk mendukung kegiatan akademik dan administrasi yang memenuhi 5 aspek.  ', 2 => ' PT/UPPS menyediakan infrastruktur teknologi informasi (TI) untuk mendukung kegiatan akademik dan administrasi yang memenuhi 4 aspek.  ', 1 => ' PT/UPPS menyediakan infrastruktur teknologi informasi (TI) untuk mendukung kegiatan akademik dan administrasi yang memenuhi < 4 aspek.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -299,7 +299,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 29,
                 'id_kriteria'          => 5,
                 'elemen'               => ' Keamanan, keselamatan, dan kesehatan lingkungan (K3L) ',
-                'poin'                 => ' 1.25',
+                'poin'                 => ' 1.0 ',
                 'indikator'            => ' PT/UPPS menjamin pemenuhan standar K3L belajar/bekerja yang memenuhi aspek (a) ketersediaan kebijakan, (b) ketersediaan  sistem manajemen, (c) ketersediaan peralatan dan fasilitas pendukung, (d) pelaksanaan sosialisasi dan edukasi, dan (e) pelaksanaan penilaian dan audit K3L secara berkala.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' PT/UPPS menjamin pemenuhan standar K3L belajar/bekerja yang memenuhi 5 aspek.  ', 3 => ' PT/UPPS menjamin pemenuhan standar K3L belajar/bekerja yang memenuhi 4 aspek.  ', 2 => ' PT/UPPS menjamin pemenuhan standar K3L belajar/bekerja yang memenuhi 3 aspek.  ', 1 => ' PT/UPPS menjamin pemenuhan standar K3L belajar/bekerja yang memenuhi  < 3 aspek.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -317,7 +317,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 31,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Pengembangan kurikulum ',
-                'poin'                 => ' 1.5',
+                'poin'                 => ' 1.75 ',
                 'indikator'            => ' UPPS/PS memiliki  kurikulum berbasis luaran (OBE) yang: (a) disusun secara sistematis dengan tahapan sbb: (1) evaluasi kurikulum berjalan, (2) penyusunan draf awal kurikulum, (3) ujicoba dan perbaikan, (4) pengesahan, (5) pelaksanaan, dan (6) evaluasi dan tindak lanjut., (b) melibatkan stakeholder internal (pimpinan UPPS/PS, dosen, mahasiswa, tenaga kependidikan) dan stakeholder eksternal (alumni, pengguna lulusan, asosiasi program studi/profesi, pakar) dalam proses penyusunan kurikulum., dan (c) memenuhi karakteristik kurukulum yang baik sbb: (1) lengkap, (2) sesuai dengan level KKNI, (3) koheren (ketepatan struktur kurikulum dalam pencapaian CPL), (4) mutakhir, (5) memperlihatkan ciri khusus PS, dan (6) memberi kesempatan mahasiswa belajar di luar program studi.   ',
                 'option_pilihan_ganda' => json_encode([4 => ' a. UPPS/PS menyusun kurikulum berbasis luaran (OBE) yang memenuhi 6 tahapan. b. UPPS/PS melibatkan stakeholder semua internal dan eksternal. c. UPPS/PS memiliki 6 karakteristik kurikulum yang baik.  ', 3 => ' a. UPPS/PS menyusun kurikulum berbasis luaran (OBE) yang memenuhi 5 tahapan. b. UPPS/PS melibatkan semua stakeholder internal dan 13 stakeholder eksternal. c. UPPS/PS memiliki 5 karakteristik kurikulum yang baik.  ', 2 => ' a. UPPS/PS menyusun kurikulum berbasis luaran yang memenuhi 4 tahapan. b. UPPS/PS melibatkan semua stakeholder internal. c. UPPS/PS memiliki 4 karakteristik kurikulum yang baik.  ', 1 => ' a. UPPS/PS menyusun kurikulum berbasis luaran yang memenuhi < 4 tahapan. b. UPPS/PS melibatkan < 4 stakeholder internal. c. UPPS/PS memiliki  < 4 karakteristik kurikulum yang baik.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -326,7 +326,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 32,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Pelaksanaan pembelajaran ',
-                'poin'                 => ' 2',
+                'poin'                 => ' 1.75 ',
                 'indikator'            => '  DTPS melaksanakan pembelajaran yang (a) sesuai dengan RPS yang telah disusun, (b) menggunakan metode mengajar yang berpusat pada mahasiswa, (c) merealisasikan CPL melalui sub-CPMK, (d) melaksanakan assessment for learning, (e) mengintegrasikan hasil penelitian/PkM, dan (f) memanfaatkan Teknologi Informasi yang relevan.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' DTPS melaksanakan pembelajaran yang memenuhi 6 aspek   ', 3 => ' DTPS melaksanakan pembelajaran yang memenuhi 5 aspek.  ', 2 => ' DTPS melaksanakan pembelajaran yang memenuhi 3 - 4 aspek  ', 1 => ' DTPS melaksanakan pembelajaran yang memenuhi  < 3 aspek   ']),
                 'jenis'                => 'pilihan_ganda',
@@ -335,7 +335,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 34,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Penilaian hasil belajar ',
-                'poin'                 => ' 2 ',
+                'poin'                 => ' 1.75 ',
                 'indikator'            => ' DTPS melaksanakan penilaian hasil belajar yang (a) sesuai dengan tujuan khusus pembelajaran/Sub-CPMK, (b) menggunakan teknik penilaian yang bervariasi, (c) memiliki tingkat kesulitan yang proporsional, (d) memberikan umpan balik yang konstruktif, dan (e) memberi kesempatan kepada mahasiswa untuk melakukan banding terhadap hasil penilaian.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' DTPS melaksanakan penilaian hasil belajar yang memenuhi 5 aspek.  ', 3 => ' DTPS melaksanakan penilaian hasil belajar yang memenuhi 4 aspek.  ', 2 => ' DTPS melaksanakan penilaian hasil belajar yang memenuhi 3 aspek.  ', 1 => ' DTPS melaksanakan penilaian hasil belajar yang memenuhi  < 3 aspek.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -344,7 +344,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 35,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Perkuliahan micro-teaching atau ketrampilan sejenis ',
-                'poin'                 => ' 2 ',
+                'poin'                 => ' 1.75 ',
                 'indikator'            => ' DTPS melaksanakan perkuliahan micro-teaching atau kegiatan lain yang sejenis bagi PS kependidikan nonmengajar, yang memenuhi asepaspek sebagai berikut: (a) Perkuliahan dilaksanakan di laboratorium microteaching atau yang sejenis untuk PS kependidikan non-mengajar; (b) Frekuensi pertemuan memungkinkan setiap mahasiswa berlatih secara memadai; (c) Micro-teaching melatihkan keterampilan dasar mengajar atau keterampilan sejenis untuk PS Kependidikan non-mengajar; (d) Mahasiswa menerima umpan balik yang konstruktif setelah berlatih mengajar; dan  (e) Dosen memberi kesempatan kepada mahasiswa untuk melakukan reﬂeksi. ',
                 'option_pilihan_ganda' => json_encode([4 => ' DTPS  melaksanakan perkuliahan micro-teaching atau nama setara untuk PS kependidikan nonmengajar: a. di laboratorium microteaching atau yang sejenis untuk PS Kependidikan nonmengajar yang memiliki peralatan yang lengkap  dan terawat; b. dengan frekuensi praktik untuk masing-masing mahasiswa ≥ 5 kali selama periode semester praktek. c. melatihkan 8 keterampilan mengajar atau keterampilan sejenis untuk PS kependidikan nonmengajar. d. mahasiswa melakukan reﬂeksi diri atas kompetensi mengajar yang sudah dikuasai pada perkuliahan microteaching atau nama sejenis.  ', 3 => ' DTPS  melaksanakan perkuliahan micro-teaching atau nama setara untuk PS kependidikan non-mengajar: a. di laboratorium microteaching atau sejenis untuk PS Kependidikan non mengajar yang memiliki peralatan yang lengkap dan terawat; b. dengan frekuensi praktik untuk masing-masing mahasiswa 3- 4 kali praktik. c. melatihkan 8 keterampilan mengajar atau ketrampilan sejenis untuk PS kependidikan non mengajar; d. mahasiswa melakukan reﬂeksi diri atas kompetensi mengajar yang sudah  dikuasai pada perkuliahan microteaching atau nama sejenis. ', 2 => ' DTPS  melaksanakan perkuliahan micro-teaching atau nama setara untuk PS kependidikan non-mengajar: a. di laboratorium microteaching atau sejenis untuk PS non kependidikan yang memiliki peralatan yang lengkap; b. dengan frekuensi praktik untuk masing-masing mahasiswa 2 kali praktik. c. melatihkan 8 keterampilan mengajar atau ketrampilan sejenis untuk PS kependidikan non mengajar ', 1 => ' DTPS  melaksanakan perkuliahan micro-teaching atau nama setara untuk PS kependidikan nonmengajar: a. di ruang kelas; b. frekuensi praktek untuk masing-masing mahasiswa 1 kali praktik; c. melatihkan < 8 keterampilan mengajar atau ketrampilan sejenis untuk PS non Kependidikan;  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -362,7 +362,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 37,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Pembimbingan magang kependidikan ',
-                'poin'                 => ' 1.5 ',
+                'poin'                 => ' 1.60 ',
                 'indikator'            => ' Dosen pembimbing dan guru pamong melaksanakan pembimbingan magang kependidikan secara intensif dan berkualitas yang tercermin dari: (a) kemudahan pembimbing untuk diakses oleh mahasiswa; (b) frekuensi pembimbingan yang memadai; (c) pemberian umpan balik yang konstrukstif; (d) pelaksanaan reﬂeksi setiap kali mahasiswa selesai praktik mengajar; dan (e) pendokumentasian kegiatan pembimbingan yang lengkap.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' Dosen pembimbing dan guru pamong  melaksanakan pembimbingan magang Kependidikan yang memenuhi 5 aspek dan jumlah pembimbingan ≥ 4 kali kunjungan (daring atau luring).  ', 3 => ' Dosen pembimbing dan guru pamong  melaksanakan pembimbingan magang Kependidikan yang memenuhi 4 aspek dan jumlah pembimbingan ≥ 3 kali kunjungan (daring atau luring).  ', 2 => ' Dosen pembimbing dan guru pamong  melaksanakan pembimbingan magang Kependidikan yang memenuhi 3 aspek dan jumlah pembimbingan sebanyak 2 kali kunjungan (daring atau luring).  ', 1 => ' Dosen pembimbing dan guru pamong  melaksanakan pembimbingan magang Kependidikan yang memenuhi  < 3 aspek dan jumlah pembimbingan sebanyak 1 kali kunjungan (daring atau luring).  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -380,7 +380,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 39,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Pembimbingan tugas akhir ',
-                'poin'                 => ' 1.75 ',
+                'poin'                 => ' 1.60 ',
                 'indikator'            => ' Pembimbingan Tugas Akhir oleh DTPS memenuhi aspek: (a) Ketersediaan panduan dan sistem informasi tugas akhir, (c) Kecukupan jumlah pembimbing utama tugas akhir, (d) Frekuensi pembimbingan.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' Pembimbingan Tugas Akhir oleh DTPS memenuhi aspek: a. Tersedia panduan dan sistem informasi tugas akhir yang digunakan  dalam semua tahapan pembimbingan tugas akhir b. Jumlah bimbingan sebagai pembimbing utama tugas akhir tiap semester = 1:1-6 c. Frekuensi pembimbingan minimal 16 kali ', 3 => ' Pembimbingan Tugas Akhir oleh DTPS memenuhi aspek: a. Tersedia panduan dan sistem informasi tugas akhir yang digunakan dalam  sebagian pembimbingan tugas akhir b. Jumlah bimbingan sebagai pembimbing utama tugas akhir tiap semester = 1:7-12 c. Frekuensi pembimbingan = 14 - 15 kali ', 2 => ' Pembimbingan utama Tugas Akhir oleh DTPS memenuhi aspek: a. Tersedia panduan dan sistem informasi tugas akhir  b. Jumlah bimbingan sebagai pembimbing utama tugas akhir tiap semester = 1:1318 Frekuensi pembimbingan = 12 - 13 kali ', 1 => ' Pembimbingan utama Tugas Akhir oleh DTPS memenuhi aspek: a. Tersedia panduan tetapi tidak tersedia sistem informasi tugas akhir  b. Jumlah bimbingan sebagai pembimbing utama tugas akhir tiap semester = 1:> 18 c. Frekuensi pembimbingan < 12 kali ']),
                 'jenis'                => 'pilihan_ganda',
@@ -389,7 +389,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 41,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Tracer study ',
-                'poin'                 => ' 1.5 ',
+                'poin'                 => ' 1.75 ',
                 'indikator'            => ' UPPS/PS melakukan tracer study yang mencakup 5 aspek, yaitu: (a) terkoordinasi ditingkat PT/ UPPS, (b) dilakukan secara regular setiap tahun dan terdokumentasi, (c) menggunakan instrumen yang mencakup seluruh inti pertanyaan tracer study Pendidikan tinggi, (d) ditargetkan pada seluruh lulusan TS-4 s.d TS-2, dan (e) hasilnya disosialisasikan dan digunakan untuk pengembangan kurikulum dan pembelajaran.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' UPPS/PS melaksanakan tracer study dengan memenuhi 5 aspek.  ', 3 => ' UPPS/PS melaksanakan tracer study dengan memenuhi 4 aspek. ', 2 => ' UPPS/PS melaksanakan tracer study dengan memenuhi 3 aspek.  ', 1 => ' UPPS/PS melaksanakan tracer study dengan memenuhi < 3 aspek atau tidak melakukan tracer study.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -398,7 +398,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 49,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Asesmen pencapaian CPL ',
-                'poin'                 => ' 2 ',
+                'poin'                 => ' 1.50 ',
                 'indikator'            => ' PS melakukan asesmen pencapaian CPL berdasarkan capaian hasil belajar mahasiswa pada mata kuliah sebagai bagian dari OBE, mengevaluasi hasilnya, dan menindaklanjuti hasil evaluasi tersebut. ',
                 'option_pilihan_ganda' => json_encode([4 => ' a. PS melakukan asesmen pencapaian CPL  pada mata kuliah penciri keilmuan PS minimal 25% yang didukung bukti sahih; b. PS melakukan evaluasi terhadap asesmen pencapaian CPL berdasarkan capaian hasil belajar mahasiswa, didukung bukti yang sahih; c. PS melakukan tindak lanjut hasil evaluasi terhadap asesmen pencapaian CPL berdasarkan capaian hasil belajar mahasiswa, didukung bukti yang sahih.  ', 3 => ' a. PS melakukan asesmen pencapaian CPL  pada mata kuliah penciri keilmuan PS minimal 25% yang didukung bukti sahih; b. PS melakukan evaluasi terhadap asesmen pencapaian CPL berdasarkan capaian hasil belajar mahasiswa, didukung bukti yang sahih; c. PS tidak melakukan tindak lanjut berdasarkan hasil evaluasi.  ', 2 => ' a. PS melakukan asesmen pencapaian CPL  pada mata kuliah penciri keilmuan PS minimal 20% yang didukung bukti sahih; b. PS tidak melakukan evaluasi terhadap asesmen pencapaian CPL berdasarkan capaian hasil belajar mahasiswa. ', 1 => ' PS tidak melakukan asesmen pencapaian CPL.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -407,7 +407,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 50,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Evaluasi kurikulum ',
-                'poin'                 => ' 1.50 ',
+                'poin'                 => ' 1.75 ',
                 'indikator'            => ' UPPS/PS melakukan evaluasi kurikulum PS yang memenuhi aspekaspek sebagai berikut: (a) evaluasi mikro dilakukan paling lama 1 tahun sekali; (b) evaluasi makro dilakukan paling lama 5 tahun sekali; (c) evaluasi merujuk pada kebijakan pemerintah, visi keilmuan PS, perkembangan IPTEKS, tuntutan IDUKA, dan   kebutuhan Masyarakat; (d) evaluasi melibatkan stakeholder internal dan eksternal; (e) evaluasi didokumentasikan secara lengkap. ',
                 'option_pilihan_ganda' => json_encode([4 => ' UPPS/PS melaksanakan evaluasi kurikulum dengan memenuhi 5 aspek.  ', 3 => ' UPPS/PS melaksanakan evaluasi kurikulum dengan memenuhi 4 aspek.  ', 2 => ' UPPS/PS melaksanakan evaluasi kurikulum dengan memenuhi 3 aspek.  ', 1 => ' UPPS/PS melaksanakan evaluasi kurikulum dengan memenuhi  < 3 aspek.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -461,7 +461,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 62,
                 'id_kriteria'          => 9,
                 'elemen'               => ' Terbentuknya unsur pelaksana penjaminan mutu ',
-                'poin'                 => ' 1.75',
+                'poin'                 => ' 1.25',
                 'indikator'            => '   UPPS memiliki unsur pelaksana penjaminan mutu di UPPS yang tercermin dari  aspek (a) surat keputusan pembentukan unit penjaminan mutu,  (b) struktur organisasi penjaminan mutu, (c) deskripsi kerja personil yang ada dalam struktur organisasi, dan (d) personil yang kompeten dalam bidang penjaminan mutu.    ',
                 'option_pilihan_ganda' => json_encode([4 => ' UPPS memiliki unsur pelaksana penjaminan mutu di UPPS yang tercermin dari  terpenuhinya 4 aspek. ', 3 => ' UPPS memiliki unsur pelaksana penjaminan mutu di UPPS yang tercermin dari  terpenuhinya 3 aspek.  ', 2 => ' UPPS memiliki unsur pelaksana penjaminan mutu di UPPS yang tercermin dari  terpenuhinya 2 aspek.  ', 1 => ' UPPS memiliki unsur pelaksana penjaminan mutu di UPPS yang tercermin dari  terpenuhinya hanya  < 2 aspek.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -470,7 +470,7 @@ class LEDSeeder extends Seeder
                 'nomor'                => 63,
                 'id_kriteria'          => 9,
                 'elemen'               => ' Ketersediaan perangkat penjaminan mutu ',
-                'poin'                 => ' 1.75 ',
+                'poin'                 => ' 1.25 ',
                 'indikator'            => ' PT/UPPS  menetapkan perangkat SPMI yang minimal mencakup: (a) kebijakan SPMI; (b) pedoman penerapan siklus PPEPP standar pendidikan tinggi dalam SPMI; (c) standar dan/atau  kriteria penyelenggaraan pendidikan dan pengelolaan perguruan tinggi; dan (d)  tata cara pendokumentasian implementasi SPMI ',
                 'option_pilihan_ganda' => json_encode([4 => ' PT/UPPS menetapkan 4 perangkat SPMI. ', 3 => ' PT/UPPS menetapkan 3 perangkat SPMI. ', 2 => ' PT/UPPS menetapkan 2 perangkat SPMI. ', 1 => ' PT/UPPS menetapkan < 2 perangkat SPMI.  ']),
                 'jenis'                => 'pilihan_ganda',
@@ -496,18 +496,7 @@ class LEDSeeder extends Seeder
 
         ];
 
-        DB::table('matriks_lembar_evaluasi_diri')->upsert(
-            $data,
-            ['nomor'], // kolom unik untuk pengecekan
-            [
-                'id_kriteria',
-                'elemen',
-                'poin',
-                'indikator',
-                'option_pilihan_ganda',
-                'jenis'
-            ]
-        );
+        DB::table('matriks_lembar_evaluasi_diri')->insertOrIgnore($data);
 
     }
 }
