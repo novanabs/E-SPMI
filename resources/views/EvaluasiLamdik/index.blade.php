@@ -484,9 +484,35 @@
                             data-usersubitems="{{ $item->userSubItemElements }}">
 
                             <span class="me-2" style="width: 30px;">{{ $item->nomor }}.</span>
-                            <span>{{ $item->elemen }} ({{ $item->poin }}) => (Skor:
-                                {{ $item->userMatrik->jawaban ?? 0 }},Total:
-                                {{ $item->userMatrik->nilai_total ?? 0 }})</span>
+                            <div class="mb-3">
+                                <div class="fw-bold mb-2">
+                                    {{ $item->elemen }}
+                                </div>
+
+                                <table class="table table-bordered table-sm text-center align-middle mb-0 small">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Bobot</th>
+                                            <th>Skor</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ $item->poin }}</td>
+
+                                            <td>
+                                                {{ $item->userMatrik->jawaban ?? 0 }}
+                                            </td>
+
+                                            <td class="fw-bold text-primary">
+                                                {{ $item->userMatrik->nilai_total ?? 0 }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </button>
                     @endforeach
 

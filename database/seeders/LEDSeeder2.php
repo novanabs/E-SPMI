@@ -223,7 +223,7 @@ TEXT,
                 'nomor'                => 33,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Integrasi penelitian dan/atau PkM dalam pembelajaran  ',
-                'poin'                 => ' 1.75 ',
+                'poin'                 => ' 2 ',
                 'indikator'            => ' DTPS mengintegrasikan penelitian dan/atau PkM dalam pembelajaran yang memenuhi aspek berikut: (1) hasil penelitian/PkM relevan dengan mata kuliah; (2) hasil penelitian menjadi bagian dari materi mata kuliah; (3) pengintegrasian disertai bukti, seperti materi presentasi, handout, atau modul; (b) DTPS yang  mengintegrasikan hasil penelitian/PkM dalam pembelajaran mencapai jumlah yang memadai; (c) jumlah mata kuliah yang dikembangkan berdasarkan integrasi hasil penelitian/PkM dalam 3 tahun terakhir. ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -275,7 +275,7 @@ TEXT,
                 'nomor'                => 40,
                 'id_kriteria'          => 6,
                 'elemen'               => ' IPK rata-rata lulusan ',
-                'poin'                 => ' 2.00 ',
+                'poin'                 => ' 1 ',
                 'indikator'            => ' lulusan PS memiliki rata-rata IPK yang baik dalam 3 tahun terakhir. RIPK = Rata-rata IPK lulusan dalam 3 tahun terakhir ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -293,7 +293,7 @@ TEXT,
                 'nomor'                => 42,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Lama studi mahasiswa ',
-                'poin'                 => ' 2.00 ',
+                'poin'                 => ' 1.5 ',
                 'indikator'            => ' Lulusan PS memiliki rata-rata masa studi yang sesuai dengan masa empuh kurikulum. RMS = rata-rata masa studi lulusan (dalam tahun)  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -310,7 +310,7 @@ TEXT,
                 'nomor'                => 43,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Kelulusan tepat waktu ',
-                'poin'                 => ' 2.00 ',
+                'poin'                 => ' 1.5 ',
                 'indikator'            => ' Mahasiswa dapat menyelesaikan studinya sesuai masa tempuh kurikulum (MTK). PMTK = Persentase mahasiswa dapat menyelesaikan studi sesuai masa tempuh kurikulum.  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -326,7 +326,7 @@ TEXT,
                 'nomor'                => 44,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Keberhasilan studi mahasiswa ',
-                'poin'                 => ' 2.00 ',
+                'poin'                 => ' 1.5 ',
                 'indikator'            => '  Mahasiswa berhasil menyelesaikan studinya. PKSM = Persentase keberhasilan studi lulusan ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -373,7 +373,7 @@ TEXT,
                 'nomor'                => 46,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Waktu tunggu mendapatkan pekerjaan pertama ',
-                'poin'                 => ' 1.25 ',
+                'poin'                 => ' 1 ',
                 'indikator'            => ' Mahasiswa PS mendapatkan pekerjaan pertama setelah lulus. WTMP = waktu tunggu lulusan untuk mendapatkan pekerjaan pertama dalam 3 tahun, mulai TS-4 s.d. TS-2.  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -402,7 +402,7 @@ TEXT,
                 'nomor'                => 47,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Kesesuaian bidang kerja lulusan ',
-                'poin'                 => ' 1.25 ',
+                'poin'                 => ' 1 ',
                 'indikator'            => ' Lulusan PS memperoleh pekerjaan pertama yang sesuai dengan bidang keilmuan PS (TS-4 sampai dengan TS2) PBS = Kesesuaian bidang kerja lulusan saat mendapatkan pekerjaan pertama dalam 3 tahun, mulai TS-4 s.d. TS-2. ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -434,7 +434,7 @@ TEXT,
                 'nomor'                => 48,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Kepuasan pengguna lulusan ',
-                'poin'                 => ' 1.25 ',
+                'poin'                 => ' 1.5 ',
                 'indikator'            => ' UPPS/PS melakukan evaluasi tingkat kepuasan pengguna lulusan terhadap kompetensi yang dimiliki oleh lulusan, yang mencakup aspek (a) etika, (b) keahlian pada bidang ilmu (kompetensi utama), (c) kemampuan berbahasa asing, (d) penggunaan teknologi informasi, (e) kemampuan berkomunikasi, (f) kerjasama (g) pengembangan diri (h) berpikir kritis, dan (i) kreativitas.  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -462,7 +462,7 @@ TEXT,
                 'nomor'                => 53,
                 'id_kriteria'          => 7,
                 'elemen'               => ' Produktivitas penelitian DTPS ',
-                'poin'                 => ' 2.00 ',
+                'poin'                 => ' 2.25 ',
                 'indikator'            => ' DTPS melakukan penelitian dengan dana mandiri/PT, dana dalam negeri, dan dana dari luar negeri dalam tiga tahun terakhir.  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -489,7 +489,7 @@ TEXT,
                 'nomor'                => 54,
                 'id_kriteria'          => 7,
                 'elemen'               => ' Pelibatan mahasiswa dalam penelitian DTPS ',
-                'poin'                 => ' 1.25 ',
+                'poin'                 => ' 1 ',
                 'indikator'            => ' DTPS melibatkan mahasiswa dalam kegiatan penelitiannya. ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -511,7 +511,7 @@ TEXT,
                 'nomor'                => 55,
                 'id_kriteria'          => 7,
                 'elemen'               => ' Jumlah karya ilmiah DTPS',
-                'poin'                 => ' 2.00 ',
+                'poin'                 => ' 2.50 ',
                 'indikator'            => ' Dalam tiga tahun terakhir, DTPS mempublikasikan karya ilmiah dalam umlah yang memadai.  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -550,7 +550,7 @@ TEXT,
                 'nomor'                => 57,
                 'id_kriteria'          => 7,
                 'elemen'               => ' Jumlah karya ilmiah DTPS yang Disitasi ',
-                'poin'                 => ' 1.75 ',
+                'poin'                 => ' 2 ',
                 'indikator'            => ' Jumlah artikel ilmiah DTPS yang disitasi dalam 3 tahun terakhir. ',
                 'option_pilihan_ganda' => json_encode([
                     4 => ' RSA ≥ 9   ',
@@ -571,7 +571,7 @@ TEXT,
                 'nomor'                => 59,
                 'id_kriteria'          => 8,
                 'elemen'               => ' Produktivitas PkM DTPS ',
-                'poin'                 => ' 1.75 ',
+                'poin'                 => ' 2 ',
                 'indikator'            => ' DTPS memiliki produktivitas PkM dengan dana mandiri/PT, dana dalam negeri, dan dana dari luar negeri dalam tiga tahun terakhir.  ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -599,7 +599,7 @@ TEXT,
                 'nomor'                => 60,
                 'id_kriteria'          => 8,
                 'elemen'               => ' Pelibatan mahasiswa dalam PkM DTPS ',
-                'poin'                 => ' 1.75 ',
+                'poin'                 => ' 1 ',
                 'indikator'            => ' DTPS melibatkan mahasiswa dalam kegiatan PkM. ',
                 'harkat_penskoran'     =>
                     <<<TEXT
@@ -619,6 +619,18 @@ TEXT,
             ],
         ];
 
-        DB::table('matriks_lembar_evaluasi_diri')->insertOrIgnore($data);
+        DB::table('matriks_lembar_evaluasi_diri')->upsert(
+            $data,
+            ['nomor'], // kolom unik
+            [
+                'id_kriteria',
+                'elemen',
+                'poin',
+                'indikator',
+                'harkat_penskoran',
+                'option_pilihan_ganda',
+                'jenis'
+            ]
+        );
     }
 }
