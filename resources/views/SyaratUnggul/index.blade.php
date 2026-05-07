@@ -71,86 +71,167 @@
                     if ($jawaban > 3.5) {
                         $bg5 = 'bg-success text-white';
                     }
-                } elseif ($item->nomor == 5) {
+                } /* =========================
+   🔥 ELEMEN 5
+========================= */ elseif ($item->nomor == 5) {
                     $subItems = json_decode($item->matriks->subItemElemen, true);
                     $userValues = json_decode($item->matriks->userSubItemElements, true);
 
                     $nilaiMap = [];
+
                     foreach ($userValues as $val) {
                         $nilaiMap[$val['id_sub_item_elemen']] = $val['nilai'];
                     }
 
-                    $NM = $NKM3 = $NKM5 = 0;
+                    $NM = 0;
+
+                    // 🔥 Semua kategori publikasi mahasiswa
+                    $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
+                    $INT = $ISBN = $PATEN = 0;
 
                     foreach ($subItems as $sub) {
                         $id = $sub['id'];
                         $var = $sub['variabel'];
+
                         $nilai = $nilaiMap[$id] ?? 0;
 
                         if ($var == 'NM') {
                             $NM = $nilai;
                         }
-                        if ($var == 'NKM_3') {
-                            $NKM3 = $nilai;
+
+                        if ($var == 'SINTA1_MHS') {
+                            $S1 = $nilai;
                         }
-                        if ($var == 'NKM_5') {
-                            $NKM5 = $nilai;
+                        if ($var == 'SINTA2_MHS') {
+                            $S2 = $nilai;
+                        }
+                        if ($var == 'SINTA3_MHS') {
+                            $S3 = $nilai;
+                        }
+                        if ($var == 'SINTA4_MHS') {
+                            $S4 = $nilai;
+                        }
+                        if ($var == 'SINTA5_MHS') {
+                            $S5 = $nilai;
+                        }
+                        if ($var == 'SINTA6_MHS') {
+                            $S6 = $nilai;
+                        }
+
+                        if ($var == 'INT_MHS') {
+                            $INT = $nilai;
+                        }
+                        if ($var == 'ISBN_MHS') {
+                            $ISBN = $nilai;
+                        }
+                        if ($var == 'PATEN_MHS') {
+                            $PATEN = $nilai;
                         }
                     }
 
                     if ($NM > 0) {
-                        $persen3 = ($NKM3 / $NM) * 100;
-                        $persen5 = ($NKM5 / $NM) * 100;
+                        /*
+        =========================
+        🔥 SYARAT 3 TAHUN
+        Minimal Sinta 5
+        =========================
+        */
+                        $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
 
-                        // 🔥 3 Tahun
+                        $persen3 = ($total3 / $NM) * 100;
+
                         if ($persen3 >= 15) {
                             $bg3 = 'bg-success text-white';
                         }
 
-                        // 🔥 5 Tahun
+                        /*
+        =========================
+        🔥 SYARAT 5 TAHUN
+        Minimal Sinta 4
+        =========================
+        */
+                        $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
+
+                        $persen5 = ($total5 / $NM) * 100;
+
                         if ($persen5 >= 25) {
                             $bg5 = 'bg-success text-white';
                         }
                     }
-                } /* =========================
+                }
+                /* =========================
    🔥 ELEMEN 6
 ========================= */ elseif ($item->nomor == 6) {
                     $subItems = json_decode($item->matriks->subItemElemen, true);
                     $userValues = json_decode($item->matriks->userSubItemElements, true);
 
                     $nilaiMap = [];
+
                     foreach ($userValues as $val) {
                         $nilaiMap[$val['id_sub_item_elemen']] = $val['nilai'];
                     }
 
-                    $NDTPS = $NDTPUB3 = $NDTPUB5 = 0;
+                    $NDTPS = 0;
+
+                    $S1 = $S2 = $S3 = $S4 = 0;
+                    $INT = $INTREP = 0;
 
                     foreach ($subItems as $sub) {
                         $id = $sub['id'];
                         $var = $sub['variabel'];
+
                         $nilai = $nilaiMap[$id] ?? 0;
 
                         if ($var == 'NDTPS') {
                             $NDTPS = $nilai;
                         }
-                        if ($var == 'NDTPUB_3') {
-                            $NDTPUB3 = $nilai;
+
+                        if ($var == 'S1_DTPS') {
+                            $S1 = $nilai;
                         }
-                        if ($var == 'NDTPUB_5') {
-                            $NDTPUB5 = $nilai;
+                        if ($var == 'S2_DTPS') {
+                            $S2 = $nilai;
+                        }
+                        if ($var == 'S3_DTPS') {
+                            $S3 = $nilai;
+                        }
+                        if ($var == 'S4_DTPS') {
+                            $S4 = $nilai;
+                        }
+
+                        if ($var == 'INT_DTPS') {
+                            $INT = $nilai;
+                        }
+                        if ($var == 'INTREP_DTPS') {
+                            $INTREP = $nilai;
                         }
                     }
 
                     if ($NDTPS > 0) {
-                        $persen3 = ($NDTPUB3 / $NDTPS) * 100;
-                        $persen5 = ($NDTPUB5 / $NDTPS) * 100;
+                        /*
+        =========================
+        🔥 SYARAT 3 TAHUN
+        Minimal Sinta 4 / Internasional
+        =========================
+        */
+                        $total3 = $S1 + $S2 + $S3 + $S4 + $INT;
 
-                        // 🔥 3 Tahun
+                        $persen3 = ($total3 / $NDTPS) * 100;
+
                         if ($persen3 >= 20) {
                             $bg3 = 'bg-success text-white';
                         }
 
-                        // 🔥 5 Tahun
+                        /*
+        =========================
+        🔥 SYARAT 5 TAHUN
+        Minimal Sinta 2 / Internasional Bereputasi
+        =========================
+        */
+                        $total5 = $S1 + $S2 + $INTREP;
+
+                        $persen5 = ($total5 / $NDTPS) * 100;
+
                         if ($persen5 >= 20) {
                             $bg5 = 'bg-success text-white';
                         }

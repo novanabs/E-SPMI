@@ -106,31 +106,77 @@ class EvaluasiLamdikController extends Controller
             }
 
             /* =========================
-               🔥 ELEMEN 5
-            ========================= */ elseif ($item->nomor == 5) {
+      🔥 ELEMEN 5
+   ========================= */ elseif ($item->nomor == 5) {
 
-                $NM = $NKM3 = $NKM5 = 0;
+                $NM = 0;
+
+                // 🔥 Mahasiswa
+                $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
+                $INT = $ISBN = $PATEN = 0;
 
                 foreach ($subItems as $sub) {
+
                     $id = $sub->id;
                     $var = $sub->variabel;
+
                     $nilai = (float) ($nilaiMap[$id] ?? 0);
 
                     if ($var == 'NM')
                         $NM = $nilai;
-                    if ($var == 'NKM_3')
-                        $NKM3 = $nilai;
-                    if ($var == 'NKM_5')
-                        $NKM5 = $nilai;
+
+                    if ($var == 'SINTA1_MHS')
+                        $S1 = $nilai;
+                    if ($var == 'SINTA2_MHS')
+                        $S2 = $nilai;
+                    if ($var == 'SINTA3_MHS')
+                        $S3 = $nilai;
+                    if ($var == 'SINTA4_MHS')
+                        $S4 = $nilai;
+                    if ($var == 'SINTA5_MHS')
+                        $S5 = $nilai;
+                    if ($var == 'SINTA6_MHS')
+                        $S6 = $nilai;
+
+                    if ($var == 'INT_MHS')
+                        $INT = $nilai;
+                    if ($var == 'ISBN_MHS')
+                        $ISBN = $nilai;
+                    if ($var == 'PATEN_MHS')
+                        $PATEN = $nilai;
                 }
 
                 if ($NM > 0) {
 
-                    if (($NKM3 / $NM) * 100 >= 15) {
+                    /*
+                    =========================
+                    🔥 3 Tahun
+                    Minimal Sinta 5
+                    =========================
+                    */
+                    $total3 =
+                        $S1 + $S2 + $S3 + $S4 + $S5 +
+                        $INT + $ISBN + $PATEN;
+
+                    $persen3 = ($total3 / $NM) * 100;
+
+                    if ($persen3 >= 15) {
                         $item->memenuhi_3_tahun = true;
                     }
 
-                    if (($NKM5 / $NM) * 100 >= 25) {
+                    /*
+                    =========================
+                    🔥 5 Tahun
+                    Minimal Sinta 4
+                    =========================
+                    */
+                    $total5 =
+                        $S1 + $S2 + $S3 + $S4 +
+                        $INT + $ISBN + $PATEN;
+
+                    $persen5 = ($total5 / $NM) * 100;
+
+                    if ($persen5 >= 25) {
                         $item->memenuhi_5_tahun = true;
                     }
                 }
@@ -140,28 +186,66 @@ class EvaluasiLamdikController extends Controller
                🔥 ELEMEN 6
             ========================= */ elseif ($item->nomor == 6) {
 
-                $NDTPS = $NDTPUB3 = $NDTPUB5 = 0;
+                $NDTPS = 0;
+
+                // 🔥 DTPS
+                $S1 = $S2 = $S3 = $S4 = 0;
+                $INT = $INTREP = 0;
 
                 foreach ($subItems as $sub) {
+
                     $id = $sub->id;
                     $var = $sub->variabel;
+
                     $nilai = (float) ($nilaiMap[$id] ?? 0);
 
                     if ($var == 'NDTPS')
                         $NDTPS = $nilai;
-                    if ($var == 'NDTPUB_3')
-                        $NDTPUB3 = $nilai;
-                    if ($var == 'NDTPUB_5')
-                        $NDTPUB5 = $nilai;
+
+                    if ($var == 'S1_DTPS')
+                        $S1 = $nilai;
+                    if ($var == 'S2_DTPS')
+                        $S2 = $nilai;
+                    if ($var == 'S3_DTPS')
+                        $S3 = $nilai;
+                    if ($var == 'S4_DTPS')
+                        $S4 = $nilai;
+
+                    if ($var == 'INT_DTPS')
+                        $INT = $nilai;
+                    if ($var == 'INTREP_DTPS')
+                        $INTREP = $nilai;
                 }
 
                 if ($NDTPS > 0) {
 
-                    if (($NDTPUB3 / $NDTPS) * 100 >= 20) {
+                    /*
+                    =========================
+                    🔥 3 Tahun
+                    Minimal Sinta 4 / Internasional
+                    =========================
+                    */
+                    $total3 =
+                        $S1 + $S2 + $S3 + $S4 + $INT;
+
+                    $persen3 = ($total3 / $NDTPS) * 100;
+
+                    if ($persen3 >= 20) {
                         $item->memenuhi_3_tahun = true;
                     }
 
-                    if (($NDTPUB5 / $NDTPS) * 100 >= 20) {
+                    /*
+                    =========================
+                    🔥 5 Tahun
+                    Minimal Sinta 2 / Internasional Bereputasi
+                    =========================
+                    */
+                    $total5 =
+                        $S1 + $S2 + $INTREP;
+
+                    $persen5 = ($total5 / $NDTPS) * 100;
+
+                    if ($persen5 >= 20) {
                         $item->memenuhi_5_tahun = true;
                     }
                 }
@@ -239,22 +323,13 @@ class EvaluasiLamdikController extends Controller
 
         if (!empty($request->variabel)) {
 
-            // Ambil nomor dari matriks
-            $nomor = MatriksLED::where('id', $request->id_matriks_led)
-                ->value('nomor');
-
-            // Ambil mapping variabel => id
-            $subItems = SubItemElemen::where('nomor_elemen', $nomor)
-                ->whereIn('variabel', array_keys($request->variabel))
-                ->pluck('id', 'variabel');
-
             $idUserJurusan = null;
 
-            DB::transaction(function () use ($request, $subItems, $idUserJurusan) {
+            DB::transaction(function () use ($request, $idUserJurusan) {
 
-                foreach ($request->variabel as $kodeVariabel => $nilai) {
+                foreach ($request->variabel as $idSubItem => $nilai) {
 
-                    // skip kalau kosong
+                    // skip kosong
                     if ($nilai === null || $nilai === '') {
                         continue;
                     }
@@ -262,7 +337,7 @@ class EvaluasiLamdikController extends Controller
                     UserSubItemElemen::updateOrCreate(
                         [
                             'id_matriks'         => $request->id_matriks_led,
-                            'id_sub_item_elemen' => $subItems[$kodeVariabel] ?? null,
+                            'id_sub_item_elemen' => $idSubItem,
                             'id_users'           => $request->id_users,
                         ],
                         [
