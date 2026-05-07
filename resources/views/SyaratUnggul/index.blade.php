@@ -112,8 +112,7 @@
                             $bg5 = 'bg-success text-white';
                         }
                     }
-                }
-                /* =========================
+                } /* =========================
    🔥 ELEMEN 6
 ========================= */ elseif ($item->nomor == 6) {
                     $subItems = json_decode($item->matriks->subItemElemen, true);
@@ -164,20 +163,15 @@
 
                     {{-- HEADER --}}
                     <div class="card-header fw-bold text-center">
-                        Elemen {{ $item->nomor }}
+                        Elemen {{ $item->nomor }} : {{ $item->elemen ?? '-' }} <br>
+                        <small class="text-muted">
+                            {{ $item->matriks->elemen ?? '-' }}
+                        </small>
                     </div>
 
                     {{-- BODY --}}
                     <div class="card-body">
 
-                        {{-- ELEMEN --}}
-                        <h6 class="fw-bold mb-2">Elemen</h6>
-                        <p class="mb-3">
-                            {{ $item->elemen ?? '-' }} <br>
-                            <small class="text-muted">
-                                {{ $item->matriks->elemen ?? '-' }}
-                            </small>
-                        </p>
 
                         {{-- INDIKATOR --}}
                         <h6 class="fw-bold mb-2">Indikator</h6>
