@@ -237,35 +237,32 @@ class EvaluasiLamdikController extends Controller
 
         // dd($request->variabel);
 
-        if ($request->variabel != null) {
+        if (!empty($request->variabel)) {
 
-            // Ambil Nomor menggunakan id_matriks_led
-            $nomor = MatriksLED::where('id', $request->id_matriks_led)->value('nomor');
+            // Ambil nomor dari matriks
+            $nomor = MatriksLED::where('id', $request->id_matriks_led)
+                ->value('nomor');
 
-            // Ambil id di tabel sub_item_elemen
-            $subItems = SubItemElemen::where('nomor_elemen', $nomor)->whereIn(
-                'variabel',
-                array_keys($request->variabel)
-            )->pluck('id', 'variabel');
-            ;
-            // dd($subItems);
+            // Ambil mapping variabel => id
+            $subItems = SubItemElemen::where('nomor_elemen', $nomor)
+                ->whereIn('variabel', array_keys($request->variabel))
+                ->pluck('id', 'variabel');
 
             $idUserJurusan = null;
 
-            // if ($request->role !== 'admin_jurusan') {
-            //     $idUserJurusan = $request->id_users;
-            // }
-
-
-            // Ini yang memasukkan per variabel
             DB::transaction(function () use ($request, $subItems, $idUserJurusan) {
 
                 foreach ($request->variabel as $kodeVariabel => $nilai) {
 
+                    // skip kalau kosong
+                    if ($nilai === null || $nilai === '') {
+                        continue;
+                    }
+
                     UserSubItemElemen::updateOrCreate(
                         [
                             'id_matriks'         => $request->id_matriks_led,
-                            'id_sub_item_elemen' => $kodeVariabel,
+                            'id_sub_item_elemen' => $subItems[$kodeVariabel] ?? null,
                             'id_users'           => $request->id_users,
                         ],
                         [
@@ -275,7 +272,6 @@ class EvaluasiLamdikController extends Controller
                     );
                 }
             });
-
         }
 
         return redirect()->route('evaluasi_lamdik.index')
