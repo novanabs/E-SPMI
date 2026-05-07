@@ -505,37 +505,116 @@ class SubItemElemenSeeder extends Seeder
                 'deskripsi'    => 'Jumlah judul PkM DTPS dalam 3 tahun terakhir.'
             ],
             // 🔥 TAMBAHAN BARU
+
+            /* =========================================
+               🔥 ELEMEN 5
+               Produktivitas Karya Inovatif Mahasiswa
+            ========================================= */
+
             [
                 'nomor_elemen' => 15,
                 'variabel'     => 'NM',
                 'deskripsi'    => 'Jumlah total mahasiswa'
             ],
+
             [
                 'nomor_elemen' => 15,
-                'variabel'     => 'NKM_3',
-                'deskripsi'    => 'Jumlah mahasiswa yang memiliki karya inovatif (3 tahun)'
+                'variabel'     => 'SINTA1_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 1'
             ],
             [
                 'nomor_elemen' => 15,
-                'variabel'     => 'NKM_5',
-                'deskripsi'    => 'Jumlah mahasiswa yang memiliki karya inovatif (5 tahun)'
+                'variabel'     => 'SINTA2_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 2'
             ],
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'SINTA3_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 3'
+            ],
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'SINTA4_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 4'
+            ],
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'SINTA5_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 5'
+            ],
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'SINTA6_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 6'
+            ],
+
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'INT_MHS',
+                'deskripsi'    => 'Jumlah publikasi internasional mahasiswa'
+            ],
+
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'ISBN_MHS',
+                'deskripsi'    => 'Jumlah book chapter / buku ISBN mahasiswa'
+            ],
+
+            [
+                'nomor_elemen' => 15,
+                'variabel'     => 'PATEN_MHS',
+                'deskripsi'    => 'Jumlah paten / paten sederhana mahasiswa'
+            ],
+
+
+
+            /* =========================================
+               🔥 ELEMEN 6
+               Produktivitas Publikasi DTPS
+            ========================================= */
 
             [
                 'nomor_elemen' => 56,
                 'variabel'     => 'NDTPS',
                 'deskripsi'    => 'Jumlah Dosen Tetap Program Studi'
             ],
+
             [
                 'nomor_elemen' => 56,
-                'variabel'     => 'NDTPUB_3',
-                'deskripsi'    => 'Jumlah DTPS yang memiliki publikasi (3 tahun)'
+                'variabel'     => 'S1_DTPS',
+                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 1'
             ],
+
             [
                 'nomor_elemen' => 56,
-                'variabel'     => 'NDTPUB_5',
-                'deskripsi'    => 'Jumlah DTPS yang memiliki publikasi (5 tahun)'
+                'variabel'     => 'S2_DTPS',
+                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 2'
             ],
+
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'S3_DTPS',
+                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 3'
+            ],
+
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'S4_DTPS',
+                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 4'
+            ],
+
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'INT_DTPS',
+                'deskripsi'    => 'Jumlah publikasi internasional DTPS'
+            ],
+
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'INTREP_DTPS',
+                'deskripsi'    => 'Jumlah publikasi internasional bereputasi DTPS'
+            ],
+
 
         ];
 
