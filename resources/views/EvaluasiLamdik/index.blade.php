@@ -149,122 +149,18 @@
 
             <div class="mb-3">
                 <div class="card shadow-sm">
-
-                    <div class="card-header py-2 d-flex justify-content-between">
-                        <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
-                            {{ $syarat5 }}</h5>
-                        <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
-                            Export PDF
-                        </button>
-                    </div>
-
                     <div class="card-body py-2">
 
                         <div class="row">
 
-                            <!-- KIRI: RADAR CHART -->
-                            <div class="col-md-6">
-                                <canvas id="radarChart"></canvas>
+                            <div class="card-header">
+                                <h4 id="content-title" class="mb-0">Pilih Navigasi di Sebelah Kanan</h4>
                             </div>
-
-                            <!-- KANAN: HASIL -->
-                            <div class="col-md-6 d-flex flex-column">
-
-                                <div class="d-flex">
-                                    <p class="mb-1 me-2">Nilai Akreditasi:</p>
-                                    <p class="mb-1 fw-bold" id="total_nilai_semua"></p>
-                                </div>
-
-                                <div class="d-flex">
-                                    <p class="mb-1 me-2">Status Akreditasi:</p>
-                                    <p class="mb-1 fw-bold" id="status"></p>
-                                </div>
-
-                                <div class="d-flex">
-                                    <p class="mb-0 me-2">Masa Berlaku:</p>
-                                    <p class="mb-0 fw-bold" id="masa"></p>
-                                </div>
-
-                                @if (auth()->user()->role == 'admin_jurusan')
-                                    <a class="btn btn-primary btn-sm mt-3 mb-3"
-                                        href="{{ route('evaluasi_lamdik.show', auth()->user()->id) }}">
-                                        Bandingkan
-                                    </a>
-                                @endif
-
-                                @php
-                                    $currentKriteria1 = null;
-                                    $nomorKriteria = 0;
-                                    $peraspek = [];
-                                    $aktual = [];
-                                @endphp
-
-                                <div>
-                                    Aspek
-                                </div>
-
-                                @php
-                                    $peraspek = [];
-                                    $aktual = [];
-
-                                    foreach ($data as $item) {
-                                        $namaAspek = $item->kriteria->name;
-                                        $nilai_aktual = $item->userMatrik->nilai_total ?? 0;
-
-                                        if (!isset($peraspek[$namaAspek])) {
-                                            $peraspek[$namaAspek] = 0;
-                                            $aktual[$namaAspek] = 0;
-                                        }
-
-                                        $peraspek[$namaAspek] += $item->poin * 4;
-                                        $aktual[$namaAspek] += $nilai_aktual;
-                                    }
-                                @endphp
-
-
-
-                                <table class="table table-bordered text-center align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Aspek</th>
-                                            <th>Nilai Aktual</th>
-                                            <th>Nilai Maks</th>
-                                            <th>Persentase</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php $no = 1; @endphp
-
-                                        @foreach ($peraspek as $aspek => $nilaiMaks)
-                                            @php
-                                                $nilaiAkt = $aktual[$aspek] ?? 0;
-                                                $persen = $nilaiMaks > 0 ? ($nilaiAkt / $nilaiMaks) * 100 : 0;
-
-                                                $warna = 'text-danger'; // default merah
-
-                                                if ($persen >= 80) {
-                                                    $warna = 'text-success';
-                                                } elseif ($persen >= 60) {
-                                                    $warna = 'text-warning';
-                                                }
-                                            @endphp
-
-                                            <tr>
-                                                <td>{{ $no++ }}</td>
-                                                <td class="text-start">{{ $aspek }}</td>
-                                                <td>{{ $nilaiAkt }}</td>
-                                                <td>{{ $nilaiMaks }}</td>
-
-                                                <td>
-                                                    <span class="fw-bold {{ $warna }}">
-                                                        {{ number_format($persen, 2) }}%
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="card-body">
+                                <p class="fw-bold">Bobot : <span id="content-poin"></span></p>
+                                <span id="content-body"></span>
+                                <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}" method="POST">
+                                </form>
                             </div>
 
                         </div>
@@ -272,104 +168,215 @@
                     </div>
 
 
-                    <script>
-                        // Ambil data dari Laravel
-                        const maxData = @json($peraspek);
-                        const actualData = @json($aktual);
 
-                        const labels = [
-                            'Aspek 1',
-                            'Aspek 2',
-                            'Aspek 3',
-                            'Aspek 4',
-                            'Aspek 5',
-                            'Aspek 6',
-                            'Aspek 7',
-                            'Aspek 8',
-                            'Aspek 9'
-                        ];
-
-                        // Ambil urutan data dari object Laravel
-                        const keys = Object.keys(maxData);
-
-                        // Hitung persentase
-                        const dataValues = keys.map(key => {
-                            const max = maxData[key] ?? 0;
-                            const actual = actualData[key] ?? 0;
-
-                            if (max === 0) return 0;
-                            return (actual / max) * 100;
-                        });
-
-                        // Hitung rata-rata
-                        const total = dataValues.length ?
-                            dataValues.reduce((a, b) => a + b, 0) / dataValues.length :
-                            0;
-
-                        // // Tentukan status & peringkat
-                        // let status = '';
-                        // let peringkat = '';
-
-                        // if (total >= 85) {
-                        //     status = 'Sangat Baik';
-                        //     peringkat = 'A';
-                        // } else if (total >= 70) {
-                        //     status = 'Baik';
-                        //     peringkat = 'B';
-                        // } else {
-                        //     status = 'Cukup';
-                        //     peringkat = 'C';
-                        // }
-
-                        // // Tampilkan ke HTML
-                        // document.getElementById('total_nilai_semua').innerText = total.toFixed(2);
-                        // document.getElementById('status').innerText = status;
-                        // document.getElementById('peringkat').innerText = peringkat;
-
-                        // Chart
-                        const data = {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Capaian (%)',
-                                data: dataValues,
-                                fill: true,
-                            }]
-                        };
-
-                        const config = {
-                            type: 'radar',
-                            data: data,
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    r: {
-                                        min: 0,
-                                        max: 100
-                                    }
-                                }
-                            }
-                        };
-
-                        new Chart(
-                            document.getElementById('radarChart'),
-                            config
-                        );
-                    </script>
                 </div>
             </div>
 
 
             <!-- Row kedua di kiri -->
             <div class="card shadow-sm">
-                <div class="card-header">
-                    <h4 id="content-title" class="mb-0">Pilih Navigasi di Sebelah Kanan</h4>
+
+                <div class="card-header py-2 d-flex justify-content-between">
+                    {{-- <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
+                            {{ $syarat5 }}</h5> --}}
+                    <h5 class="mb-0">Hasil Akreditasi</h5>
+                    <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
+                        Export PDF
+                    </button>
                 </div>
-                <div class="card-body">
-                    <p class="fw-bold">Bobot : <span id="content-poin"></span></p>
-                    <span id="content-body"></span>
-                    <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}" method="POST">
-                    </form>
+
+                <div class="row mt-3">
+                    <!-- KIRI: RADAR CHART -->
+                    <div class="col-md-6">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+
+                    <!-- KANAN: HASIL -->
+                    <div class="col-md-6 d-flex flex-column">
+
+                        <div class="d-flex">
+                            <p class="mb-1 me-2">Nilai Akreditasi:</p>
+                            <p class="mb-1 fw-bold" id="total_nilai_semua"></p>
+                        </div>
+
+                        <div class="d-flex">
+                            <p class="mb-1 me-2">Status Akreditasi:</p>
+                            <p class="mb-1 fw-bold" id="status"></p>
+                        </div>
+
+                        <div class="d-flex">
+                            <p class="mb-0 me-2">Masa Berlaku:</p>
+                            <p class="mb-0 fw-bold" id="masa"></p>
+                        </div>
+
+                        @if (auth()->user()->role == 'admin_jurusan')
+                            <a class="btn btn-primary btn-sm mt-3 mb-3"
+                                href="{{ route('evaluasi_lamdik.show', auth()->user()->id) }}">
+                                Bandingkan
+                            </a>
+                        @endif
+
+                        @php
+                            $currentKriteria1 = null;
+                            $nomorKriteria = 0;
+                            $peraspek = [];
+                            $aktual = [];
+                        @endphp
+
+                        <div>
+                            Aspek
+                        </div>
+
+                        @php
+                            $peraspek = [];
+                            $aktual = [];
+
+                            foreach ($data as $item) {
+                                $namaAspek = $item->kriteria->name;
+                                $nilai_aktual = $item->userMatrik->nilai_total ?? 0;
+
+                                if (!isset($peraspek[$namaAspek])) {
+                                    $peraspek[$namaAspek] = 0;
+                                    $aktual[$namaAspek] = 0;
+                                }
+
+                                $peraspek[$namaAspek] += $item->poin * 4;
+                                $aktual[$namaAspek] += $nilai_aktual;
+                            }
+                        @endphp
+
+
+
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Aspek</th>
+                                    <th>Nilai Aktual</th>
+                                    <th>Nilai Maks</th>
+                                    <th>Persentase</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $no = 1; @endphp
+
+                                @foreach ($peraspek as $aspek => $nilaiMaks)
+                                    @php
+                                        $nilaiAkt = $aktual[$aspek] ?? 0;
+                                        $persen = $nilaiMaks > 0 ? ($nilaiAkt / $nilaiMaks) * 100 : 0;
+
+                                        $warna = 'text-danger'; // default merah
+
+                                        if ($persen >= 80) {
+                                            $warna = 'text-success';
+                                        } elseif ($persen >= 60) {
+                                            $warna = 'text-warning';
+                                        }
+                                    @endphp
+
+                                    <tr>
+                                        <td>{{ $no++ }}</td>
+                                        <td class="text-start">{{ $aspek }}</td>
+                                        <td>{{ $nilaiAkt }}</td>
+                                        <td>{{ $nilaiMaks }}</td>
+
+                                        <td>
+                                            <span class="fw-bold {{ $warna }}">
+                                                {{ number_format($persen, 2) }}%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
+
+
+                <script>
+                    // Ambil data dari Laravel
+                    const maxData = @json($peraspek);
+                    const actualData = @json($aktual);
+
+                    const labels = [
+                        'Aspek 1',
+                        'Aspek 2',
+                        'Aspek 3',
+                        'Aspek 4',
+                        'Aspek 5',
+                        'Aspek 6',
+                        'Aspek 7',
+                        'Aspek 8',
+                        'Aspek 9'
+                    ];
+
+                    // Ambil urutan data dari object Laravel
+                    const keys = Object.keys(maxData);
+
+                    // Hitung persentase
+                    const dataValues = keys.map(key => {
+                        const max = maxData[key] ?? 0;
+                        const actual = actualData[key] ?? 0;
+
+                        if (max === 0) return 0;
+                        return (actual / max) * 100;
+                    });
+
+                    // Hitung rata-rata
+                    const total = dataValues.length ?
+                        dataValues.reduce((a, b) => a + b, 0) / dataValues.length :
+                        0;
+
+                    // // Tentukan status & peringkat
+                    // let status = '';
+                    // let peringkat = '';
+
+                    // if (total >= 85) {
+                    //     status = 'Sangat Baik';
+                    //     peringkat = 'A';
+                    // } else if (total >= 70) {
+                    //     status = 'Baik';
+                    //     peringkat = 'B';
+                    // } else {
+                    //     status = 'Cukup';
+                    //     peringkat = 'C';
+                    // }
+
+                    // // Tampilkan ke HTML
+                    // document.getElementById('total_nilai_semua').innerText = total.toFixed(2);
+                    // document.getElementById('status').innerText = status;
+                    // document.getElementById('peringkat').innerText = peringkat;
+
+                    // Chart
+                    const data = {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Capaian (%)',
+                            data: dataValues,
+                            fill: true,
+                        }]
+                    };
+
+                    const config = {
+                        type: 'radar',
+                        data: data,
+                        options: {
+                            responsive: true,
+                            scales: {
+                                r: {
+                                    min: 0,
+                                    max: 100
+                                }
+                            }
+                        }
+                    };
+
+                    new Chart(
+                        document.getElementById('radarChart'),
+                        config
+                    );
+                </script>
             </div>
 
         </div>
