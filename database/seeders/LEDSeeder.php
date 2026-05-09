@@ -10,6 +10,7 @@ class LEDSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     * Update data LAMDIK 3.0 (Kamis, 7 Mei 2026)
      */
     public function run(): void
     {
