@@ -34,23 +34,30 @@ class PenetapanController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'name'               => 'required',
-            'link_bukti_dokumen' => 'required'
-        ], [
-            'name.required'               => 'Nama dokumen wajib diisi.',
-            'link_bukti_dokumen.required' => 'Link dokumen wajib diisi.',
-        ]);
+{
+    $request->validate([
+        'name'                   => 'required',
+        'tanggal_penetapan'      => 'required|date',
+        'tanggal_berakhir'       => 'nullable|date',
+        'link_bukti_dokumen'     => 'required'
+    ], [
+        'name.required'                  => 'Nama dokumen wajib diisi.',
+        'tanggal_penetapan.required'     => 'Tanggal penetapan wajib diisi.',
+        'tanggal_berakhir.date'          => 'Tanggal berakhir harus berupa tanggal yang valid.',
+        'link_bukti_dokumen.required'    => 'Link dokumen wajib diisi.',
+    ]);
 
-        $data = $request->merge([
-            'id_users' => auth()->id()
-        ]);
+    $data = $request->merge([
+        'id_users' => auth()->id(),
+        'tanggal_berakhir' => $request->tanggal_berakhir ?: null
+    ]);
 
-        Penetapan::create($data->all());
+    Penetapan::create($data->all());
 
-        return redirect()->route('penetapan.index')->with('success', 'Data berhasil ditambahkan');
-    }
+    return redirect()
+        ->route('penetapan.index')
+        ->with('success', 'Data berhasil ditambahkan');
+}
 
     /**
      * Display the specified resource.
@@ -73,21 +80,27 @@ class PenetapanController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $validated = $request->validate([
-            'name'               => 'required|string',
-            'link_bukti_dokumen' => 'required|string',
-        ], [
-            'name.required'               => 'Nama dokumen wajib diisi.',
-            'link_bukti_dokumen.required' => 'Link dokumen wajib diisi.',
-        ]);
+{
+    $validated = $request->validate([
+        'name'                   => 'required|string',
+        'tanggal_penetapan'      => 'required|date',
+        'tanggal_berakhir'       => 'nullable|date',
+        'link_bukti_dokumen'     => 'required|string',
+    ], [
+        'name.required'                  => 'Nama dokumen wajib diisi.',
+        'tanggal_penetapan.required'     => 'Tanggal penetapan wajib diisi.',
+        'tanggal_berakhir.date'          => 'Tanggal berakhir harus berupa tanggal yang valid.',
+        'link_bukti_dokumen.required'    => 'Link dokumen wajib diisi.',
+    ]);
 
-        Penetapan::where('id', $id)->update(
-            $validated
-        );
+    $validated['tanggal_berakhir'] = $request->tanggal_berakhir ?: null;
 
-        return redirect()->route('penetapan.index')->with('success', 'Data berhasil diupdate!');
-    }
+    Penetapan::where('id', $id)->update($validated);
+
+    return redirect()
+        ->route('penetapan.index')
+        ->with('success', 'Data berhasil diupdate!');
+}
 
     /**
      * Remove the specified resource from storage.

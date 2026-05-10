@@ -11,6 +11,10 @@ class Penetapan extends Model
     protected $fillable = [
         'name',
         'link_bukti_dokumen',
+        'tanggal_penetapan',
+        'tanggal_berakhir',
         'id_users',
     ];
+
+    
 }
