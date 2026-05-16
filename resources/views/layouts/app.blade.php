@@ -125,6 +125,251 @@
         }
     </style>
 
+  <style>
+
+/* ========================================
+   SIDEBAR MODERN UI
+======================================== */
+
+.app-sidebar {
+    background: linear-gradient(180deg, #0f172a 0%, #111827 100%) !important;
+    border-right: 1px solid rgba(255,255,255,0.04);
+    box-shadow: 10px 0 30px rgba(0,0,0,0.08);
+}
+
+/* ========================================
+   BRAND
+======================================== */
+
+.sidebar-brand {
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    /* padding: 8px 0; */
+    background: rgba(255,255,255,0.02);
+    backdrop-filter: blur(10px);
+}
+
+.brand-link {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    text-decoration: none !important;
+}
+
+.brand-text {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    letter-spacing: .5px;
+    color: white !important;
+}
+
+/* ========================================
+   SIDEBAR WRAPPER
+======================================== */
+
+.sidebar-wrapper {
+    padding: 14px;
+}
+
+/* ========================================
+   MENU
+======================================== */
+
+.nav-sidebar > .nav-item {
+    margin-bottom: 6px;
+}
+
+.nav-sidebar .nav-link {
+    border-radius: 14px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    color: rgba(255,255,255,0.78) !important;
+    transition: all .25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover */
+
+.nav-sidebar .nav-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: white !important;
+    transform: translateX(4px);
+}
+
+/* Active */
+
+.nav-sidebar .nav-link.active {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white !important;
+    box-shadow: 0 10px 24px rgba(37,99,235,0.35);
+}
+
+/* Active Glow */
+
+.nav-sidebar .nav-link.active::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(255,255,255,0.18),
+        transparent
+    );
+    pointer-events: none;
+}
+
+/* ========================================
+   ICON
+======================================== */
+
+.nav-sidebar .nav-icon {
+    font-size: 17px;
+    margin-right: 12px;
+    min-width: 22px;
+    text-align: center;
+}
+
+/* ========================================
+   TEXT
+======================================== */
+
+.nav-sidebar .nav-link p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* ========================================
+   TREEVIEW
+======================================== */
+
+.nav-treeview {
+    margin-top: 8px;
+    padding-left: 10px;
+    border-left: 1px dashed rgba(255,255,255,0.08);
+    margin-left: 16px;
+}
+
+/* .nav-treeview .nav-link {
+    min-height: 44px;
+    font-size: 13px;
+    border-radius: 12px;
+    padding-left: 12px;
+} */
+
+.nav-treeview .nav-link.active {
+    background: rgba(59,130,246,0.16);
+    box-shadow: none;
+}
+
+.nav-treeview .nav-link:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+/* ========================================
+   ARROW
+======================================== */
+
+.nav-arrow {
+    transition: transform .25s ease;
+}
+
+.menu-open > .nav-link .nav-arrow {
+    transform: rotate(90deg);
+}
+
+/* ========================================
+   USER AREA
+======================================== */
+
+.user-menu .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+.sidebar-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.12);
+    border-radius: 999px;
+}
+
+/* ========================================
+   COLLAPSED SIDEBAR
+======================================== */
+
+.sidebar-collapse .brand-text {
+    display: none;
+}
+
+.sidebar-collapse .nav-sidebar .nav-link p {
+    opacity: 0;
+    transition: .2s ease;
+}
+
+.sidebar-collapse .nav-sidebar .nav-link {
+    justify-content: center;
+}
+
+.sidebar-collapse .nav-sidebar .nav-icon {
+    margin-right: 0;
+    font-size: 18px;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media(max-width: 992px){
+
+    .app-sidebar {
+        backdrop-filter: blur(14px);
+    }
+
+}
+
+/* ========================================
+   HEADER NAVBAR IMPROVEMENT
+======================================== */
+
+.app-header {
+    border-bottom: 1px solid rgba(15,23,42,0.06);
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.82) !important;
+}
+
+/* ========================================
+   MAIN CONTENT
+======================================== */
+
+.app-main {
+    background: #f8fafc;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.app-footer {
+    background: white;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+</style>
+
 
 </head>
 <!--end::Head-->
