@@ -11,6 +11,8 @@ class Pelaksanaan extends Model
     protected $fillable = [
         'name',
         'link_bukti_laporan',
+        'link_bukti_laporan_genap',
+        'tahun',
         'nama_mitra',
         'link_bukti_kerjasama',
         'id_users'

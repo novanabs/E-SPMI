@@ -38,9 +38,15 @@ class PelaksanaanController extends Controller
         $request->validate([
             'name'               => 'required',
             'link_bukti_laporan' => 'required',
+            'tahun' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
         ], [
             'name.required'               => 'Nama laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.digits' => 'Tahun harus berupa 4 digit.',
+            'tahun.integer' => 'Tahun harus berupa angka.',
+            'tahun.min' => 'Tahun tidak valid.',
+            'tahun.max' => 'Tahun tidak valid.',
         ]);
 
         $data = $request->merge([
@@ -77,11 +83,18 @@ class PelaksanaanController extends Controller
         $validated = $request->validate([
             'name'                 => 'required',
             'link_bukti_laporan'   => 'required',
+            'link_bukti_laporan_genap' => 'nullable',
+            'tahun' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
             'nama_mitra'           => 'nullable',
             'link_bukti_kerjasama' => 'nullable'
         ], [
             'name.required'               => 'Nama laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.digits' => 'Tahun harus berupa 4 digit.',
+            'tahun.integer' => 'Tahun harus berupa angka.',
+            'tahun.min' => 'Tahun tidak valid.',
+            'tahun.max' => 'Tahun tidak valid.',
         ]);
 
         Pelaksanaan::where('id', $id)->update(
