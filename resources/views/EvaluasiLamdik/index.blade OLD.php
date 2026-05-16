@@ -148,565 +148,32 @@
         <div class="col-md-9 d-flex flex-column">
 
             <div class="mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body py-2">
 
+                        <div class="row">
+
+                            <div class="card-header">
+                                <h4 id="content-title" class="mb-0">Pilih Navigasi di Sebelah Kanan</h4>
+                            </div>
+                            <div class="card-body">
+                                <p class="fw-bold">Bobot : <span id="content-poin"></span></p>
+                                <span id="content-body"></span>
+                                <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}" method="POST">
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
             </div>
 
 
             <!-- Row kedua di kiri -->
-
-
-        </div>
-
-        <!-- Kanan: col 3 dengan tinggi penuh -->
-
-    </div>
-
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="penetapan-tab" data-bs-toggle="tab" data-bs-target="#penetapan"
-                type="button" role="tab" aria-controls="penetapan" aria-selected="true">Evaluasi Diri</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pelaksanaan-tab" data-bs-toggle="tab" data-bs-target="#pelaksanaan" type="button"
-                role="tab" aria-controls="pelaksanaan" aria-selected="false">Syarat Unggul</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="evaluasi-tab" data-bs-toggle="tab" data-bs-target="#evaluasi" type="button"
-                role="tab" aria-controls="evaluasi" aria-selected="false">Chart</button>
-        </li>
-    </ul>
-
-    <!-- Tab Content (HARUS SATU SAJA) -->
-    <div class="tab-content mt-3" id="myTabContent">
-        <div class="tab-pane fade show active" id="penetapan" role="tabpanel" aria-labelledby="penetapan-tab">
-            {{-- Penetapan --}}
-            <div class="row">
-
-                <div class="col-md-9">
-                    <div class="card shadow-sm">
-                        <div class="card-body py-2">
-
-                            <div class="row">
-
-                                <div class="card-header">
-                                    <h4 id="content-title" class="mb-0">Pilih Navigasi di Sebelah Kanan</h4>
-                                    <small id="kriteria-title" class="text-muted d-block mt-1">
-                                        Kriteria
-                                    </small>
-                                </div>
-                                <div class="card-body">
-                                    <p class="fw-bold">Bobot : <span id="content-poin"></span></p>
-                                    <span id="content-body" class="mt-2"></span>
-                                    <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}" method="POST">
-                                    </form>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="d-flex justify-content-end gap-2">
-                            <button id="btnPrev" class="btn btn-secondary btn-sm">
-                                <i class="bi bi-chevron-double-left"></i>
-                            </button>
-
-                            <button id="btnNext" class="btn btn-secondary btn-sm">
-                                <i class="bi bi-chevron-double-right"></i>
-                            </button>
-                        </div>
-
-
-
-                    </div>
-                </div>
-                <div class="col-md-3">
-
-
-
-
-                    {{-- Tombol navigasi next prev --}}
-
-
-                    <div class="card shadow-sm mb-3">
-                        <label for="search-elemen" class="form-label fw-bold">Cari Elemen</label>
-                        <input type="text" id="search-elemen" class="form-control mb-3"
-                            placeholder="Ketik nama elemen...">
-                        <label for="filterColor" class="form-label fw-bold">Filter Warna</label>
-                        <select id="filterColor" class="form-select mb-3">
-                            <option value="">Semua</option>
-                            <option value="green">Hijau</option>
-                            <option value="yellow">Kuning</option>
-                            <option value="red">Merah</option>
-                            <option value="none">Belum Terisi</option>
-                        </select>
-
-                        <p class="fw-bold mb-1">
-                            Keterangan
-                        </p>
-
-                        <div class="d-flex align-items-center mb-1">
-                            <div style="width: 15px; height: 15px; background:#28a745; border-radius:3px;" class="me-2">
-                            </div>
-                            <span>Skor <strong>4</strong> (Baik)</span>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-1">
-                            <div style="width: 15px; height: 15px; background:#ffc107; border-radius:3px;" class="me-2">
-                            </div>
-                            <span>Skor <strong>3–2</strong> (Cukup)</span>
-                        </div>
-
-                        <div class="d-flex align-items-center mb-1">
-                            <div style="width: 15px; height: 15px; background:#dc3545; border-radius:3px;" class="me-2">
-                            </div>
-                            <span>Skor <strong>1</strong> (Kurang)</span>
-                        </div>
-
-                        <div class="d-flex align-items-center">
-                            <div style="
-                    width:15px;
-                    height:15px;
-                    background:#ffffff;
-                    border:1px solid #ccc;
-                    border-radius:3px;
-                "
-                                class="me-2"></div>
-
-                            <span>Belum Terisi</span>
-                        </div>
-
-                        <div class="mt-3 mb-1">
-                            <strong>Navigasi Elemen</strong>
-                        </div>
-                        <div class="list-group list-group-flush" style="max-height: 50vh; overflow-y: auto;"
-                            id="nav-container">
-
-                            @php
-                                $currentKriteria = null;
-                            @endphp
-
-                            @foreach ($data as $item)
-                                {{-- Jika kriteria berubah, tampilkan header --}}
-                                @if ($currentKriteria !== $item->kriteria->name)
-                                    @php
-                                        $currentKriteria = $item->kriteria->name;
-                                    @endphp
-
-                                    <div class="list-group-item bg-secondary text-white fw-bold">
-                                        {{ $currentKriteria }}
-                                    </div>
-                                @endif
-
-                                {{-- Atur warna navigasi --}}
-                                @php
-                                    $jawaban = $item->userMatrik->jawaban ?? null;
-
-                                    // Background color
-                                    $color = match (true) {
-                                        $jawaban == 4 => 'list-group-item-success',
-                                        $jawaban < 4 && $jawaban > 1 => 'list-group-item-warning',
-                                        $jawaban == 1 => 'list-group-item-danger',
-                                        default => '',
-                                    };
-
-                                    // Border color
-                                    $borderClass = match (true) {
-                                        $jawaban == 4 => 'border-green',
-                                        $jawaban < 4 && $jawaban > 1 => 'border-yellow',
-                                        $jawaban == 1 => 'border-red',
-                                        default => 'border-none',
-                                    };
-                                @endphp
-
-
-                                {{-- Tombol navigasi --}}
-                                <button
-                                    class="list-group-item list-group-item-action nav-item-btn border-none {{ $color }} {{ $borderClass }}"
-                                    data-id="{{ $item->id }}" data-title="{{ $item->nomor }}. {{ $item->elemen }}"
-                                    data-content="{{ $item->indikator }}" data-kriteria="{{ $item->kriteria->name }}"
-                                    data-pilihan='@json($item->option_pilihan_ganda)' data-poin="{{ $item->poin }}"
-                                    data-harkat_penskoran="{{ $item->harkat_penskoran }}"
-                                    data-jenis="{{ $item->jenis }}" {{-- Ini data dari users matrik --}}
-                                    data-link_bukti="{{ $item->userMatrik->link_bukti ?? '' }}"
-                                    data-temuan="{{ $item->userMatrik->temuan ?? '' }}"
-                                    data-saran="{{ $item->userMatrik->saran ?? '' }}"
-                                    data-jawaban="{{ $item->userMatrik->jawaban ?? 0 }}"
-                                    data-color="{{ $jawaban == 4 ? 'green' : ($jawaban < 4 && $jawaban > 1 ? 'yellow' : ($jawaban == 1 ? 'red' : 'none')) }}"
-                                    data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}" {{-- Ambil data sub item --}}
-                                    data-subitem="{{ $item->subItemElemen }}"
-                                    data-usersubitems="{{ $item->userSubItemElements }}">
-
-                                    <span class="me-2" style="width: 30px;">{{ $item->nomor }}.</span>
-                                    <div class="mb-3">
-                                        <div class="fw-bold mb-2">
-                                            {{ $item->elemen }}
-                                        </div>
-
-                                        <table class="table table-bordered table-sm text-center align-middle mb-0 small">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Bobot</th>
-                                                    <th>Skor</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <tr>
-                                                    <td>{{ $item->poin }}</td>
-
-                                                    <td>
-                                                        {{ $item->userMatrik->jawaban ?? 0 }}
-                                                    </td>
-
-                                                    <td class="fw-bold text-primary">
-                                                        {{ $item->userMatrik->nilai_total ?? 0 }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </button>
-                            @endforeach
-
-
-
-                            <!-- Anda dapat mengulangi header kriteria + elemen sesuai kebutuhan -->
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-
-        </div>
-
-        <div class="tab-pane fade" id="pelaksanaan" role="tabpanel" aria-labelledby="pelaksanaan-tab">
-            {{-- Pelaksanaan --}}
-            <div class="row">
-                @foreach ($dataUnggul as $item)
-                    @php
-                        $syarat = json_decode($item->syarat_tahun, true);
-
-                        // default
-                        $bg3 = '';
-                        $bg5 = '';
-
-                        /* =========================
-       🔥 ELEMEN 1 (KHUSUS)
-    ========================= */
-                        if ($item->nomor == 1) {
-                            $subItems = json_decode($item->matriks->subItemElemen, true);
-                            $userValues = json_decode($item->matriks->userSubItemElements, true);
-
-                            $nilaiMap = [];
-                            foreach ($userValues as $val) {
-                                $nilaiMap[$val['id_sub_item_elemen']] = $val['nilai'];
-                            }
-
-                            $NDS3 = $NDL = $NDLK = $NDGB = 0;
-
-                            foreach ($subItems as $sub) {
-                                $id = $sub['id'];
-                                $var = $sub['variabel'];
-                                $nilai = $nilaiMap[$id] ?? 0;
-
-                                if ($var == 'NDS3') {
-                                    $NDS3 = $nilai;
-                                }
-                                if ($var == 'NDL') {
-                                    $NDL = $nilai;
-                                }
-                                if ($var == 'NDLK') {
-                                    $NDLK = $nilai;
-                                }
-                                if ($var == 'NDGB') {
-                                    $NDGB = $nilai;
-                                }
-                            }
-
-                            $totalLektor = $NDL + $NDLK + $NDGB;
-
-                            // 3 tahun
-                            if ($NDS3 >= 1 && $totalLektor >= 2) {
-                                $bg3 = 'bg-success text-white';
-                            }
-
-                            // 5 tahun
-                            if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) {
-                                $bg5 = 'bg-success text-white';
-                            }
-                        } /* =========================
-       🔥 ELEMEN 2,3,4
-    ========================= */ elseif (
-                            in_array($item->nomor, [2, 3, 4])
-                        ) {
-                            $jawaban = (float) ($item->matriks->userMatrik->jawaban ?? 0);
-
-                            if ($jawaban > 3) {
-                                $bg3 = 'bg-success text-white';
-                            }
-
-                            if ($jawaban > 3.5) {
-                                $bg5 = 'bg-success text-white';
-                            }
-                        } /* =========================
-   🔥 ELEMEN 5
-========================= */ elseif (
-                            $item->nomor == 5
-                        ) {
-                            $subItems = json_decode($item->matriks->subItemElemen, true);
-                            $userValues = json_decode($item->matriks->userSubItemElements, true);
-
-                            $nilaiMap = [];
-
-                            foreach ($userValues as $val) {
-                                $nilaiMap[$val['id_sub_item_elemen']] = $val['nilai'];
-                            }
-
-                            $NM = 0;
-
-                            // 🔥 Semua kategori publikasi mahasiswa
-                            $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
-                            $INT = $ISBN = $PATEN = 0;
-
-                            foreach ($subItems as $sub) {
-                                $id = $sub['id'];
-                                $var = $sub['variabel'];
-
-                                $nilai = $nilaiMap[$id] ?? 0;
-
-                                if ($var == 'NM') {
-                                    $NM = $nilai;
-                                }
-
-                                if ($var == 'SINTA1_MHS') {
-                                    $S1 = $nilai;
-                                }
-                                if ($var == 'SINTA2_MHS') {
-                                    $S2 = $nilai;
-                                }
-                                if ($var == 'SINTA3_MHS') {
-                                    $S3 = $nilai;
-                                }
-                                if ($var == 'SINTA4_MHS') {
-                                    $S4 = $nilai;
-                                }
-                                if ($var == 'SINTA5_MHS') {
-                                    $S5 = $nilai;
-                                }
-                                if ($var == 'SINTA6_MHS') {
-                                    $S6 = $nilai;
-                                }
-
-                                if ($var == 'INT_MHS') {
-                                    $INT = $nilai;
-                                }
-                                if ($var == 'ISBN_MHS') {
-                                    $ISBN = $nilai;
-                                }
-                                if ($var == 'PATEN_MHS') {
-                                    $PATEN = $nilai;
-                                }
-                            }
-
-                            if ($NM > 0) {
-                                /*
-        =========================
-        🔥 SYARAT 3 TAHUN
-        Minimal Sinta 5
-        =========================
-        */
-                                $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
-
-                                $persen3 = ($total3 / $NM) * 100;
-
-                                if ($persen3 >= 15) {
-                                    $bg3 = 'bg-success text-white';
-                                }
-
-                                /*
-        =========================
-        🔥 SYARAT 5 TAHUN
-        Minimal Sinta 4
-        =========================
-        */
-                                $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
-
-                                $persen5 = ($total5 / $NM) * 100;
-
-                                if ($persen5 >= 25) {
-                                    $bg5 = 'bg-success text-white';
-                                }
-                            }
-                        } /* =========================
-   🔥 ELEMEN 6
-========================= */ elseif (
-                            $item->nomor == 6
-                        ) {
-                            $subItems = json_decode($item->matriks->subItemElemen, true);
-                            $userValues = json_decode($item->matriks->userSubItemElements, true);
-
-                            $nilaiMap = [];
-
-                            foreach ($userValues as $val) {
-                                $nilaiMap[$val['id_sub_item_elemen']] = $val['nilai'];
-                            }
-
-                            $NDTPS = 0;
-
-                            $S1 = $S2 = $S3 = $S4 = 0;
-                            $INT = $INTREP = 0;
-
-                            foreach ($subItems as $sub) {
-                                $id = $sub['id'];
-                                $var = $sub['variabel'];
-
-                                $nilai = $nilaiMap[$id] ?? 0;
-
-                                if ($var == 'NDTPS') {
-                                    $NDTPS = $nilai;
-                                }
-
-                                if ($var == 'S1_DTPS') {
-                                    $S1 = $nilai;
-                                }
-                                if ($var == 'S2_DTPS') {
-                                    $S2 = $nilai;
-                                }
-                                if ($var == 'S3_DTPS') {
-                                    $S3 = $nilai;
-                                }
-                                if ($var == 'S4_DTPS') {
-                                    $S4 = $nilai;
-                                }
-
-                                if ($var == 'INT_DTPS') {
-                                    $INT = $nilai;
-                                }
-                                if ($var == 'INTREP_DTPS') {
-                                    $INTREP = $nilai;
-                                }
-                            }
-
-                            if ($NDTPS > 0) {
-                                /*
-        =========================
-        🔥 SYARAT 3 TAHUN
-        Minimal Sinta 4 / Internasional
-        =========================
-        */
-                                $total3 = $S1 + $S2 + $S3 + $S4 + $INT;
-
-                                $persen3 = ($total3 / $NDTPS) * 100;
-
-                                if ($persen3 >= 20) {
-                                    $bg3 = 'bg-success text-white';
-                                }
-
-                                /*
-        =========================
-        🔥 SYARAT 5 TAHUN
-        Minimal Sinta 2 / Internasional Bereputasi
-        =========================
-        */
-                                $total5 = $S1 + $S2 + $INTREP;
-
-                                $persen5 = ($total5 / $NDTPS) * 100;
-
-                                if ($persen5 >= 20) {
-                                    $bg5 = 'bg-success text-white';
-                                }
-                            }
-                        }
-                    @endphp
-
-                    <div class="col-md-12 mb-6 mb-3">
-                        <div class="card h-100 shadow-sm">
-
-                            {{-- HEADER --}}
-                            <div class="card-header fw-bold text-center">
-                                Elemen {{ $item->nomor }} : {{ $item->elemen ?? '-' }} <br>
-                                <small class="text-muted">
-                                    {{ $item->matriks->elemen ?? '-' }}
-                                </small>
-                            </div>
-
-                            {{-- BODY --}}
-                            <div class="card-body">
-
-
-                                {{-- INDIKATOR --}}
-                                <h6 class="fw-bold mb-2">Indikator</h6>
-                                <p class="mb-3">
-                                    {{ $item->indikator }} <br>
-                                    <small class="text-muted">
-                                        Skor : {{ $item->matriks->userMatrik->jawaban ?? '-' }}
-                                    </small>
-                                </p>
-
-                                {{-- INDIKATOR --}}
-                                <h6 class="fw-bold mb-2">Variabel</h6>
-                                <p class="mb-3">
-                                    @php
-                                        $subItems = json_decode($item->matriks->subItemElemen, true);
-                                        $userValues = json_decode($item->matriks->userSubItemElements, true);
-
-                                        // mapping nilai berdasarkan id_sub_item_elemen
-                                        $nilaiMap = [];
-                                        foreach ($userValues as $val) {
-                                            $nilaiMap[$val['id_sub_item_elemen']] = $val['nilai'];
-                                        }
-                                    @endphp
-
-                                <div class="mt-2">
-                                    @foreach ($subItems as $sub)
-                                        <div class="d-flex justify-content-between border-bottom py-1">
-                                            <div>
-                                                <strong>{{ $sub['variabel'] }}</strong><br>
-                                                <small class="text-muted">{{ $sub['deskripsi'] }}</small>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="badge bg-primary">
-                                                    {{ $nilaiMap[$sub['id']] ?? '-' }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                </p>
-
-                                {{-- SYARAT --}}
-                                <div class="row text-center">
-                                    <div class="col-6">
-                                        <div class="border rounded p-2 h-100 {{ $bg3 }}">
-                                            <small class="fw-bold d-block">3 Tahun</small>
-                                            <small>
-                                                {{ $syarat['3_tahun'] ?? '-' }}
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-6">
-                                        <div class="border rounded p-2 h-100 {{ $bg5 }}">
-                                            <small class="fw-bold d-block">5 Tahun</small>
-                                            <small>
-                                                {{ $syarat['5_Tahun'] ?? '-' }}
-                                            </small>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-        </div>
-
-        <div class="tab-pane fade" id="evaluasi" role="tabpanel" aria-labelledby="evaluasi-tab">
-            {{-- Evaluasi --}}
             <div class="card shadow-sm">
 
                 <div class="card-header py-2 d-flex justify-content-between">
@@ -922,9 +389,154 @@
                     );
                 </script>
             </div>
+
         </div>
 
+        <!-- Kanan: col 3 dengan tinggi penuh -->
+        <div class="col-md-3">
+            <label for="search-elemen" class="form-label fw-bold">Cari Elemen</label>
+            <input type="text" id="search-elemen" class="form-control mb-3" placeholder="Ketik nama elemen...">
 
+            <label for="filterColor" class="form-label fw-bold">Filter Warna</label>
+            <select id="filterColor" class="form-select mb-3">
+                <option value="">Semua</option>
+                <option value="green">Hijau</option>
+                <option value="yellow">Kuning</option>
+                <option value="red">Merah</option>
+                <option value="none">Belum Terisi</option>
+            </select>
+
+            <p class="fw-bold mb-1">
+                Keterangan Warna
+            </p>
+
+            <div class="d-flex align-items-center mb-1">
+                <div style="width: 15px; height: 15px; background:#28a745; border-radius:3px;" class="me-2"></div>
+                <span>Skor <strong>4</strong> (Baik)</span>
+            </div>
+
+            <div class="d-flex align-items-center mb-1">
+                <div style="width: 15px; height: 15px; background:#ffc107; border-radius:3px;" class="me-2"></div>
+                <span>Skor <strong>3–2</strong> (Cukup)</span>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <div style="width: 15px; height: 15px; background:#dc3545; border-radius:3px;" class="me-2"></div>
+                <span>Skor <strong>1</strong> (Kurang)</span>
+            </div>
+
+            {{-- Tombol navigasi next prev --}}
+            <div class="card shadow-sm mb-3 mt-3 p-2">
+                <div class="d-flex justify-content-between gap-2">
+                    <button id="btnPrev" class="btn btn-secondary w-50"><i class="bi bi-chevron-double-left"></i></button>
+                    <button id="btnNext" class="btn btn-secondary w-50"><i
+                            class="bi bi-chevron-double-right"></i></button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-3 mt-3" style="max-height: 50vh; overflow-y: auto;">
+                <div class="card-header bg-primary text-white">
+                    <strong>Navigasi Elemen</strong>
+                </div>
+                <div class="list-group list-group-flush" id="nav-container">
+
+                    @php
+                        $currentKriteria = null;
+                    @endphp
+
+                    @foreach ($data as $item)
+                        {{-- Jika kriteria berubah, tampilkan header --}}
+                        @if ($currentKriteria !== $item->kriteria->name)
+                            @php
+                                $currentKriteria = $item->kriteria->name;
+                            @endphp
+
+                            <div class="list-group-item bg-secondary text-white fw-bold">
+                                {{ $currentKriteria }}
+                            </div>
+                        @endif
+
+                        {{-- Atur warna navigasi --}}
+                        @php
+                            $jawaban = $item->userMatrik->jawaban ?? null;
+
+                            // Background color
+                            $color = match (true) {
+                                $jawaban == 4 => 'list-group-item-success',
+                                $jawaban < 4 && $jawaban > 1 => 'list-group-item-warning',
+                                $jawaban == 1 => 'list-group-item-danger',
+                                default => '',
+                            };
+
+                            // Border color
+                            $borderClass = match (true) {
+                                $jawaban == 4 => 'border-green',
+                                $jawaban < 4 && $jawaban > 1 => 'border-yellow',
+                                $jawaban == 1 => 'border-red',
+                                default => 'border-none',
+                            };
+                        @endphp
+
+
+                        {{-- Tombol navigasi --}}
+                        <button
+                            class="list-group-item list-group-item-action nav-item-btn border-none {{ $color }} {{ $borderClass }}"
+                            data-id="{{ $item->id }}" data-title="{{ $item->nomor }}. {{ $item->elemen }}"
+                            data-content="{{ $item->indikator }}" data-pilihan='@json($item->option_pilihan_ganda)'
+                            data-poin="{{ $item->poin }}" data-harkat_penskoran="{{ $item->harkat_penskoran }}"
+                            data-jenis="{{ $item->jenis }}" {{-- Ini data dari users matrik --}}
+                            data-link_bukti="{{ $item->userMatrik->link_bukti ?? '' }}"
+                            data-temuan="{{ $item->userMatrik->temuan ?? '' }}"
+                            data-saran="{{ $item->userMatrik->saran ?? '' }}"
+                            data-jawaban="{{ $item->userMatrik->jawaban ?? 0 }}"
+                            data-color="{{ $jawaban == 4 ? 'green' : ($jawaban < 4 && $jawaban > 1 ? 'yellow' : ($jawaban == 1 ? 'red' : 'none')) }}"
+                            data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}" {{-- Ambil data sub item --}}
+                            data-subitem="{{ $item->subItemElemen }}"
+                            data-usersubitems="{{ $item->userSubItemElements }}">
+
+                            <span class="me-2" style="width: 30px;">{{ $item->nomor }}.</span>
+                            <div class="mb-3">
+                                <div class="fw-bold mb-2">
+                                    {{ $item->elemen }}
+                                </div>
+
+                                <table class="table table-bordered table-sm text-center align-middle mb-0 small">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Bobot</th>
+                                            <th>Skor</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ $item->poin }}</td>
+
+                                            <td>
+                                                {{ $item->userMatrik->jawaban ?? 0 }}
+                                            </td>
+
+                                            <td class="fw-bold text-primary">
+                                                {{ $item->userMatrik->nilai_total ?? 0 }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </button>
+                    @endforeach
+
+
+
+                    <!-- Anda dapat mengulangi header kriteria + elemen sesuai kebutuhan -->
+                </div>
+            </div>
+
+
+
+
+        </div>
     </div>
 
     <div class="modal fade" id="previewPdfModal" tabindex="-1">
@@ -1091,7 +703,6 @@
                 var poin = parseFloat(btn.dataset.poin);
                 // var kepemilikan_kriteria = document.getElementById('kepemilikan_kriteria').value;
                 document.getElementById("content-title").innerText = btn.dataset.title;
-                document.getElementById("kriteria-title").innerText = btn.dataset.kriteria;
                 document.getElementById("content-body").innerText = btn.dataset.content;
                 document.getElementById("content-poin").innerText = poin;
 
@@ -1135,24 +746,18 @@
                 console.log("harkat_penskoran == ", harkat_penskoran == "")
 
                 // RESET FORM
-                container.innerHTML = `@csrf`;
+                container.innerHTML = `
+    @csrf
+    <div class="mt-3 mb-3">
+        <label class="form-label"><strong>Harkat Penskoran</strong></label>
+    </div>
+`;
 
-                // CEK HARKAT
-                if (harkat_penskoran && harkat_penskoran.trim() !== '') {
-
-                    container.insertAdjacentHTML(
-                        'beforeend',
-                        `
-        <div class="mt-3 mb-3">
-            <label class="form-label">
-                <strong>Harkat Penskoran</strong>
-            </label>
-        </div>
-
-        <pre class='harkat_penskoran'>${harkat_penskoran}</pre>
-        `
-                    );
-                }
+                // HARKAT
+                container.insertAdjacentHTML(
+                    'beforeend',
+                    `<pre class='harkat_penskoran'>${harkat_penskoran ?? '-'}</pre>`
+                );
 
                 // =======================
                 // 🔥 SUB ITEM (VARIABEL)
@@ -1184,12 +789,9 @@
                 // 🔥 PILIHAN SKOR (RADIO)
                 // =======================
                 container.insertAdjacentHTML('beforeend', `
-    <div class="mb-2 mt-3">
-        <label class="form-label">
-            <strong>Pilih Skor</strong>
-        </label>
+    <div class="mb-3 mt-3">
+        <label class="form-label"><strong>Pilih Skor</strong></label>
     </div>
-
 `);
 
                 let pilihanFinal = pilihan && Object.keys(pilihan).length > 0 ?
@@ -1198,16 +800,14 @@
                         2: "",
                         3: "",
                         4: ""
-                    };
+                    }; // default kalau kosong
 
                 Object.keys(pilihanFinal)
                     .sort((a, b) => b - a)
                     .forEach(skor => {
 
                         let id = "kriteria_" + skor;
-                        let isChecked = (parseInt(jawaban) === parseInt(skor)) ?
-                            "checked" :
-                            "";
+                        let isChecked = (parseInt(jawaban) === parseInt(skor)) ? "checked" : "";
 
                         container.insertAdjacentHTML('beforeend', `
             <div class="form-check">
@@ -1217,53 +817,12 @@
                        value="${skor}"
                        id="${id}"
                        ${isChecked}>
-
                 <label class="form-check-label" for="${id}">
-                    <strong>Skor ${skor}</strong>
-                    ${pilihanFinal[skor] ?? ''}
+                    <strong>Skor ${skor}</strong> ${pilihanFinal[skor] ?? ''}
                 </label>
             </div>
         `);
-
-
                     });
-                container.insertAdjacentHTML('beforeend', `
-
-    <div class="mt-3">
-        <span class="badge bg-primary" id="live-skor">
-            Belum dipilih
-        </span>
-    </div>
-`);
-                // =======================
-                // 🔥 LIVE NILAI
-                // =======================
-                const liveSkor = container.querySelector('#live-skor');
-
-                container.querySelectorAll('.skor-radio').forEach(radio => {
-
-                    // tampilkan default jika checked
-                    if (radio.checked) {
-
-                        let hasil = parseFloat(radio.value) * parseFloat(poin);
-
-                        liveSkor.innerHTML = `
-            Skor dipilih: <strong>${radio.value}</strong>
-            | Nilai: <strong>${hasil}</strong>
-        `;
-                    }
-
-                    // update realtime
-                    radio.addEventListener('change', function() {
-
-                        let hasil = parseFloat(this.value) * parseFloat(poin);
-
-                        liveSkor.innerHTML = `
-            Skor dipilih: <strong>${this.value}</strong>
-            | Nilai: <strong>${hasil}</strong>
-        `;
-                    });
-                });
 
                 // =======================
                 // 🔥 BUKTI + FIELD LAIN
@@ -1477,7 +1036,7 @@
                     // console.log("color:", color);
 
                     if (filter === "" || filter === color) {
-                        btn.style.display = "";
+                        btn.style.display = "flex";
                         // console.log('if pertama')
                     } else {
                         btn.style.display = "none";

@@ -323,26 +323,6 @@ TEXT,
                 'jenis'                => 'isian',
             ],
             [
-                'nomor'                => 44,
-                'id_kriteria'          => 6,
-                'elemen'               => ' Keberhasilan studi mahasiswa ',
-                'poin'                 => ' 1.5 ',
-                'indikator'            => '  Mahasiswa berhasil menyelesaikan studinya. PKSM = Persentase keberhasilan studi lulusan ',
-                'harkat_penskoran'     =>
-                    <<<TEXT
-Jika PKMS ≥ 85%, 
-maka Skor = 4 
-
-Jika 45% ≤ PKMS < 85% , 
-maka Skor = ((80 x PKMS) - 24) / 11
-
-Jika PKMS < 45%,
-maka Skor = 1 
-TEXT,
-                'option_pilihan_ganda' => null,
-                'jenis'                => 'isian',
-            ],
-            [
                 'nomor'                => 45,
                 'id_kriteria'          => 6,
                 'elemen'               => ' Employability, kewirausahaan, dan studi lanjut',

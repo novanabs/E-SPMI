@@ -49,6 +49,7 @@ class JurusanController extends Controller
         $evaluasi = Evaluasi::where('id_users', $id)->get();
         $pengendalian = Pengendalian::where('id_users', $id)->get();
         $peningkatan = Peningkatan::where('id_users', $id)->get();
+
         return view('jurusan.show', compact('data', 'penetapan', 'pelaksanaan', 'evaluasi', 'pengendalian', 'peningkatan'));
     }
 

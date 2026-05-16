@@ -274,9 +274,18 @@ class EvaluasiLamdikController extends Controller
         // nanti baru return view
         // return view('syarat.index', compact('data', 'syarat3', 'syarat5'));
 
+        $dataUnggul = SyaratUnggul::with([
+            'matriks.subItemElemen',
+            'matriks.userSubItemElements' => function ($q) use ($idUser) {
+                $q->where('id_users', $idUser);
+            },
+            'matriks.userMatrik'          => function ($q) use ($idUser) {
+                $q->where('id_users', $idUser);
+            }
+        ])->get();
 
 
-        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5'));
+        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5', 'dataUnggul'));
     }
 
     public function indexOld()

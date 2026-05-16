@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\MatriksLED;
+use App\Models\SyaratUnggul;
+use App\Models\User;
 use App\Models\UsersMatrik;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class EvaluasiDiriJurusan extends Controller
 {
@@ -79,6 +80,8 @@ class EvaluasiDiriJurusan extends Controller
             }
 
         ])->orderBy('nomor', 'asc')->get();
+
+
 
         // $data = MatriksLED::with([
         //     'kriteria',

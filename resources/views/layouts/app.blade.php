@@ -299,7 +299,7 @@
                                                         <a href="{{ route('evaluasi.index') }}"
                                                             class="nav-link {{ Route::is('evaluasi.*') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
-                                                            <p>Laporan (PPEPP)</p>
+                                                            <p>Monev</p>
                                                         </a>
                                                     </li>
 
@@ -307,17 +307,17 @@
                                                         <a href="{{ route('evaluasi_lamdik.index') }}"
                                                             class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
-                                                            <p>Evaluasi Diri (Lamdik)</p>
+                                                            <p>AMI</p>
                                                         </a>
                                                     </li>
-
+                                                    {{-- 
                                                     <li class="nav-item">
                                                         <a href="{{ route('syarat_unggul.index') }}"
                                                             class="nav-link {{ Route::is('syarat_unggul.index') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
                                                             <p>Syarat Unggul</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
 
                                                     <li class="nav-item">
                                                         {{-- Harus mengambil id dari UPM --}}

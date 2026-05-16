@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Evaluasi')
+@section('title', 'Monitoring dan Evaluasi')
 
 @section('content')
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Daftar Laporan Evaluasi {{ auth()->user()->homebase }}</h2>
+        <h2>Daftar Monev {{ auth()->user()->homebase }}</h2>
         <a href="{{ route('evaluasi.create') }}" class="btn btn-sm btn-primary" id="btnTambah">Tambah</a>
     </div>
     <div class="table-responsive">

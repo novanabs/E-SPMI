@@ -21,8 +21,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AkreditasiController::class, 'index'])
-    ->name('akreditasi');
+// Route::get('/', [AkreditasiController::class, 'index'])
+//     ->name('akreditasi');
 
 
 Route::get('/profil', function () {
@@ -110,7 +110,7 @@ Route::middleware(['auth', 'role:pimpinan'])->group(function () {
 //     return redirect()->back();
 // })->name('login');
 Route::get(
-    '/login',
+    '/',
     [AuthController::class, 'index']
 )->name('login');
 
