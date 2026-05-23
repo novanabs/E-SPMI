@@ -263,10 +263,34 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         </div>
 
+          <div class="form-group">
+
+    <label for="tahun" class="form-label">
+        Tahun <span class="text-danger">*</span>
+    </label>
+
+    <input type="number"
+           min="2000"
+           max="{{ date('Y') + 10 }}"
+           class="form-control @error('tahun') is-invalid @enderror"
+           id="tahun"
+           name="tahun"
+           placeholder="Masukkan tahun"
+           value="{{ old('tahun') }}">
+
+    @error('tahun')
+
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+
+    @enderror
+
+</div> 
         <div class="form-group">
 
             <label for="link_bukti_laporan" class="form-label">
-                Link Bukti Laporan <span class="text-danger">*</span>
+                Link Bukti Laporan Semester Ganjil <span class="text-danger">*</span>
             </label>
 
             <input type="url"
@@ -277,6 +301,29 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                    value="{{ old('link_bukti_laporan') }}">
 
             @error('link_bukti_laporan')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+                <div class="form-group">
+
+            <label for="link_bukti_laporan" class="form-label">
+                Link Bukti Laporan Semester Genap
+            </label>
+
+            <input type="url"
+                   class="form-control @error('link_bukti_laporan_genap') is-invalid @enderror"
+                   id="link_bukti_laporan_genap"
+                   name="link_bukti_laporan_genap"
+                   placeholder="Masukkan link bukti laporan"
+                   value="{{ old('link_bukti_laporan_genap') }}">
+
+            @error('link_bukti_laporan_genap')
 
                 <div class="invalid-feedback">
                     {{ $message }}

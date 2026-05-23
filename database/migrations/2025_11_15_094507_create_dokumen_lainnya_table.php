@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text('deskripsi')->nullable();
+            $table->year('tahun');
             $table->string('link_dokumen');
             $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->timestamps();

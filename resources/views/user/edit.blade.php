@@ -1,79 +1,571 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah User')
+@section('title', 'Edit User')
 
 @section('content')
 
-    <h3>Edit User</h3>
-    <p class="text-danger my-3">*Wajib</p>
-    <form action="{{ route('user.update', $data->id) }}" method="POST">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header {
+
+    background: linear-gradient(135deg,#0f172a,#1e3a8a);
+    border-radius: 24px;
+    padding: 28px;
+    margin-bottom: 24px;
+    color: white;
+    box-shadow: 0 12px 30px rgba(15,23,42,.10);
+
+}
+
+.page-title {
+
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 6px;
+
+}
+
+.page-subtitle {
+
+    opacity: .88;
+    line-height: 1.8;
+    max-width: 760px;
+
+}
+
+/* =========================
+   FORM CARD
+========================= */
+
+.form-card {
+
+    background: white;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(15,23,42,.06);
+
+}
+
+/* =========================
+   ALERT
+========================= */
+
+.required-alert {
+
+    background: rgba(239,68,68,.08);
+    border: 1px solid rgba(239,68,68,.14);
+    color: #dc2626;
+    padding: 14px 18px;
+    border-radius: 16px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+
+    margin-bottom: 22px;
+
+}
+
+.form-label {
+
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #0f172a;
+    font-size: 14px;
+
+}
+
+.form-control,
+.form-select {
+
+    border-radius: 14px !important;
+    min-height: 54px;
+    border: 1px solid #dbe2ea !important;
+    box-shadow: none !important;
+    padding: 14px 16px !important;
+    transition: .25s ease;
+
+}
+
+.form-control:focus,
+.form-select:focus {
+
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 4px rgba(37,99,235,.12) !important;
+
+}
+
+.form-control::placeholder {
+
+    color: #94a3b8;
+
+}
+
+.is-invalid {
+
+    border-color: #ef4444 !important;
+
+}
+
+.invalid-feedback {
+
+    display: block;
+    margin-top: 8px;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 500;
+
+}
+
+/* =========================
+   INFO BOX
+========================= */
+
+.info-box {
+
+    background: rgba(245,158,11,.06);
+    border: 1px solid rgba(245,158,11,.10);
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+}
+
+.info-icon {
+
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: rgba(245,158,11,.12);
+    color: #d97706;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+
+}
+
+.info-title {
+
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+
+}
+
+.info-desc {
+
+    color: #64748b;
+    line-height: 1.7;
+    font-size: 14px;
+
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-save {
+
+    border: none;
+    background: linear-gradient(135deg,#16a34a,#15803d);
+    color: white;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: .25s ease;
+    box-shadow: 0 12px 24px rgba(22,163,74,.22);
+
+}
+
+.btn-save:hover {
+
+    transform: translateY(-2px);
+    box-shadow: 0 18px 32px rgba(22,163,74,.28);
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+    .page-header {
+
+        padding: 22px;
+
+    }
+
+    .page-title {
+
+        font-size: 22px;
+
+    }
+
+    .form-card {
+
+        padding: 22px;
+
+    }
+
+}
+
+</style>
+
+<!-- HEADER -->
+
+<div class="page-header">
+
+    <div class="page-title">
+        Edit User
+    </div>
+
+    <div class="page-subtitle">
+
+        Perbarui data pengguna sistem E-SPMI FKIP ULM
+        sesuai dengan role dan informasi terbaru.
+
+    </div>
+
+</div>
+
+<!-- ALERT -->
+
+<div class="required-alert">
+
+    <i class="fas fa-circle-exclamation"></i>
+    Field bertanda (*) wajib diisi
+
+</div>
+
+<!-- FORM CARD -->
+
+<div class="form-card">
+
+    <!-- INFO -->
+
+    <div class="info-box">
+
+        <div class="info-icon">
+
+            <i class="fas fa-user-pen"></i>
+
+        </div>
+
+        <div>
+
+            <div class="info-title">
+                Informasi User
+            </div>
+
+            <div class="info-desc">
+
+                Pastikan data pengguna yang diperbarui benar
+                dan email aktif agar akun dapat digunakan
+                dengan baik.
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <form action="{{ route('user.update', $data->id) }}"
+          method="POST">
+
         @csrf
         @method('PUT')
-        <div class="form-group mb-3">
-            <label for="name">Nama User <span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('name')
-                is-invalid
-            @enderror"
-                id="name" name="name" placeholder="Masukkan Nama Dokumen" value="{{ old('name', $data->name) }}">
+
+        <!-- NAMA USER -->
+
+        <div class="form-group">
+
+            <label for="name"
+                   class="form-label">
+
+                Nama User
+                <span class="text-danger">*</span>
+
+            </label>
+
+            <input type="text"
+                   class="form-control @error('name') is-invalid @enderror"
+                   id="name"
+                   name="name"
+                   placeholder="Masukkan Nama User"
+                   value="{{ old('name', $data->name) }}">
+
             @error('name')
+
                 <div class="invalid-feedback">
                     {{ $message }}
                 </div>
+
             @enderror
-        </div>
-        <div class="form-group mb-3">
-            <label for="homebase">Homebase <span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('homebase')
-                is-invalid
-            @enderror"
-                id="homebase" name="homebase" placeholder="Masukkan Nama Dokumen"
-                value="{{ old('homebase', $data->homebase) }}">
-            @error('homebase')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="form-group mb-3">
-            <label for="ketua">Ketua <span class="text-danger">*</span></label>
-            <input type="text" class="form-control @error('ketua')
-                is-invalid
-            @enderror"
-                id="ketua" name="ketua" placeholder="Masukkan Nama Dokumen" value="{{ old('ketua', $data->ketua) }}">
-            @error('ketua')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="form-group mb-3">
-            <label for="email">Email <span class="text-danger">*</span></label>
-            <input type="email" class="form-control @error('email')
-                is-invalid
-            @enderror"
-                id="email" name="email" placeholder="Masukkan Nama Dokumen" value="{{ old('email', $data->email) }}">
-            @error('email')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
-        <div class="form-group mb-3">
-            <label for="role">Role <span class="text-danger">*</span></label>
-            <select class="form-select @error('role') is-invalid @enderror" name="role" id="role">
-                <option value="" disabled selected>-- Pilih Role --</option>
-                <option value="pimpinan" {{ old('role', $data->role) == 'pimpinan' ? 'selected' : '' }}>Pimpinan Fakultas
-                </option>
-                <option value="admin_jurusan" {{ old('role', $data->role) == 'admin_jurusan' ? 'selected' : '' }}>Admin
-                    Jurusan</option>
-            </select>
-            @error('role')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
         </div>
 
-        <button type="submit" class="mt-3 btn btn-sm btn-success">Simpan</button>
+        <!-- NIP -->
+
+        <div class="form-group">
+
+            <label for="nip"
+                   class="form-label">
+
+                NIP
+                <span class="text-danger">*</span>
+
+            </label>
+
+            <input type="text"
+                   class="form-control @error('nip') is-invalid @enderror"
+                   id="nip"
+                   name="nip"
+                   placeholder="Masukkan NIP"
+                   value="{{ old('nip', $data->nip) }}">
+
+            @error('nip')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+        <!-- HOMEBASE -->
+
+        <div class="form-group">
+
+            <label for="homebase"
+                   class="form-label">
+
+                Homebase
+                <span class="text-danger">*</span>
+
+            </label>
+
+            <select class="form-select @error('homebase') is-invalid @enderror"
+                    name="homebase"
+                    id="homebase">
+
+                <option value="" disabled>
+                    -- Pilih Homebase --
+                </option>
+
+                @php
+
+                    $homebases = [
+
+                        'Pendidikan Geografi',
+                        'Pendidikan Khusus',
+                        'Pendidikan Guru Sekolah Dasar',
+                        'Pendidikan Sosiologi',
+                        'Pendidikan Bahasa dan Sastra Indonesia',
+                        'Pendidikan Pancasila dan Kewarganegaraan',
+                        'Pendidikan Jasmani',
+                        'Pendidikan Sejarah',
+                        'Pendidikan Ekonomi',
+                        'Bimbingan Konseling',
+                        'Pendidikan Seni Pertunjukan',
+                        'Pendidikan Biologi',
+                        'Pendidikan IPA',
+                        'Pendidikan Guru PAUD',
+                        'Pendidikan Komputer',
+                        'Pendidikan IPS',
+                        'Teknologi Pendidikan',
+                        'Pendidikan Fisika',
+                        'Pendidikan Bahasa Inggris',
+                        'Pendidikan Kimia',
+                        'Pendidikan Matematika',
+                        'UPM',
+                        'Gugus Penjaminan Mutu',
+
+                    ];
+
+                @endphp
+
+                @foreach ($homebases as $homebase)
+
+                    <option value="{{ $homebase }}"
+                        {{ old('homebase', $data->homebase) == $homebase ? 'selected' : '' }}>
+
+                        {{ $homebase }}
+
+                    </option>
+
+                @endforeach
+
+            </select>
+
+            @error('homebase')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+        <!-- Jabatan -->
+
+        <div class="form-group">
+
+            <label for="jabatan"
+                   class="form-label">
+
+                Jabatan
+                <span class="text-danger">*</span>
+
+            </label>
+
+            <input type="text"
+                   class="form-control @error('jabatan') is-invalid @enderror"
+                   id="jabatan"
+                   name="jabatan"
+                   placeholder="Masukkan Nama Jabatan"
+                   value="{{ old('jabatan', $data->jabatan) }}">
+
+            @error('jabatan')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+            <label for="email"
+                   class="form-label">
+
+                Email
+                <span class="text-danger">*</span>
+
+            </label>
+
+            <input type="email"
+                   class="form-control @error('email') is-invalid @enderror"
+                   id="email"
+                   name="email"
+                   placeholder="Masukkan Email"
+                   value="{{ old('email', $data->email) }}">
+
+            @error('email')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+        <!-- ROLE -->
+
+        <div class="form-group">
+
+            <label for="role"
+                   class="form-label">
+
+                Role
+                <span class="text-danger">*</span>
+
+            </label>
+
+            <select class="form-select @error('role') is-invalid @enderror"
+                    name="role"
+                    id="role">
+
+                <option value="" disabled>
+                    -- Pilih Role --
+                </option>
+
+                <option value="pimpinan"
+                    {{ old('role', $data->role) == 'pimpinan' ? 'selected' : '' }}>
+
+                    Pimpinan Fakultas
+
+                </option>
+
+                <option value="admin_jurusan"
+                    {{ old('role', $data->role) == 'admin_jurusan' ? 'selected' : '' }}>
+
+                    Admin Jurusan
+
+                </option>
+
+                 <option value="admin_FKIP"
+                    {{ old('role', $data->role) == 'admin_FKIP' ? 'selected' : '' }}>
+
+                    Admin FKIP
+
+                </option>
+
+                <option value="auditor"
+                    {{ old('role', $data->role) == 'auditor' ? 'selected' : '' }}>
+
+                    Auditor
+
+                </option>
+
+            </select>
+
+            @error('role')
+
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+
+            @enderror
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button type="submit"
+                class="btn-save">
+
+            <i class="fas fa-floppy-disk"></i>
+            Simpan Perubahan
+
+        </button>
+
     </form>
 
+</div>
 
 @endsection

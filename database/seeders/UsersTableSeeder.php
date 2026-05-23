@@ -17,8 +17,10 @@ class UsersTableSeeder extends Seeder
         User::firstOrCreate([
             'email' => 'pilkom@ulm.ac.id',
         ], [
-            'name'     => 'Admin Jurusan Pendidikan Komputer',
+            'name'     => 'M Nabili',
             'homebase' => 'Pendidikan Komputer',
+            'nip'      => '123456789',
+            'jabatan'  => 'Operator Jurusan',
             'password' => Hash::make('12345'),
             'role'     => 'admin_jurusan',
         ]);
@@ -42,6 +44,16 @@ class UsersTableSeeder extends Seeder
             'homebase' => 'UPM FKIP ULM',
             'password' => Hash::make('12345'),
             'role'     => 'admin_FKIP',
+        ]);
+
+        User::firstOrCreate([
+            'email' => 'madhan@ulm.ac.id',
+        ], [
+            'name'     => 'Madhan, SPd.',
+            'homebase' => 'Gugus Penjamin Mutu FKIP ULM',
+            'password' => Hash::make('12345'),
+            'jabatan'  => 'Auditor Internal',
+            'role'     => 'auditor',
         ]);
 
         // User::firstOrCreate([

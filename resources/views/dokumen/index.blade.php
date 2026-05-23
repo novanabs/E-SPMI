@@ -314,7 +314,7 @@ table.dataTable tbody tr td:last-child {
                     <th>No</th>
                     <th>Nama Dokumen</th>
                     <th>Deskripsi</th>
-                    <th>Waktu Unggah</th>
+                    <th>Tahun</th>
                     <th>Link Dokumen</th>
 
                     @if (auth()->user()->role == 'admin_FKIP')
@@ -354,7 +354,7 @@ table.dataTable tbody tr td:last-child {
                         <td>
 
                             <div class="document-date">
-                                {{ $item->created_at->translatedFormat('l, d M Y') }}
+                                {{ $item->tahun }}
                             </div>
 
                         </td>

@@ -37,9 +37,14 @@ class DokumenController extends Controller
         $request->validate([
             'name'         => 'required',
             'deskripsi'    => 'nullable',
+            'tahun'         => 'required|integer|min:2000|max:' . (date('Y') + 10),
             'link_dokumen' => 'required'
         ], [
             'name.required'         => 'Nama dokumen wajib diisi.',
+            'tahun.required'        => 'Tahun wajib diisi.',
+            'tahun.integer'         => 'Tahun harus berupa angka.',
+            'tahun.min'             => 'Tahun tidak valid.',
+            'tahun.max'             => 'Tahun tidak valid.',
             'link_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 
@@ -77,9 +82,14 @@ class DokumenController extends Controller
         $validated = $request->validate([
             'name'         => 'required|string',
             'deskripsi'    => 'nullable',
+            'tahun'         => 'required|integer|min:2000|max:' . (date('Y') + 10),
             'link_dokumen' => 'required|string',
         ], [
             'name.required'         => 'Nama dokumen wajib diisi.',
+            'tahun.required'        => 'Tahun wajib diisi.',
+            'tahun.integer'         => 'Tahun harus berupa angka.',
+            'tahun.min'             => 'Tahun tidak valid.',
+            'tahun.max'             => 'Tahun tidak valid.',
             'link_dokumen.required' => 'Link dokumen wajib diisi.',
         ]);
 

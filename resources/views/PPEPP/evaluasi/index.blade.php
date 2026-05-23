@@ -314,7 +314,7 @@ table.dataTable tbody tr td:last-child {
                     <th>No</th>
                     <th>Aspek</th>
                     <th>Jenis Laporan</th>
-                    <th>Waktu Unggah</th>
+                    {{-- <th>Waktu Unggah</th> --}}
                     <th>Link Laporan</th>
                     <th>Aksi</th>
                 </tr>
@@ -350,24 +350,40 @@ table.dataTable tbody tr td:last-child {
 
                         </td>
 
-                        <td>
+                        {{-- <td>
 
                             <div class="report-date">
                                 {{ $item->created_at->translatedFormat('l, d M Y') }}
                             </div>
 
-                        </td>
+                        </td> --}}
 
                         <td>
+
+                            <div class="d-flex  gap-2">
 
                             <a href="{{ $item->link_bukti_laporan }}"
                                class="btn-link-custom"
                                target="_blank">
 
                                 <i class="fas fa-file-alt"></i>
-                                Lihat
+                                {{ $item->tahun }} - Ganjil
 
                             </a>
+
+                            @if ($item->link_bukti_laporan_genap)
+                                
+                            <a href="{{ $item->link_bukti_laporan_genap }}"
+                               class="btn-link-custom"
+                               target="_blank">
+
+                                <i class="fas fa-file-alt"></i>
+                                {{ $item->tahun }} - Genap
+
+                            </a>
+                            @endif
+                            </div>
+
 
                         </td>
 

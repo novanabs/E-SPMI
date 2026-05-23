@@ -652,9 +652,17 @@
                                         </li>
                                         <li class="nav-item">
                                             <a href="{{ route('user.index') }}"
-                                                class="nav-link {{ Route::is('user.*') ? 'active' : '' }}">
+                                                class="nav-link {{ Route::is('user.index') ? 'active' : '' }}">
                                                 <i class="nav-icon bi bi-people"></i>
                                                 <p>Manajemen User</p>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="{{ route('user.auditor') }}"
+                                                class="nav-link {{ Route::is('user.auditor') ? 'active' : '' }}">
+                                                <i class="nav-icon bi bi-person-gear"></i>
+                                                <p>Manajemen Auditor</p>
                                             </a>
                                         </li>
                                     @endif

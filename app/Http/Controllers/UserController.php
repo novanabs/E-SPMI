@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\AuditorJurusan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
@@ -15,11 +16,48 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::whereIn('role', ['pimpinan', 'admin_jurusan'])->get();
+        $data = User::whereIn('role', ['pimpinan', 'admin_jurusan', 'auditor'])->get();
 
         return view('user.index', compact('data'));
     }
 
+    public function auditor()
+    {
+        $data = User::where('role', 'auditor')->get();
+
+        return view('user.auditor', compact('data'));
+    }
+
+    public function hubungkan(Request $request)
+{
+    $request->validate([
+
+        'user_id' => 'required',
+        'jurusan' => 'required',
+        'tahun_audit' => 'required',
+
+    ]);
+
+    AuditorJurusan::create([
+
+        'user_id' => $request->user_id,
+        'jurusan' => $request->jurusan,
+        'tahun_audit' => $request->tahun_audit,
+
+    ]);
+
+    return back()->with('success', 'Berhasil menghubungkan auditor');
+
+}
+
+   public function hapusHubungan($id)
+    {
+
+        AuditorJurusan::findOrFail($id)->delete();
+
+        return back()->with('success', 'Hubungan berhasil dihapus');
+
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -36,12 +74,14 @@ class UserController extends Controller
         $validated = $request->validate([
             'name'     => 'required',
             'homebase' => 'required',
-            'ketua'    => 'required',
+            'jabatan'    => 'required',
+            'nip'    => 'nullable',
             'email'    => 'required|email',
             'role'     => 'required',
         ], [
             'name.required'  => 'Nama user wajib diisi.',
-            'ketua.required' => 'Ketua wajib diisi.',
+            'nip.required' => 'NIP wajib diisi.',
+            'jabatan.required' => 'Jabatan wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'role.required'  => 'Role wajib diisi.',
         ]);
@@ -104,12 +144,14 @@ class UserController extends Controller
         $validated = $request->validate([
             'name'     => 'required',
             'homebase' => 'required',
-            'ketua'    => 'required',
+            'jabatan'    => 'required',
+            'nip'    => 'nullable',
             'email'    => 'required|email',
             'role'     => 'required',
         ], [
             'name.required'  => 'Nama user wajib diisi.',
-            'ketua.required' => 'Ketua wajib diisi.',
+            'nip.required' => 'NIP wajib diisi.',
+            'jabatan.required' => 'Jabatan wajib diisi.',
             'email.required' => 'Email wajib diisi.',
             'role.required'  => 'Role wajib diisi.',
         ]);

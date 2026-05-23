@@ -12,6 +12,8 @@ class Evaluasi extends Model
         'aspek',
         'jenis_laporan',
         'link_bukti_laporan',
+        'link_bukti_laporan_genap',
+        'tahun',
         'id_users'
     ];
 }

@@ -14,10 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('homebase');
+            $table->string('nip')->nullable();
             $table->enum('role', ['admin_jurusan', 'admin_FKIP', 'pimpinan']);
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('ketua')->nullable();
+            $table->string('jabatan')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -11,6 +11,7 @@ class Pengendalian extends Model
     protected $fillable = [
         'name',
         'link_bukti_laporan',
-        'id_users'
+        'id_users',
+        'tahun'
     ];
 }

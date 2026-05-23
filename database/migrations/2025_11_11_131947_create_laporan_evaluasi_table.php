@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->enum('aspek', ['Pendidikan', 'Penelitian', 'Pengabdian']);
             $table->enum('jenis_laporan', ['AMI', 'Monev_jurusan', 'Survey']);
+            $table->year('tahun');
             $table->string('link_bukti_laporan');
+            $table->string('link_bukti_laporan_genap')->nullable();
             $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

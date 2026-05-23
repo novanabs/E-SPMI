@@ -23,7 +23,8 @@ class User extends Authenticatable
         'role',
         'email',
         'password',
-        'ketua',
+        'jabatan',
+        'nip',
         'password_changed',
         'generated_password',
     ];
@@ -50,5 +51,10 @@ class User extends Authenticatable
             'password'          => 'hashed',
             'password_changed'  => 'boolean',
         ];
+    }
+
+    public function auditorJurusan()
+    {
+        return $this->hasMany(AuditorJurusan::class, 'user_id');
     }
 }

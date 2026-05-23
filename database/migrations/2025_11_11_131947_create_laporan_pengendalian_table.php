@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('laporan_pengendalian', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->year('tahun');
             $table->string('link_bukti_laporan');
             $table->foreignId('id_users')->constrained('users')->onDelete('cascade');
             $table->timestamps();

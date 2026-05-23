@@ -36,9 +36,14 @@ class PengendalianController extends Controller
     {
         $request->validate([
             'name'               => 'required',
+            'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
             'link_bukti_laporan' => 'required'
         ], [
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.integer' => 'Tahun harus berupa angka.',
+            'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',
+            'tahun.max' => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
         ]);
 
         $data = $request->merge([
@@ -75,8 +80,14 @@ class PengendalianController extends Controller
         $validated = $request->validate([
             'name'               => 'required|string',
             'link_bukti_laporan' => 'required|string',
+            'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
         ], [
+            'name.required' => 'Nama laporan wajib diisi.',
             'link_bukti_laporan.required' => 'Link Laporan wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.integer' => 'Tahun harus berupa angka.',
+            'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',
+            'tahun.max' => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
         ]);
 
         Pengendalian::where('id', $id)->update(

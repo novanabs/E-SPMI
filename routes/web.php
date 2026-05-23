@@ -79,6 +79,14 @@ Route::middleware(['auth', 'role:admin_FKIP'])->group(function () {
 
     Route::resource('evaluasi_diri_jurusan', EvaluasiDiriJurusan::class);
     Route::resource('user', UserController::class);
+    Route::get('/manajemen-auditor', [UserController::class, 'auditor'])->name('user.auditor');
+    Route::post('/hubungkan',
+            [UserController::class, 'hubungkan'])
+            ->name('auditor.hubungkan');
+
+    Route::delete('/hapus-hubungan/{id}',
+            [UserController::class, 'hapusHubungan'])
+            ->name('auditor.hapusHubungan');
     Route::resource('jurusan', JurusanController::class);
 });
 

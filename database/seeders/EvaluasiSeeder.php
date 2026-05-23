@@ -20,55 +20,72 @@ class EvaluasiSeeder extends Seeder
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'AMI',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Monev_jurusan',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Survey',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'AMI',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Monev_jurusan',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Survey',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'AMI',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Monev_jurusan',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Survey',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '1',
         ]);
 
@@ -76,55 +93,73 @@ class EvaluasiSeeder extends Seeder
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'AMI',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Monev_jurusan',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pendidikan',
             'jenis_laporan' => 'Survey',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'AMI',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Monev_jurusan',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Penelitian',
             'jenis_laporan' => 'Survey',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'AMI',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Monev_jurusan',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Evaluasi::firstOrCreate([
             'aspek' => 'Pengabdian',
             'jenis_laporan' => 'Survey',
+            'tahun' => '2024',
             'link_bukti_laporan' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
+            'link_bukti_laporan_genap' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
     }

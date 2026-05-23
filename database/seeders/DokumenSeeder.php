@@ -16,18 +16,21 @@ class DokumenSeeder extends Seeder
         Dokumen::firstOrCreate([
             'name' => 'Contoh Dokumen SATU',
             'deskripsi' => 'Ini adalah dokumen dari FKIP',
+            'tahun' => '2023',
             'link_dokumen' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Dokumen::firstOrCreate([
             'name' => 'Contoh Dokumen DUA',
             'deskripsi' => 'Ini adalah yang kedua',
+            'tahun' => '2023',
             'link_dokumen' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
         Dokumen::firstOrCreate([
             'name' => 'Contoh Dokumen TIGA',
             'deskripsi' => 'Ini asdsadsadas',
+            'tahun' => '2023',
             'link_dokumen' => 'https://drive.google.com/file/d/10ut94zuR_s8pcjxp1X9F7iFjkiyhjkSs/view?usp=drive_link',
             'id_users' => '3',
         ]);
