@@ -497,6 +497,14 @@
                                         <p>Evaluasi Diri Jurusan</p>
                                     </a>
                                 </li>
+                            @elseif(auth()->user()->role == 'auditor')
+                                <li class="nav-item">
+                                    <a href="{{ route('auditor.index') }}"
+                                        class="nav-link {{ Route::is('auditor*') ? 'active' : '' }}">
+                                        <i class="nav-icon bi bi-person-gear"></i>
+                                        <p>Audit</p>
+                                    </a>
+                                </li>
                             @else
                                 <!-- E-SPMI -->
                                 <li

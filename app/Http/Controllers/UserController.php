@@ -50,6 +50,14 @@ class UserController extends Controller
 
 }
 
+public function dashboardAuditor(){
+     $data = AuditorJurusan::where('user_id', auth()->id())
+            ->orderBy('tahun_audit', 'desc')
+            ->get();
+
+    return view('auditor.index', compact('data'));
+}
+
    public function hapusHubungan($id)
     {
 

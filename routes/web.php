@@ -61,6 +61,8 @@ Route::middleware('auth')->group(function () {
         return response('<h2>HELLO DARI LARAVEL</h2>', 200);
     });
 
+     Route::get('/dashboard-auditor', [UserController::class, 'dashboardAuditor'])->name('auditor.index');
+    
 
 });
 
