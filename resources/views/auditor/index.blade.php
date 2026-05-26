@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Auditor')
+@section('title', 'Penilaian AMI - Auditor')
 
 @section('content')
 
@@ -322,7 +322,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <div class="page-title">
 
-        Dashboard Auditor
+        Penilaian AMI
 
     </div>
 
@@ -418,9 +418,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                 </div>
 
                 <!-- BUTTON -->
+                @php
+                    $hasUser = App\Models\User::where('homebase', $item->jurusan)->where('role', 'admin_jurusan')->exists();
+                @endphp
 
-                <a href="#"
+                @if ($hasUser)
+                <a href="{{ route('auditor.evaluasi', $item->id) }}"
                    class="btn-audit">
+                @else
+                <a href="#"
+                   class="btn-audit"
+                   style="opacity:0.5;pointer-events:none;"
+                   title="Jurusan belum memiliki pengguna terdaftar">
+                @endif
 
                     <i class="fas fa-arrow-right"></i>
 

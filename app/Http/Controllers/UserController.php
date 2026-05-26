@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\AuditorJurusan;
+use App\Models\MatriksLED;
+use App\Models\Penetapan;
+use App\Models\Pelaksanaan;
+use App\Models\Evaluasi;
+use App\Models\Pengendalian;
+use App\Models\Peningkatan;
+use App\Models\SyaratUnggul;
+use App\Models\UsersMatrik;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
@@ -56,6 +64,188 @@ public function dashboardAuditor(){
             ->get();
 
     return view('auditor.index', compact('data'));
+}
+
+public function auditorJurusanShow($id)
+{
+    $assigned = AuditorJurusan::where('user_id', auth()->id())->findOrFail($id);
+    $target = User::where('homebase', $assigned->jurusan)
+        ->where('role', 'admin_jurusan')
+        ->first();
+    $data = (object) [
+        'homebase' => $assigned->jurusan,
+        'ketua'    => $target ? $target->name : '-',
+        'tahun'    => $assigned->tahun_audit,
+    ];
+    $userId = $target ? $target->id : null;
+    $penetapan    = $userId ? Penetapan::where('id_users', $userId)->get() : collect();
+    $pelaksanaan  = $userId ? Pelaksanaan::where('id_users', $userId)->get() : collect();
+    $evaluasi     = $userId ? Evaluasi::where('id_users', $userId)->get() : collect();
+    $pengendalian = $userId ? Pengendalian::where('id_users', $userId)->get() : collect();
+    $peningkatan  = $userId ? Peningkatan::where('id_users', $userId)->get() : collect();
+    return view('auditor.jurusan-show', compact('data', 'penetapan', 'pelaksanaan', 'evaluasi', 'pengendalian', 'peningkatan'));
+}
+
+public function auditorEvaluasi($id)
+{
+    $assigned = AuditorJurusan::where('user_id', auth()->id())->findOrFail($id);
+    $userJurusan = User::where('homebase', $assigned->jurusan)
+        ->where('role', 'admin_jurusan')->first();
+    if (!$userJurusan) {
+        return redirect()->route('auditor.index')->with('error', 'Jurusan "' . $assigned->jurusan . '" belum memiliki pengguna terdaftar.');
+    }
+
+    $data = MatriksLED::with([
+        'kriteria',
+        'userMatrik' => function ($q) use ($userJurusan) {
+            $q->where('id_user_jurusan', $userJurusan->id)
+              ->where('id_users', auth()->id());
+        }
+    ])->orderBy('nomor', 'asc')->get();
+
+    // Hitung syarat unggul (berdasarkan data jurusan, bukan auditor)
+    $dataSyaratUnggul = SyaratUnggul::with([
+        'matriks.subItemElemen',
+        'matriks.userSubItemElements',
+        'matriks.userMatrik'
+    ])->get();
+
+    foreach ($dataSyaratUnggul as $item) {
+        $item->memenuhi_3_tahun = false;
+        $item->memenuhi_5_tahun = false;
+        $matriks = $item->matriks;
+        if (!$matriks) continue;
+        $subItems = $matriks->subItemElemen ?? collect();
+        $userValues = $matriks->userSubItemElements ?? collect();
+        $nilaiMap = $userValues->pluck('nilai', 'id_sub_item_elemen');
+
+        if ($item->nomor == 1) {
+            $NDS3 = $NDL = $NDLK = $NDGB = 0;
+            foreach ($subItems as $sub) {
+                $id = $sub->id;
+                $var = $sub->variabel;
+                $nilai = (float) ($nilaiMap[$id] ?? 0);
+                if ($var == 'NDS3') $NDS3 = $nilai;
+                if ($var == 'NDL') $NDL = $nilai;
+                if ($var == 'NDLK') $NDLK = $nilai;
+                if ($var == 'NDGB') $NDGB = $nilai;
+            }
+            $totalLektor = $NDL + $NDLK + $NDGB;
+            if ($NDS3 >= 1 && $totalLektor >= 2) $item->memenuhi_3_tahun = true;
+            if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) $item->memenuhi_5_tahun = true;
+        } elseif (in_array($item->nomor, [2, 3, 4])) {
+            $nilai = (float) ($matriks->userMatrik->jawaban ?? 0);
+            if ($nilai >= 3.0) $item->memenuhi_3_tahun = true;
+            if ($nilai >= 3.5) $item->memenuhi_5_tahun = true;
+        } elseif ($item->nomor == 5) {
+            $NM = 0;
+            $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
+            $INT = $ISBN = $PATEN = 0;
+            foreach ($subItems as $sub) {
+                $id = $sub->id; $var = $sub->variabel;
+                $nilai = (float) ($nilaiMap[$id] ?? 0);
+                if ($var == 'NM') $NM = $nilai;
+                if ($var == 'SINTA1_MHS') $S1 = $nilai;
+                if ($var == 'SINTA2_MHS') $S2 = $nilai;
+                if ($var == 'SINTA3_MHS') $S3 = $nilai;
+                if ($var == 'SINTA4_MHS') $S4 = $nilai;
+                if ($var == 'SINTA5_MHS') $S5 = $nilai;
+                if ($var == 'SINTA6_MHS') $S6 = $nilai;
+                if ($var == 'INT_MHS') $INT = $nilai;
+                if ($var == 'ISBN_MHS') $ISBN = $nilai;
+                if ($var == 'PATEN_MHS') $PATEN = $nilai;
+            }
+            if ($NM > 0) {
+                $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
+                if (($total3 / $NM) * 100 >= 15) $item->memenuhi_3_tahun = true;
+                $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
+                if (($total5 / $NM) * 100 >= 25) $item->memenuhi_5_tahun = true;
+            }
+        } elseif ($item->nomor == 6) {
+            $NDTPS = 0;
+            $S1 = $S2 = $S3 = $S4 = 0;
+            $INT = $INTREP = 0;
+            foreach ($subItems as $sub) {
+                $id = $sub->id; $var = $sub->variabel;
+                $nilai = (float) ($nilaiMap[$id] ?? 0);
+                if ($var == 'NDTPS') $NDTPS = $nilai;
+                if ($var == 'S1_DTPS') $S1 = $nilai;
+                if ($var == 'S2_DTPS') $S2 = $nilai;
+                if ($var == 'S3_DTPS') $S3 = $nilai;
+                if ($var == 'S4_DTPS') $S4 = $nilai;
+                if ($var == 'INT_DTPS') $INT = $nilai;
+                if ($var == 'INTREP_DTPS') $INTREP = $nilai;
+            }
+            if ($NDTPS > 0) {
+                $total3 = $S1 + $S2 + $S3 + $S4 + $INT;
+                if (($total3 / $NDTPS) * 100 >= 20) $item->memenuhi_3_tahun = true;
+                $total5 = $S1 + $S2 + $INTREP;
+                if (($total5 / $NDTPS) * 100 >= 20) $item->memenuhi_5_tahun = true;
+            }
+        }
+    }
+    $syarat3 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_3_tahun);
+    $syarat5 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_5_tahun);
+    $dataUnggul = $dataSyaratUnggul;
+
+    return view('auditor.evaluasi', compact('data', 'userJurusan', 'assigned', 'syarat3', 'syarat5', 'dataUnggul'));
+}
+
+public function auditorEvaluasiStore(Request $request)
+{
+    $validated = $request->validate([
+        'jawaban'              => 'required|numeric',
+        'skor_a'               => 'nullable|numeric|min:0|max:4',
+        'skor_b'               => 'nullable|numeric|min:0|max:4',
+        'link_bukti'           => 'nullable|url',
+        'temuan'               => 'nullable',
+        'saran'                => 'nullable',
+        'nilai_total'          => 'required|numeric',
+        'id_matriks_led'       => 'required|integer',
+        'kepemilikan_kriteria' => 'required|string|in:jurusan,fakultas',
+        'id_users'             => 'required|integer',
+        'id_user_jurusan'      => 'required|integer',
+    ]);
+
+    $target = User::findOrFail($validated['id_user_jurusan']);
+    $assigned = AuditorJurusan::where('user_id', auth()->id())
+        ->where('jurusan', $target->homebase)->firstOrFail();
+
+    UsersMatrik::updateOrCreate(
+        [
+            'id_users'        => auth()->id(),
+            'id_user_jurusan' => $validated['id_user_jurusan'],
+            'id_matriks_led'  => $validated['id_matriks_led'],
+        ],
+        $validated
+    );
+
+    return redirect()->route('auditor.evaluasi', $assigned->id)
+        ->with('success', 'Data berhasil diperbarui');
+}
+
+public function auditorPerbandingan($id)
+{
+    $assigned = AuditorJurusan::where('user_id', auth()->id())->findOrFail($id);
+    $userJurusan = User::where('homebase', $assigned->jurusan)
+        ->where('role', 'admin_jurusan')->first();
+    if (!$userJurusan) {
+        return redirect()->route('auditor.index')->with('error', 'Belum ada data jurusan.');
+    }
+
+    $data = MatriksLED::with([
+        'kriteria',
+        'userMatrik'       => function ($q) use ($userJurusan) {
+            $q->where('id_users', $userJurusan->id);
+        },
+        'userMatrikByUser' => function ($q) use ($userJurusan) {
+            $q->where('id_users', auth()->id())
+              ->where('id_user_jurusan', $userJurusan->id);
+        }
+    ])->orderBy('nomor', 'asc')->get();
+
+    $user = $userJurusan;
+    return view('auditor.perbandingan', compact('data', 'user', 'assigned'));
 }
 
    public function hapusHubungan($id)

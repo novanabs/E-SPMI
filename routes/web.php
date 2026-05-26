@@ -97,6 +97,14 @@ Route::middleware(['auth', 'role:admin_jurusan'])->group(function () {
 
 });
 
+// Auth role auditor
+Route::middleware(['auth', 'role:auditor'])->group(function () {
+    Route::get('/auditor/jurusan/{id}', [UserController::class, 'auditorJurusanShow'])->name('auditor.jurusan.show');
+    Route::get('/auditor/ami/{id}', [UserController::class, 'auditorEvaluasi'])->name('auditor.evaluasi');
+    Route::post('/auditor/ami/store', [UserController::class, 'auditorEvaluasiStore'])->name('auditor.evaluasi.store');
+    Route::get('/auditor/perbandingan/{id}', [UserController::class, 'auditorPerbandingan'])->name('auditor.perbandingan');
+});
+
 // Auth role pimpinan
 Route::middleware(['auth', 'role:pimpinan'])->group(function () {
     Route::resource('pimpinan', PimpinanController::class);

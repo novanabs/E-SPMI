@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Audit Mutu Internal ' . (auth()->user()->homebase ?? ''))
+@section('title', 'Penilaian AMI ' . ($userJurusan->homebase ?? ''))
 
 @section('content')
 
@@ -120,13 +120,13 @@
         $user = auth()->user();
     @endphp
 
-    @if ($user->role === 'admin_jurusan')
-        @php $for = 'jurusan'; @endphp
-    @elseif ($user->role === 'admin_FKIP')
-        @php $for = 'fakultas'; @endphp
-    @else
-        @php $for = ''; @endphp
-    @endif
+@if ($user->role === 'admin_jurusan')
+    @php $for = 'jurusan'; @endphp
+@elseif ($user->role === 'admin_FKIP' || $user->role === 'auditor')
+    @php $for = 'fakultas'; @endphp
+@else
+    @php $for = ''; @endphp
+@endif
 
     <div id="loading-overlay">
         <div class="spinner"></div>
@@ -197,7 +197,7 @@
                                 <div class="card-body">
                                     <p class="fw-bold">Bobot : <span id="content-poin"></span></p>
                                     <span id="content-body" class="mt-2"></span>
-                                    <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}" method="POST">
+                                    <form id="kriteriaForm" action="{{ route('auditor.evaluasi.store') }}" method="POST">
                                     </form>
                                 </div>
 
@@ -715,10 +715,15 @@
                 <div class="card-header py-2 d-flex justify-content-between">
                     {{-- <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
                             {{ $syarat5 }}</h5> --}}
-                    <h5 class="mb-0">Hasil Akreditasi</h5>
-                    <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
-                        Export PDF
-                    </button>
+                    <h5 class="mb-0">Hasil Akreditasi {{ $userJurusan->homebase ?? '' }}</h5>
+                    <div>
+                        <a class="btn btn-sm btn-success me-2" href="{{ route('auditor.perbandingan', $assigned->id) }}">
+                            Bandingkan
+                        </a>
+                        <button class="btn btn-sm btn-primary" onclick="previewPdf()">
+                            Export PDF
+                        </button>
+                    </div>
                 </div>
 
                 <div class="row mt-3">
@@ -5216,6 +5221,7 @@
     <input type="hidden" name="id_matriks_led" id="id_matriks_led" value="${id_matriks_led}">
     <input type="hidden" name="kepemilikan_kriteria" value="{{ $for }}">
     <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
+    <input type="hidden" name="id_user_jurusan" value="{{ $userJurusan?->id }}">
 
     <button type="submit" class="btn btn-sm btn-success">Simpan</button>
 `);

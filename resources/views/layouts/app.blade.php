@@ -498,13 +498,39 @@
                                     </a>
                                 </li>
                             @elseif(auth()->user()->role == 'auditor')
+                                @php
+                                    $assignments = App\Models\AuditorJurusan::where('user_id', auth()->id())->get();
+                                @endphp
                                 <li class="nav-item">
                                     <a href="{{ route('auditor.index') }}"
-                                        class="nav-link {{ Route::is('auditor*') ? 'active' : '' }}">
+                                        class="nav-link {{ Route::is('auditor.index') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-person-gear"></i>
                                         <p>Audit</p>
                                     </a>
                                 </li>
+                                @if ($assignments->isNotEmpty())
+                                <li
+                                    class="nav-item has-treeview {{ Route::is('auditor.jurusan*') ? 'menu-open' : '' }}">
+                                    <a href="#" class="nav-link">
+                                        <i class="nav-icon bi bi-boxes"></i>
+                                        <p>
+                                            PPEPP Jurusan
+                                            <i class="nav-arrow bi bi-chevron-right"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        @foreach ($assignments as $a)
+                                        <li class="nav-item">
+                                            <a href="{{ route('auditor.jurusan.show', $a->id) }}"
+                                                class="nav-link {{ Route::is('auditor.jurusan.show') && request()->segment(3) == $a->id ? 'active' : '' }}">
+                                                <i class="nav-icon bi bi-circle"></i>
+                                                <p>{{ $a->jurusan }}</p>
+                                            </a>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+                                </li>
+                                @endif
                             @else
                                 <!-- E-SPMI -->
                                 <li

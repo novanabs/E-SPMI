@@ -137,15 +137,94 @@ class LEDSeeder extends Seeder
             [
                 'nomor'                => 10,
                 'id_kriteria'          => 3,
-                'elemen'               => 'Kualitas input mahasiswa',
+                'elemen'               => 'Kualitas Input Mahasiswa',
                 'poin'                 => '1.25',
-                'indikator'            => 'PT memperoleh mahasiswa baru dengan prestasi akademik dan nonakademik yang baik, yang memenuhi aspek-aspek sebagai berikut: (a) memiliki kriteria seleksi yang tinggi, (b) memiliki mekanisme seleksi yang ketat, (c) rasio pendaftar dan yang diterima minimal 1:1, dan (d) jumlah pendaftar memenuhi daya tampung dalam 5 tahun terakhir. ',
+                'indikator'            => <<<TEXT
+(a) PS memperoleh mahasiswa baru dengan kualitas input yang baik, memenuhi aspek: (1) kriteria seleksi tinggi, (2) mekanisme seleksi ketat, (3) rasio pendaftar:diterima min 1:1, dan (4) jumlah pendaftar memenuhi daya tampung dalam 5 tahun terakhir.
+
+(b) PS melakukan analisis terhadap: (1) rasio pendaftar:diterima, (2) jumlah pendaftar vs daya tampung, (3) kualitas input berdasarkan mekanisme dan hasil seleksi.
+
+Skor Akhir = (3 x Skor(a) + Skor(b)) / 4
+TEXT,
                 'option_pilihan_ganda' => json_encode([
-                    4 => 'PT memperoleh mahasiswa baru dengan prestasi akademik dan non-akademik yang baik, memenuhi 4 aspek; dengan rasio pendaftar:lulus seleksi ≥ 3:1.',
-                    3 => 'PT memperoleh mahasiswa baru dengan prestasi akademik dan non-akademik yang baik, memenuhi 3 aspek; dengan rasio pendaftar:lulus seleksi 2:1.',
-                    2 => 'PT memperoleh mahasiswa baru dengan prestasi akademik dan non-akademik yang baik, memenuhi 2 aspek; dengan rasio pendaftar:lulus seleksi 1:1.',
-                    1 => 'PT memperoleh mahasiswa baru dengan prestasi akademik dan non-akademik yang baik, memenuhi < 2 aspek; dengan rasio pendaftar:lulus seleksi < 1:1.'
+                    [
+                        'label'   => 'Skor (a) — Kualitas Input',
+                        'options' => [
+                            4 => 'Memenuhi 4 aspek; rasio pendaftar:lulus seleksi ≥ 4:1',
+                            3 => 'Memenuhi 3 aspek; rasio ≥ 3:1',
+                            2 => 'Memenuhi 2 aspek; rasio ≥ 2:1',
+                            1 => 'Memenuhi <2 aspek; rasio 1:1 atau tidak memenuhi daya tampung',
+                        ],
+                    ],
+                    [
+                        'label'   => 'Skor (b) — Analisis',
+                        'options' => [
+                            4 => 'Analisis 3 aspek',
+                            3 => 'Analisis 2 aspek',
+                            2 => 'Analisis 1 aspek',
+                            1 => 'Tidak ada analisis',
+                        ],
+                    ],
                 ]),
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 11,
+                'id_kriteria'          => 3,
+                'elemen'               => 'Rasio Jumlah Dosen terhadap Jumlah Mahasiswa',
+                'poin'                 => '1.25',
+                'indikator'            => <<<TEXT
+(a) Rasio jumlah DTPS terhadap jumlah mahasiswa memungkinkan mahasiswa berinteraksi dan memperoleh bimbingan dosen dengan baik. RMD = NM / NDTPS
+
+(b) PS melakukan analisis ketercapaian rasio dosen terhadap mahasiswa meliputi: (1) mutu pembelajaran, (2) efektivitas penelitian mahasiswa, (3) pencapaian profil lulusan.
+
+Skor Akhir = (3 x Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    [
+                        'label'   => 'Skor (a) — Rasio Dosen:Mahasiswa',
+                        'options' => [
+                            4 => 'RMD dalam rentang ideal (Sains: 15-25, Sosial: 25-35)',
+                            3 => 'RMD mendekati rentang ideal',
+                            2 => 'RMD cukup jauh dari rentang ideal',
+                            1 => 'RMD sangat jauh dari rentang ideal',
+                        ],
+                    ],
+                    [
+                        'label'   => 'Skor (b) — Analisis',
+                        'options' => [
+                            4 => 'Analisis 3 aspek',
+                            3 => 'Analisis 2 aspek',
+                            2 => 'Analisis 1 aspek',
+                            1 => 'Tidak ada analisis',
+                        ],
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — RASIO DOSEN:MAHASISWA ━━━
+RMD = NM / NDTPS
+
+── Kelompok Sains Teknologi ──
+15 ≤ RMD ≤ 25 → Skor = 4
+RMD < 15 → Skor = (4 × RMD) / 15
+25 < RMD ≤ 35 → Skor = (70 − 2×RMD) / 5
+RMD > 35 → Skor = 1
+
+── Kelompok Sosial Humaniora ──
+25 ≤ RMD ≤ 35 → Skor = 4
+RMD < 25 → Skor = (4 × RMD) / 25
+35 < RMD ≤ 50 → Skor = (200 − 4×RMD) / 15
+RMD > 50 → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis 3 aspek
+3 = Analisis 2 aspek
+2 = Analisis 1 aspek
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -177,17 +256,160 @@ class LEDSeeder extends Seeder
                 'jenis'                => 'pilihan_ganda',
             ],
             [
+                'nomor'                => 14,
+                'id_kriteria'          => 3,
+                'elemen'               => 'Prestasi Akademik dan Non-Akademik Mahasiswa',
+                'poin'                 => '2.00',
+                'indikator'            => <<<TEXT
+(a) Mahasiswa memiliki prestasi akademik dan non-akademik dalam 3 tahun terakhir. RI = NI/NM | RN = NN/NM | RW = NW/NM
+
+(b) PS melakukan analisis kontribusi prestasi mahasiswa terhadap: (1) peningkatan reputasi akademik PS, (2) penguatan jejaring eksternal, (3) pembentukan profil lulusan unggul dan berdaya saing global.
+
+Skor Akhir = (3 x Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    [
+                        'label'   => 'Skor (a) — Prestasi Mahasiswa',
+                        'options' => [
+                            4 => 'RI ≥ 0.5%',
+                            3 => 'RI < 0.5% dan RN ≥ 5%, atau kombinasi RI dan RN',
+                            2 => 'RI=0, RN=0, RW ≥ 10%',
+                            1 => 'RI=0, RN=0, RW < 10%',
+                        ],
+                    ],
+                    [
+                        'label'   => 'Skor (b) — Analisis',
+                        'options' => [
+                            4 => 'Analisis 3 aspek',
+                            3 => 'Analisis 2 aspek',
+                            2 => 'Analisis 1 aspek',
+                            1 => 'Tidak ada analisis',
+                        ],
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PRESTASI MAHASISWA ━━━
+RI = NI/NM | RN = NN/NM | RW = NW/NM
+Faktor: a = 0.5%, b = 5%, c = 10%
+
+RI ≥ a (0.5%) → Skor = 4
+RI < a dan RN ≥ b (5%) → Skor = 3 + (RI / a)
+0 < RI < a dan 0 < RN < b → Skor = 2 + (RI/a) + (RN/b) − (RI×RN)/(a×b)
+RI = 0, RN = 0, RW ≥ c (10%) → Skor = 2
+RI = 0, RN = 0, RW < c → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis 3 aspek
+3 = Analisis 2 aspek
+2 = Analisis 1 aspek
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
                 'nomor'                => 15,
                 'id_kriteria'          => 3,
                 'elemen'               => 'Produktivitas Karya Inovatif dan/atau Publikasi Ilmiah Mahasiswa',
                 'poin'                 => '2.50',
-                'indikator'            => 'Dalam 5 tahun terakhir, mahasiswa menghasilkan karya inovatif dan/atau publikasi ilmiah yang relevan dengan bidang keilmuan PS pada jurnal nasional terakreditasi minimal Sinta 4. PKIM = Persentase jumlah mahasiswa memiliki karya inovatif yang  berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya dalam 5 tahun terakhir. ',
+                'indikator'            => <<<TEXT
+(a) Dalam 5 tahun terakhir, mahasiswa menghasilkan karya inovatif, publikasi ilmiah sesuai bidang PS, dan/atau karya seni yang dipamerkan/dipagelarkan.
+
+(b) PS melakukan analisis kontribusi produktivitas karya inovatif/publikasi ilmiah terhadap: (1) penguatan budaya akademik, (2) peningkatan daya saing lulusan, (3) reputasi PS nasional/internasional.
+
+Skor Akhir = (3 x Skor(a) + Skor(b)) / 4
+TEXT,
                 'option_pilihan_ganda' => json_encode([
-                    4 => 'Dalam 5 tahun terakhir, ≥ 25% mahasiswa memiliki karya inovatif yang  berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya. ',
-                    3 => '5 % >  mahasiswa ≥ 20% dalam 5 tahun terakhir memiliki karya inovatif yang berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya.  ',
-                    2 => '20 % >  mahasiswa ≥15% dalam 5 tahun terakhir memiliki karya inovatif yang berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya. ',
-                    1 => '<15% mahasiswa dalam 5 tahun terakhir memiliki karya inovatif yang  berbentuk book chapter,  buku ber-ISBN, paten/paten sederhana, Hak Kekayaan Intelektual (HKI) pada karya modul pembelajaran, media pembelajaran interaktif, aplikasi pembelajaran, karya seni, atau karya lain yang sejenis, dan/atau publikasi ilmiah  yang dipublikasi pada jurnal nasional terakreditasi minimal Sinta 4 sesuai bidang keilmuannya.   '
+                    [
+                        'label'   => 'Skor (a) — Karya Inovatif/Publikasi',
+                        'options' => [
+                            4 => '≥ 20% mahasiswa memiliki karya inovatif/publikasi',
+                            3 => '≥ 15% mahasiswa',
+                            2 => '≥ 10% mahasiswa',
+                            1 => '< 10% mahasiswa',
+                        ],
+                    ],
+                    [
+                        'label'   => 'Skor (b) — Analisis',
+                        'options' => [
+                            4 => 'Analisis 3 aspek',
+                            3 => 'Analisis 2 aspek',
+                            2 => 'Analisis 1 aspek',
+                            1 => 'Tidak ada analisis',
+                        ],
+                    ],
                 ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KARYA INOVATIF/PUBLIKASI ━━━
+PKIM = Persentase mahasiswa memiliki karya inovatif/publikasi ilmiah
+
+PKIM ≥ 20% → Skor = 4
+15% ≤ PKIM < 20% → Skor = 3
+10% ≤ PKIM < 15% → Skor = 2
+PKIM < 10% → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis 3 aspek
+3 = Analisis 2 aspek
+2 = Analisis 1 aspek
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 16,
+                'id_kriteria'          => 3,
+                'elemen'               => 'Kepuasan Mahasiswa',
+                'poin'                 => '1.50',
+                'indikator'            => <<<TEXT
+(a) UPPS/PS melakukan pengukuran kepuasan mahasiswa terhadap performa mengajar dosen, layanan administrasi akademik, dan fasilitas pendidikan, memenuhi 6 aspek: (1) instrumen valid, (2) dilaksanakan tiap akhir semester, (3) dianalisis tepat, (4) ada review hasil, (5) ditindaklanjuti, (6) hasilnya dipublikasikan.
+
+(b) Tingkat kepuasan mahasiswa hasil pengukuran. TKM = Σ TKM_i / 5
+
+Skor Akhir = (Skor(a) + 3 × Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    [
+                        'label'   => 'Skor (a) — Aspek Pengukuran',
+                        'options' => [
+                            4 => 'Memenuhi 6 aspek',
+                            3 => 'Memenuhi 5 aspek',
+                            2 => 'Memenuhi 4 aspek',
+                            1 => 'Memenuhi < 4 aspek',
+                        ],
+                    ],
+                    [
+                        'label'   => 'Skor (b) — TKM',
+                        'options' => [
+                            4 => 'TKM ≥ 75%',
+                            3 => '50% ≤ TKM < 75%',
+                            2 => '25% ≤ TKM < 50%',
+                            1 => 'TKM < 25%',
+                        ],
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — ASPEK PENGUKURAN ━━━
+6 aspek → Skor = 4
+5 aspek → Skor = 3
+4 aspek → Skor = 2
+< 4 aspek → Skor = 1
+
+━━━ SKOR (b) — TKM ━━━
+TKM = ΣTKM_i / 5
+TKM ≥ 75% → Skor = 4
+50% ≤ TKM < 75% → Skor = 3
+25% ≤ TKM < 50% → Skor = 2
+TKM < 25% → Skor = 1
+
+━━━ SKOR AKHIR ━━━
+Skor Akhir = (Skor(a) + 3 × Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -219,31 +441,207 @@ class LEDSeeder extends Seeder
                 'jenis'                => 'pilihan_ganda',
             ],
             [
+                'nomor'                => 19,
+                'id_kriteria'          => 4,
+                'elemen'               => 'Kualifikasi Akademik dan Jabatan Akademik DTPS',
+                'poin'                 => '1.50',
+                'indikator'            => <<<TEXT
+(a) Kualifikasi akademik DTPS. PDS3 = (NDS3 / NDTPS) × 100%
+
+(b) Jabatan akademik DTPS. PGBLKL = ((NDGB + NDLK + NDL) / NDTPS) × 100%
+
+(c) PS melakukan analisis terhadap keterpenuhan kualifikasi akademik, ketercapaian jabatan akademik, dan dampaknya.
+
+Skor Akhir = (3 × (Skor(a) + Skor(b)) + Skor(c)) / 7
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (c) — Analisis',
+                    'options' => [
+                        4 => 'Analisis kualifikasi + jabatan + dampak',
+                        3 => 'Analisis kualifikasi + jabatan',
+                        2 => 'Analisis salah satu (kualifikasi atau jabatan)',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KUALIFIKASI AKADEMIK ━━━
+PDS3 = (NDS3 / NDTPS) × 100%
+PDS3 ≥ 40% → Skor(a) = 4
+PDS3 < 40% → Skor(a) = 2 + (5 × PDS3)
+
+━━━ SKOR (b) — JABATAN AKADEMIK ━━━
+PGBLKL = ((NDGB + NDLK + NDL) / NDTPS) × 100%
+PGBLKL ≥ 70% → Skor(b) = 4
+PGBLKL < 70% → Skor(b) = 2 + (20 × PGBLKL / 7)
+
+━━━ SKOR (c) — ANALISIS ━━━
+4 = Kualifikasi + jabatan + dampak
+3 = Kualifikasi + jabatan
+2 = Kualifikasi atau jabatan
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+Skor Akhir = (3 × (Skor(a) + Skor(b)) + Skor(c)) / 7
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 20,
+                'id_kriteria'          => 4,
+                'elemen'               => 'Beban Kerja DTPS',
+                'poin'                 => '1.25',
+                'indikator'            => <<<TEXT
+(a) Beban kerja DTPS dalam satu tahun terakhir memungkinkan DTPS bekerja secara maksimal. BKD = rata-rata beban kerja dosen (SKS)
+
+(b) PS melakukan analisis distribusi BKD dalam mendukung: (1) kualitas tridarma yang seimbang, (2) kesejahteraan dosen, (3) keberlanjutan mutu PS.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Distribusi BKD',
+                    'options' => [
+                        4 => 'Analisis 3 aspek (tridarma seimbang, kesejahteraan, keberlanjutan mutu)',
+                        3 => 'Analisis 2 aspek',
+                        2 => 'Analisis 1 aspek',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — BEBAN KERJA ━━━
+BKD = rata-rata beban kerja dosen (SKS)
+12 ≤ BKD ≤ 16 → Skor = 4
+6 ≤ BKD < 12 → Skor = (2×BKD − 12) / 3
+16 < BKD ≤ 18 → Skor = 36 − (2×BKD)
+BKD < 6 atau BKD > 18 → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = 3 aspek (tridarma, kesejahteraan, mutu)
+3 = 2 aspek
+2 = 1 aspek
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 21,
+                'id_kriteria'          => 4,
+                'elemen'               => 'Pengakuan Kepakaran DTPS',
+                'poin'                 => '1.75',
+                'indikator'            => <<<TEXT
+(a) DTPS memiliki prestasi/pengakuan kepakaran di tingkat wilayah/lokal, nasional, dan/atau internasional. RRD = NRD / NDTPS
+
+(b) PS melakukan analisis: (1) pengakuan reputasi kepakaran, (2) penyebab, (3) dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Kepakaran',
+                    'options' => [
+                        4 => 'Analisis 3 aspek (reputasi, penyebab, dampak)',
+                        3 => 'Analisis 2 aspek',
+                        2 => 'Analisis 1 aspek',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PENGUKUAN KEPAKARAN ━━━
+RRD = NRD / NDTPS
+RRD ≥ 1 → Skor(a) = 4
+RRD < 1 → Skor(a) = 2 + (2 × RRD)
+Tidak ada skor 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = 3 aspek (reputasi, penyebab, dampak)
+3 = 2 aspek
+2 = 1 aspek
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
                 'nomor'                => 22,
                 'id_kriteria'          => 4,
-                'elemen'               => ' Pengembangan kompetensi DTPS ',
-                'poin'                 => ' 1.75 ',
-                'indikator'            => ' Pengembangan kompetensi DTPS   ',
+                'elemen'               => 'Pengembangan Kompetensi DTPS',
+                'poin'                 => '1.75',
+                'indikator'            => <<<TEXT
+(a) DTPS mengikuti kegiatan pengembangan kompetensi (postdoct/ARP, sertifikasi BNSP/internasional, workshop ≥ 32 jam, seminar/konferensi relevan) dalam 3 tahun terakhir. NDTPSPK = % DTPS yang mengikuti pengembangan kompetensi relevan.
+
+(b) PS melakukan analisis kontribusi keterlibatan DTPS dalam pengembangan kompetensi terhadap: (1) peningkatan kualitas tridarma, (2) penguatan jejaring akademik, (3) pencapaian visi keilmuan PS.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'option_pilihan_ganda' => json_encode([
-                    4 => ' NPKDTPS ≥ 80%.  ',
-                    3 => ' 70% ≤ NPKDTPS <80%. ',
-                    2 => ' 60% ≤ NPKDTPS < 70%. ',
-                    1 => ' NPKDTPS < 60%. '
+                    'label'   => 'Skor (b) — Analisis Kontribusi',
+                    'options' => [
+                        4 => 'Analisis 3 aspek (tridarma, jejaring, visi keilmuan)',
+                        3 => 'Analisis 2 aspek',
+                        2 => 'Analisis 1 aspek',
+                        1 => 'Tidak ada analisis',
+                    ],
                 ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PENGEMBANGAN KOMPETENSI ━━━
+NDTPSPK = % DTPS yang ikut pengembangan kompetensi
+NDTPSPK ≥ 80% → Skor = 4
+70% ≤ NDTPSPK < 80% → Skor = 3
+60% ≤ NDTPSPK < 70% → Skor = 2
+NDTPSPK < 60% → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = 3 aspek (kualitas tridarma, jejaring, visi)
+3 = 2 aspek
+2 = 1 aspek
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
                 'nomor'                => 23,
                 'id_kriteria'          => 4,
-                'elemen'               => ' Pengembangan kompetensi tenaga kependidikan  ',
-                'poin'                 => ' 1.25 ',
-                'indikator'            => '  Tenaga kependidikan mengikuti kegiatan pengembangan kompetensi (studi lanjut, sertiﬁkasi kompetensi dari BNSP atau lembaga sertiﬁkasi internasional, workshop/pelatihan minimal 16 jam yang relevan) yang mendukung pengembangan tenaga kependidikan dalam 3 tahun terakhir. ',
+                'elemen'               => 'Pengembangan Kompetensi Tenaga Kependidikan',
+                'poin'                 => '1.25',
+                'indikator'            => <<<TEXT
+(a) Tenaga kependidikan mengikuti kegiatan pengembangan kompetensi (studi lanjut, sertifikasi BNSP/internasional, workshop ≥ 16 jam relevan) dalam 3 tahun terakhir. NTENDIKPK = % tenaga kependidikan yang mengikuti pengembangan kompetensi.
+
+(b) PS melakukan analisis kontribusi kecukupan, kompetensi, dan partisipasi tenaga kependidikan dalam program pengembangan pada: (1) peningkatan kualitas layanan administrasi, (2) keefektifan tata kelola, (3) pencapaian mutu akademik dan non-akademik.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'option_pilihan_ganda' => json_encode([
-                    4 => ' NPKTENDIK ≥ 40%.  ',
-                    3 => ' 25% ≤ NPKTENDIK< 40 %.  ',
-                    2 => ' 10% ≤ NPKTENDIK < 25%.  ',
-                    1 => ' NPKTENDIK < 10%.  '
+                    'label'   => 'Skor (b) — Analisis Tenaga Kependidikan',
+                    'options' => [
+                        4 => 'Analisis 3 aspek (layanan, tata kelola, mutu)',
+                        3 => 'Analisis 2 aspek',
+                        2 => 'Analisis 1 aspek',
+                        1 => 'Tidak ada analisis',
+                    ],
                 ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PENGEMBANGAN TENAGA KEPENDIDIKAN ━━━
+NTENDIKPK = % tenaga kependidikan ikut pengembangan
+NTENDIKPK ≥ 40% → Skor = 4
+25% ≤ NTENDIKPK < 40% → Skor = 3
+10% ≤ NTENDIKPK < 25% → Skor = 2
+NTENDIKPK < 10% → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = 3 aspek (layanan, tata kelola, mutu)
+3 = 2 aspek
+2 = 1 aspek
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -373,6 +771,74 @@ class LEDSeeder extends Seeder
                 'jenis'                => 'pilihan_ganda',
             ],
             [
+                'nomor'                => 33,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Integrasi Penelitian dan/atau PkM dalam Pembelajaran',
+                'poin'                 => '2.00',
+                'indikator'            => <<<TEXT
+(a) DTPS mengintegrasikan penelitian dan/atau PkM dalam pembelajaran: (1) relevan dengan mata kuliah, (2) hasil menjadi bagian materi, (3) disertai bukti.
+
+(b) DTPS yang mengintegrasikan hasil penelitian/PkM dalam pembelajaran. PDIPPKM = (NDIPPKM / NDTPS) × 100%
+
+(c) Jumlah MK inti PS yang dikembangkan berdasarkan integrasi penelitian/PkM. PMKI = (NMKI / NMK) × 100%
+
+(d) Analisis terhadap kontribusi integrasi pada: (1) peningkatan mutu proses belajar, (2) relevansi kurikulum, (3) penguatan kompetensi lulusan.
+
+Skor Akhir = Skor(a) + (3 × (Skor(b) + Skor(c)) + Skor(d)) / 8
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    [
+                        'label'   => 'Skor (a) — Integrasi dalam Pembelajaran',
+                        'options' => [
+                            4 => 'Memenuhi 3 aspek (relevan, hasil jadi materi, bukti)',
+                            3 => 'Memenuhi 2 aspek',
+                            2 => 'Memenuhi 1 aspek',
+                            1 => 'Tidak memenuhi semua aspek',
+                        ],
+                    ],
+                    [
+                        'label'   => 'Skor (d) — Analisis Kontribusi',
+                        'options' => [
+                            4 => 'Analisis 3 aspek (mutu belajar, relevansi, kompetensi)',
+                            3 => 'Analisis 2 aspek',
+                            2 => 'Analisis 1 aspek',
+                            1 => 'Tidak ada analisis',
+                        ],
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — INTEGRASI PEMBELAJARAN ━━━
+4 = 3 aspek (relevan, hasil jadi materi, bukti)
+3 = 2 aspek
+2 = 1 aspek
+1 = Tidak ada
+
+━━━ SKOR (b) — PDIPPKM ━━━
+PDIPPKM = (NDIPPKM / NDTPS) × 100%
+PDIPPKM ≥ 50% → Skor = 4
+30% ≤ PDIPPKM < 50% → Skor = 3
+10% ≤ PDIPPKM < 30% → Skor = 2
+PDIPPKM < 10% → Skor = 1
+
+━━━ SKOR (c) — PMKI ━━━
+PMKI = (NMKI / NMK) × 100%
+PMKI ≥ 25% → Skor = 4
+15% ≤ PMKI < 25% → Skor = 3 + (PMKI − 0.25) / 0.10
+PMKI < 15% → Skor = 2
+Tidak ada skor 1
+
+━━━ SKOR (d) — ANALISIS ━━━
+4 = 3 aspek (mutu, relevansi, kompetensi)
+3 = 2 aspek
+2 = 1 aspek
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+Skor(a) + (3 × (Skor(b) + Skor(c)) + Skor(d)) / 8
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
                 'nomor'                => 34,
                 'id_kriteria'          => 6,
                 'elemen'               => 'Penilaian Pembelajaran',
@@ -457,12 +923,158 @@ class LEDSeeder extends Seeder
                 'jenis'                => 'pilihan_ganda',
             ],
             [
+                'nomor'                => 40,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Indeks Prestasi Kumulatif (IPK) Rata-Rata Lulusan',
+                'poin'                 => '1.00',
+                'indikator'            => <<<TEXT
+(a) Lulusan PS memiliki rata-rata IPK yang baik dalam 3 tahun terakhir. RIPK = Rata-rata IPK lulusan.
+
+(b) PS melakukan analisis terhadap tren IPK lulusan dan faktor-faktor penyebabnya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis IPK Lulusan',
+                    'options' => [
+                        4 => 'Analisis tren + faktor dari aspek layanan akademik dan mahasiswa',
+                        3 => 'Analisis tren + faktor dari aspek layanan akademik',
+                        2 => 'Analisis tren + faktor dari aspek mahasiswa',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — IPK RATA-RATA ━━━
+RIPK = Rata-rata IPK lulusan 3 tahun
+RIPK ≥ 3,25 → Skor = 4
+2,00 ≤ RIPK < 3,25 → Skor = ((8 × RIPK) − 6) / 5
+Tidak ada skor 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Tren + faktor (layanan akademik & mahasiswa)
+3 = Tren + faktor (layanan akademik)
+2 = Tren + faktor (mahasiswa)
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
                 'nomor'                => 41,
                 'id_kriteria'          => 6,
-                'elemen'               => ' Tracer study ',
-                'poin'                 => ' 1.5 ',
-                'indikator'            => ' UPPS/PS melakukan tracer study yang mencakup 5 aspek, yaitu: (a) terkoordinasi ditingkat PT/ UPPS, (b) dilakukan secara regular setiap tahun dan terdokumentasi, (c) menggunakan instrumen yang mencakup seluruh inti pertanyaan tracer study Pendidikan tinggi, (d) ditargetkan pada seluruh lulusan TS-4 s.d TS-2, dan (e) hasilnya disosialisasikan dan digunakan untuk pengembangan kurikulum dan pembelajaran.    ',
-                'option_pilihan_ganda' => json_encode([4 => ' UPPS/PS melaksanakan tracer study dengan memenuhi 5 aspek.  ', 3 => ' UPPS/PS melaksanakan tracer study dengan memenuhi 4 aspek. ', 2 => ' UPPS/PS melaksanakan tracer study dengan memenuhi 3 aspek.  ', 1 => ' UPPS/PS melaksanakan tracer study dengan memenuhi < 3 aspek atau tidak melakukan tracer study.  ']),
+                'elemen'               => 'Masa Studi Lulusan',
+                'poin'                 => '1.50',
+                'indikator'            => <<<TEXT
+(a) Rata-rata masa studi lulusan dalam 3 tahun terakhir. RMS = rata-rata masa studi lulusan (dalam tahun)
+
+(b) PS melakukan analisis tren masa studi lulusan, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Masa Studi',
+                    'options' => [
+                        4 => 'Analisis tren + faktor penyebab + dampak',
+                        3 => 'Analisis tren + faktor penyebab',
+                        2 => 'Analisis tren saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — MASA STUDI ━━━
+RMS = rata-rata masa studi lulusan (tahun)
+3,5 < RMS ≤ 4,0 → Skor = 4
+4 < RMS ≤ 5 → Skor = 4 − ((RMS−4)/0,5) × 1,5
+RMS > 5 → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Tren + faktor + dampak
+3 = Tren + faktor
+2 = Tren saja
+1 = Tidak ada
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 42,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Kelulusan Tepat Waktu',
+                'poin'                 => '1.50',
+                'indikator'            => <<<TEXT
+(a) Mahasiswa dapat menyelesaikan studinya sesuai masa tempuh kurikulum (MTK). PMTK = Persentase mahasiswa menyelesaikan studi sesuai MTK
+
+(b) PS melakukan analisis terhadap tren kelulusan tepat waktu, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Kelulusan Tepat Waktu',
+                    'options' => [
+                        4 => 'Analisis tren + faktor penyebab + dampak',
+                        3 => 'Analisis tren + faktor penyebab',
+                        2 => 'Analisis tren saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KELULUSAN TEPAT WAKTU ━━━
+PMTK = Persentase mahasiswa menyelesaikan studi sesuai MTK
+PMTK ≥ 50% → Skor = 4
+PMTK < 50% → Skor = 1 + (6 × PMTK)
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis tren + faktor penyebab + dampak
+3 = Analisis tren + faktor penyebab
+2 = Analisis tren saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 43,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Keberhasilan Studi Mahasiswa',
+                'poin'                 => '1.50',
+                'indikator'            => <<<TEXT
+(a) Mahasiswa berhasil menyelesaikan studinya. PKMS = Persentase keberhasilan studi mahasiswa
+
+(b) PS melakukan analisis keberhasilan studi mahasiswa, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Keberhasilan Studi',
+                    'options' => [
+                        4 => 'Analisis keberhasilan + faktor penyebab + dampak',
+                        3 => 'Analisis keberhasilan + faktor penyebab',
+                        2 => 'Analisis keberhasilan saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KEBERHASILAN STUDI ━━━
+PKMS = Persentase keberhasilan studi mahasiswa
+PKMS ≥ 85% → Skor = 4
+45% ≤ PKMS < 85% → Skor = ((80 × PKMS) − 24) / 11
+PKMS < 45% → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis keberhasilan + faktor penyebab + dampak
+3 = Analisis keberhasilan + faktor penyebab
+2 = Analisis keberhasilan saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -477,6 +1089,199 @@ class LEDSeeder extends Seeder
                     2 => 'UPPS/PS melaksanakan tracer study dengan memenuhi 4 aspek.',
                     1 => 'UPPS/PS melaksanakan tracer study dengan memenuhi < 4 aspek atau tidak melakukan tracer study.'
                 ]),
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 45,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Kesiapkerjaan, Kewirausahaan, dan Studi Lanjut',
+                'poin'                 => '1.25',
+                'indikator'            => <<<TEXT
+(a) Lulusan PS bekerja di lembaga pendidikan/bidang relevan, usaha mandiri, studi lanjut S2, atau mengikuti PPG. PLB = persentase lulusan yang bekerja + usaha mandiri + studi lanjut + PPG.
+
+(b) PS melakukan analisis terhadap kesiapkerjaan, kewirausahaan, studi lanjut, faktor-faktor penyebab, dan dampaknya.
+
+Ketentuan Responden (berlaku untuk elemen 45, 46, 47, 48):
+NL = Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2)
+NJ = Jumlah lulusan yang terlacak
+PJ = (NJ / NL) × 100%
+NL ≥ 150 → Prmin = 30%
+NL < 150 → Prmin = 50% − ((NL/150) × 20%)
+Jika PJ ≥ Prmin → Skor akhir = Skor
+Jika PJ < Prmin → Skor akhir = (PJ / Prmin) × Skor
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis',
+                    'options' => [
+                        4 => 'Analisis + faktor penyebab + dampak',
+                        3 => 'Analisis + faktor penyebab',
+                        2 => 'Analisis saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KESIAPKERJAAN, KEWIRAUSAHAAN, STUDI LANJUT ━━━
+PLB = persentase lulusan yang bekerja + usaha mandiri + studi lanjut + PPG
+PLB ≥ 80% → Skor = 4
+60% ≤ PLB < 80% → Skor = 3
+40% ≤ PLB < 60% → Skor = 2
+PLB < 40% → Skor = 1
+
+━━━ KETENTUAN RESPONDEN ━━━
+NL = Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2)
+NJ = Jumlah lulusan yang terlacak
+PJ = (NJ / NL) × 100%
+NL ≥ 150 → Prmin = 30%
+NL < 150 → Prmin = 50% − ((NL/150) × 20%)
+Jika PJ ≥ Prmin → faktor = 1
+Jika PJ < Prmin → faktor = (PJ / Prmin)
+Skor(a) akhir = Skor(a) × faktor
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis + faktor penyebab + dampak
+3 = Analisis + faktor penyebab
+2 = Analisis saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 46,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Waktu Tunggu Mendapatkan Pekerjaan Pertama',
+                'poin'                 => '1.00',
+                'indikator'            => <<<TEXT
+(a) Mahasiswa PS mendapatkan pekerjaan pertama setelah lulus. WTMP = waktu tunggu lulusan mendapatkan pekerjaan pertama (bulan), dalam 3 tahun TS-4 s.d. TS-2.
+
+(b) PS melakukan analisis terhadap tren waktu tunggu mendapatkan pekerjaan pertama, faktor-faktor penyebab, dan dampaknya.
+
+Ketentuan Responden: berlaku sama seperti elemen 45.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Waktu Tunggu',
+                    'options' => [
+                        4 => 'Analisis tren + faktor penyebab + dampak',
+                        3 => 'Analisis tren + faktor penyebab',
+                        2 => 'Analisis tren saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — WAKTU TUNGGU ━━━
+WTMP = waktu tunggu lulusan mendapatkan pekerjaan pertama (bulan)
+WTMP < 6 → Skor = 4
+6 ≤ WTMP ≤ 12 → Skor = (18 − WTMP) / 3
+WTMP > 12 → Skor = 1
+
+━━━ KETENTUAN RESPONDEN ━━━
+Penyesuaian responden berlaku (lihat elemen 45).
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis tren + faktor penyebab + dampak
+3 = Analisis tren + faktor penyebab
+2 = Analisis tren saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 47,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Kesesuaian Bidang Kerja Lulusan',
+                'poin'                 => '1.00',
+                'indikator'            => <<<TEXT
+(a) Lulusan PS memperoleh pekerjaan pertama yang sesuai dengan bidang keilmuan PS (TS-4 s.d. TS-2). PBS = persentase kesesuaian bidang kerja lulusan.
+
+(b) PS melakukan analisis terhadap kesesuaian bidang kerja lulusan, faktor-faktor penyebab, dan dampaknya.
+
+Ketentuan Responden: berlaku sama seperti elemen 45.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Kesesuaian Bidang Kerja',
+                    'options' => [
+                        4 => 'Analisis kesesuaian + faktor penyebab + dampak',
+                        3 => 'Analisis kesesuaian + faktor penyebab',
+                        2 => 'Analisis kesesuaian saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KESESUAIAN BIDANG KERJA ━━━
+PBS = persentase kesesuaian bidang kerja lulusan
+PBS ≥ 60% → Skor = 4
+15% < PBS < 60% → Skor = (20 × PBS) / 3
+PBS ≤ 15% → Skor = 1
+
+━━━ KETENTUAN RESPONDEN ━━━
+Penyesuaian responden berlaku (lihat elemen 45).
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis kesesuaian + faktor penyebab + dampak
+3 = Analisis kesesuaian + faktor penyebab
+2 = Analisis kesesuaian saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 48,
+                'id_kriteria'          => 6,
+                'elemen'               => 'Kepuasan Pengguna Lulusan',
+                'poin'                 => '1.50',
+                'indikator'            => <<<TEXT
+(a) UPPS/PS melakukan evaluasi tingkat kepuasan pengguna lulusan terhadap kompetensi lulusan, mencakup 9 aspek: (1) etika, (2) keahlian bidang ilmu, (3) kemampuan bahasa asing, (4) penggunaan TI, (5) kemampuan berkomunikasi, (6) kerjasama, (7) pengembangan diri, (8) berpikir kritis, (9) kreativitas.
+
+Skor(a) = Σ TKi / 9, dengan TKi = (4 × ai) + (3 × bi) + (2 × ci) + di, i = 1..9
+ai = % "Sangat Baik", bi = % "Baik", ci = % "Cukup", di = % "Kurang"
+
+(b) PS melakukan analisis terhadap tingkat kepuasan pengguna lulusan, faktor-faktor penyebab, dan dampaknya.
+
+Ketentuan Responden: berlaku sama seperti elemen 45.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Kepuasan Pengguna',
+                    'options' => [
+                        4 => 'Analisis kepuasan + faktor penyebab + dampak',
+                        3 => 'Analisis kepuasan + faktor penyebab',
+                        2 => 'Analisis kepuasan saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — KEPUASAN PENGGUNA LULUSAN ━━━
+TKi = (4 × ai) + (3 × bi) + (2 × ci) + di, i = 1..9
+ai = % "Sangat Baik", bi = % "Baik", ci = % "Cukup", di = % "Kurang"
+Skor(a) = Σ TKi / 9
+
+━━━ KETENTUAN RESPONDEN ━━━
+Penyesuaian responden berlaku (lihat elemen 45).
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis kepuasan + faktor penyebab + dampak
+3 = Analisis kepuasan + faktor penyebab
+2 = Analisis kepuasan saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -536,12 +1341,221 @@ class LEDSeeder extends Seeder
                 'jenis'                => 'pilihan_ganda',
             ],
             [
+                'nomor'                => 53,
+                'id_kriteria'          => 7,
+                'elemen'               => 'Produktivitas Penelitian DTPS',
+                'poin'                 => '2.25',
+                'indikator'            => <<<TEXT
+(a) DTPS melakukan penelitian dengan dana mandiri/PT, dalam negeri, dan luar negeri dalam 3 tahun terakhir.
+RI = NI/3/NDTPS | RN = NN/3/NDTPS | RL = NL/3/NDTPS
+NI = Jumlah penelitian pembiayaan luar negeri
+NN = Jumlah penelitian pembiayaan dalam negeri
+NL = Jumlah penelitian pembiayaan PT/mandiri
+Faktor: a = 0,05 | b = 0,3 | c = 1
+
+(b) PS melakukan analisis terhadap produktivitas penelitian DTPS, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Produktivitas Penelitian',
+                    'options' => [
+                        4 => 'Analisis + faktor penyebab + dampak',
+                        3 => 'Analisis + faktor penyebab',
+                        2 => 'Analisis saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PRODUKTIVITAS PENELITIAN DTPS ━━━
+RI = NI / 3 / NDTPS
+RN = NN / 3 / NDTPS
+RL = NL / 3 / NDTPS
+a = 0,05 | b = 0,3 | c = 1
+
+RI ≥ a → Skor = 4
+RI < a dan RN ≥ b → Skor = 3 + (RI/a)
+0 < RI < a dan 0 < RN < b → Skor = 2 + (RI/a) + (RN/b) − (RI×RN)/(a×b)
+RI = 0, RN = 0, RL ≥ c → Skor = 2
+RI = 0, RN = 0, RL < c → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis + faktor penyebab + dampak
+3 = Analisis + faktor penyebab
+2 = Analisis saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 54,
+                'id_kriteria'          => 7,
+                'elemen'               => 'Pelibatan Mahasiswa dalam Penelitian DTPS',
+                'poin'                 => '1.00',
+                'indikator'            => <<<TEXT
+(a) DTPS melibatkan mahasiswa dalam kegiatan penelitiannya. PPDM = (NPM / NPD) × 100%
+
+(b) PS melakukan analisis terhadap keterlibatan mahasiswa dalam penelitian DTPS, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Pelibatan Mahasiswa',
+                    'options' => [
+                        4 => 'Analisis + faktor penyebab + dampak',
+                        3 => 'Analisis + faktor penyebab',
+                        2 => 'Analisis saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PELIBATAN MAHASISWA ━━━
+PPDM = (NPM / NPD) × 100%
+PPDM ≥ 75% → Skor = 4
+PPDM < 75% → Skor = 2 + (8 × PPDM)
+Tidak ada skor 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis + faktor penyebab + dampak
+3 = Analisis + faktor penyebab
+2 = Analisis saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 55,
+                'id_kriteria'          => 7,
+                'elemen'               => 'Jumlah Publikasi Karya Ilmiah DTPS',
+                'poin'                 => '2.50',
+                'indikator'            => <<<TEXT
+(a) Dalam 3 tahun terakhir, ≥ 20% DTPS memiliki publikasi ilmiah.
+
+RW = (NA1+NB1+NC1)/NDTPS
+RN = (NA2+NA3+NB2+NC2)/NDTPS
+RI = (NA4+NB3+NC3)/NDTPS
+
+Faktor: a = 0,1 | b = 1 | c = 2
+
+(b) PS melakukan analisis terhadap tren produktivitas dan relevansi publikasi ilmiah DTPS, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Publikasi Ilmiah',
+                    'options' => [
+                        4 => 'Analisis tren + relevansi + faktor penyebab + dampak',
+                        3 => 'Analisis tren + relevansi + faktor penyebab',
+                        2 => 'Analisis tren produktivitas saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PUBLIKASI KARYA ILMIAH DTPS ━━━
+RI = (NA4+NB3+NC3)/NDTPS | RN = (NA2+NA3+NB2+NC2)/NDTPS | RW = (NA1+NB1+NC1)/NDTPS
+a = 0,1 | b = 1 | c = 2
+
+RI ≥ a → Skor = 4
+RI < a dan RN ≥ b → Skor = 3 + (RI/a)
+0 < RI < a dan 0 < RN < b → Skor = 2 + (RI/a) + (RN/b) − (RI×RN)/(a×b)
+RI = 0, RN = 0, RW ≥ c → Skor = 2
+RI = 0, RN = 0, RW < c → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis tren + relevansi + faktor penyebab + dampak
+3 = Analisis tren + relevansi + faktor penyebab
+2 = Analisis tren produktivitas saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
                 'nomor'                => 56,
                 'id_kriteria'          => 7,
-                'elemen'               => ' Jumlah DTPS yang melakukan publikasi karya ilmiah ',
-                'poin'                 => ' 2.00 ',
-                'indikator'            => ' Dalam tiga tahun terakhir, DTPS memiliki publikasi di jurnal nasional terakreditasi minimal Sinta 2 dan/atau jurnal internasional bereputasi sebagai penulis pertama atau corresponding author. PPDTPS = Persentase jumlah DTPS memiliki publikasi pada jurnal nasional terakreditasi minimal Sinta 2 dan/atau internasional bereputasi (terindeks scopus atau WoS) sebagai penulis pertama atau corresponding authors dalam 3 tahun terakhir. ',
-                'option_pilihan_ganda' => json_encode([4 => ' PPDTPS ≥ 20%  ', 3 => ' 15% ≤ PPDTPS < 20% ', 2 => ' 10% ≤ PPDTPS <15% ', 1 => ' PPDTPS  <10%. ']),
+                'elemen'               => 'Jumlah DTPS yang Melakukan Publikasi Karya Ilmiah',
+                'poin'                 => '2.00',
+                'indikator'            => <<<TEXT
+(a) Dalam 3 tahun terakhir, DTPS memiliki publikasi di jurnal nasional dan/atau internasional sebagai penulis pertama atau corresponding author. PPDTPS = (NDTPS_PUB / NDTPS) × 100%
+
+(b) PS melakukan analisis terhadap tren jumlah DTPS yang melakukan publikasi ilmiah, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Publikasi DTPS',
+                    'options' => [
+                        4 => 'Analisis tren + faktor penyebab + dampak',
+                        3 => 'Analisis tren + faktor penyebab',
+                        2 => 'Analisis tren saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PERSENTASE DTPS PUBLIKASI ━━━
+PPDTPS = (NDTPS_PUB / NDTPS) × 100%
+PPDTPS ≥ 20% → Skor = 4
+15% ≤ PPDTPS < 20% → Skor = 3
+10% ≤ PPDTPS < 15% → Skor = 2
+PPDTPS < 10% → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis tren + faktor penyebab + dampak
+3 = Analisis tren + faktor penyebab
+2 = Analisis tren saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 57,
+                'id_kriteria'          => 7,
+                'elemen'               => 'Jumlah Artikel Ilmiah DTPS yang Disitasi',
+                'poin'                 => '2.00',
+                'indikator'            => <<<TEXT
+(a) Jumlah artikel ilmiah DTPS yang disitasi dalam 3 tahun terakhir. RSA = NAS / NDTPS
+
+(b) PS melakukan analisis terhadap jumlah artikel ilmiah DTPS yang disitasi, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Sitasi Artikel',
+                    'options' => [
+                        4 => 'Analisis + faktor penyebab + dampak',
+                        3 => 'Analisis + faktor penyebab',
+                        2 => 'Analisis saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — RASIO SITASI ARTIKEL ━━━
+RSA = NAS / NDTPS
+RSA ≥ 9 → Skor = 4
+6 ≤ RSA < 9 → Skor = 3
+3 ≤ RSA < 6 → Skor = 2
+RSA < 3 → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis + faktor penyebab + dampak
+3 = Analisis + faktor penyebab
+2 = Analisis saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -556,6 +1570,91 @@ class LEDSeeder extends Seeder
                     2 => 'a.UPPS/PS melakukan evaluasi dan refleksi terhadap kriteria penelitian dengan memenuhi 2 aspek.b.UPPS/PS melakukan tindak lanjut berdasarkan hasil evaluasi dan refleksi terhadap kriteria penelitian dengan memenuhi 3 aspek.',
                     1 => 'a.UPPS/PS melakukan evaluasi dan refleksi terhadap kriteria penelitian dengan memenuhi 1 aspek.b.UPPS/PS melakukan tindak lanjut berdasarkan hasil evaluasi dan refleksi terhadap kriteria penelitian dengan memenuhi < 3 aspek.'
                 ]),
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 59,
+                'id_kriteria'          => 8,
+                'elemen'               => 'Produktivitas PkM DTPS',
+                'poin'                 => '2.00',
+                'indikator'            => <<<TEXT
+(a) DTPS memiliki produktivitas PkM dengan dana mandiri/PT, dalam negeri, dan luar negeri dalam 3 tahun terakhir.
+
+RI = NI/3/NDTPS | RN = NN/3/NDTPS | RL = NL/3/NDTPS
+Faktor: a = 0,05 | b = 0,3 | c = 1
+
+(b) PS melakukan analisis terhadap produktivitas PkM DTPS, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Produktivitas PkM',
+                    'options' => [
+                        4 => 'Analisis + faktor penyebab + dampak',
+                        3 => 'Analisis + faktor penyebab',
+                        2 => 'Analisis saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PRODUKTIVITAS PkM DTPS ━━━
+RI = NI/3/NDTPS | RN = NN/3/NDTPS | RL = NL/3/NDTPS
+a = 0,05 | b = 0,3 | c = 1
+
+RI ≥ a → Skor = 4
+RI < a dan RN ≥ b → Skor = 3 + (RI/a)
+0 < RI < a dan 0 < RN < b → Skor = 2 + (RI/a) + (RN/b) − (RI×RN)/(a×b)
+RI = 0, RN = 0, RL ≥ c → Skor = 2
+RI = 0, RN = 0, RL < c → Skor = 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis + faktor penyebab + dampak
+3 = Analisis + faktor penyebab
+2 = Analisis saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'jenis'                => 'pilihan_ganda',
+            ],
+            [
+                'nomor'                => 60,
+                'id_kriteria'          => 8,
+                'elemen'               => 'Pelibatan Mahasiswa dalam PkM DTPS',
+                'poin'                 => '1.00',
+                'indikator'            => <<<TEXT
+(a) DTPS melibatkan mahasiswa dalam kegiatan PkM. PPkDM = (NPkM / NPkDTPS) × 100%
+
+(b) PS melakukan analisis keterlibatan mahasiswa dalam PkM DTPS, faktor-faktor penyebab, dan dampaknya.
+
+Skor Akhir = (3 × Skor(a) + Skor(b)) / 4
+TEXT,
+                'option_pilihan_ganda' => json_encode([
+                    'label'   => 'Skor (b) — Analisis Pelibatan Mahasiswa PkM',
+                    'options' => [
+                        4 => 'Analisis + faktor penyebab + dampak',
+                        3 => 'Analisis + faktor penyebab',
+                        2 => 'Analisis saja',
+                        1 => 'Tidak ada analisis',
+                    ],
+                ]),
+                'harkat_penskoran'     => <<<TEXT
+━━━ SKOR (a) — PELIBATAN MAHASISWA PkM ━━━
+PPkDM = (NPkM / NPkDTPS) × 100%
+PPkDM ≥ 75% → Skor = 4
+PPkDM < 75% → Skor = 2 + (8 × PPkDM)
+Tidak ada skor 1
+
+━━━ SKOR (b) — ANALISIS ━━━
+4 = Analisis + faktor penyebab + dampak
+3 = Analisis + faktor penyebab
+2 = Analisis saja
+1 = Tidak ada analisis
+
+━━━ SKOR AKHIR ━━━
+(3 × Skor(a) + Skor(b)) / 4
+TEXT,
                 'jenis'                => 'pilihan_ganda',
             ],
             [
@@ -631,9 +1730,18 @@ class LEDSeeder extends Seeder
 
         ];
 
+        // Extract harkat_penskoran before upsert (keeps column count consistent)
+        $harkatUpdates = [];
+        foreach ($data as $k => $item) {
+            if (isset($item['harkat_penskoran'])) {
+                $harkatUpdates[$item['nomor']] = $item['harkat_penskoran'];
+                unset($data[$k]['harkat_penskoran']);
+            }
+        }
+
         DB::table('matriks_lembar_evaluasi_diri')->upsert(
             $data,
-            ['nomor'], // kolom unik untuk pengecekan
+            ['nomor'],
             [
                 'id_kriteria',
                 'elemen',
@@ -643,6 +1751,13 @@ class LEDSeeder extends Seeder
                 'jenis'
             ]
         );
+
+        // Update harkat_penskoran for items that have it
+        foreach ($harkatUpdates as $nomor => $harkat) {
+            DB::table('matriks_lembar_evaluasi_diri')
+                ->where('nomor', $nomor)
+                ->update(['harkat_penskoran' => $harkat]);
+        }
 
     }
 }

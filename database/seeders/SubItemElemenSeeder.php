@@ -27,6 +27,11 @@ class SubItemElemenSeeder extends Seeder
             [
                 'nomor_elemen' => 7,
                 'variabel'     => 'N2',
+                'deskripsi'    => 'Jumlah kerjasama penelitian'
+            ],
+            [
+                'nomor_elemen' => 7,
+                'variabel'     => 'N3',
                 'deskripsi'    => 'Jumlah kerjasama PkM'
             ],
             [
@@ -68,12 +73,12 @@ class SubItemElemenSeeder extends Seeder
             [
                 'nomor_elemen' => 14,
                 'variabel'     => 'RI',
-                'deskripsi'    => 'NI/NW'
+                'deskripsi'    => 'NI/NM'
             ],
             [
                 'nomor_elemen' => 14,
                 'variabel'     => 'RN',
-                'deskripsi'    => 'NN/NW'
+                'deskripsi'    => 'NN/NM'
             ],
             [
                 'nomor_elemen' => 14,
@@ -103,8 +108,13 @@ class SubItemElemenSeeder extends Seeder
             ],
             [
                 'nomor_elemen' => 16,
+                'variabel'     => 'JUMLAH_ASPEK',
+                'deskripsi'    => 'Jumlah aspek pengukuran kepuasan yang terpenuhi (0-6)'
+            ],
+            [
+                'nomor_elemen' => 16,
                 'variabel'     => 'TKM',
-                'deskripsi'    => 'ƩTKMi / 5'
+                'deskripsi'    => 'Tingkat Kepuasan Mahasiswa dalam % (isi 75 untuk 75%)'
             ],
             [
                 'nomor_elemen' => 19,
@@ -162,6 +172,16 @@ class SubItemElemenSeeder extends Seeder
                 'deskripsi'    => 'Jumlah dosen tetap yang ditugaskan sebagai pengampu mata kuliah dengan bidang keahlian yang sesuai dengan kompetensi inti program studi yang diakreditasi.'
             ],
             [
+                'nomor_elemen' => 22,
+                'variabel'     => 'NDTPSPK',
+                'deskripsi'    => 'Persentase DTPS yang mengikuti kegiatan pengembangan kompetensi (postdoct/ARP, sertifikasi BNSP/internasional, workshop ≥ 32 jam, seminar/konferensi relevan) dalam 3 tahun terakhir.'
+            ],
+            [
+                'nomor_elemen' => 23,
+                'variabel'     => 'NTENDIKPK',
+                'deskripsi'    => 'Persentase tenaga kependidikan yang mengikuti kegiatan pengembangan kompetensi (studi lanjut, sertifikasi BNSP/internasional, workshop ≥ 16 jam relevan) dalam 3 tahun terakhir.'
+            ],
+            [
                 'nomor_elemen' => 33,
                 'variabel'     => 'PDIPPKM',
                 'deskripsi'    => '(NDIPPKM / NDTPS) x 100%'
@@ -197,14 +217,19 @@ class SubItemElemenSeeder extends Seeder
                 'deskripsi'    => 'Rata-rata masa studi lulusan (dalam tahun)'
             ],
             [
-                'nomor_elemen' => 42,
+                'nomor_elemen' => 41,
                 'variabel'     => 'RMS',
-                'deskripsi'    => 'Rata-rata IPK lulusan dalam 3 tahun terakhir'
+                'deskripsi'    => 'Rata-rata masa studi lulusan (dalam tahun)'
+            ],
+            [
+                'nomor_elemen' => 42,
+                'variabel'     => 'PMTK',
+                'deskripsi'    => 'Persentase mahasiswa dapat menyelesaikan studi sesuai masa tempuh kurikulum (MTK)'
             ],
             [
                 'nomor_elemen' => 43,
-                'variabel'     => 'PMTK',
-                'deskripsi'    => 'Persentase mahasiswa dapat menyelesaikan studi sesuai masa tempuh kurikulum'
+                'variabel'     => 'PKMS',
+                'deskripsi'    => 'Persentase keberhasilan studi mahasiswa'
             ],
             [
                 'nomor_elemen' => 44,
@@ -227,16 +252,6 @@ class SubItemElemenSeeder extends Seeder
                 'deskripsi'    => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak'
             ],
             [
-                'nomor_elemen' => 45,
-                'variabel'     => 'PJ',
-                'deskripsi'    => 'Persentase lulusan yang terlacak = (NL / NJ) x 100%'
-            ],
-            [
-                'nomor_elemen' => 45,
-                'variabel'     => 'Prmin',
-                'deskripsi'    => 'Persentase responden minimum'
-            ],
-            [
                 'nomor_elemen' => 46,
                 'variabel'     => 'WTMP',
                 'deskripsi'    => 'aktu tunggu lulusan untuk mendapatkan pekerjaan pertama dalam 3 tahun, mulai TS-4 s.d. TS-2.'
@@ -250,16 +265,6 @@ class SubItemElemenSeeder extends Seeder
                 'nomor_elemen' => 46,
                 'variabel'     => 'NJ',
                 'deskripsi'    => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak'
-            ],
-            [
-                'nomor_elemen' => 46,
-                'variabel'     => 'PJ',
-                'deskripsi'    => 'Persentase lulusan yang terlacak = (NL / NJ) x 100%'
-            ],
-            [
-                'nomor_elemen' => 46,
-                'variabel'     => 'Prmin',
-                'deskripsi'    => 'Persentase responden minimum'
             ],
             [
                 'nomor_elemen' => 47,
@@ -276,58 +281,17 @@ class SubItemElemenSeeder extends Seeder
                 'variabel'     => 'NJ',
                 'deskripsi'    => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak'
             ],
-            [
-                'nomor_elemen' => 47,
-                'variabel'     => 'PJ',
-                'deskripsi'    => 'Persentase lulusan yang terlacak = (NL / NJ) x 100%'
-            ],
-            [
-                'nomor_elemen' => 47,
-                'variabel'     => 'Prmin',
-                'deskripsi'    => 'Persentase responden minimum'
-            ],
-            [
-                'nomor_elemen' => 48,
-                'variabel'     => 'TKi',
-                'deskripsi'    => '(4 x ai) + (3 x bi) + (2 x ci) + di i = 1, 2, ..., 9'
-            ],
-            [
-                'nomor_elemen' => 48,
-                'variabel'     => 'NL',
-                'deskripsi'    => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2)'
-            ],
-            [
-                'nomor_elemen' => 48,
-                'variabel'     => 'NJ',
-                'deskripsi'    => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak'
-            ],
-            [
-                'nomor_elemen' => 48,
-                'variabel'     => 'PJ',
-                'deskripsi'    => 'Persentase lulusan yang terlacak = (NL / NJ) x 100%'
-            ],
-            [
-                'nomor_elemen' => 48,
-                'variabel'     => 'Prmin',
-                'deskripsi'    => 'Persentase responden minimum'
-            ],
-            // Ini diisi otomatis oleh sistem
-            [
-                'nomor_elemen' => 53,
-                'variabel'     => 'RI',
-                'deskripsi'    => 'NI / 3 / NDTPS'
-            ],
-            [
-                'nomor_elemen' => 53,
-                'variabel'     => 'RN',
-                'deskripsi'    => 'NN / 3 / NDTPS'
-            ],
-            [
-                'nomor_elemen' => 53,
-                'variabel'     => 'RL',
-                'deskripsi'    => 'NL / 3 / NDTPS'
-            ],
-            // ---
+            ['nomor_elemen' => 48, 'variabel' => 'NL', 'deskripsi' => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2)'],
+            ['nomor_elemen' => 48, 'variabel' => 'NJ', 'deskripsi' => 'Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK1', 'deskripsi' => 'TKi aspek 1: Etika'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK2', 'deskripsi' => 'TKi aspek 2: Keahlian bidang ilmu'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK3', 'deskripsi' => 'TKi aspek 3: Kemampuan bahasa asing'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK4', 'deskripsi' => 'TKi aspek 4: Penggunaan TI'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK5', 'deskripsi' => 'TKi aspek 5: Kemampuan berkomunikasi'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK6', 'deskripsi' => 'TKi aspek 6: Kerjasama'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK7', 'deskripsi' => 'TKi aspek 7: Pengembangan diri'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK8', 'deskripsi' => 'TKi aspek 8: Berpikir kritis'],
+            ['nomor_elemen' => 48, 'variabel' => 'TK9', 'deskripsi' => 'TKi aspek 9: Kreativitas'],
             [
                 'nomor_elemen' => 53,
                 'variabel'     => 'NI',
@@ -350,11 +314,6 @@ class SubItemElemenSeeder extends Seeder
             ],
             [
                 'nomor_elemen' => 54,
-                'variabel'     => 'PPDM',
-                'deskripsi'    => '(NPM / NPD) x 100%'
-            ],
-            [
-                'nomor_elemen' => 54,
                 'variabel'     => 'NPM',
                 'deskripsi'    => 'Jumlah judul penelitian DTPS yang dalam pelaksanaannya melibatkan mahasiswa program studi dalam 3 tahun terakhir.'
             ],
@@ -363,23 +322,6 @@ class SubItemElemenSeeder extends Seeder
                 'variabel'     => 'NPD',
                 'deskripsi'    => 'Jumlah judul penelitian DTPS dalam 3 tahun terakhir.'
             ],
-            // Ini dihitung otomatis
-            [
-                'nomor_elemen' => 55,
-                'variabel'     => 'RW',
-                'deskripsi'    => '(NA1 + NB1 + NC1) / NDTPS'
-            ],
-            [
-                'nomor_elemen' => 55,
-                'variabel'     => 'RN',
-                'deskripsi'    => '(NA2 + NA3 + NB2 + NC2) / NDTPS'
-            ],
-            [
-                'nomor_elemen' => 55,
-                'variabel'     => 'RI',
-                'deskripsi'    => '(NA4 + NB3 + NC3) / NDTPS'
-            ],
-            // ---
             [
                 'nomor_elemen' => 55,
                 'variabel'     => 'NA1',
@@ -439,70 +381,44 @@ class SubItemElemenSeeder extends Seeder
             ],
             [
                 'nomor_elemen' => 57,
-                'variabel'     => 'RSA',
-                'deskripsi'    => 'NAS/NDTPS'
-            ],
-            [
-                'nomor_elemen' => 57,
                 'variabel'     => 'NAS',
-                'deskripsi'    => 'Jumlah artikel ilmiah yang disitasi.'
+                'deskripsi'    => 'Jumlah artikel ilmiah DTPS yang disitasi'
             ],
             [
                 'nomor_elemen' => 57,
                 'variabel'     => 'NDTPS',
-                'deskripsi'    => 'Jumlah dosen tetap yang ditugaskan sebagai pengampu mata kuliah sesuai kompetensi inti program studi.'
+                'deskripsi'    => 'Jumlah dosen tetap pengampu MK sesuai kompetensi inti PS'
             ],
             [
                 'nomor_elemen' => 59,
                 'variabel'     => 'NI',
-                'deskripsi'    => 'Jumlah kegiatan PkM dengan sumber pembiayaan luar negeri dalam 3 tahun terakhir.'
+                'deskripsi'    => 'Jumlah PkM pembiayaan luar negeri dalam 3 tahun terakhir'
             ],
-            // Ini dihitung otomatis
-            [
-                'nomor_elemen' => 59,
-                'variabel'     => 'RI',
-                'deskripsi'    => 'NI / 3 / NDTPS'
-            ],
-            [
-                'nomor_elemen' => 59,
-                'variabel'     => 'RN',
-                'deskripsi'    => 'RN = NN / 3 / NDTPS'
-            ],
-            [
-                'nomor_elemen' => 59,
-                'variabel'     => 'RL',
-                'deskripsi'    => 'NL / 3 / NDTPS'
-            ],
-            // ---
+
             [
                 'nomor_elemen' => 59,
                 'variabel'     => 'NN',
-                'deskripsi'    => 'Jumlah kegiatan PkM dengan sumber pembiayaan dalam negeri dalam 3 tahun terakhir.'
+                'deskripsi'    => 'Jumlah PkM pembiayaan dalam negeri dalam 3 tahun terakhir'
             ],
             [
                 'nomor_elemen' => 59,
                 'variabel'     => 'NL',
-                'deskripsi'    => 'Jumlah kegiatan PkM dengan sumber pembiayaan PT/mandiri dalam 3 tahun terakhir.'
+                'deskripsi'    => 'Jumlah PkM pembiayaan PT/mandiri dalam 3 tahun terakhir'
             ],
             [
                 'nomor_elemen' => 59,
                 'variabel'     => 'NDTPS',
-                'deskripsi'    => 'Jumlah dosen tetap yang ditugaskan sebagai pengampu mata kuliah sesuai kompetensi inti program studi.'
-            ],
-            [
-                'nomor_elemen' => 60,
-                'variabel'     => 'PPkDM',
-                'deskripsi'    => '(NPM / NPDTPS) x 100%'
+                'deskripsi'    => 'Jumlah dosen tetap pengampu MK sesuai kompetensi inti PS'
             ],
             [
                 'nomor_elemen' => 60,
                 'variabel'     => 'NPkM',
-                'deskripsi'    => 'Jumlah judul PkM DTPS yang dalam pelaksanaannya melibatkan mahasiswa program studi dalam 3 tahun terakhir.'
+                'deskripsi'    => 'Jumlah PkM DTPS yang melibatkan mahasiswa PS dalam 3 tahun terakhir'
             ],
             [
                 'nomor_elemen' => 60,
                 'variabel'     => 'NPkDTPS',
-                'deskripsi'    => 'Jumlah judul PkM DTPS dalam 3 tahun terakhir.'
+                'deskripsi'    => 'Jumlah PkM DTPS dalam 3 tahun terakhir'
             ],
             // 🔥 TAMBAHAN BARU
 
@@ -568,6 +484,7 @@ class SubItemElemenSeeder extends Seeder
 
 
 
+
             /* =========================================
                🔥 ELEMEN 6
                Produktivitas Publikasi DTPS
@@ -581,38 +498,8 @@ class SubItemElemenSeeder extends Seeder
 
             [
                 'nomor_elemen' => 56,
-                'variabel'     => 'S1_DTPS',
-                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 1'
-            ],
-
-            [
-                'nomor_elemen' => 56,
-                'variabel'     => 'S2_DTPS',
-                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 2'
-            ],
-
-            [
-                'nomor_elemen' => 56,
-                'variabel'     => 'S3_DTPS',
-                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 3'
-            ],
-
-            [
-                'nomor_elemen' => 56,
-                'variabel'     => 'S4_DTPS',
-                'deskripsi'    => 'Jumlah publikasi DTPS pada jurnal Sinta 4'
-            ],
-
-            [
-                'nomor_elemen' => 56,
-                'variabel'     => 'INT_DTPS',
-                'deskripsi'    => 'Jumlah publikasi internasional DTPS'
-            ],
-
-            [
-                'nomor_elemen' => 56,
-                'variabel'     => 'INTREP_DTPS',
-                'deskripsi'    => 'Jumlah publikasi internasional bereputasi DTPS'
+                'variabel'     => 'NDTPS_PUB',
+                'deskripsi'    => 'Jumlah DTPS yang memiliki publikasi di jurnal nasional terakreditasi min. Sinta 4 dan/atau internasional sebagai penulis pertama atau corresponding author'
             ],
 
 

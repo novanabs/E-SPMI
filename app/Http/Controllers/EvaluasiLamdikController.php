@@ -310,7 +310,9 @@ class EvaluasiLamdikController extends Controller
         // dd($request);
 
         $validated = $request->validate([
-            'jawaban'              => 'required|integer',
+            'jawaban'              => 'required|numeric',
+            'skor_a'               => 'nullable|numeric|min:0|max:4',
+            'skor_b'               => 'nullable|numeric|min:0|max:4',
             'link_bukti'           => 'nullable|url',
             'temuan'               => 'nullable',
             'saran'                => 'nullable',

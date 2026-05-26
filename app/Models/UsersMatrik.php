@@ -12,6 +12,8 @@ class UsersMatrik extends Model
 
     protected $fillable = [
         'jawaban',
+        'skor_a',
+        'skor_b',
         'nilai_total',
         'isian',
         'id_users',
