@@ -82,13 +82,13 @@
 
         .nav-grid-btn:hover {
             transform: scale(1.08);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
             z-index: 1;
         }
 
         .nav-grid-btn.active {
             border-color: #0d6efd !important;
-            box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
         }
 
         .nav-grid-btn.border-green {
@@ -375,11 +375,10 @@
                                 @endphp
 
                                 {{-- Tombol navigasi --}}
-                                <button
-                                    class="nav-grid-btn nav-item-btn {{ $borderClass }}"
+                                <button class="nav-grid-btn nav-item-btn {{ $borderClass }}"
                                     style="background: {{ $bgColor }};"
-                                    title="{{ $item->nomor }}. {{ $item->elemen }}"
-                                    data-id="{{ $item->id }}" data-nomor="{{ $item->nomor }}"
+                                    title="{{ $item->nomor }}. {{ $item->elemen }}" data-id="{{ $item->id }}"
+                                    data-nomor="{{ $item->nomor }}"
                                     data-title="{{ $item->nomor }}. {{ $item->elemen }}"
                                     data-content="{{ $item->indikator }}" data-kriteria="{{ $item->kriteria->name }}"
                                     data-pilihan='@json($item->option_pilihan_ganda)' data-poin="{{ $item->poin }}"
@@ -413,13 +412,15 @@
 
             {{-- TABEL STATUS AKREDITASI --}}
             <div class="card shadow-sm mb-4">
-                <div class="card-header d-flex justify-content-between align-items-center" style="background: #173b70; color: #fff;">
+                <div class="card-header d-flex justify-content-between align-items-center"
+                    style="background: #173b70; color: #fff;">
                     <h5 class="mb-0">Status Akreditasi dan Masa Berlaku</h5>
                     <span class="fs-6 fw-bold" id="nilaiAkreditasiDisplay" style="color: #ffd700;">NA: —</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered mb-0 align-middle text-center small" id="tabelStatusAkreditasi">
+                        <table class="table table-bordered mb-0 align-middle text-center small"
+                            id="tabelStatusAkreditasi">
                             <thead class="table-light">
                                 <tr>
                                     <th>No</th>
@@ -432,29 +433,47 @@
                             </thead>
                             <tbody>
                                 <tr data-na-min="361" data-na-max="999" data-s3="1" data-s5="1">
-                                    <td>1</td><td><strong>NA ≥ 361</strong></td>
-                                    <td>Memenuhi</td><td>Memenuhi</td>
-                                    <td><strong>Terakreditasi Unggul</strong></td><td>5 Tahun</td>
+                                    <td>1</td>
+                                    <td><strong>NA ≥ 361</strong></td>
+                                    <td>Memenuhi</td>
+                                    <td>Memenuhi</td>
+                                    <td><strong>Terakreditasi Unggul</strong></td>
+                                    <td>5 Tahun</td>
                                 </tr>
                                 <tr data-na-min="361" data-na-max="999" data-s3="1" data-s5="0">
-                                    <td>2</td><td><strong>NA ≥ 361</strong></td>
-                                    <td>Memenuhi</td><td>Tidak</td>
-                                    <td><strong>Terakreditasi Unggul</strong></td><td>3 Tahun</td>
+                                    <td>2</td>
+                                    <td><strong>NA ≥ 361</strong></td>
+                                    <td>Memenuhi</td>
+                                    <td>Tidak</td>
+                                    <td><strong>Terakreditasi Unggul</strong></td>
+                                    <td>3 Tahun</td>
                                 </tr>
                                 <tr data-na-min="321" data-na-max="361" data-s3="*" data-s5="*">
-                                    <td>3</td><td><strong>321 ≤ NA < 361</strong></td>
-                                    <td>V / X</td><td>V / X</td>
-                                    <td>Terakreditasi</td><td>5 Tahun</td>
+                                    <td>3</td>
+                                    <td><strong>321 ≤ NA < 361</strong>
+                                    </td>
+                                    <td>V / X</td>
+                                    <td>V / X</td>
+                                    <td>Terakreditasi</td>
+                                    <td>5 Tahun</td>
                                 </tr>
                                 <tr data-na-min="200" data-na-max="321" data-s3="*" data-s5="*">
-                                    <td>4</td><td><strong>200 ≤ NA < 321</strong></td>
-                                    <td>V / X</td><td>V / X</td>
-                                    <td>Terakreditasi</td><td>5 Tahun</td>
+                                    <td>4</td>
+                                    <td><strong>200 ≤ NA < 321</strong>
+                                    </td>
+                                    <td>V / X</td>
+                                    <td>V / X</td>
+                                    <td>Terakreditasi</td>
+                                    <td>5 Tahun</td>
                                 </tr>
                                 <tr data-na-min="-999" data-na-max="200" data-s3="*" data-s5="*">
-                                    <td>5</td><td><strong>NA < 200</strong></td>
-                                    <td>V / X</td><td>V / X</td>
-                                    <td>Tidak Terakreditasi</td><td>-</td>
+                                    <td>5</td>
+                                    <td><strong>NA < 200</strong>
+                                    </td>
+                                    <td>V / X</td>
+                                    <td>V / X</td>
+                                    <td>Tidak Terakreditasi</td>
+                                    <td>-</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -485,39 +504,71 @@
                             foreach ($subItems as $sub) {
                                 $v = $sub['variabel'];
                                 $n = $nilaiMap[$sub['id']] ?? 0;
-                                if ($v == 'NDS3') $NDS3 = $n;
-                                if ($v == 'NDL') $NDL = $n;
-                                if ($v == 'NDLK') $NDLK = $n;
-                                if ($v == 'NDGB') $NDGB = $n;
+                                if ($v == 'NDS3') {
+                                    $NDS3 = $n;
+                                }
+                                if ($v == 'NDL') {
+                                    $NDL = $n;
+                                }
+                                if ($v == 'NDLK') {
+                                    $NDLK = $n;
+                                }
+                                if ($v == 'NDGB') {
+                                    $NDGB = $n;
+                                }
                             }
                             $totalLektor = $NDL + $NDLK + $NDGB;
                             $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
                             $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
                         } /* =========================
                        ELEMEN 2,3,4 — Skor berbasis
-                    ========================= */ elseif (in_array($item->nomor, [2, 3, 4])) {
+                    ========================= */ elseif (
+                            in_array($item->nomor, [2, 3, 4])
+                        ) {
                             $jawaban = (float) ($item->matriks->userMatrik->jawaban ?? 0);
                             $memenuhi3 = $jawaban >= 3.0;
                             $memenuhi5 = $jawaban >= 3.5;
                         } /* =========================
                        ELEMEN 5 — Karya Inovatif Mahasiswa
-                    ========================= */ elseif ($item->nomor == 5) {
+                    ========================= */ elseif (
+                            $item->nomor == 5
+                        ) {
                             $NM = 0;
                             $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
                             $INT = $ISBN = $PATEN = 0;
                             foreach ($subItems as $sub) {
                                 $v = $sub['variabel'];
                                 $n = $nilaiMap[$sub['id']] ?? 0;
-                                if ($v == 'NM') $NM = $n;
-                                if ($v == 'SINTA1_MHS') $S1 = $n;
-                                if ($v == 'SINTA2_MHS') $S2 = $n;
-                                if ($v == 'SINTA3_MHS') $S3 = $n;
-                                if ($v == 'SINTA4_MHS') $S4 = $n;
-                                if ($v == 'SINTA5_MHS') $S5 = $n;
-                                if ($v == 'SINTA6_MHS') $S6 = $n;
-                                if ($v == 'INT_MHS') $INT = $n;
-                                if ($v == 'ISBN_MHS') $ISBN = $n;
-                                if ($v == 'PATEN_MHS') $PATEN = $n;
+                                if ($v == 'NM') {
+                                    $NM = $n;
+                                }
+                                if ($v == 'SINTA1_MHS') {
+                                    $S1 = $n;
+                                }
+                                if ($v == 'SINTA2_MHS') {
+                                    $S2 = $n;
+                                }
+                                if ($v == 'SINTA3_MHS') {
+                                    $S3 = $n;
+                                }
+                                if ($v == 'SINTA4_MHS') {
+                                    $S4 = $n;
+                                }
+                                if ($v == 'SINTA5_MHS') {
+                                    $S5 = $n;
+                                }
+                                if ($v == 'SINTA6_MHS') {
+                                    $S6 = $n;
+                                }
+                                if ($v == 'INT_MHS') {
+                                    $INT = $n;
+                                }
+                                if ($v == 'ISBN_MHS') {
+                                    $ISBN = $n;
+                                }
+                                if ($v == 'PATEN_MHS') {
+                                    $PATEN = $n;
+                                }
                             }
                             if ($NM > 0) {
                                 $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
@@ -529,14 +580,20 @@
                             }
                         } /* =========================
                        ELEMEN 6 — Publikasi DTPS
-                    ========================= */ elseif ($item->nomor == 6) {
+                    ========================= */ elseif (
+                            $item->nomor == 6
+                        ) {
                             $NDTPS = 0;
                             $NDTPS_PUB = 0;
                             foreach ($subItems as $sub) {
                                 $v = $sub['variabel'];
                                 $n = $nilaiMap[$sub['id']] ?? 0;
-                                if ($v == 'NDTPS') $NDTPS = $n;
-                                if ($v == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                                if ($v == 'NDTPS') {
+                                    $NDTPS = $n;
+                                }
+                                if ($v == 'NDTPS_PUB') {
+                                    $NDTPS_PUB = $n;
+                                }
                             }
                             if ($NDTPS > 0) {
                                 $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
@@ -553,23 +610,27 @@
 
                             {{-- CARD HEADER --}}
                             <div class="card-header d-flex align-items-center justify-content-between py-3"
-                                 style="background: #173b70; color: #fff;">
+                                style="background: #173b70; color: #fff;">
                                 <div>
                                     <h5 class="mb-0 fw-bold text-white">
                                         Syarat {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
                                     </h5>
                                     <small style="color: rgba(255,255,255,0.7);">
-                                        <span class="badge bg-light text-dark me-1">{{ $item->kriteria->name ?? '-' }}</span>
+                                        <span
+                                            class="badge bg-light text-dark me-1">{{ $item->kriteria->name ?? '-' }}</span>
                                         {{ $item->matriks->elemen ?? '-' }}
                                     </small>
                                 </div>
                                 <div class="text-end">
                                     @if ($memenuhi5)
-                                        <span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-check-circle-fill me-1"></i>Terpenuhi 5 Tahun</span>
+                                        <span class="badge bg-success fs-6 px-3 py-2"><i
+                                                class="bi bi-check-circle-fill me-1"></i>Terpenuhi 5 Tahun</span>
                                     @elseif ($memenuhi3)
-                                        <span class="badge bg-warning text-dark fs-6 px-3 py-2"><i class="bi bi-exclamation-triangle-fill me-1"></i>Terpenuhi 3 Tahun</span>
+                                        <span class="badge bg-warning text-dark fs-6 px-3 py-2"><i
+                                                class="bi bi-exclamation-triangle-fill me-1"></i>Terpenuhi 3 Tahun</span>
                                     @else
-                                        <span class="badge bg-danger fs-6 px-3 py-2"><i class="bi bi-x-circle-fill me-1"></i>Belum Terpenuhi</span>
+                                        <span class="badge bg-danger fs-6 px-3 py-2"><i
+                                                class="bi bi-x-circle-fill me-1"></i>Belum Terpenuhi</span>
                                     @endif
                                 </div>
                             </div>
@@ -579,7 +640,8 @@
 
                                 {{-- INDIKATOR --}}
                                 <div class="mb-4">
-                                    <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
+                                    <h6 class="fw-bold text-uppercase"
+                                        style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
                                         Indikator
                                     </h6>
                                     <p class="mb-0 mt-2">{{ $item->indikator }}</p>
@@ -591,12 +653,17 @@
                                         $varList = [
                                             ['var' => 'NDS3', 'label' => 'DTPS Doktor (NDS3)', 'val' => $NDS3 ?? 0],
                                             ['var' => 'NDL', 'label' => 'DTPS Lektor (NDL)', 'val' => $NDL ?? 0],
-                                            ['var' => 'NDLK', 'label' => 'DTPS Lektor Kepala (NDLK)', 'val' => $NDLK ?? 0],
+                                            [
+                                                'var' => 'NDLK',
+                                                'label' => 'DTPS Lektor Kepala (NDLK)',
+                                                'val' => $NDLK ?? 0,
+                                            ],
                                             ['var' => 'NDGB', 'label' => 'DTPS GB (NDGB)', 'val' => $NDGB ?? 0],
                                         ];
                                     @endphp
                                     <div class="mb-4">
-                                        <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
+                                        <h6 class="fw-bold text-uppercase"
+                                            style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
                                             Data Saat Ini
                                         </h6>
                                         <div class="d-flex flex-wrap gap-2 mt-2">
@@ -606,54 +673,78 @@
                                                 </span>
                                             @endforeach
                                         </div>
-                                        <small class="text-muted d-block mt-1">Total Lektor (NDL+NDLK+NDGB) = <strong>{{ $totalLektor ?? 0 }}</strong></small>
+                                        <small class="text-muted d-block mt-1">Total Lektor (NDL+NDLK+NDGB) =
+                                            <strong>{{ $totalLektor ?? 0 }}</strong></small>
                                     </div>
                                 @elseif (in_array($item->nomor, [2, 3, 4]))
                                     @php
                                         $jawaban = (float) ($item->matriks->userMatrik->jawaban ?? 0);
                                     @endphp
                                     <div class="mb-4">
-                                        <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
+                                        <h6 class="fw-bold text-uppercase"
+                                            style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
                                             Data Saat Ini
                                         </h6>
                                         <div class="mt-2">
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">Skor = {{ $jawaban }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">Skor =
+                                                {{ $jawaban }}</span>
                                         </div>
                                     </div>
                                 @elseif ($item->nomor == 5)
                                     <div class="mb-4">
-                                        <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
+                                        <h6 class="fw-bold text-uppercase"
+                                            style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
                                             Data Saat Ini
                                         </h6>
                                         <div class="d-flex flex-wrap gap-2 mt-2">
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NM = {{ $NM ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S1 = {{ $S1 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S2 = {{ $S2 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S3 = {{ $S3 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S4 = {{ $S4 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S5 = {{ $S5 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S6 = {{ $S6 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">INT = {{ $INT ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">ISBN = {{ $ISBN ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">PATEN = {{ $PATEN ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NM =
+                                                {{ $NM ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S1 =
+                                                {{ $S1 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S2 =
+                                                {{ $S2 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S3 =
+                                                {{ $S3 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S4 =
+                                                {{ $S4 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S5 =
+                                                {{ $S5 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S6 =
+                                                {{ $S6 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">INT =
+                                                {{ $INT ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">ISBN =
+                                                {{ $ISBN ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">PATEN =
+                                                {{ $PATEN ?? 0 }}</span>
                                             @if (($NM ?? 0) > 0)
-                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) = {{ $total3 ?? 0 }}</span>
-                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}% (3thn)</span>
-                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) = {{ $total5 ?? 0 }}</span>
-                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen5 ?? 0, 1) }}% (5thn)</span>
+                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) =
+                                                    {{ $total3 ?? 0 }}</span>
+                                                <span
+                                                    class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}%
+                                                    (3thn)</span>
+                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) =
+                                                    {{ $total5 ?? 0 }}</span>
+                                                <span
+                                                    class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen5 ?? 0, 1) }}%
+                                                    (5thn)</span>
                                             @endif
                                         </div>
                                     </div>
                                 @elseif ($item->nomor == 6)
                                     <div class="mb-4">
-                                        <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
+                                        <h6 class="fw-bold text-uppercase"
+                                            style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
                                             Data Saat Ini
                                         </h6>
                                         <div class="d-flex flex-wrap gap-2 mt-2">
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS = {{ $NDTPS ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS_PUB = {{ $NDTPS_PUB ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS =
+                                                {{ $NDTPS ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS_PUB =
+                                                {{ $NDTPS_PUB ?? 0 }}</span>
                                             @if (($NDTPS ?? 0) > 0)
-                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}%</span>
+                                                <span
+                                                    class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}%</span>
                                             @endif
                                         </div>
                                     </div>
@@ -666,13 +757,16 @@
                                 @endphp
                                 <div class="row g-3">
                                     <div class="col-md-6">
-                                        <div class="border rounded-3 p-3 h-100 bg-white" style="border-left: 4px solid {{ $border3 }} !important;">
+                                        <div class="border rounded-3 p-3 h-100 bg-white"
+                                            style="border-left: 4px solid {{ $border3 }} !important;">
                                             <div class="d-flex align-items-center justify-content-between mb-2">
                                                 <span class="fw-semibold">Syarat 3 Tahun</span>
                                                 @if ($memenuhi3)
-                                                    <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i>Terpenuhi</span>
+                                                    <span class="badge bg-success"><i
+                                                            class="bi bi-check-circle-fill me-1"></i>Terpenuhi</span>
                                                 @else
-                                                    <span class="badge bg-danger"><i class="bi bi-x-circle-fill me-1"></i>Belum Terpenuhi</span>
+                                                    <span class="badge bg-danger"><i
+                                                            class="bi bi-x-circle-fill me-1"></i>Belum Terpenuhi</span>
                                                 @endif
                                             </div>
                                             <p class="mb-1 small text-muted">{{ $syarat['3_tahun'] ?? '-' }}</p>
@@ -680,54 +774,79 @@
                                             {{-- Detail pemenuhan --}}
                                             @if ($item->nomor == 1)
                                                 <div class="small mt-1">
-                                                    NDS3 {{ $NDS3 }} {!! $NDS3 >= 1 ? '≥ 1 <i class="bi bi-check-circle-fill text-success"></i>' : '< 1 <i class="bi bi-x-circle-fill text-danger"></i>' !!} &nbsp;|&nbsp;
-                                                    Lektor {{ $totalLektor ?? 0 }} {!! ($totalLektor ?? 0) >= 2 ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>' : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>' !!}
+                                                    NDS3 {{ $NDS3 }} {!! $NDS3 >= 1
+                                                        ? '≥ 1 <i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '< 1 <i class="bi bi-x-circle-fill text-danger"></i>' !!} &nbsp;|&nbsp;
+                                                    Lektor {{ $totalLektor ?? 0 }} {!! ($totalLektor ?? 0) >= 2
+                                                        ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>' !!}
                                                 </div>
                                             @elseif (in_array($item->nomor, [2, 3, 4]))
                                                 <div class="small mt-1">
-                                                    Skor {{ $jawaban }} {!! $jawaban >= 3.0 ? '≥ 3.0 <i class="bi bi-check-circle-fill text-success"></i>' : '< 3.0 <i class="bi bi-x-circle-fill text-danger"></i>' !!}
+                                                    Skor {{ $jawaban }} {!! $jawaban >= 3.0
+                                                        ? '≥ 3.0 <i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '< 3.0 <i class="bi bi-x-circle-fill text-danger"></i>' !!}
                                                 </div>
                                             @elseif ($item->nomor == 5 && ($NM ?? 0) > 0)
                                                 <div class="small mt-1">
-                                                    {!! number_format($persen3 ?? 0, 1) !!}% mahasiswa {!! ($persen3 ?? 0) >= 15 ? '≥ 15% <i class="bi bi-check-circle-fill text-success"></i>' : '< 15% <i class="bi bi-x-circle-fill text-danger"></i>' !!}
+                                                    {!! number_format($persen3 ?? 0, 1) !!}% mahasiswa {!! ($persen3 ?? 0) >= 15
+                                                        ? '≥ 15% <i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '< 15% <i class="bi bi-x-circle-fill text-danger"></i>' !!}
                                                 </div>
                                             @elseif ($item->nomor == 6 && ($NDTPS ?? 0) > 0)
                                                 <div class="small mt-1">
-                                                    {!! number_format($persen3 ?? 0, 1) !!}% DTPS {!! ($persen3 ?? 0) >= 20 ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 20%' : '<i class="bi bi-x-circle-fill text-danger"></i> < 20%' !!}
+                                                    {!! number_format($persen3 ?? 0, 1) !!}% DTPS {!! ($persen3 ?? 0) >= 20
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 20%'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i> < 20%' !!}
                                                 </div>
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="border rounded-3 p-3 h-100 bg-white" style="border-left: 4px solid {{ $border5 }} !important;">
+                                        <div class="border rounded-3 p-3 h-100 bg-white"
+                                            style="border-left: 4px solid {{ $border5 }} !important;">
                                             <div class="d-flex align-items-center justify-content-between mb-2">
                                                 <span class="fw-semibold">Syarat 5 Tahun</span>
                                                 @if ($memenuhi5)
-                                                    <span class="badge bg-success"><i class="bi bi-check-circle-fill me-1"></i>Terpenuhi</span>
+                                                    <span class="badge bg-success"><i
+                                                            class="bi bi-check-circle-fill me-1"></i>Terpenuhi</span>
                                                 @else
-                                                    <span class="badge bg-danger"><i class="bi bi-x-circle-fill me-1"></i>Belum Terpenuhi</span>
+                                                    <span class="badge bg-danger"><i
+                                                            class="bi bi-x-circle-fill me-1"></i>Belum Terpenuhi</span>
                                                 @endif
                                             </div>
                                             <p class="mb-1 small text-muted">{{ $syarat['5_tahun'] ?? '-' }}</p>
 
                                             @if ($item->nomor == 1)
                                                 <div class="small mt-1">
-                                                    NDS3 {!! $NDS3 >= 2 ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 2 &nbsp;|&nbsp;
-                                                    Lektor {!! ($totalLektor ?? 0) >= 2 ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 2 &nbsp;|&nbsp;
-                                                    LK {!! $NDLK >= 1 ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 1
+                                                    NDS3 {!! $NDS3 >= 2
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 2 &nbsp;|&nbsp;
+                                                    Lektor {!! ($totalLektor ?? 0) >= 2
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 2 &nbsp;|&nbsp;
+                                                    LK {!! $NDLK >= 1
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i>'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 1
                                                 </div>
                                             @elseif (in_array($item->nomor, [2, 3, 4]))
                                                 <div class="small mt-1">
-                                                    Skor {{ $jawaban }} {!! $jawaban >= 3.5 ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 3.5' : '<i class="bi bi-x-circle-fill text-danger"></i> < 3.5' !!}
+                                                    Skor {{ $jawaban }} {!! $jawaban >= 3.5
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 3.5'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i> < 3.5' !!}
                                                 </div>
                                             @elseif ($item->nomor == 5 && ($NM ?? 0) > 0)
                                                 <div class="small mt-1">
-                                                    {!! number_format($persen5 ?? 0, 1) !!}% mahasiswa {!! ($persen5 ?? 0) >= 25 ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 25%' : '<i class="bi bi-x-circle-fill text-danger"></i> < 25%' !!}
+                                                    {!! number_format($persen5 ?? 0, 1) !!}% mahasiswa {!! ($persen5 ?? 0) >= 25
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 25%'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i> < 25%' !!}
                                                 </div>
                                             @elseif ($item->nomor == 6 && ($NDTPS ?? 0) > 0)
                                                 <div class="small mt-1">
-                                                    {!! number_format($persen5 ?? 0, 1) !!}% DTPS {!! ($persen5 ?? 0) >= 20 ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 20%' : '<i class="bi bi-x-circle-fill text-danger"></i> < 20%' !!}
+                                                    {!! number_format($persen5 ?? 0, 1) !!}% DTPS {!! ($persen5 ?? 0) >= 20
+                                                        ? '<i class="bi bi-check-circle-fill text-success"></i> ≥ 20%'
+                                                        : '<i class="bi bi-x-circle-fill text-danger"></i> < 20%' !!}
                                                 </div>
                                             @endif
                                         </div>
@@ -1082,7 +1201,10 @@
                 masa = "-";
             }
 
-            return { status, masa };
+            return {
+                status,
+                masa
+            };
         }
     </script>
 
@@ -1168,7 +1290,12 @@
                 // var kepemilikan_kriteria = document.getElementById('kepemilikan_kriteria').value;
                 document.getElementById("content-title").innerText = btn.dataset.title;
                 document.getElementById("kriteria-title").innerText = btn.dataset.kriteria;
-                document.getElementById("content-body").innerText = (isElemen7 || isElemen11 || isElemen14 || isElemen15 || isElemen16 || isElemen19 || isElemen20 || isElemen21 || isElemen22 || isElemen23 || isElemen33 || isElemen40 || isElemen41 || isElemen42 || isElemen43 || isElemen45 || isElemen46 || isElemen47 || isElemen48 || isElemen53 || isElemen54 || isElemen55 || isElemen56 || isElemen57 || isElemen59 || isElemen60) ? '' : btn.dataset.content;
+                document.getElementById("content-body").innerText = (isElemen7 || isElemen11 ||
+                        isElemen14 || isElemen15 || isElemen16 || isElemen19 || isElemen20 || isElemen21 ||
+                        isElemen22 || isElemen23 || isElemen33 || isElemen40 || isElemen41 || isElemen42 ||
+                        isElemen43 || isElemen45 || isElemen46 || isElemen47 || isElemen48 || isElemen53 ||
+                        isElemen54 || isElemen55 || isElemen56 || isElemen57 || isElemen59 || isElemen60) ?
+                    '' : btn.dataset.content;
                 document.getElementById("content-poin").innerText = poin;
 
                 var jenis = btn.dataset.jenis
@@ -2651,7 +2778,9 @@
                 if (isElemen7) {
                     // Build variabel name → id mapping
                     const v2id = {};
-                    subItems.forEach(item => { v2id[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id[item.variabel] = item.id;
+                    });
 
                     // Helper: read value from input (or saved data as fallback)
                     function val(v) {
@@ -2665,19 +2794,30 @@
 
                     // Compute Skor(a) from variabel values
                     function hitungSkorA() {
-                        const N1 = val('N1'), N2 = val('N2'), N3 = val('N3'), NDTPS = val('NDTPS');
-                        const NI = val('NI'), NN = val('NN'), NW = val('NW');
+                        const N1 = val('N1'),
+                            N2 = val('N2'),
+                            N3 = val('N3'),
+                            NDTPS = val('NDTPS');
+                        const NI = val('NI'),
+                            NN = val('NN'),
+                            NW = val('NW');
 
                         const RK = NDTPS > 0 ? ((3 * N1) + (2 * N2) + (1 * N3)) / NDTPS : 0;
                         const A = RK >= 4 ? 4 : RK;
                         let B;
                         if (NI >= 2) B = 4;
                         else if (NI > 0 && NI < 2 && NN >= 6) B = 3 + (NI / 2);
-                        else if (NI > 0 && NI < 2 && NN > 0 && NN < 6) B = 2 + (2 * NI / 2) + (NN / 6) - (NI * NN) / (2 * 6);
+                        else if (NI > 0 && NI < 2 && NN > 0 && NN < 6) B = 2 + (2 * NI / 2) + (NN / 6) - (
+                            NI * NN) / (2 * 6);
                         else if (NI === 0 && NN === 0 && NW >= 9) B = 2;
                         else B = 1;
                         const skorA = Math.min(4, ((2 * A) + B) / 3);
-                        return { RK, A, B, skorA };
+                        return {
+                            RK,
+                            A,
+                            B,
+                            skorA
+                        };
                     }
 
                     // Auto-compute table
@@ -2691,7 +2831,12 @@
 
                     // Update table display
                     function updateSkorADisplay() {
-                        const { RK, A, B, skorA } = hitungSkorA();
+                        const {
+                            RK,
+                            A,
+                            B,
+                            skorA
+                        } = hitungSkorA();
                         const el = id => document.getElementById(id);
                         el('cv-rk').textContent = RK.toFixed(2);
                         el('cv-a').textContent = A.toFixed(2);
@@ -2719,15 +2864,18 @@
 
                     function computeFinal7() {
                         const skorA = updateSkorADisplay();
-                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            0);
                         const jawabanAkhir = sb > 0 ? ((3 * skorA + sb) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final');
                         if (sb > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
-                            live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' : 'Isi data variabel dan pilih Skor (b)';
+                            live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' :
+                                'Isi data variabel dan pilih Skor (b)';
                         }
 
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
@@ -2755,7 +2903,9 @@
                 } else if (isElemen11) {
                     // Element 11: auto-compute Skor(a) from NM/NDTPS + radio for Skor(b)
                     const v2id11 = {};
-                    subItems.forEach(item => { v2id11[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id11[item.variabel] = item.id;
+                    });
 
                     function val11(v) {
                         const id = v2id11[v];
@@ -2769,7 +2919,8 @@
                     let kelompok = 'sains';
 
                     function hitungSkorA11() {
-                        const NM = val11('NM'), NDTPS = val11('NDTPS');
+                        const NM = val11('NM'),
+                            NDTPS = val11('NDTPS');
                         const RMD = NDTPS > 0 ? NM / NDTPS : 0;
                         let skorA;
                         if (kelompok === 'sains') {
@@ -2783,7 +2934,10 @@
                             else if (RMD > 35 && RMD <= 50) skorA = (200 - 4 * RMD) / 15;
                             else skorA = 1;
                         }
-                        return { RMD, skorA: Math.max(1, Math.min(4, skorA)) };
+                        return {
+                            RMD,
+                            skorA: Math.max(1, Math.min(4, skorA))
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -2800,7 +2954,10 @@
                 </table>`);
 
                     function updateSkorA11() {
-                        const { RMD, skorA } = hitungSkorA11();
+                        const {
+                            RMD,
+                            skorA
+                        } = hitungSkorA11();
                         document.getElementById('cv-rmd').textContent = RMD.toFixed(2);
                         document.getElementById('cv-skora11').textContent = skorA.toFixed(2);
                         return skorA;
@@ -2833,15 +2990,18 @@
 
                     function computeFinal11() {
                         const skorA = updateSkorA11();
-                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            0);
                         const jawabanAkhir = sb > 0 ? ((3 * skorA + sb) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final11');
                         if (sb > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
-                            live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' : 'Isi data variabel dan pilih Skor (b)';
+                            live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' :
+                                'Isi data variabel dan pilih Skor (b)';
                         }
 
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
@@ -2862,7 +3022,9 @@
                 } else if (isElemen14) {
                     // Element 14: auto-compute Skor(a) from NI/NN/NW/NM + radio for Skor(b)
                     const v2id14 = {};
-                    subItems.forEach(item => { v2id14[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id14[item.variabel] = item.id;
+                    });
 
                     function val14(v) {
                         const id = v2id14[v];
@@ -2874,8 +3036,13 @@
                     }
 
                     function hitungSkorA14() {
-                        const NI = val14('NI'), NN = val14('NN'), NW = val14('NW'), NM = val14('NM');
-                        const a = 0.005, b = 0.05, c = 0.10;
+                        const NI = val14('NI'),
+                            NN = val14('NN'),
+                            NW = val14('NW'),
+                            NM = val14('NM');
+                        const a = 0.005,
+                            b = 0.05,
+                            c = 0.10;
                         const RI = NM > 0 ? NI / NM : 0;
                         const RN = NM > 0 ? NN / NM : 0;
                         const RW = NM > 0 ? NW / NM : 0;
@@ -2885,7 +3052,12 @@
                         else if (RI > 0 && RN > 0) skorA = 2 + (RI / a) + (RN / b) - (RI * RN) / (a * b);
                         else if (RW >= c) skorA = 2;
                         else skorA = 1;
-                        return { RI, RN, RW, skorA: Math.max(1, Math.min(4, skorA)) };
+                        return {
+                            RI,
+                            RN,
+                            RW,
+                            skorA: Math.max(1, Math.min(4, skorA))
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -2897,7 +3069,12 @@
                 </table>`);
 
                     function updateSkorA14() {
-                        const { RI, RN, RW, skorA } = hitungSkorA14();
+                        const {
+                            RI,
+                            RN,
+                            RW,
+                            skorA
+                        } = hitungSkorA14();
                         document.getElementById('cv-ri').textContent = (RI * 100).toFixed(2) + '%';
                         document.getElementById('cv-rn').textContent = (RN * 100).toFixed(2) + '%';
                         document.getElementById('cv-rw').textContent = (RW * 100).toFixed(2) + '%';
@@ -2927,15 +3104,18 @@
 
                     function computeFinal14() {
                         const skorA = updateSkorA14();
-                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            0);
                         const jawabanAkhir = sb > 0 ? ((3 * skorA + sb) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final14');
                         if (sb > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
-                            live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' : 'Isi data variabel dan pilih Skor (b)';
+                            live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' :
+                                'Isi data variabel dan pilih Skor (b)';
                         }
 
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
@@ -2956,7 +3136,9 @@
                 } else if (isElemen15) {
                     // Element 15: auto-compute Skor(a) from PKIM + radio for Skor(b)
                     const v2id15 = {};
-                    subItems.forEach(item => { v2id15[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id15[item.variabel] = item.id;
+                    });
 
                     function val15(v) {
                         const id = v2id15[v];
@@ -2969,9 +3151,9 @@
 
                     function hitungSkorA15() {
                         const NM = val15('NM');
-                        const sumPub = val15('SINTA1_MHS') + val15('SINTA2_MHS') + val15('SINTA3_MHS')
-                            + val15('SINTA4_MHS') + val15('SINTA5_MHS') + val15('SINTA6_MHS')
-                            + val15('INT_MHS') + val15('ISBN_MHS') + val15('PATEN_MHS');
+                        const sumPub = val15('SINTA1_MHS') + val15('SINTA2_MHS') + val15('SINTA3_MHS') +
+                            val15('SINTA4_MHS') + val15('SINTA5_MHS') + val15('SINTA6_MHS') +
+                            val15('INT_MHS') + val15('ISBN_MHS') + val15('PATEN_MHS');
                         const pkim = NM > 0 ? (sumPub / NM) * 100 : 0;
                         let skorA;
                         if (pkim >= 20) skorA = 4;
@@ -2979,7 +3161,11 @@
                         else if (pkim >= 10) skorA = 2;
                         else if (pkim > 0) skorA = 1;
                         else skorA = 0;
-                        return { pkim, skorA, sumPub };
+                        return {
+                            pkim,
+                            skorA,
+                            sumPub
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -2990,10 +3176,16 @@
                 </table>`);
 
                     function updateSkorA15() {
-                        const { pkim, skorA, sumPub } = hitungSkorA15();
+                        const {
+                            pkim,
+                            skorA,
+                            sumPub
+                        } = hitungSkorA15();
                         document.getElementById('cv-sumpub').textContent = sumPub;
-                        document.getElementById('cv-pkim').textContent = pkim > 0 ? pkim.toFixed(1) + '%' : '-';
-                        document.getElementById('cv-skora15').textContent = skorA > 0 ? skorA.toFixed(1) : '-';
+                        document.getElementById('cv-pkim').textContent = pkim > 0 ? pkim.toFixed(1) + '%' :
+                            '-';
+                        document.getElementById('cv-skora15').textContent = skorA > 0 ? skorA.toFixed(1) :
+                            '-';
                         return skorA;
                     }
 
@@ -3019,13 +3211,15 @@
 
                     function computeFinal15() {
                         const skorA = updateSkorA15();
-                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            0);
                         const jawabanAkhir = (skorA > 0 && sb > 0) ? ((3 * skorA + sb) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final15');
                         if (sb > 0 && skorA > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else if (skorA > 0) {
                             live.innerHTML = 'Pilih Skor (b) untuk hasil akhir';
                         } else {
@@ -3051,7 +3245,9 @@
                     // Element 16: auto-compute Skor(a) from JUMLAH_ASPEK and Skor(b) from TKM
                     // Formula: (Skor(a) + 3 × Skor(b)) / 4
                     const v2id16 = {};
-                    subItems.forEach(item => { v2id16[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id16[item.variabel] = item.id;
+                    });
 
                     function val16(v) {
                         const id = v2id16[v];
@@ -3077,7 +3273,12 @@
                         else if (tkm >= 25) skorB = 2;
                         else if (tkm > 0) skorB = 1;
                         else skorB = 0;
-                        return { jumlah, tkm, skorA, skorB };
+                        return {
+                            jumlah,
+                            tkm,
+                            skorA,
+                            skorB
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3088,10 +3289,20 @@
                 </table>`);
 
                     function updateSkor16() {
-                        const { jumlah, tkm, skorA, skorB } = hitungSkor16();
-                        document.getElementById('cv-skora16').textContent = skorA > 0 ? skorA.toFixed(1) : '-';
-                        document.getElementById('cv-skorB16').textContent = skorB > 0 ? skorB.toFixed(1) : '-';
-                        return { skorA, skorB };
+                        const {
+                            jumlah,
+                            tkm,
+                            skorA,
+                            skorB
+                        } = hitungSkor16();
+                        document.getElementById('cv-skora16').textContent = skorA > 0 ? skorA.toFixed(1) :
+                            '-';
+                        document.getElementById('cv-skorB16').textContent = skorB > 0 ? skorB.toFixed(1) :
+                            '-';
+                        return {
+                            skorA,
+                            skorB
+                        };
                     }
 
                     // Show initial values immediately
@@ -3103,11 +3314,15 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal16() {
-                        const { skorA, skorB } = updateSkor16();
+                        const {
+                            skorA,
+                            skorB
+                        } = updateSkor16();
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((skorA + 3 * skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
-                        document.getElementById('cv-akhir16').textContent = jawabanAkhir > 0 ? jawabanAkhir.toFixed(2) : '-';
+                        document.getElementById('cv-akhir16').textContent = jawabanAkhir > 0 ? jawabanAkhir
+                            .toFixed(2) : '-';
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
                         document.getElementById('skor_a_hidden').value = skorA;
                         document.getElementById('skor_b_hidden').value = skorB;
@@ -3123,7 +3338,9 @@
                     // Element 19: auto-compute Skor(a) from PDS3 and Skor(b) from PGBLKL
                     // Final: (3 × (Skor(a) + Skor(b)) + Skor(c)) / 7
                     const v2id19 = {};
-                    subItems.forEach(item => { v2id19[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id19[item.variabel] = item.id;
+                    });
 
                     function val19(v) {
                         const id = v2id19[v];
@@ -3135,23 +3352,39 @@
                     }
 
                     function hitungSkorA19() {
-                        const nds3 = val19('NDS3'), ndtps = val19('NDTPS');
+                        const nds3 = val19('NDS3'),
+                            ndtps = val19('NDTPS');
                         const pds3 = ndtps > 0 ? (nds3 / ndtps) * 100 : 0;
                         let skorA;
                         if (pds3 >= 40) skorA = 4;
                         else if (pds3 > 0) skorA = 2 + (5 * pds3 / 100);
                         else skorA = 0;
-                        return { nds3, ndtps, pds3, skorA };
+                        return {
+                            nds3,
+                            ndtps,
+                            pds3,
+                            skorA
+                        };
                     }
 
                     function hitungSkorB19() {
-                        const ndgb = val19('NDGB'), ndlk = val19('NDLK'), ndl = val19('NDL'), ndtps = val19('NDTPS');
+                        const ndgb = val19('NDGB'),
+                            ndlk = val19('NDLK'),
+                            ndl = val19('NDL'),
+                            ndtps = val19('NDTPS');
                         const pgblkl = ndtps > 0 ? ((ndgb + ndlk + ndl) / ndtps) * 100 : 0;
                         let skorB;
                         if (pgblkl >= 70) skorB = 4;
                         else if (pgblkl > 0) skorB = 2 + (20 * pgblkl / 100 / 7);
                         else skorB = 0;
-                        return { ndgb, ndlk, ndl, ndtps, pgblkl, skorB };
+                        return {
+                            ndgb,
+                            ndlk,
+                            ndl,
+                            ndtps,
+                            pgblkl,
+                            skorB
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3163,13 +3396,26 @@
                 </table>`);
 
                     function updateSkor19() {
-                        const { pds3, skorA } = hitungSkorA19();
-                        const { pgblkl, skorB } = hitungSkorB19();
-                        document.getElementById('cv-pds3').textContent = pds3 > 0 ? pds3.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-skora19').textContent = skorA > 0 ? skorA.toFixed(1) : '-';
-                        document.getElementById('cv-pgblkl').textContent = pgblkl > 0 ? pgblkl.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-skorB19').textContent = skorB > 0 ? skorB.toFixed(1) : '-';
-                        return { skorA, skorB };
+                        const {
+                            pds3,
+                            skorA
+                        } = hitungSkorA19();
+                        const {
+                            pgblkl,
+                            skorB
+                        } = hitungSkorB19();
+                        document.getElementById('cv-pds3').textContent = pds3 > 0 ? pds3.toFixed(2) + '%' :
+                            '-';
+                        document.getElementById('cv-skora19').textContent = skorA > 0 ? skorA.toFixed(1) :
+                            '-';
+                        document.getElementById('cv-pgblkl').textContent = pgblkl > 0 ? pgblkl.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-skorB19').textContent = skorB > 0 ? skorB.toFixed(1) :
+                            '-';
+                        return {
+                            skorA,
+                            skorB
+                        };
                     }
 
                     updateSkor19();
@@ -3195,14 +3441,20 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal19() {
-                        const { skorA, skorB } = updateSkor19();
-                        const skorC = parseInt(document.querySelector('input[name="jawaban"]:checked')?.value || 0);
-                        const jawabanAkhir = (skorA > 0 && skorB > 0 && skorC > 0) ? ((3 * (skorA + skorB) + skorC) / 7) : 0;
+                        const {
+                            skorA,
+                            skorB
+                        } = updateSkor19();
+                        const skorC = parseInt(document.querySelector('input[name="jawaban"]:checked')
+                            ?.value || 0);
+                        const jawabanAkhir = (skorA > 0 && skorB > 0 && skorC > 0) ? ((3 * (skorA + skorB) +
+                            skorC) / 7) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final19');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi semua data untuk hasil akhir';
                         }
@@ -3224,7 +3476,9 @@
                     // Element 20: auto-compute Skor(a) from BKD, radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id20 = {};
-                    subItems.forEach(item => { v2id20[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id20[item.variabel] = item.id;
+                    });
 
                     function val20(v) {
                         const id = v2id20[v];
@@ -3243,7 +3497,10 @@
                         else if (bkd > 16 && bkd <= 18) skorA = 36 - (2 * bkd);
                         else if (bkd > 0) skorA = 1;
                         else skorA = 0;
-                        return { bkd, skorA };
+                        return {
+                            bkd,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3256,10 +3513,17 @@
                     const skorBOptions20 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA20() {
-                        const { bkd, skorA } = hitungSkorA20();
+                        const {
+                            bkd,
+                            skorA
+                        } = hitungSkorA20();
                         document.getElementById('cv-bkd').textContent = bkd > 0 ? bkd.toFixed(1) : '-';
-                        document.getElementById('cv-skora20').textContent = (bkd > 0) ? skorA.toFixed(2) : '-';
-                        return { bkd, skorA };
+                        document.getElementById('cv-skora20').textContent = (bkd > 0) ? skorA.toFixed(2) :
+                            '-';
+                        return {
+                            bkd,
+                            skorA
+                        };
                     }
 
                     updateSkorA20();
@@ -3282,14 +3546,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal20() {
-                        const { bkd, skorA } = updateSkorA20();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            bkd,
+                            skorA
+                        } = updateSkorA20();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (bkd > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final20');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi BKD dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3311,7 +3580,9 @@
                     // Element 21: auto-compute Skor(a) from RRD (NRD/NDTPS), radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id21 = {};
-                    subItems.forEach(item => { v2id21[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id21[item.variabel] = item.id;
+                    });
 
                     function val21(v) {
                         const id = v2id21[v];
@@ -3323,13 +3594,19 @@
                     }
 
                     function hitungSkorA21() {
-                        const nrd = val21('NRD'), ndtps = val21('NDTPS');
+                        const nrd = val21('NRD'),
+                            ndtps = val21('NDTPS');
                         const rrd = ndtps > 0 ? nrd / ndtps : 0;
                         let skorA;
                         if (!ndtps) skorA = 0;
                         else if (rrd >= 1) skorA = 4;
                         else skorA = 2 + (2 * rrd);
-                        return { nrd, ndtps, rrd, skorA };
+                        return {
+                            nrd,
+                            ndtps,
+                            rrd,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3342,10 +3619,18 @@
                     const skorBOptions21 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA21() {
-                        const { ndtps, rrd, skorA } = hitungSkorA21();
+                        const {
+                            ndtps,
+                            rrd,
+                            skorA
+                        } = hitungSkorA21();
                         document.getElementById('cv-rrd21').textContent = ndtps > 0 ? rrd.toFixed(2) : '-';
-                        document.getElementById('cv-skora21').textContent = ndtps > 0 ? skorA.toFixed(2) : '-';
-                        return { ndtps, skorA };
+                        document.getElementById('cv-skora21').textContent = ndtps > 0 ? skorA.toFixed(2) :
+                            '-';
+                        return {
+                            ndtps,
+                            skorA
+                        };
                     }
 
                     updateSkorA21();
@@ -3368,14 +3653,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal21() {
-                        const { ndtps, skorA } = updateSkorA21();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            ndtps,
+                            skorA
+                        } = updateSkorA21();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (ndtps > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final21');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NRD/NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3397,7 +3687,9 @@
                     // Element 22: auto-compute Skor(a) from NDTPSPK (%), radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id22 = {};
-                    subItems.forEach(item => { v2id22[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id22[item.variabel] = item.id;
+                    });
 
                     function val22(v) {
                         const id = v2id22[v];
@@ -3416,7 +3708,10 @@
                         else if (ndtpspk >= 60) skorA = 2;
                         else if (ndtpspk > 0) skorA = 1;
                         else skorA = 0;
-                        return { ndtpspk, skorA };
+                        return {
+                            ndtpspk,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3429,10 +3724,18 @@
                     const skorBOptions22 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA22() {
-                        const { ndtpspk, skorA } = hitungSkorA22();
-                        document.getElementById('cv-ndtpspk').textContent = ndtpspk > 0 ? ndtpspk.toFixed(1) + '%' : '-';
-                        document.getElementById('cv-skora22').textContent = ndtpspk > 0 ? skorA.toFixed(1) : '-';
-                        return { ndtpspk, skorA };
+                        const {
+                            ndtpspk,
+                            skorA
+                        } = hitungSkorA22();
+                        document.getElementById('cv-ndtpspk').textContent = ndtpspk > 0 ? ndtpspk.toFixed(
+                            1) + '%' : '-';
+                        document.getElementById('cv-skora22').textContent = ndtpspk > 0 ? skorA.toFixed(1) :
+                            '-';
+                        return {
+                            ndtpspk,
+                            skorA
+                        };
                     }
 
                     updateSkorA22();
@@ -3455,14 +3758,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal22() {
-                        const { ndtpspk, skorA } = updateSkorA22();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            ndtpspk,
+                            skorA
+                        } = updateSkorA22();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (ndtpspk > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final22');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NDTPSPK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3484,7 +3792,9 @@
                     // Element 23: auto-compute Skor(a) from NTENDIKPK (%), radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id23 = {};
-                    subItems.forEach(item => { v2id23[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id23[item.variabel] = item.id;
+                    });
 
                     function val23(v) {
                         const id = v2id23[v];
@@ -3503,7 +3813,10 @@
                         else if (ntendikpk >= 10) skorA = 2;
                         else if (ntendikpk > 0) skorA = 1;
                         else skorA = 0;
-                        return { ntendikpk, skorA };
+                        return {
+                            ntendikpk,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3516,10 +3829,18 @@
                     const skorBOptions23 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA23() {
-                        const { ntendikpk, skorA } = hitungSkorA23();
-                        document.getElementById('cv-ntendikpk').textContent = ntendikpk > 0 ? ntendikpk.toFixed(1) + '%' : '-';
-                        document.getElementById('cv-skora23').textContent = ntendikpk > 0 ? skorA.toFixed(1) : '-';
-                        return { ntendikpk, skorA };
+                        const {
+                            ntendikpk,
+                            skorA
+                        } = hitungSkorA23();
+                        document.getElementById('cv-ntendikpk').textContent = ntendikpk > 0 ? ntendikpk
+                            .toFixed(1) + '%' : '-';
+                        document.getElementById('cv-skora23').textContent = ntendikpk > 0 ? skorA.toFixed(
+                            1) : '-';
+                        return {
+                            ntendikpk,
+                            skorA
+                        };
                     }
 
                     updateSkorA23();
@@ -3542,14 +3863,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal23() {
-                        const { ntendikpk, skorA } = updateSkorA23();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            ntendikpk,
+                            skorA
+                        } = updateSkorA23();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (ntendikpk > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final23');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NTENDIKPK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3572,7 +3898,9 @@
                     // (a) radio, (b) auto PDIPPKM, (c) auto PMKI, (d) radio
                     // Akhir = Skor(a) + (3 × (Skor(b) + Skor(c)) + Skor(d)) / 8
                     const v2id33 = {};
-                    subItems.forEach(item => { v2id33[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id33[item.variabel] = item.id;
+                    });
 
                     function val33(v) {
                         const id = v2id33[v];
@@ -3585,7 +3913,8 @@
 
                     // Skor(b) from PDIPPKM
                     function hitungSkorB33() {
-                        const ndippkm = val33('NDIPPKM'), ndtps = val33('NDTPS');
+                        const ndippkm = val33('NDIPPKM'),
+                            ndtps = val33('NDTPS');
                         const pdippkm = ndtps > 0 ? (ndippkm / ndtps) * 100 : 0;
                         let skorB;
                         if (!ndtps) skorB = 0;
@@ -3593,19 +3922,30 @@
                         else if (pdippkm >= 30) skorB = 3;
                         else if (pdippkm >= 10) skorB = 2;
                         else skorB = 1;
-                        return { ndippkm, ndtps, pdippkm, skorB };
+                        return {
+                            ndippkm,
+                            ndtps,
+                            pdippkm,
+                            skorB
+                        };
                     }
 
                     // Skor(c) from PMKI
                     function hitungSkorC33() {
-                        const nmki = val33('NMKI'), nmk = val33('NMK');
+                        const nmki = val33('NMKI'),
+                            nmk = val33('NMK');
                         const pmki = nmk > 0 ? (nmki / nmk) * 100 : 0;
                         let skorC;
                         if (!nmk) skorC = 0;
                         else if (pmki >= 25) skorC = 4;
                         else if (pmki >= 15) skorC = 3 + ((pmki - 25) / 100 / 0.10);
                         else skorC = 2;
-                        return { nmki, nmk, pmki, skorC };
+                        return {
+                            nmki,
+                            nmk,
+                            pmki,
+                            skorC
+                        };
                     }
 
                     // Auto-compute table
@@ -3618,13 +3958,30 @@
                 </table>`);
 
                     function updateSkorBC33() {
-                        const { ndtps, pdippkm, skorB } = hitungSkorB33();
-                        const { nmk, pmki, skorC } = hitungSkorC33();
-                        document.getElementById('cv-pdippkm').textContent = ndtps > 0 ? pdippkm.toFixed(1) + '%' : '-';
-                        document.getElementById('cv-skorB33').textContent = ndtps > 0 ? skorB.toFixed(1) : '-';
-                        document.getElementById('cv-pmki').textContent = nmk > 0 ? pmki.toFixed(1) + '%' : '-';
-                        document.getElementById('cv-skorC33').textContent = nmk > 0 ? skorC.toFixed(2) : '-';
-                        return { ndtps, nmk, skorB, skorC };
+                        const {
+                            ndtps,
+                            pdippkm,
+                            skorB
+                        } = hitungSkorB33();
+                        const {
+                            nmk,
+                            pmki,
+                            skorC
+                        } = hitungSkorC33();
+                        document.getElementById('cv-pdippkm').textContent = ndtps > 0 ? pdippkm.toFixed(1) +
+                            '%' : '-';
+                        document.getElementById('cv-skorB33').textContent = ndtps > 0 ? skorB.toFixed(1) :
+                            '-';
+                        document.getElementById('cv-pmki').textContent = nmk > 0 ? pmki.toFixed(1) + '%' :
+                            '-';
+                        document.getElementById('cv-skorC33').textContent = nmk > 0 ? skorC.toFixed(2) :
+                        '-';
+                        return {
+                            ndtps,
+                            nmk,
+                            skorB,
+                            skorC
+                        };
                     }
 
                     updateSkorBC33();
@@ -3656,16 +4013,28 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal33() {
-                        const { ndtps, nmk, skorB, skorC } = updateSkorBC33();
-                        const skorA = parseInt(document.querySelector('input[name="skor_a"]:checked')?.value || 0);
-                        const skorD = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
-                        const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0)
-                            ? (skorA + (3 * (skorB + skorC) + skorD) / 8) : 0;
+                        const {
+                            ndtps,
+                            nmk,
+                            skorB,
+                            skorC
+                        } = updateSkorBC33();
+                        const skorA = parseInt(document.querySelector('input[name="skor_a"]:checked')
+                            ?.value || 0);
+                        const skorD = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
+                        // const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0)
+                        //     ? (skorA + (3 * (skorB + skorC) + skorD) / 8) : 0;
+                        const jawabanAkhir =
+                            (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ?
+                            ((skorA + (3 * (skorB + skorC) + skorD)) / 8) :
+                            0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final33');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC.toFixed(2)}</strong> | Skor(d): <strong>${skorD}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC.toFixed(2)}</strong> | Skor(d): <strong>${skorD}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi semua data untuk hasil akhir';
                         }
@@ -3690,7 +4059,9 @@
                     // Element 40: auto-compute Skor(a) from RIPK, radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id40 = {};
-                    subItems.forEach(item => { v2id40[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id40[item.variabel] = item.id;
+                    });
 
                     function val40(v) {
                         const id = v2id40[v];
@@ -3708,7 +4079,10 @@
                         else if (ripk >= 2.00) skorA = ((8 * ripk) - 6) / 5;
                         else if (ripk > 0) skorA = 0;
                         else skorA = 0;
-                        return { ripk, skorA };
+                        return {
+                            ripk,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3721,10 +4095,17 @@
                     const skorBOptions40 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA40() {
-                        const { ripk, skorA } = hitungSkorA40();
+                        const {
+                            ripk,
+                            skorA
+                        } = hitungSkorA40();
                         document.getElementById('cv-ripk').textContent = ripk > 0 ? ripk.toFixed(2) : '-';
-                        document.getElementById('cv-skora40').textContent = ripk > 0 ? skorA.toFixed(2) : '-';
-                        return { ripk, skorA };
+                        document.getElementById('cv-skora40').textContent = ripk > 0 ? skorA.toFixed(2) :
+                            '-';
+                        return {
+                            ripk,
+                            skorA
+                        };
                     }
 
                     updateSkorA40();
@@ -3747,14 +4128,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal40() {
-                        const { ripk, skorA } = updateSkorA40();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            ripk,
+                            skorA
+                        } = updateSkorA40();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (ripk > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final40');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi RIPK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3776,7 +4162,9 @@
                     // Element 41: auto-compute Skor(a) from RMS, radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id41 = {};
-                    subItems.forEach(item => { v2id41[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id41[item.variabel] = item.id;
+                    });
 
                     function val41(v) {
                         const id = v2id41[v];
@@ -3794,7 +4182,10 @@
                         else if (rms > 5) skorA = 1;
                         else if (rms > 4) skorA = Math.max(1, 4 - ((rms - 4) / 0.5) * 1.5);
                         else skorA = 4; // RMS ≤ 4 → score 4
-                        return { rms, skorA };
+                        return {
+                            rms,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3807,10 +4198,17 @@
                     const skorBOptions41 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA41() {
-                        const { rms, skorA } = hitungSkorA41();
+                        const {
+                            rms,
+                            skorA
+                        } = hitungSkorA41();
                         document.getElementById('cv-rms').textContent = rms > 0 ? rms.toFixed(2) : '-';
-                        document.getElementById('cv-skora41').textContent = rms > 0 ? skorA.toFixed(2) : '-';
-                        return { rms, skorA };
+                        document.getElementById('cv-skora41').textContent = rms > 0 ? skorA.toFixed(2) :
+                        '-';
+                        return {
+                            rms,
+                            skorA
+                        };
                     }
 
                     updateSkorA41();
@@ -3833,14 +4231,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal41() {
-                        const { rms, skorA } = updateSkorA41();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            rms,
+                            skorA
+                        } = updateSkorA41();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (rms > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final41');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi RMS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3862,7 +4265,9 @@
                     // Element 42: auto-compute Skor(a) from PMTK, radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id42 = {};
-                    subItems.forEach(item => { v2id42[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id42[item.variabel] = item.id;
+                    });
 
                     function val42(v) {
                         const id = v2id42[v];
@@ -3880,7 +4285,10 @@
                         if (pmtkPct <= 0) skorA = 0;
                         else if (pmtk >= 0.5) skorA = 4;
                         else skorA = Math.min(4, Math.max(1, 1 + 6 * pmtk));
-                        return { pmtkPct, skorA };
+                        return {
+                            pmtkPct,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3893,10 +4301,18 @@
                     const skorBOptions42 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA42() {
-                        const { pmtkPct, skorA } = hitungSkorA42();
-                        document.getElementById('cv-pmtk').textContent = pmtkPct > 0 ? pmtkPct.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-skora42').textContent = pmtkPct > 0 ? skorA.toFixed(2) : '-';
-                        return { pmtkPct, skorA };
+                        const {
+                            pmtkPct,
+                            skorA
+                        } = hitungSkorA42();
+                        document.getElementById('cv-pmtk').textContent = pmtkPct > 0 ? pmtkPct.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-skora42').textContent = pmtkPct > 0 ? skorA.toFixed(2) :
+                            '-';
+                        return {
+                            pmtkPct,
+                            skorA
+                        };
                     }
 
                     updateSkorA42();
@@ -3919,14 +4335,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal42() {
-                        const { pmtkPct, skorA } = updateSkorA42();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            pmtkPct,
+                            skorA
+                        } = updateSkorA42();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (pmtkPct > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final42');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PMTK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3948,7 +4369,9 @@
                     // Element 43: auto-compute Skor(a) from PKMS, radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id43 = {};
-                    subItems.forEach(item => { v2id43[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id43[item.variabel] = item.id;
+                    });
 
                     function val43(v) {
                         const id = v2id43[v];
@@ -3967,7 +4390,10 @@
                         else if (pkms >= 0.85) skorA = 4;
                         else if (pkms < 0.45) skorA = 1;
                         else skorA = Math.min(4, ((80 * pkms) - 24) / 11);
-                        return { pkmsPct, skorA };
+                        return {
+                            pkmsPct,
+                            skorA
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -3980,10 +4406,18 @@
                     const skorBOptions43 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA43() {
-                        const { pkmsPct, skorA } = hitungSkorA43();
-                        document.getElementById('cv-pkms').textContent = pkmsPct > 0 ? pkmsPct.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-skora43').textContent = pkmsPct > 0 ? skorA.toFixed(2) : '-';
-                        return { pkmsPct, skorA };
+                        const {
+                            pkmsPct,
+                            skorA
+                        } = hitungSkorA43();
+                        document.getElementById('cv-pkms').textContent = pkmsPct > 0 ? pkmsPct.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-skora43').textContent = pkmsPct > 0 ? skorA.toFixed(2) :
+                            '-';
+                        return {
+                            pkmsPct,
+                            skorA
+                        };
                     }
 
                     updateSkorA43();
@@ -4006,14 +4440,19 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal43() {
-                        const { pkmsPct, skorA } = updateSkorA43();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            pkmsPct,
+                            skorA
+                        } = updateSkorA43();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (pkmsPct > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final43');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PKMS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4035,7 +4474,9 @@
                     // Element 45: PLB → base Skor(a), NL/NJ → respondent factor, radio Skor(b)
                     // Final: (3 × adjusted_Skor(a) + Skor(b)) / 4
                     const v2id45 = {};
-                    subItems.forEach(item => { v2id45[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id45[item.variabel] = item.id;
+                    });
 
                     function val45(v) {
                         const id = v2id45[v];
@@ -4054,19 +4495,30 @@
                         else if (plb >= 60) base = 3;
                         else if (plb >= 40) base = 2;
                         else base = 1;
-                        return { plb, base };
+                        return {
+                            plb,
+                            base
+                        };
                     }
 
                     function hitungResponden45() {
                         const nl = val45('NL');
                         const nj = val45('NJ');
-                        let pj = 0, prmin = 0, faktor = 1;
+                        let pj = 0,
+                            prmin = 0,
+                            faktor = 1;
                         if (nl > 0 && nj > 0) {
                             pj = (nj / nl) * 100;
                             prmin = nl >= 150 ? 30 : 50 - ((nl / 150) * 20);
                             faktor = pj >= prmin ? 1 : pj / prmin;
                         }
-                        return { nl, nj, pj, prmin, faktor };
+                        return {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4084,19 +4536,35 @@
                     const skorBOptions45 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA45() {
-                        const { plb, base } = hitungBaseSkorA45();
-                        const { nl, nj, pj, prmin, faktor } = hitungResponden45();
+                        const {
+                            plb,
+                            base
+                        } = hitungBaseSkorA45();
+                        const {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        } = hitungResponden45();
                         const skorA = base > 0 ? base * faktor : 0;
 
-                        document.getElementById('cv-plb45').textContent = plb > 0 ? plb.toFixed(2) + '%' : '-';
+                        document.getElementById('cv-plb45').textContent = plb > 0 ? plb.toFixed(2) + '%' :
+                            '-';
                         document.getElementById('cv-base45').textContent = base > 0 ? base.toFixed(2) : '-';
-                        document.getElementById('cv-nlnj45').textContent = (nl > 0 && nj > 0) ? nl + ' / ' + nj : '-';
+                        document.getElementById('cv-nlnj45').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            nj : '-';
                         document.getElementById('cv-pj45').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-prmin45').textContent = prmin > 0 ? prmin.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-faktor45').textContent = faktor < 1 ? faktor.toFixed(4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora45').textContent = skorA > 0 ? skorA.toFixed(4) : '-';
+                        document.getElementById('cv-prmin45').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-faktor45').textContent = faktor < 1 ? faktor.toFixed(
+                            4) : (faktor > 0 ? '1' : '-');
+                        document.getElementById('cv-skora45').textContent = skorA > 0 ? skorA.toFixed(4) :
+                            '-';
 
-                        return { skorA };
+                        return {
+                            skorA
+                        };
                     }
 
                     updateSkorA45();
@@ -4119,14 +4587,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal45() {
-                        const { skorA } = updateSkorA45();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            skorA
+                        } = updateSkorA45();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final45');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PLB, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4148,7 +4620,9 @@
                     // Element 46: WTMP → base Skor(a), NL/NJ → respondent factor, radio Skor(b)
                     // Final: (3 × adjusted_Skor(a) + Skor(b)) / 4
                     const v2id46 = {};
-                    subItems.forEach(item => { v2id46[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id46[item.variabel] = item.id;
+                    });
 
                     function val46(v) {
                         const id = v2id46[v];
@@ -4166,19 +4640,30 @@
                         else if (wtmp < 6) base = 4;
                         else if (wtmp <= 12) base = (18 - wtmp) / 3;
                         else base = 1;
-                        return { wtmp, base };
+                        return {
+                            wtmp,
+                            base
+                        };
                     }
 
                     function hitungResponden46() {
                         const nl = val46('NL');
                         const nj = val46('NJ');
-                        let pj = 0, prmin = 0, faktor = 1;
+                        let pj = 0,
+                            prmin = 0,
+                            faktor = 1;
                         if (nl > 0 && nj > 0) {
                             pj = (nj / nl) * 100;
                             prmin = nl >= 150 ? 30 : 50 - ((nl / 150) * 20);
                             faktor = pj >= prmin ? 1 : pj / prmin;
                         }
-                        return { nl, nj, pj, prmin, faktor };
+                        return {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4196,19 +4681,35 @@
                     const skorBOptions46 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA46() {
-                        const { wtmp, base } = hitungBaseSkorA46();
-                        const { nl, nj, pj, prmin, faktor } = hitungResponden46();
+                        const {
+                            wtmp,
+                            base
+                        } = hitungBaseSkorA46();
+                        const {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        } = hitungResponden46();
                         const skorA = base > 0 ? base * faktor : 0;
 
-                        document.getElementById('cv-wtmp46').textContent = wtmp > 0 ? wtmp.toFixed(1) + ' bln' : '-';
+                        document.getElementById('cv-wtmp46').textContent = wtmp > 0 ? wtmp.toFixed(1) +
+                            ' bln' : '-';
                         document.getElementById('cv-base46').textContent = base > 0 ? base.toFixed(2) : '-';
-                        document.getElementById('cv-nlnj46').textContent = (nl > 0 && nj > 0) ? nl + ' / ' + nj : '-';
+                        document.getElementById('cv-nlnj46').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            nj : '-';
                         document.getElementById('cv-pj46').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-prmin46').textContent = prmin > 0 ? prmin.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-faktor46').textContent = faktor < 1 ? faktor.toFixed(4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora46').textContent = skorA > 0 ? skorA.toFixed(4) : '-';
+                        document.getElementById('cv-prmin46').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-faktor46').textContent = faktor < 1 ? faktor.toFixed(
+                            4) : (faktor > 0 ? '1' : '-');
+                        document.getElementById('cv-skora46').textContent = skorA > 0 ? skorA.toFixed(4) :
+                            '-';
 
-                        return { skorA };
+                        return {
+                            skorA
+                        };
                     }
 
                     updateSkorA46();
@@ -4231,14 +4732,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal46() {
-                        const { skorA } = updateSkorA46();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            skorA
+                        } = updateSkorA46();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final46');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi WTMP, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4260,7 +4765,9 @@
                     // Element 47: PBS → base Skor(a), NL/NJ → respondent factor, radio Skor(b)
                     // Final: (3 × adjusted_Skor(a) + Skor(b)) / 4
                     const v2id47 = {};
-                    subItems.forEach(item => { v2id47[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id47[item.variabel] = item.id;
+                    });
 
                     function val47(v) {
                         const id = v2id47[v];
@@ -4278,19 +4785,30 @@
                         else if (pbs >= 60) base = 4;
                         else if (pbs <= 15) base = 1;
                         else base = pbs / 15; // linear from 1 at 15% to 4 at 60%
-                        return { pbs, base };
+                        return {
+                            pbs,
+                            base
+                        };
                     }
 
                     function hitungResponden47() {
                         const nl = val47('NL');
                         const nj = val47('NJ');
-                        let pj = 0, prmin = 0, faktor = 1;
+                        let pj = 0,
+                            prmin = 0,
+                            faktor = 1;
                         if (nl > 0 && nj > 0) {
                             pj = (nj / nl) * 100;
                             prmin = nl >= 150 ? 30 : 50 - ((nl / 150) * 20);
                             faktor = pj >= prmin ? 1 : pj / prmin;
                         }
-                        return { nl, nj, pj, prmin, faktor };
+                        return {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4308,19 +4826,35 @@
                     const skorBOptions47 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA47() {
-                        const { pbs, base } = hitungBaseSkorA47();
-                        const { nl, nj, pj, prmin, faktor } = hitungResponden47();
+                        const {
+                            pbs,
+                            base
+                        } = hitungBaseSkorA47();
+                        const {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        } = hitungResponden47();
                         const skorA = base > 0 ? base * faktor : 0;
 
-                        document.getElementById('cv-pbs47').textContent = pbs > 0 ? pbs.toFixed(2) + '%' : '-';
+                        document.getElementById('cv-pbs47').textContent = pbs > 0 ? pbs.toFixed(2) + '%' :
+                            '-';
                         document.getElementById('cv-base47').textContent = base > 0 ? base.toFixed(2) : '-';
-                        document.getElementById('cv-nlnj47').textContent = (nl > 0 && nj > 0) ? nl + ' / ' + nj : '-';
+                        document.getElementById('cv-nlnj47').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            nj : '-';
                         document.getElementById('cv-pj47').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-prmin47').textContent = prmin > 0 ? prmin.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-faktor47').textContent = faktor < 1 ? faktor.toFixed(4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora47').textContent = skorA > 0 ? skorA.toFixed(4) : '-';
+                        document.getElementById('cv-prmin47').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-faktor47').textContent = faktor < 1 ? faktor.toFixed(
+                            4) : (faktor > 0 ? '1' : '-');
+                        document.getElementById('cv-skora47').textContent = skorA > 0 ? skorA.toFixed(4) :
+                            '-';
 
-                        return { skorA };
+                        return {
+                            skorA
+                        };
                     }
 
                     updateSkorA47();
@@ -4343,14 +4877,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal47() {
-                        const { skorA } = updateSkorA47();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            skorA
+                        } = updateSkorA47();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final47');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PBS, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4371,10 +4909,14 @@
                 } else if (isElemen48) {
                     // Element 48: TK1..TK9 → avg Skor(a), NL/NJ → respondent factor, radio Skor(b)
                     // Final: (3 × adjusted_Skor(a) + Skor(b)) / 4
-                    const tkVars = ['TK1','TK2','TK3','TK4','TK5','TK6','TK7','TK8','TK9'];
-                    const tkLabels = ['Etika','Keahlian bidang ilmu','Bahasa asing','TI','Komunikasi','Kerjasama','Pengembangan diri','Berpikir kritis','Kreativitas'];
+                    const tkVars = ['TK1', 'TK2', 'TK3', 'TK4', 'TK5', 'TK6', 'TK7', 'TK8', 'TK9'];
+                    const tkLabels = ['Etika', 'Keahlian bidang ilmu', 'Bahasa asing', 'TI', 'Komunikasi',
+                        'Kerjasama', 'Pengembangan diri', 'Berpikir kritis', 'Kreativitas'
+                    ];
                     const v2id48 = {};
-                    subItems.forEach(item => { v2id48[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id48[item.variabel] = item.id;
+                    });
 
                     function val48(v) {
                         const id = v2id48[v];
@@ -4390,19 +4932,32 @@
                         const count = tkValues.filter(v => v > 0).length;
                         const sum = tkValues.reduce((a, b) => a + b, 0);
                         const base = count > 0 ? sum / count : 0;
-                        return { tkValues, count, sum, base };
+                        return {
+                            tkValues,
+                            count,
+                            sum,
+                            base
+                        };
                     }
 
                     function hitungResponden48() {
                         const nl = val48('NL');
                         const nj = val48('NJ');
-                        let pj = 0, prmin = 0, faktor = 1;
+                        let pj = 0,
+                            prmin = 0,
+                            faktor = 1;
                         if (nl > 0 && nj > 0) {
                             pj = (nj / nl) * 100;
                             prmin = nl >= 150 ? 30 : 50 - ((nl / 150) * 20);
                             faktor = pj >= prmin ? 1 : pj / prmin;
                         }
-                        return { nl, nj, pj, prmin, faktor };
+                        return {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4421,21 +4976,41 @@
                     const skorBOptions48 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA48() {
-                        const { tkValues, count, sum, base } = hitungSkorA48();
-                        const { nl, nj, pj, prmin, faktor } = hitungResponden48();
+                        const {
+                            tkValues,
+                            count,
+                            sum,
+                            base
+                        } = hitungSkorA48();
+                        const {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        } = hitungResponden48();
                         const skorA = base > 0 ? base * faktor : 0;
 
-                        const tkiStr = tkValues.map((v, i) => v > 0 ? `TK${i+1}=${v.toFixed(2)}` : null).filter(Boolean).join(', ');
-                        document.getElementById('cv-sum48').textContent = count > 0 ? sum.toFixed(2) + ' (' + tkiStr + ')' : '-';
-                        document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(4) : '-';
+                        const tkiStr = tkValues.map((v, i) => v > 0 ? `TK${i+1}=${v.toFixed(2)}` : null)
+                            .filter(Boolean).join(', ');
+                        document.getElementById('cv-sum48').textContent = count > 0 ? sum.toFixed(2) +
+                            ' (' + tkiStr + ')' : '-';
+                        document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(
+                            4) : '-';
                         document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(4) : '-';
-                        document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' + nj : '-';
+                        document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            nj : '-';
                         document.getElementById('cv-pj48').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) : '-';
+                        document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            '%' : '-';
+                        document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(
+                            4) : (faktor > 0 ? '1' : '-');
+                        document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) :
+                            '-';
 
-                        return { skorA };
+                        return {
+                            skorA
+                        };
                     }
 
                     updateSkorA48();
@@ -4458,14 +5033,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal48() {
-                        const { skorA } = updateSkorA48();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            skorA
+                        } = updateSkorA48();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final48');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi TK1–TK9, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4488,7 +5067,9 @@
                     // RI = NI/3/NDTPS, RN = NN/3/NDTPS, RL = NL/3/NDTPS
                     // a=0.05, b=0.3, c=1
                     const v2id53 = {};
-                    subItems.forEach(item => { v2id53[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id53[item.variabel] = item.id;
+                    });
 
                     function val53(v) {
                         const id = v2id53[v];
@@ -4499,11 +5080,18 @@
                         return saved ? parseFloat(saved.nilai) || 0 : 0;
                     }
 
-                    const A = 0.05, B = 0.3, C = 1;
+                    const A = 0.05,
+                        B = 0.3,
+                        C = 1;
 
                     function hitungSkorA53() {
-                        const ni = val53('NI'), nn = val53('NN'), nl = val53('NL'), ndtps = val53('NDTPS');
-                        let ri = 0, rn = 0, rl = 0;
+                        const ni = val53('NI'),
+                            nn = val53('NN'),
+                            nl = val53('NL'),
+                            ndtps = val53('NDTPS');
+                        let ri = 0,
+                            rn = 0,
+                            rl = 0;
                         if (ndtps > 0) {
                             ri = ni / 3 / ndtps;
                             rn = nn / 3 / ndtps;
@@ -4513,12 +5101,21 @@
                         if (ndtps <= 0) base = 0;
                         else if (ri >= A) base = 4;
                         else if (rn >= B) base = 3 + ri / A;
-                        else if (ri > 0 && rn > 0) base = 2 + ri/A + rn/B - (ri*rn)/(A*B);
+                        else if (ri > 0 && rn > 0) base = 2 + ri / A + rn / B - (ri * rn) / (A * B);
                         else if (ri > 0) base = 2 + ri / A;
                         else if (rn > 0) base = 2 + rn / B;
                         else if (rl >= C) base = 2;
                         else base = 1;
-                        return { ni, nn, nl, ndtps, ri, rn, rl, base };
+                        return {
+                            ni,
+                            nn,
+                            nl,
+                            ndtps,
+                            ri,
+                            rn,
+                            rl,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4535,14 +5132,30 @@
                     const skorBOptions53 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA53() {
-                        const { ni, nn, nl, ndtps, ri, rn, rl, base } = hitungSkorA53();
+                        const {
+                            ni,
+                            nn,
+                            nl,
+                            ndtps,
+                            ri,
+                            rn,
+                            rl,
+                            base
+                        } = hitungSkorA53();
                         document.getElementById('cv-ndtps53').textContent = ndtps > 0 ? ndtps : '-';
-                        document.getElementById('cv-counts53').textContent = (ni+nn+nl > 0) ? ni+'/'+nn+'/'+nl : '-';
-                        document.getElementById('cv-ri53').textContent = ri > 0 ? ri.toFixed(4) : (ndtps > 0 ? '0' : '-');
-                        document.getElementById('cv-rn53').textContent = rn > 0 ? rn.toFixed(4) : (ndtps > 0 ? '0' : '-');
-                        document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(4) : (ndtps > 0 ? '0' : '-');
-                        document.getElementById('cv-skora53').textContent = base > 0 ? base.toFixed(4) : '-';
-                        return { base };
+                        document.getElementById('cv-counts53').textContent = (ni + nn + nl > 0) ? ni + '/' +
+                            nn + '/' + nl : '-';
+                        document.getElementById('cv-ri53').textContent = ri > 0 ? ri.toFixed(4) : (ndtps >
+                            0 ? '0' : '-');
+                        document.getElementById('cv-rn53').textContent = rn > 0 ? rn.toFixed(4) : (ndtps >
+                            0 ? '0' : '-');
+                        document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(4) : (ndtps >
+                            0 ? '0' : '-');
+                        document.getElementById('cv-skora53').textContent = base > 0 ? base.toFixed(4) :
+                        '-';
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA53();
@@ -4565,14 +5178,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal53() {
-                        const { base } = updateSkorA53();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA53();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final53');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4594,7 +5211,9 @@
                     // Element 54: NPM/NPD → PPDM → Skor(a), radio Skor(b)
                     // Final: (3 × Skor(a) + Skor(b)) / 4
                     const v2id54 = {};
-                    subItems.forEach(item => { v2id54[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id54[item.variabel] = item.id;
+                    });
 
                     function val54(v) {
                         const id = v2id54[v];
@@ -4606,14 +5225,21 @@
                     }
 
                     function hitungSkorA54() {
-                        const npm = val54('NPM'), npd = val54('NPD');
-                        let ppdm = 0, base = 0;
+                        const npm = val54('NPM'),
+                            npd = val54('NPD');
+                        let ppdm = 0,
+                            base = 0;
                         if (npd > 0) {
                             ppdm = npm / npd; // decimal 0-1
                             if (ppdm >= 0.75) base = 4;
                             else base = Math.min(4, 2 + 8 * ppdm);
                         }
-                        return { npm, npd, ppdm, base };
+                        return {
+                            npm,
+                            npd,
+                            ppdm,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4627,11 +5253,21 @@
                     const skorBOptions54 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA54() {
-                        const { npm, npd, ppdm, base } = hitungSkorA54();
-                        document.getElementById('cv-npmnpd54').textContent = (npm > 0 || npd > 0) ? npm + ' / ' + npd : '-';
-                        document.getElementById('cv-ppdm54').textContent = ppdm > 0 ? (ppdm * 100).toFixed(2) + '%' : (npd > 0 ? '0%' : '-');
-                        document.getElementById('cv-skora54').textContent = base > 0 ? base.toFixed(4) : '-';
-                        return { base };
+                        const {
+                            npm,
+                            npd,
+                            ppdm,
+                            base
+                        } = hitungSkorA54();
+                        document.getElementById('cv-npmnpd54').textContent = (npm > 0 || npd > 0) ? npm +
+                            ' / ' + npd : '-';
+                        document.getElementById('cv-ppdm54').textContent = ppdm > 0 ? (ppdm * 100).toFixed(
+                            2) + '%' : (npd > 0 ? '0%' : '-');
+                        document.getElementById('cv-skora54').textContent = base > 0 ? base.toFixed(4) :
+                        '-';
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA54();
@@ -4654,14 +5290,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal54() {
-                        const { base } = updateSkorA54();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA54();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final54');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NPM, NPD dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4682,7 +5322,9 @@
                 } else if (isElemen55) {
                     // Element 55: Publikasi Karya Ilmiah DTPS
                     const v2id55 = {};
-                    subItems.forEach(item => { v2id55[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id55[item.variabel] = item.id;
+                    });
 
                     function val55(v) {
                         const id = v2id55[v];
@@ -4693,14 +5335,25 @@
                         return saved ? parseFloat(saved.nilai) || 0 : 0;
                     }
 
-                    const A55 = 0.1, B55 = 1, C55 = 2;
+                    const A55 = 0.1,
+                        B55 = 1,
+                        C55 = 2;
 
                     function hitungSkorA55() {
-                        const na1=val55('NA1'),na2=val55('NA2'),na3=val55('NA3'),na4=val55('NA4');
-                        const nb1=val55('NB1'),nb2=val55('NB2'),nb3=val55('NB3');
-                        const nc1=val55('NC1'),nc2=val55('NC2'),nc3=val55('NC3');
+                        const na1 = val55('NA1'),
+                            na2 = val55('NA2'),
+                            na3 = val55('NA3'),
+                            na4 = val55('NA4');
+                        const nb1 = val55('NB1'),
+                            nb2 = val55('NB2'),
+                            nb3 = val55('NB3');
+                        const nc1 = val55('NC1'),
+                            nc2 = val55('NC2'),
+                            nc3 = val55('NC3');
                         const ndtps = val55('NDTPS');
-                        let ri=0, rn=0, rw=0;
+                        let ri = 0,
+                            rn = 0,
+                            rw = 0;
                         if (ndtps > 0) {
                             rw = (na1 + nb1 + nc1) / ndtps;
                             rn = (na2 + na3 + nb2 + nc2) / ndtps;
@@ -4710,12 +5363,18 @@
                         if (ndtps <= 0) base = 0;
                         else if (ri >= A55) base = 4;
                         else if (rn >= B55) base = 3 + ri / A55;
-                        else if (ri > 0 && rn > 0) base = 2 + ri/A55 + rn/B55 - (ri*rn)/(A55*B55);
+                        else if (ri > 0 && rn > 0) base = 2 + ri / A55 + rn / B55 - (ri * rn) / (A55 * B55);
                         else if (ri > 0) base = 2 + ri / A55;
                         else if (rn > 0) base = 2 + rn / B55;
                         else if (rw >= C55) base = 2;
                         else base = 1;
-                        return { ri, rn, rw, ndtps, base };
+                        return {
+                            ri,
+                            rn,
+                            rw,
+                            ndtps,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4731,13 +5390,22 @@
                     const skorBOptions55 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA55() {
-                        const { ri, rn, rw, ndtps, base } = hitungSkorA55();
+                        const {
+                            ri,
+                            rn,
+                            rw,
+                            ndtps,
+                            base
+                        } = hitungSkorA55();
                         document.getElementById('cv-ndtps55').textContent = ndtps > 0 ? ndtps : '-';
                         document.getElementById('cv-rw55').textContent = ndtps > 0 ? rw.toFixed(4) : '-';
                         document.getElementById('cv-rn55').textContent = ndtps > 0 ? rn.toFixed(4) : '-';
                         document.getElementById('cv-ri55').textContent = ndtps > 0 ? ri.toFixed(4) : '-';
-                        document.getElementById('cv-skora55').textContent = base > 0 ? base.toFixed(4) : '-';
-                        return { base };
+                        document.getElementById('cv-skora55').textContent = base > 0 ? base.toFixed(4) :
+                        '-';
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA55();
@@ -4760,14 +5428,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal55() {
-                        const { base } = updateSkorA55();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA55();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final55');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NA1–NA4, NB1–NB3, NC1–NC3, NDTPS dan pilih Skor (b)';
                         }
@@ -4788,7 +5460,9 @@
                 } else if (isElemen56) {
                     // Element 56: NDTPS_PUB/NDTPS → PPDTPS → Skor(a), radio Skor(b)
                     const v2id56 = {};
-                    subItems.forEach(item => { v2id56[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id56[item.variabel] = item.id;
+                    });
 
                     function val56(v) {
                         const id = v2id56[v];
@@ -4800,8 +5474,10 @@
                     }
 
                     function hitungSkorA56() {
-                        const ndtps_pub = val56('NDTPS_PUB'), ndtps = val56('NDTPS');
-                        let ppdtps = 0, base = 0;
+                        const ndtps_pub = val56('NDTPS_PUB'),
+                            ndtps = val56('NDTPS');
+                        let ppdtps = 0,
+                            base = 0;
                         if (ndtps > 0) {
                             ppdtps = ndtps_pub / ndtps;
                             if (ppdtps >= 0.20) base = 4;
@@ -4809,7 +5485,12 @@
                             else if (ppdtps >= 0.10) base = 2;
                             else base = 1;
                         }
-                        return { ndtps_pub, ndtps, ppdtps, base };
+                        return {
+                            ndtps_pub,
+                            ndtps,
+                            ppdtps,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4824,12 +5505,21 @@
                     const skorBOptions56 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA56() {
-                        const { ndtps_pub, ndtps, ppdtps, base } = hitungSkorA56();
+                        const {
+                            ndtps_pub,
+                            ndtps,
+                            ppdtps,
+                            base
+                        } = hitungSkorA56();
                         document.getElementById('cv-ndpub56').textContent = ndtps_pub > 0 ? ndtps_pub : '0';
                         document.getElementById('cv-ndtps56').textContent = ndtps > 0 ? ndtps : '-';
-                        document.getElementById('cv-ppdtps56').textContent = ndtps > 0 ? (ppdtps * 100).toFixed(2) + '%' : '-';
-                        document.getElementById('cv-skora56').textContent = base > 0 ? base : (ndtps > 0 ? '1' : '-');
-                        return { base };
+                        document.getElementById('cv-ppdtps56').textContent = ndtps > 0 ? (ppdtps * 100)
+                            .toFixed(2) + '%' : '-';
+                        document.getElementById('cv-skora56').textContent = base > 0 ? base : (ndtps > 0 ?
+                            '1' : '-');
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA56();
@@ -4852,14 +5542,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal56() {
-                        const { base } = updateSkorA56();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA56();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final56');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NDTPS_PUB, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4880,7 +5574,9 @@
                 } else if (isElemen57) {
                     // Element 57: NAS/NDTPS → RSA → Skor(a), radio Skor(b)
                     const v2id57 = {};
-                    subItems.forEach(item => { v2id57[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id57[item.variabel] = item.id;
+                    });
 
                     function val57(v) {
                         const id = v2id57[v];
@@ -4892,8 +5588,10 @@
                     }
 
                     function hitungSkorA57() {
-                        const nas = val57('NAS'), ndtps = val57('NDTPS');
-                        let rsa = 0, base = 0;
+                        const nas = val57('NAS'),
+                            ndtps = val57('NDTPS');
+                        let rsa = 0,
+                            base = 0;
                         if (ndtps > 0) {
                             rsa = nas / ndtps;
                             if (rsa >= 9) base = 4;
@@ -4901,7 +5599,12 @@
                             else if (rsa >= 3) base = 2;
                             else base = 1;
                         }
-                        return { nas, ndtps, rsa, base };
+                        return {
+                            nas,
+                            ndtps,
+                            rsa,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -4915,11 +5618,21 @@
                     const skorBOptions57 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA57() {
-                        const { nas, ndtps, rsa, base } = hitungSkorA57();
-                        document.getElementById('cv-ras57').textContent = (nas > 0 || ndtps > 0) ? nas + ' / ' + ndtps : '-';
-                        document.getElementById('cv-rsa57').textContent = rsa > 0 ? rsa.toFixed(4) : (ndtps > 0 ? '0' : '-');
-                        document.getElementById('cv-skora57').textContent = base > 0 ? base : (ndtps > 0 ? '1' : '-');
-                        return { base };
+                        const {
+                            nas,
+                            ndtps,
+                            rsa,
+                            base
+                        } = hitungSkorA57();
+                        document.getElementById('cv-ras57').textContent = (nas > 0 || ndtps > 0) ? nas +
+                            ' / ' + ndtps : '-';
+                        document.getElementById('cv-rsa57').textContent = rsa > 0 ? rsa.toFixed(4) : (
+                            ndtps > 0 ? '0' : '-');
+                        document.getElementById('cv-skora57').textContent = base > 0 ? base : (ndtps > 0 ?
+                            '1' : '-');
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA57();
@@ -4942,14 +5655,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal57() {
-                        const { base } = updateSkorA57();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA57();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final57');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NAS, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4969,9 +5686,13 @@
 
                 } else if (isElemen59) {
                     // Element 59: Produktivitas PkM DTPS (NI/NN/NL/NDTPS → RI/RN/RL → Skor(a))
-                    const A59 = 0.05, B59 = 0.3, C59 = 1;
+                    const A59 = 0.05,
+                        B59 = 0.3,
+                        C59 = 1;
                     const v2id59 = {};
-                    subItems.forEach(item => { v2id59[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id59[item.variabel] = item.id;
+                    });
 
                     function val59(v) {
                         const id = v2id59[v];
@@ -4983,21 +5704,34 @@
                     }
 
                     function hitungSkorA59() {
-                        const ni = val59('NI'), nn = val59('NN'), nl = val59('NL'), ndtps = val59('NDTPS');
-                        let ri = 0, rn = 0, rl = 0, base = 0;
+                        const ni = val59('NI'),
+                            nn = val59('NN'),
+                            nl = val59('NL'),
+                            ndtps = val59('NDTPS');
+                        let ri = 0,
+                            rn = 0,
+                            rl = 0,
+                            base = 0;
                         if (ndtps > 0) {
                             ri = ni / 3 / ndtps;
                             rn = nn / 3 / ndtps;
                             rl = nl / 3 / ndtps;
                             if (ri >= A59) base = 4;
                             else if (rn >= B59) base = 3 + ri / A59;
-                            else if (ri > 0 && rn > 0) base = 2 + ri/A59 + rn/B59 - (ri*rn)/(A59*B59);
+                            else if (ri > 0 && rn > 0) base = 2 + ri / A59 + rn / B59 - (ri * rn) / (A59 *
+                                B59);
                             else if (ri > 0) base = 2 + ri / A59;
                             else if (rn > 0) base = 2 + rn / B59;
                             else if (rl >= C59) base = 2;
                             else base = 1;
                         }
-                        return { ri, rn, rl, ndtps, base };
+                        return {
+                            ri,
+                            rn,
+                            rl,
+                            ndtps,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -5013,13 +5747,22 @@
                     const skorBOptions59 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA59() {
-                        const { ri, rn, rl, ndtps, base } = hitungSkorA59();
+                        const {
+                            ri,
+                            rn,
+                            rl,
+                            ndtps,
+                            base
+                        } = hitungSkorA59();
                         document.getElementById('cv-ndtps59').textContent = ndtps > 0 ? ndtps : '-';
                         document.getElementById('cv-rl59').textContent = ndtps > 0 ? rl.toFixed(4) : '-';
                         document.getElementById('cv-rn59').textContent = ndtps > 0 ? rn.toFixed(4) : '-';
                         document.getElementById('cv-ri59').textContent = ndtps > 0 ? ri.toFixed(4) : '-';
-                        document.getElementById('cv-skora59').textContent = base > 0 ? base.toFixed(4) : (ndtps > 0 ? '1' : '-');
-                        return { base };
+                        document.getElementById('cv-skora59').textContent = base > 0 ? base.toFixed(4) : (
+                            ndtps > 0 ? '1' : '-');
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA59();
@@ -5042,14 +5785,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal59() {
-                        const { base } = updateSkorA59();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA59();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final59');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5070,7 +5817,9 @@
                 } else if (isElemen60) {
                     // Element 60: NPkM/NPkDTPS → PPkDM → Skor(a), radio Skor(b)
                     const v2id60 = {};
-                    subItems.forEach(item => { v2id60[item.variabel] = item.id; });
+                    subItems.forEach(item => {
+                        v2id60[item.variabel] = item.id;
+                    });
 
                     function val60(v) {
                         const id = v2id60[v];
@@ -5082,14 +5831,21 @@
                     }
 
                     function hitungSkorA60() {
-                        const npkm = val60('NPkM'), npkdtps = val60('NPkDTPS');
-                        let ppkdm = 0, base = 0;
+                        const npkm = val60('NPkM'),
+                            npkdtps = val60('NPkDTPS');
+                        let ppkdm = 0,
+                            base = 0;
                         if (npkdtps > 0) {
                             ppkdm = npkm / npkdtps;
                             if (ppkdm >= 0.75) base = 4;
                             else base = Math.min(4, 2 + 8 * ppkdm);
                         }
-                        return { npkm, npkdtps, ppkdm, base };
+                        return {
+                            npkm,
+                            npkdtps,
+                            ppkdm,
+                            base
+                        };
                     }
 
                     container.insertAdjacentHTML('beforeend', `
@@ -5103,11 +5859,21 @@
                     const skorBOptions60 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA60() {
-                        const { npkm, npkdtps, ppkdm, base } = hitungSkorA60();
-                        document.getElementById('cv-ratio60').textContent = (npkm > 0 || npkdtps > 0) ? npkm + ' / ' + npkdtps : '-';
-                        document.getElementById('cv-ppkdm60').textContent = ppkdm > 0 ? (ppkdm * 100).toFixed(2) + '%' : (npkdtps > 0 ? '0%' : '-');
-                        document.getElementById('cv-skora60').textContent = base > 0 ? base.toFixed(4) : '-';
-                        return { base };
+                        const {
+                            npkm,
+                            npkdtps,
+                            ppkdm,
+                            base
+                        } = hitungSkorA60();
+                        document.getElementById('cv-ratio60').textContent = (npkm > 0 || npkdtps > 0) ?
+                            npkm + ' / ' + npkdtps : '-';
+                        document.getElementById('cv-ppkdm60').textContent = ppkdm > 0 ? (ppkdm * 100)
+                            .toFixed(2) + '%' : (npkdtps > 0 ? '0%' : '-');
+                        document.getElementById('cv-skora60').textContent = base > 0 ? base.toFixed(4) :
+                        '-';
+                        return {
+                            base
+                        };
                     }
 
                     updateSkorA60();
@@ -5130,14 +5896,18 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal60() {
-                        const { base } = updateSkorA60();
-                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const {
+                            base
+                        } = updateSkorA60();
+                        const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                            ?.value || 0);
                         const jawabanAkhir = (base > 0 && skorB > 0) ? ((3 * base + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final60');
                         if (jawabanAkhir > 0) {
-                            live.innerHTML = `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NPkM, NPkDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5183,14 +5953,17 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeDual() {
-                        const sa = parseInt(document.querySelector('input[name="skor_a"]:checked')?.value || 0);
-                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
+                        const sa = parseInt(document.querySelector('input[name="skor_a"]:checked')?.value ||
+                            0);
+                        const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            0);
                         const jawabanAkhir = (sa && sb) ? ((3 * sa + sb) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-dual');
                         if (sa && sb) {
-                            live.innerHTML = `Skor(a): <strong>${sa}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                            live.innerHTML =
+                                `Skor(a): <strong>${sa}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else if (sa) {
                             live.innerHTML = `Skor(a): <strong>${sa}</strong> — pilih juga Skor(b)`;
                         } else if (sb) {
@@ -5233,11 +6006,13 @@
                     document.querySelectorAll('.skor-radio-jawaban').forEach(radio => {
                         if (radio.checked) {
                             let hasil = parseFloat(radio.value) * parseFloat(poin);
-                            liveSkor.innerHTML = `Skor dipilih: <strong>${radio.value}</strong> | Nilai: <strong>${hasil}</strong>`;
+                            liveSkor.innerHTML =
+                                `Skor dipilih: <strong>${radio.value}</strong> | Nilai: <strong>${hasil}</strong>`;
                         }
                         radio.addEventListener('change', function() {
                             let hasil = parseFloat(this.value) * parseFloat(poin);
-                            liveSkor.innerHTML = `Skor dipilih: <strong>${this.value}</strong> | Nilai: <strong>${hasil}</strong>`;
+                            liveSkor.innerHTML =
+                                `Skor dipilih: <strong>${this.value}</strong> | Nilai: <strong>${hasil}</strong>`;
                             document.getElementById('nilai_total').value = hasil;
                         });
                     });
@@ -5324,12 +6099,17 @@
             return fetch(form.action, {
                 method: 'POST',
                 body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
             }).then(r => {
-                if (!r.ok) { console.error('Auto-save HTTP', r.status, r.statusText); return r; }
+                if (!r.ok) {
+                    console.error('Auto-save HTTP', r.status, r.statusText);
+                    return r;
+                }
                 const activeBtn = document.querySelector('.nav-item-btn.active');
                 if (activeBtn) {
-                    ['jawaban','nilai_total','link_bukti','temuan','saran'].forEach(k => {
+                    ['jawaban', 'nilai_total', 'link_bukti', 'temuan', 'saran'].forEach(k => {
                         const v = formData.get(k);
                         if (v !== null) activeBtn.dataset[k] = v;
                     });
