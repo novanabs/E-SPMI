@@ -53,6 +53,11 @@
                 </table>
             </div>
         </div>
+        <div class="card-footer text-end bg-light">
+            <strong>Nilai Akreditasi:</strong> {{ number_format($na, 2) }}
+            &nbsp;|&nbsp; <strong>Status:</strong> {{ $status }}
+            &nbsp;|&nbsp; <strong>Masa Berlaku:</strong> {{ $masa }}
+        </div>
     </div>
 
     <div class="row g-4">

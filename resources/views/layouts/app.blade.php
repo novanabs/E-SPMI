@@ -384,6 +384,12 @@
         </div>
     @endif
 
+    @if (session('error'))
+        <div class="alert alert-danger floating-alert fade show" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <!--begin::App Wrapper-->
     <div class="app-wrapper">
         <!--begin::Header-->

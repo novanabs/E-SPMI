@@ -124,8 +124,8 @@
                                 ? abs(data_get($item, 'userMatrik.nilai_total') - data_get($item, 'userMatrikByUser.nilai_total'))
                                 : '-' }}
                         </td>
-                        <td>{{ $item->userMatrikByUser->temuan ?? '-' }}</td>
-                        <td>{{ $item->userMatrikByUser->saran ?? '-' }}</td>
+                        <td>{!! $item->auditorTemuan ?? '-' !!}</td>
+                        <td>{!! $item->auditorSaran ?? '-' !!}</td>
 
 
                         {{-- <td>

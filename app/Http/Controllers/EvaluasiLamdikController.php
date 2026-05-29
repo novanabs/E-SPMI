@@ -27,10 +27,10 @@ class EvaluasiLamdikController extends Controller
             'kriteria',
             'subItemElemen',
             'userSubItemElements' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser);
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
             },
             'userMatrik' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser);
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
             }
         ])->orderBy('nomor', 'asc')->get();
 
@@ -41,10 +41,10 @@ class EvaluasiLamdikController extends Controller
         $dataSyaratUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
             'matriks.userSubItemElements' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser);
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
             },
             'matriks.userMatrik' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser);
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
             }
         ])->get();
 
@@ -292,6 +292,7 @@ class EvaluasiLamdikController extends Controller
             [
                 'id_users'       => $validated['id_users'],
                 'id_matriks_led' => $validated['id_matriks_led'],
+                'id_user_jurusan' => null,
             ],
             $validated
         );
@@ -316,6 +317,7 @@ class EvaluasiLamdikController extends Controller
                             'id_matriks'         => $request->id_matriks_led,
                             'id_sub_item_elemen' => $idSubItem,
                             'id_users'           => $request->id_users,
+                            'id_user_jurusan'    => null,
                         ],
                         [
                             'nilai'           => $nilai,
@@ -338,38 +340,36 @@ class EvaluasiLamdikController extends Controller
     {
         $userJurusan = User::findOrFail($idJurusan);
 
-        // Load UPM as default comparison (existing logic)
+        // Load UPM as default comparison
         $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
 
-        // Load all auditors connected to this jurusan, merge UPM as default
-        $auditorLinks = AuditorJurusan::where('jurusan', $userJurusan->homebase)->get();
-        $auditorUsers = User::whereIn('id', $auditorLinks->pluck('user_id'))->get();
-
+        // Build auditors collection: UPM + shared Auditor (virtual entry using jurusan's ID)
         $auditors = collect();
         if ($userUpm) {
             $userUpm->auditor_label = 'Penilaian UPM';
             $auditors->push($userUpm);
         }
-        foreach ($auditorUsers as $au) {
-            if (!$userUpm || $au->id !== $userUpm->id) {
-                $au->auditor_label = "Auditor: {$au->name}";
-                $auditors->push($au);
-            }
-        }
+        $auditorVirtual = (object) [
+            'id' => $idJurusan,
+            'name' => 'Auditor',
+            'auditor_label' => 'Auditor',
+        ];
+        $auditors->push($auditorVirtual);
 
         // Load jurusan self-evaluation data
         $data = MatriksLED::with([
             'kriteria',
             'subItemElemen',
             'userMatrik' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan);
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
             },
         ])->orderBy('nomor', 'asc')->get();
 
-        // Also load each auditor's evaluation data (via direct query, not hasOne)
+        // Load shared auditor scores: id_users = jurusan_id, id_user_jurusan = jurusan_id
+        // and UPM scores: id_users = upm_id, id_user_jurusan = jurusan_id
         $auditorIds = $auditors->pluck('id');
-        $allAuditorScores = UsersMatrik::whereIn('id_users', $auditorIds)
-            ->where('id_user_jurusan', $idJurusan)
+        $allAuditorScores = UsersMatrik::where('id_user_jurusan', $idJurusan)
+            ->whereIn('id_users', $auditorIds)
             ->get()
             ->groupBy('id_matriks_led');
 
@@ -381,19 +381,74 @@ class EvaluasiLamdikController extends Controller
             }
         }
 
-        // Re-load auditor data with full relationships for comparison
-        // We'll attach auditor data onto $data collection
-        $data->each(function ($item) use ($auditorScores, $auditors) {
+        // Load combined temuan/saran from auditor_temuan_saran for display
+        $allTemuanSaran = \DB::table('auditor_temuan_saran')
+            ->join('users', 'auditor_temuan_saran.id_users', '=', 'users.id')
+            ->where('auditor_temuan_saran.id_user_jurusan', $idJurusan)
+            ->select('auditor_temuan_saran.*', 'users.name as auditor_name')
+            ->get()
+            ->groupBy('id_matriks_led');
+
+        // Build auditor numbering ("Auditor 1", "Auditor 2") and name mapping
+        // Order by auditor_jurusan.created_at to ensure consistent display order
+        $auditorIdsWithData = \DB::table('auditor_jurusan')
+            ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
+            ->where('auditor_jurusan.jurusan', $userJurusan->homebase)
+            ->where('users.role', 'auditor')
+            ->orderBy('auditor_jurusan.created_at')
+            ->pluck('auditor_jurusan.user_id');
+
+        $auditorLabelMap = []; // [userId => 'Auditor 1']
+        $auditorNameMap = [];  // ['Auditor 1' => 'Madhan, SPd.']
+        $counter = 1;
+        foreach ($auditorIdsWithData as $aid) {
+            $user = User::find($aid);
+            if ($user) {
+                $label = 'Auditor ' . $counter;
+                $auditorLabelMap[$aid] = $label;
+                $auditorNameMap[$label] = $user->name;
+                $counter++;
+            }
+        }
+
+        // Attach auditor data onto $data collection
+        $data->each(function ($item) use ($auditorScores, $auditors, $allTemuanSaran, $idJurusan, $auditorLabelMap) {
             $item->auditorMatriks = collect();
             foreach ($auditors as $auditor) {
                 $score = $auditorScores[$item->id][$auditor->id] ?? null;
+                $tsItems = $allTemuanSaran[$item->id] ?? collect();
+
+                $temuanHtml = '-';
+                $saranHtml = '-';
+                if ((int)$auditor->id === (int)$idJurusan) {
+                    // For shared Auditor (virtual), combine temuan/saran from both auditors
+                    $filteredTemuan = $tsItems->filter(fn($ts) => !empty($ts->temuan));
+                    if ($filteredTemuan->isNotEmpty()) {
+                        $temuanHtml = $filteredTemuan->map(function ($ts) use ($auditorLabelMap) {
+                            $label = $auditorLabelMap[$ts->id_users] ?? 'Auditor';
+                            return '<strong>' . e($label) . '</strong> : ' . e($ts->temuan);
+                        })->implode('<br>');
+                    }
+                    $filteredSaran = $tsItems->filter(fn($ts) => !empty($ts->saran));
+                    if ($filteredSaran->isNotEmpty()) {
+                        $saranHtml = $filteredSaran->map(function ($ts) use ($auditorLabelMap) {
+                            $label = $auditorLabelMap[$ts->id_users] ?? 'Auditor';
+                            return '<strong>' . e($label) . '</strong> : ' . e($ts->saran);
+                        })->implode('<br>');
+                    }
+                } elseif ($score) {
+                    // For UPM, use users_matrik.temuan/saran
+                    $temuanHtml = $score->temuan ?? '-';
+                    $saranHtml = $score->saran ?? '-';
+                }
+
                 $item->auditorMatriks->push((object)[
                     'id_users'   => $auditor->id,
                     'nama'       => $auditor->name,
                     'nilai_total'=> $score?->nilai_total,
                     'jawaban'    => $score?->jawaban,
-                    'temuan'     => $score?->temuan,
-                    'saran'      => $score?->saran,
+                    'temuan'     => $temuanHtml,
+                    'saran'      => $saranHtml,
                     'skor_a'     => $score?->skor_a,
                     'skor_b'     => $score?->skor_b,
                     'exists'     => !is_null($score),
@@ -563,7 +618,8 @@ class EvaluasiLamdikController extends Controller
 
         return view('EvaluasiLamdik.show', compact(
             'data', 'syarat3', 'syarat5', 'auditors', 'userJurusan',
-            'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax'
+            'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax',
+            'auditorLabelMap', 'auditorNameMap'
         ));
     }
 

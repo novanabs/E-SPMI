@@ -29,6 +29,8 @@
         </div>
     </div>
 
+
+
     {{-- NAV TABS --}}
     <ul class="nav nav-tabs" id="perbandinganTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -83,6 +85,7 @@
                             <h5 class="mb-0" id="auditorCardTitle"><i class="bi bi-shield-check me-1"></i>Penilaian UPM</h5>
                         </div>
                         <div class="card-body py-2">
+                            <div id="auditorNamesContainer" class="mb-2"></div>
                             <div class="d-flex">
                                 <p class="mb-1 me-2 text-muted">Nilai Akreditasi:</p>
                                 <p class="mb-1 fw-bold" id="nilai_auditor"></p>
@@ -133,9 +136,9 @@
                             <th class="text-white" style="background: #173b70;">Elemen</th>
                             <th class="text-white" style="background: #173b70;">Penilaian Jurusan</th>
                             <th id="thAuditor" class="text-white" style="background: #173b70;">Penilaian UPM</th>
-                            <th class="text-white" style="background: #173b70;">Selisih</th>
-                            <th class="text-white" style="background: #173b70;">Temuan</th>
-                            <th class="text-white" style="background: #173b70;">Saran</th>
+                            <th class="text-white" style="background: #173b70; width:5%;">Selisih</th>
+                            <th class="text-white" style="background: #173b70; width:22%;">Temuan</th>
+                            <th class="text-white" style="background: #173b70; width:22%;">Saran</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,22 +147,22 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->kriteria->name }}</td>
                                 <td>{{ $item->elemen }}</td>
-                                <td class="nilai-jurusan" data-nilai="{{ $item->userMatrik->nilai_total ?? 0 }}">
-                                    {{ $item->userMatrik->nilai_total ?? '-' }}
+                                <td class="nilai-jurusan text-center" data-nilai="{{ $item->userMatrik?->nilai_total ?? 0 }}">
+                                    {{ ($item->userMatrik?->nilai_total ?? 0) > 0 ? number_format($item->userMatrik->nilai_total, 2) : '-' }}
                                 </td>
-                                <td class="nilai-auditor" data-auditor-data='@json($item->auditorMatriks)'>
+                                <td class="nilai-auditor text-center" data-auditor-data='@json($item->auditorMatriks)'>
                                     @php
-                                        $firstAuditorScore = $item->auditorMatriks->first()?->nilai_total ?? null;
+                                        $firstAuditorScore = $item->auditorMatriks->first()?->nilai_total ?? 0;
                                     @endphp
-                                    <span class="auditor-value">{{ $firstAuditorScore ?? '-' }}</span>
+                                    <span class="auditor-value">{{ $firstAuditorScore > 0 ? number_format($firstAuditorScore, 2) : '-' }}</span>
                                 </td>
-                                <td class="selisih-cell">
-                                    {{ $item->userMatrik && $firstAuditorScore !== null
-                                        ? abs($item->userMatrik->nilai_total - $firstAuditorScore)
+                                <td class="selisih-cell text-center">
+                                    {{ $item->userMatrik && $firstAuditorScore > 0
+                                        ? number_format(abs($item->userMatrik->nilai_total - $firstAuditorScore), 2)
                                         : '-' }}
                                 </td>
-                                <td class="temuan-cell">{{ $item->auditorMatriks->first()?->temuan ?? '-' }}</td>
-                                <td class="saran-cell">{{ $item->auditorMatriks->first()?->saran ?? '-' }}</td>
+                                <td class="temuan-cell" style="width:22%;text-align:justify;">{!! !empty($item->auditorMatriks->first()?->temuan) ? $item->auditorMatriks->first()->temuan : '-' !!}</td>
+                                <td class="saran-cell" style="width:22%;text-align:justify;">{!! !empty($item->auditorMatriks->first()?->saran) ? $item->auditorMatriks->first()->saran : '-' !!}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -391,7 +394,7 @@
                     <div class="text-center text-muted py-4"><i class="bi bi-hourglass-split me-2"></i>Memuat preview...</div>
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ url('/export/export-pdf/perbandingan') }}" target="_blank" class="btn btn-sm" style="background: #173b70; color: #fff;">
+                    <a id="downloadPdfLink" href="{{ url('/export/export-pdf/perbandingan') }}" target="_blank" class="btn btn-sm" style="background: #173b70; color: #fff;">
                         <i class="bi bi-download me-1"></i>Download PDF
                     </a>
                     <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -699,6 +702,22 @@
             document.getElementById("masa_auditor").innerHTML = hasilAuditor.masa;
         }
 
+        // Auditor name mapping for card header
+        var auditorNameMap = @json($auditorNameMap ?? []);
+
+        function updateAuditorNames(label) {
+            var container = document.getElementById('auditorNamesContainer');
+            if (!container) return;
+            if (label === 'Auditor') {
+                var html = Object.entries(auditorNameMap).map(function(e) {
+                    return '<p class="mb-1"><span class="text-muted">' + e[0] + ':</span> <span class="fw-bold">' + e[1] + '</span></p>';
+                }).join('');
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '';
+            }
+        }
+
         // ---- Tab 1 pill click handler (also syncs tabs 2 & 3) ----
         document.querySelectorAll(".auditor-pill").forEach(btn => {
             btn.addEventListener("click", function() {
@@ -717,6 +736,8 @@
                     '<i class="bi bi-shield-check me-1"></i>Penilaian ' + label;
                 document.getElementById("thAuditor").textContent = "Penilaian " + label;
 
+                updateAuditorNames(label);
+
                 // Tab 1: update all rows
                 document.querySelectorAll(".nilai-auditor").forEach(td => {
                     let data;
@@ -725,16 +746,16 @@
                     let row = td.closest("tr");
                     let match = data.find(d => String(d.id_users) === auditorId);
                     let score = match ? match.nilai_total : null;
-                    valSpan.textContent = score !== null ? score : "-";
+                    valSpan.textContent = score !== null && score > 0 ? Number(score).toFixed(2) : "-";
 
                     let jurusanVal = parseFloat(row.querySelector(".nilai-jurusan").dataset.nilai) || 0;
                     let selCell = row.querySelector(".selisih-cell");
-                    selCell.textContent = score !== null ? Math.abs(jurusanVal - score) : "-";
+                    selCell.textContent = score !== null && score > 0 ? Math.abs(jurusanVal - score).toFixed(2) : "-";
 
                     let temuanCell = row.querySelector(".temuan-cell");
                     let saranCell = row.querySelector(".saran-cell");
-                    temuanCell.textContent = match ? (match.temuan || '-') : '-';
-                    saranCell.textContent = match ? (match.saran || '-') : '-';
+                    temuanCell.innerHTML = match ? (match.temuan || '-') : '-';
+                    saranCell.innerHTML = match ? (match.saran || '-') : '-';
                 });
 
                 compute(auditorId);
@@ -770,6 +791,8 @@
                     '<i class="bi bi-shield-check me-1"></i>Penilaian ' + label;
                 document.getElementById("thAuditor").textContent = "Penilaian " + label;
 
+                updateAuditorNames(label);
+
                 compute(auditorId);
                 updateSyaratAuditor(auditorId, label);
                 updateChart(auditorId, label);
@@ -785,7 +808,13 @@
             const content = document.getElementById('previewPdfContent');
             modal.show();
             content.innerHTML = '<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split me-2"></i>Memuat preview...</div>';
-            fetch('/export/preview/perbandingan')
+            const activePill = document.querySelector('.auditor-pill.btn-primary');
+            const isUPM = activePill && activePill.dataset.label === 'UPM';
+            const auditorId = activePill && !isUPM ? activePill.dataset.auditorId : '';
+            const params = auditorId ? '?auditor_id=' + auditorId : '';
+            const url = '/export/preview/perbandingan' + params;
+            document.getElementById('downloadPdfLink').href = '/export/export-pdf/perbandingan' + params;
+            fetch(url)
                 .then(res => res.text())
                 .then(html => { content.innerHTML = html; })
                 .catch(() => { content.innerHTML = '<div class="text-danger text-center py-4"><i class="bi bi-exclamation-triangle me-2"></i>Gagal memuat preview</div>'; });

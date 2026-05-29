@@ -36,9 +36,9 @@ class SyaratController extends Controller
             $na += (float) ($m->userMatrik->nilai_total ?? 0);
         }
 
-        // Compute syarat3/syarat5 from data collection
-        $syarat3 = false;
-        $syarat5 = false;
+        // Compute syarat3/syarat5 from data collection (AND: all must be met)
+        $syarat3 = true;
+        $syarat5 = true;
         foreach ($data as $item) {
             $m3 = $item->memenuhi_3_tahun ?? false;
             $m5 = $item->memenuhi_5_tahun ?? false;
@@ -103,10 +103,41 @@ class SyaratController extends Controller
                 }
             }
 
-            if ($m3) $syarat3 = true;
-            if ($m5) $syarat5 = true;
+            if (!$m3) $syarat3 = false;
+            if (!$m5) $syarat5 = false;
         }
 
-        return view('SyaratUnggul.index', compact('data', 'na', 'syarat3', 'syarat5'));
+        // Compute status and masa berlaku
+        if ($na >= 361) {
+            if ($syarat5) {
+                $status = 'Terakreditasi Unggul';
+                $masa = '5 Tahun';
+            } elseif ($syarat3) {
+                $status = 'Terakreditasi Unggul';
+                $masa = '3 Tahun';
+            } else {
+                $status = 'Terakreditasi';
+                $masa = '5 Tahun';
+            }
+        } elseif ($na >= 321) {
+            if ($syarat5) {
+                $status = 'Terakreditasi Unggul';
+                $masa = '5 Tahun';
+            } elseif ($syarat3) {
+                $status = 'Terakreditasi Unggul';
+                $masa = '3 Tahun';
+            } else {
+                $status = 'Terakreditasi';
+                $masa = '5 Tahun';
+            }
+        } elseif ($na >= 200) {
+            $status = 'Terakreditasi';
+            $masa = '5 Tahun';
+        } else {
+            $status = 'Tidak Terakreditasi';
+            $masa = '-';
+        }
+
+        return view('SyaratUnggul.index', compact('data', 'na', 'syarat3', 'syarat5', 'status', 'masa'));
     }
 }

@@ -54,7 +54,67 @@
             color: #4a0008 !important;
         }
 
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+            padding: 4px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
 
+        .nav-grid-btn {
+            aspect-ratio: 1;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            min-width: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .nav-grid-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+            z-index: 1;
+        }
+
+        .nav-grid-btn.active {
+            border-color: #0d6efd !important;
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+        }
+
+        .nav-grid-btn.border-green {
+            border-color: #28a745 !important;
+        }
+
+        .nav-grid-btn.border-yellow {
+            border-color: #ffc107 !important;
+        }
+
+        .nav-grid-btn.border-red {
+            border-color: #dc3545 !important;
+        }
+
+        .nav-grid-header {
+            grid-column: 1 / -1;
+            padding: 4px 8px;
+            background: #6c757d;
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            border-radius: 6px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         /* Loading */
 
@@ -277,8 +337,7 @@
                         <div class="mt-3 mb-1">
                             <strong>Navigasi Elemen</strong>
                         </div>
-                        <div class="list-group list-group-flush" style="max-height: 50vh; overflow-y: auto;"
-                            id="nav-container">
+                        <div class="nav-grid" id="nav-container">
 
                             @php
                                 $currentKriteria = null;
@@ -291,7 +350,7 @@
                                         $currentKriteria = $item->kriteria->name;
                                     @endphp
 
-                                    <div class="list-group-item bg-secondary text-white fw-bold">
+                                    <div class="nav-grid-header">
                                         {{ $currentKriteria }}
                                     </div>
                                 @endif
@@ -300,33 +359,32 @@
                                 @php
                                     $jawaban = $item->userMatrik->jawaban ?? null;
 
-                                    // Background color
-                                    $color = match (true) {
-                                        $jawaban == 4 => 'list-group-item-success',
-                                        $jawaban < 4 && $jawaban > 1 => 'list-group-item-warning',
-                                        $jawaban == 1 => 'list-group-item-danger',
-                                        default => '',
+                                    $bgColor = match (true) {
+                                        $jawaban == 4 => '#d4edda',
+                                        $jawaban < 4 && $jawaban > 1 => '#fff3cd',
+                                        $jawaban == 1 => '#f8d7da',
+                                        default => '#f8f9fa',
                                     };
 
-                                    // Border color
                                     $borderClass = match (true) {
                                         $jawaban == 4 => 'border-green',
                                         $jawaban < 4 && $jawaban > 1 => 'border-yellow',
                                         $jawaban == 1 => 'border-red',
-                                        default => 'border-none',
+                                        default => '',
                                     };
                                 @endphp
 
-
                                 {{-- Tombol navigasi --}}
                                 <button
-                                    class="list-group-item list-group-item-action nav-item-btn border-none {{ $color }} {{ $borderClass }}"
+                                    class="nav-grid-btn nav-item-btn {{ $borderClass }}"
+                                    style="background: {{ $bgColor }};"
+                                    title="{{ $item->nomor }}. {{ $item->elemen }}"
                                     data-id="{{ $item->id }}" data-nomor="{{ $item->nomor }}"
                                     data-title="{{ $item->nomor }}. {{ $item->elemen }}"
                                     data-content="{{ $item->indikator }}" data-kriteria="{{ $item->kriteria->name }}"
                                     data-pilihan='@json($item->option_pilihan_ganda)' data-poin="{{ $item->poin }}"
                                     data-harkat_penskoran="{{ $item->harkat_penskoran }}"
-                                    data-jenis="{{ $item->jenis }}" {{-- Ini data dari users matrik --}}
+                                    data-jenis="{{ $item->jenis }}"
                                     data-link_bukti="{{ $item->userMatrik->link_bukti ?? '' }}"
                                     data-temuan="{{ $item->userMatrik->temuan ?? '' }}"
                                     data-saran="{{ $item->userMatrik->saran ?? '' }}"
@@ -334,46 +392,13 @@
                                     data-skor_a="{{ $item->userMatrik->skor_a ?? '' }}"
                                     data-skor_b="{{ $item->userMatrik->skor_b ?? '' }}"
                                     data-color="{{ $jawaban == 4 ? 'green' : ($jawaban < 4 && $jawaban > 1 ? 'yellow' : ($jawaban == 1 ? 'red' : 'none')) }}"
-                                    data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}" {{-- Ambil data sub item --}}
+                                    data-nilai_total="{{ $item->userMatrik->nilai_total ?? 0 }}"
                                     data-subitem='@json($item->subItemElemen)'
                                     data-usersubitems='@json($item->userSubItemElements)'>
-
-                                    <span class="me-2" style="width: 30px;">{{ $item->nomor }}.</span>
-                                    <div class="mb-3">
-                                        <div class="fw-bold mb-2">
-                                            {{ $item->elemen }}
-                                        </div>
-
-                                        <table class="table table-bordered table-sm text-center align-middle mb-0 small">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>Bobot</th>
-                                                    <th>Skor</th>
-                                                    <th>Total</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-                                                <tr>
-                                                    <td>{{ $item->poin }}</td>
-
-                                                    <td>
-                                                        {{ $item->userMatrik->jawaban ?? 0 }}
-                                                    </td>
-
-                                                    <td class="fw-bold text-primary">
-                                                        {{ $item->userMatrik->nilai_total ?? 0 }}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    {{ $item->nomor }}
                                 </button>
                             @endforeach
 
-
-
-                            <!-- Anda dapat mengulangi header kriteria + elemen sesuai kebutuhan -->
                         </div>
                     </div>
 
@@ -5447,7 +5472,7 @@
                 let firstMatch = null;
 
                 buttons.forEach(btn => {
-                    const text = btn.innerText.toLowerCase();
+                    const text = (btn.innerText + ' ' + (btn.title || '')).toLowerCase();
 
                     if (text.includes(keyword)) {
                         if (!firstMatch) firstMatch = btn;

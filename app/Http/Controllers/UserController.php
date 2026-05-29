@@ -40,23 +40,35 @@ class UserController extends Controller
     public function hubungkan(Request $request)
 {
     $request->validate([
-
         'user_id' => 'required',
         'jurusan' => 'required',
         'tahun_audit' => 'required',
-
     ]);
 
-    AuditorJurusan::create([
+    $exists = AuditorJurusan::where('user_id', $request->user_id)
+        ->where('jurusan', $request->jurusan)
+        ->where('tahun_audit', $request->tahun_audit)
+        ->exists();
 
+    if ($exists) {
+        return back()->with('error', 'Auditor ini sudah terhubung dengan jurusan tersebut');
+    }
+
+    $count = AuditorJurusan::where('jurusan', $request->jurusan)
+        ->where('tahun_audit', $request->tahun_audit)
+        ->count();
+
+    if ($count >= 2) {
+        return back()->with('error', 'Jurusan ini sudah memiliki 2 auditor, tidak dapat menambahkan lagi');
+    }
+
+    AuditorJurusan::create([
         'user_id' => $request->user_id,
         'jurusan' => $request->jurusan,
         'tahun_audit' => $request->tahun_audit,
-
     ]);
 
     return back()->with('success', 'Berhasil menghubungkan auditor');
-
 }
 
 public function dashboardAuditor(){
@@ -96,28 +108,46 @@ public function auditorEvaluasi($id)
         return redirect()->route('auditor.index')->with('error', 'Jurusan "' . $assigned->jurusan . '" belum memiliki pengguna terdaftar.');
     }
 
+    $sharedId = $userJurusan->id;
+
+    // Load shared scores: id_users = jurusan_id, id_user_jurusan = jurusan_id
+    // Load current auditor's temuan/saran from auditor_temuan_saran
     $data = MatriksLED::with([
         'kriteria',
-        'userSubItemElements' => function ($q) use ($userJurusan) {
-            $q->where('id_users', auth()->id())
-              ->where('id_user_jurusan', $userJurusan->id);
+        'userSubItemElements' => function ($q) use ($sharedId) {
+            $q->where('id_users', $sharedId)
+              ->where('id_user_jurusan', $sharedId);
         },
-        'userMatrik' => function ($q) use ($userJurusan) {
-            $q->where('id_user_jurusan', $userJurusan->id)
-              ->where('id_users', auth()->id());
+        'userMatrik' => function ($q) use ($sharedId) {
+            $q->where('id_user_jurusan', $sharedId)
+              ->where('id_users', $sharedId);
         }
     ])->orderBy('nomor', 'asc')->get();
 
-    // Hitung syarat unggul (berdasarkan data auditor yang login)
+    // Load current auditor's temuan/saran from auditor_temuan_saran
+    $myTemuanSaran = \DB::table('auditor_temuan_saran')
+        ->where('id_users', auth()->id())
+        ->where('id_user_jurusan', $sharedId)
+        ->get()
+        ->keyBy('id_matriks_led');
+
+    // Attach temuan/saran to each data item
+    $data->each(function ($item) use ($myTemuanSaran) {
+        $ts = $myTemuanSaran->get($item->id);
+        $item->myTemuan = $ts?->temuan ?? '';
+        $item->mySaran = $ts?->saran ?? '';
+    });
+
+    // Hitung syarat unggul (berdasarkan shared data)
     $dataSyaratUnggul = SyaratUnggul::with([
         'matriks.subItemElemen',
-        'matriks.userSubItemElements' => function ($q) use ($userJurusan) {
-            $q->where('id_users', auth()->id())
-              ->where('id_user_jurusan', $userJurusan->id);
+        'matriks.userSubItemElements' => function ($q) use ($sharedId) {
+            $q->where('id_users', $sharedId)
+              ->where('id_user_jurusan', $sharedId);
         },
-        'matriks.userMatrik' => function ($q) use ($userJurusan) {
-            $q->where('id_users', auth()->id())
-              ->where('id_user_jurusan', $userJurusan->id);
+        'matriks.userMatrik' => function ($q) use ($sharedId) {
+            $q->where('id_users', $sharedId)
+              ->where('id_user_jurusan', $sharedId);
         }
     ])->get();
 
@@ -215,23 +245,65 @@ public function auditorEvaluasiStore(Request $request)
     $assigned = AuditorJurusan::where('user_id', auth()->id())
         ->where('jurusan', $target->homebase)->firstOrFail();
 
-    UsersMatrik::updateOrCreate(
+    $sharedId = $target->id;
+
+    // Don't overwrite existing shared score with zero if the user only saves temuan/saran
+    $existing = UsersMatrik::where('id_users', $sharedId)
+        ->where('id_user_jurusan', $sharedId)
+        ->where('id_matriks_led', $validated['id_matriks_led'])
+        ->first();
+
+    $incomingNilaiTotal = $validated['nilai_total'];
+    $incomingJawaban = $validated['jawaban'];
+
+    if ($existing && $existing->nilai_total > 0 && $incomingNilaiTotal == 0) {
+        // User likely only filled temuan/saran without touching the score — keep existing score
+        $existing->update([
+            'link_bukti' => $validated['link_bukti'] ?? '',
+        ]);
+    } else {
+        // Save shared score to UsersMatrik: id_users = jurusan_id, id_user_jurusan = jurusan_id
+        UsersMatrik::updateOrCreate(
+            [
+                'id_users'        => $sharedId,
+                'id_user_jurusan' => $sharedId,
+                'id_matriks_led'  => $validated['id_matriks_led'],
+            ],
+            [
+                'jawaban'              => $incomingJawaban,
+                'skor_a'               => $validated['skor_a'] ?? null,
+                'skor_b'               => $validated['skor_b'] ?? null,
+                'nilai_total'          => $incomingNilaiTotal,
+                'link_bukti'           => $validated['link_bukti'] ?? '',
+                'kepemilikan_kriteria' => $validated['kepemilikan_kriteria'],
+            ]
+        );
+    }
+
+    // Save per-auditor temuan/saran to auditor_temuan_saran
+    \DB::table('auditor_temuan_saran')->updateOrInsert(
         [
             'id_users'        => auth()->id(),
-            'id_user_jurusan' => $validated['id_user_jurusan'],
+            'id_user_jurusan' => $sharedId,
             'id_matriks_led'  => $validated['id_matriks_led'],
         ],
-        $validated
+        [
+            'temuan'     => $validated['temuan'] ?? '',
+            'saran'      => $validated['saran'] ?? '',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]
     );
 
+    // Save sub-items as shared (id_users = jurusan_id)
     if ($request->has('variabel')) {
         foreach ($request->variabel as $idSubItem => $nilai) {
             UserSubItemElemen::updateOrCreate(
                 [
                     'id_matriks'         => $validated['id_matriks_led'],
                     'id_sub_item_elemen' => $idSubItem,
-                    'id_users'           => auth()->id(),
-                    'id_user_jurusan'    => $validated['id_user_jurusan'],
+                    'id_users'           => $sharedId,
+                    'id_user_jurusan'    => $sharedId,
                 ],
                 ['nilai' => $nilai]
             );
@@ -251,16 +323,42 @@ public function auditorPerbandingan($id)
         return redirect()->route('auditor.index')->with('error', 'Belum ada data jurusan.');
     }
 
+    $sharedId = $userJurusan->id;
+
+    // Load shared auditor scores + combined temuan/saran from auditor_temuan_saran
+    $allTemuanSaran = \DB::table('auditor_temuan_saran')
+        ->join('users', 'auditor_temuan_saran.id_users', '=', 'users.id')
+        ->where('auditor_temuan_saran.id_user_jurusan', $sharedId)
+        ->select('auditor_temuan_saran.*', 'users.name as auditor_name')
+        ->get()
+        ->groupBy('id_matriks_led');
+
     $data = MatriksLED::with([
         'kriteria',
         'userMatrik'       => function ($q) use ($userJurusan) {
             $q->where('id_users', $userJurusan->id);
         },
-        'userMatrikByUser' => function ($q) use ($userJurusan) {
-            $q->where('id_users', auth()->id())
-              ->where('id_user_jurusan', $userJurusan->id);
+        'userMatrikByUser' => function ($q) use ($sharedId) {
+            $q->where('id_users', $sharedId)
+              ->where('id_user_jurusan', $sharedId);
         }
     ])->orderBy('nomor', 'asc')->get();
+
+    // Attach combined temuan/saran to each item
+    $data->each(function ($item) use ($allTemuanSaran) {
+        $tsItems = $allTemuanSaran[$item->id] ?? collect();
+        if ($tsItems->isNotEmpty()) {
+            $item->auditorTemuan = $tsItems->map(function ($ts) {
+                return e($ts->auditor_name) . ' : ' . e($ts->temuan);
+            })->implode('<br>');
+            $item->auditorSaran = $tsItems->map(function ($ts) {
+                return e($ts->auditor_name) . ' : ' . e($ts->saran);
+            })->implode('<br>');
+        } else {
+            $item->auditorTemuan = '-';
+            $item->auditorSaran = '-';
+        }
+    });
 
     $user = $userJurusan;
     return view('auditor.perbandingan', compact('data', 'user', 'assigned'));
