@@ -21,4 +21,16 @@ class SyaratUnggul extends Model
     {
         return $this->belongsTo(MatriksLED::class, 'matriks_id');
     }
+
+    public function kriteria()
+    {
+        return $this->hasOneThrough(
+            \App\Models\Kriteria::class,
+            MatriksLED::class,
+            'id',
+            'id',
+            'matriks_id',
+            'id_kriteria'
+        );
+    }
 }

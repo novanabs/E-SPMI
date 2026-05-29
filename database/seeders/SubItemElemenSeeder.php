@@ -490,7 +490,7 @@ class SubItemElemenSeeder extends Seeder
                Produktivitas Publikasi DTPS
             ========================================= */
 
-            [
+[
                 'nomor_elemen' => 56,
                 'variabel'     => 'NDTPS',
                 'deskripsi'    => 'Jumlah Dosen Tetap Program Studi'

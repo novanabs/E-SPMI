@@ -21,7 +21,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "Pada saat TS, Dosen Tetap Program Studi (DTPS) memiliki kualifikasi akademik doktor dan jabatan akademik tertentu.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "a. ≥ 1 DTPS memiliki kualifikasi akademik doktor. b. ≥ 2 DTPS memiliki jabatan akademik minimal lektor",
-                    '5_Tahun' => "a. ≥ 2 DTPS memiliki kualifikasi akademik doktor. b. ≥ 2 DTPS memiliki jabatan akademik minimal lektor dan ≥ 1 DTPS memiliki jabatan akademik minimal lektor kepala."
+                    '5_tahun' => "a. ≥ 2 DTPS memiliki kualifikasi akademik doktor. b. ≥ 2 DTPS memiliki jabatan akademik minimal lektor dan ≥ 1 DTPS memiliki jabatan akademik minimal lektor kepala."
                 ]),
             ],
             [
@@ -31,7 +31,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "Program Studi (PS) melakukan asesmen pencapaian Capaian Pembelajaran Lulusan (CPL) berdasarkan capaian hasil belajar mahasiswa pada mata kuliah penciri keilmuan PS, melakukan evaluasi terhadap hasil asesmen pencapaian CPL, dan melakukan tindak lanjut hasil evaluasi terhadap hasil asesmen pencapaian CPL.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "Skor ≥ 3.0",
-                    '5_Tahun' => "Skor ≥ 3.5"
+                    '5_tahun' => "Skor ≥ 3.5"
                 ]),
             ],
             [
@@ -41,7 +41,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "PS melaksanakan microteaching atau nama lain yang sejenis bagi PS kependidikan nonmengajar sebagai tahapan pengembangan kompetensi mengajar atau kompetensi lain yang sejenis bagi PS kependidikan nonmengajar.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "Skor ≥ 3.0",
-                    '5_Tahun' => "Skor ≥ 3.5"
+                    '5_tahun' => "Skor ≥ 3.5"
                 ]),
             ],
             [
@@ -51,7 +51,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "PT/UPPS/PS melaksanakan Sistem Penjaminan Mutu Internal (SPMI) dengan siklus Penetapan, Pelaksanaan, Evaluasi, Pengendalian, dan Peningkatan (PPEPP) standar pendidikan tinggi.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "Skor ≥ 3.0",
-                    '5_Tahun' => "Skor ≥ 3.5"
+                    '5_tahun' => "Skor ≥ 3.5"
                 ]),
             ],
             [
@@ -61,7 +61,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "Dalam 5 tahun terakhir, mahasiswa dalam jumlah tertentu menghasilkan karya inovatif, publikasi ilmiah yang sesuai dengan bidang keilmuan PS, dan/atau karya seni yang dipamerkan/ dipagelarkan.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "≥ 15% mahasiswa memiliki karya inovatif yang dapat berbentuk book chapter atau buku berISBN, paten/paten sederhana, karya ilmiah yang dipublikasikan pada jurnal nasional terakreditasi minimal Sinta 5 sesuai dengan bidang keilmuannya, dan/atau karya seni yang dipamerkan/ dipagelarkan.",
-                    '5_Tahun' => "≥ 25% mahasiswa memiliki karya inovatif yang dapat berbentuk book chapter atau buku berISBN, paten/paten sederhana, karya ilmiah yang dipublikasikan pada jurnal nasional terakreditasi minimal Sinta 4 sesuai dengan bidang keilmuannya, dan/atau karya seni yang dipamerkan/ dipagelarkan."
+                    '5_tahun' => "≥ 25% mahasiswa memiliki karya inovatif yang dapat berbentuk book chapter atau buku berISBN, paten/paten sederhana, karya ilmiah yang dipublikasikan pada jurnal nasional terakreditasi minimal Sinta 4 sesuai dengan bidang keilmuannya, dan/atau karya seni yang dipamerkan/ dipagelarkan."
                 ]),
             ],
             [
@@ -71,7 +71,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "Dalam 3 tahun terakhir, DTPS memiliki publikasi di jurnal nasional dan/atau jurnal internasional sebagai penulis pertama atau corresponding author.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "≥ 20% DTPS memiliki publikasi pada jurnal nasional minimal Sinta 4 dan/atau jurnal internasional sebagai penulis pertama atau corresponding author.",
-                    '5_Tahun' => "≥ 20% DTPS memiliki publikasi pada jurnal nasional terakreditasi minimal Sinta 2 dan/atau internasional bereputasi (terindeks scopus atau WoS) sebagai penulis pertama atau corresponding author."
+                    '5_tahun' => "≥ 20% DTPS memiliki publikasi pada jurnal nasional minimal Sinta 4 dan/atau jurnal internasional sebagai penulis pertama atau corresponding author."
                 ]),
             ],
         ];

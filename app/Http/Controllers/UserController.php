@@ -12,6 +12,7 @@ use App\Models\Pengendalian;
 use App\Models\Peningkatan;
 use App\Models\SyaratUnggul;
 use App\Models\UsersMatrik;
+use App\Models\UserSubItemElemen;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
@@ -97,17 +98,27 @@ public function auditorEvaluasi($id)
 
     $data = MatriksLED::with([
         'kriteria',
+        'userSubItemElements' => function ($q) use ($userJurusan) {
+            $q->where('id_users', auth()->id())
+              ->where('id_user_jurusan', $userJurusan->id);
+        },
         'userMatrik' => function ($q) use ($userJurusan) {
             $q->where('id_user_jurusan', $userJurusan->id)
               ->where('id_users', auth()->id());
         }
     ])->orderBy('nomor', 'asc')->get();
 
-    // Hitung syarat unggul (berdasarkan data jurusan, bukan auditor)
+    // Hitung syarat unggul (berdasarkan data auditor yang login)
     $dataSyaratUnggul = SyaratUnggul::with([
         'matriks.subItemElemen',
-        'matriks.userSubItemElements',
-        'matriks.userMatrik'
+        'matriks.userSubItemElements' => function ($q) use ($userJurusan) {
+            $q->where('id_users', auth()->id())
+              ->where('id_user_jurusan', $userJurusan->id);
+        },
+        'matriks.userMatrik' => function ($q) use ($userJurusan) {
+            $q->where('id_users', auth()->id())
+              ->where('id_user_jurusan', $userJurusan->id);
+        }
     ])->get();
 
     foreach ($dataSyaratUnggul as $item) {
@@ -162,25 +173,18 @@ public function auditorEvaluasi($id)
                 if (($total5 / $NM) * 100 >= 25) $item->memenuhi_5_tahun = true;
             }
         } elseif ($item->nomor == 6) {
-            $NDTPS = 0;
-            $S1 = $S2 = $S3 = $S4 = 0;
-            $INT = $INTREP = 0;
+            $NDTPS = 0; $NDTPS_PUB = 0;
             foreach ($subItems as $sub) {
                 $id = $sub->id; $var = $sub->variabel;
                 $nilai = (float) ($nilaiMap[$id] ?? 0);
                 if ($var == 'NDTPS') $NDTPS = $nilai;
-                if ($var == 'S1_DTPS') $S1 = $nilai;
-                if ($var == 'S2_DTPS') $S2 = $nilai;
-                if ($var == 'S3_DTPS') $S3 = $nilai;
-                if ($var == 'S4_DTPS') $S4 = $nilai;
-                if ($var == 'INT_DTPS') $INT = $nilai;
-                if ($var == 'INTREP_DTPS') $INTREP = $nilai;
+                if ($var == 'NDTPS_PUB') $NDTPS_PUB = $nilai;
             }
             if ($NDTPS > 0) {
-                $total3 = $S1 + $S2 + $S3 + $S4 + $INT;
-                if (($total3 / $NDTPS) * 100 >= 20) $item->memenuhi_3_tahun = true;
-                $total5 = $S1 + $S2 + $INTREP;
-                if (($total5 / $NDTPS) * 100 >= 20) $item->memenuhi_5_tahun = true;
+                $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
+                $persen5 = $persen3;
+                if ($persen3 >= 20) $item->memenuhi_3_tahun = true;
+                if ($persen5 >= 20) $item->memenuhi_5_tahun = true;
             }
         }
     }
@@ -219,6 +223,20 @@ public function auditorEvaluasiStore(Request $request)
         ],
         $validated
     );
+
+    if ($request->has('variabel')) {
+        foreach ($request->variabel as $idSubItem => $nilai) {
+            UserSubItemElemen::updateOrCreate(
+                [
+                    'id_matriks'         => $validated['id_matriks_led'],
+                    'id_sub_item_elemen' => $idSubItem,
+                    'id_users'           => auth()->id(),
+                    'id_user_jurusan'    => $validated['id_user_jurusan'],
+                ],
+                ['nilai' => $nilai]
+            );
+        }
+    }
 
     return redirect()->route('auditor.evaluasi', $assigned->id)
         ->with('success', 'Data berhasil diperbarui');
@@ -274,15 +292,27 @@ public function auditorPerbandingan($id)
             'homebase' => 'required',
             'jabatan'    => 'required',
             'nip'    => 'nullable',
-            'email'    => 'required|email',
+            'email'    => 'required|email|unique:users,email',
             'role'     => 'required',
         ], [
             'name.required'  => 'Nama user wajib diisi.',
             'nip.required' => 'NIP wajib diisi.',
             'jabatan.required' => 'Jabatan wajib diisi.',
             'email.required' => 'Email wajib diisi.',
+            'email.unique' => 'Email sudah terdaftar.',
             'role.required'  => 'Role wajib diisi.',
         ]);
+
+        if ($validated['role'] === 'admin_jurusan') {
+            $exists = User::where('homebase', $validated['homebase'])
+                ->where('role', 'admin_jurusan')
+                ->exists();
+            if ($exists) {
+                return back()->withErrors([
+                    'homebase' => 'Sudah ada Admin Jurusan untuk homebase "' . $validated['homebase'] . '".',
+                ])->withInput();
+            }
+        }
 
         $passwordPlain = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 

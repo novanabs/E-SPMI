@@ -505,7 +505,7 @@
                                     <a href="{{ route('auditor.index') }}"
                                         class="nav-link {{ Route::is('auditor.index') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-person-gear"></i>
-                                        <p>Audit</p>
+                                        <p>Penilaian AMI</p>
                                     </a>
                                 </li>
                                 @if ($assignments->isNotEmpty())
@@ -749,7 +749,7 @@
                     <!--begin::Row-->
                     <div class="row">
                         <div class="col-sm-6">
-                            <h3 class="mb-0">@yield('title', 'E-SPMI')</h3>
+                            {{-- <h3 class="mb-0">@yield('title', 'E-SPMI')</h3> --}}
                         </div>
                         <div class="col-sm-6" hidden>
                             <ol class="breadcrumb float-sm-end">
@@ -781,12 +781,12 @@
                 <!--begin::Container-->
                 <div class="container-fluid">
                     @if (Request::is('*/create') || Request::is('*/edit') || Request::is('*jurusan/*') || Request::is('*pimpinan/*'))
-                        <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">Kembali</a>
+                        <a href="{{ url()->previous() }}" class="btn btn-sm mb-3" style="background: #173b70; color: #fff;"><i class="bi bi-arrow-left me-1"></i>Kembali</a>
                     @elseif (Request::is('*isi-evaluasi/*'))
                         <a href="{{ route('evaluasi_diri_jurusan.index') }}"
-                            class="btn btn-sm btn-danger">Kembali</a>
+                            class="btn btn-sm mb-3" style="background: #173b70; color: #fff;"><i class="bi bi-arrow-left me-1"></i>Kembali</a>
                     @endif
-                    <div class="container">
+                    <div class="container-fluid px-3">
                         @yield('content')
                     </div>
                 </div>

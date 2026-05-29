@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="d-flex">
-                        <p class="mb-0 me-2">Peringkat:</p>
-                        <p class="mb-0" id="peringkat_jurusan"></p>
+                        <p class="mb-0 me-2">Masa Berlaku:</p>
+                        <p class="mb-0 fw-bold" id="masa_jurusan"></p>
                     </div>
                 </div>
 
@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="d-flex">
-                        <p class="mb-0 me-2">Peringkat:</p>
-                        <p class="mb-0" id="peringkat_fkip"></p>
+                        <p class="mb-0 me-2">Masa Berlaku:</p>
+                        <p class="mb-0 fw-bold" id="masa_fkip"></p>
                     </div>
                 </div>
 
@@ -160,28 +160,41 @@
     {{-- Hitung akumulasi --}}
 
     <script>
-        function hitungAkreditasi(NA) {
+        function hitungAkreditasi(NA, syarat3, syarat5) {
             let status = "";
-            let peringkat = "";
+            let masa = "";
 
             if (NA >= 361) {
-                status = "Terakreditasi";
-                peringkat = "Unggul";
-            } else if (NA >= 301) {
-                status = "Terakreditasi";
-                peringkat = "Baik Sekali";
+                if (syarat5) {
+                    status = "Terakreditasi Unggul";
+                    masa = "5 Tahun";
+                } else if (syarat3) {
+                    status = "Terakreditasi Unggul";
+                    masa = "3 Tahun";
+                } else {
+                    status = "Terakreditasi";
+                    masa = "5 Tahun";
+                }
+            } else if (NA >= 321) {
+                if (syarat5) {
+                    status = "Terakreditasi Unggul";
+                    masa = "5 Tahun";
+                } else if (syarat3) {
+                    status = "Terakreditasi Unggul";
+                    masa = "3 Tahun";
+                } else {
+                    status = "Terakreditasi";
+                    masa = "5 Tahun";
+                }
             } else if (NA >= 200) {
                 status = "Terakreditasi";
-                peringkat = "Baik";
+                masa = "5 Tahun";
             } else {
                 status = "Tidak Terakreditasi";
-                peringkat = "-";
+                masa = "-";
             }
 
-            return {
-                status,
-                peringkat
-            };
+            return { status, masa };
         }
     </script>
 
@@ -190,43 +203,25 @@
             let totalJurusan = 0;
             let totalFKIP = 0;
 
-            // Akumulasi Jurusan
             document.querySelectorAll(".nilai-jurusan").forEach(el => {
                 totalJurusan += parseFloat(el.dataset.nilai) || 0;
-                console.log(totalJurusan)
             });
 
-            // Akumulasi FKIP
             document.querySelectorAll(".nilai-fkip").forEach(el => {
                 totalFKIP += parseFloat(el.dataset.nilai) || 0;
             });
 
-            // Total Gabungan
-            let total = totalJurusan + totalFKIP;
-
-            console.log("Jurusan:", totalJurusan);
-            console.log("FKIP:", totalFKIP);
-            console.log("Total:", total);
-
-            // document.getElementById("total_nilai_semua").innerText = total;
-
-            let hasil = hitungAkreditasi(total);
-            // document.getElementById("status").innerText = hasil.status;
-            // document.getElementById("peringkat").innerText = hasil.peringkat;
-
-            // Ini yang benar
             document.getElementById("nilai_jurusan").innerHTML = totalJurusan;
             document.getElementById("nilai_fakultas").innerHTML = totalFKIP;
 
             let hasilJurusan = hitungAkreditasi(totalJurusan);
             document.getElementById("status_jurusan").innerHTML = hasilJurusan.status;
-            document.getElementById("peringkat_jurusan").innerHTML = hasilJurusan.peringkat;
+            document.getElementById("masa_jurusan").innerHTML = hasilJurusan.masa;
 
             let hasilFKIP = hitungAkreditasi(totalFKIP);
             document.getElementById("status_fkip").innerHTML = hasilFKIP.status;
-            document.getElementById("peringkat_fkip").innerHTML = hasilFKIP.peringkat;
+            document.getElementById("masa_fkip").innerHTML = hasilFKIP.masa;
 
-            // Selisih
             document.getElementById("selisih").innerHTML = Math.abs(totalJurusan - totalFKIP).toFixed(2);
         });
     </script>

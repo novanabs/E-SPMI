@@ -159,10 +159,19 @@ Route::get('/login-admin', function () {
 })->name('login-admin');
 
 Route::get('/login-pimpinan', function () {
-    Auth::logout();
     Auth::loginUsingId(5);
-    return redirect()->back();
+    return redirect('/pimpinan');
 })->name('login-pimpinan');
+
+Route::get('/login-auditor-madhan', function () {
+    Auth::loginUsingId(4);
+    return redirect('/dashboard-auditor');
+})->name('login-auditor-madhan');
+
+Route::get('/login-auditor-ari', function () {
+    Auth::loginUsingId(6);
+    return redirect('/dashboard-auditor');
+})->name('login-auditor-ari');
 
 // Ini sementara log-out lewat sini
 Route::get('/logout', function () {

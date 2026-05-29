@@ -434,7 +434,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                     <i class="fas fa-arrow-right"></i>
 
-                    Masuk Audit
+                    Penilaian
 
                 </a>
 
