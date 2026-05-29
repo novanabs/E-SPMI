@@ -516,7 +516,7 @@
                                  style="background: #173b70; color: #fff;">
                                 <div>
                                     <h5 class="mb-0 fw-bold text-white">
-                                        Elemen {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
+                                        Syarat {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
                                     </h5>
                                     <small style="color: rgba(255,255,255,0.7);">
                                         <span class="badge bg-light text-dark me-1">{{ $item->kriteria->name ?? '-' }}</span>

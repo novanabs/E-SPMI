@@ -531,7 +531,7 @@
                                  style="background: #173b70; color: #fff;">
                                 <div>
                                     <h5 class="mb-0 fw-bold text-white">
-                                        Elemen {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
+                                        Syarat {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
                                     </h5>
                                     <small style="color: rgba(255,255,255,0.7);">
                                         <span class="badge bg-light text-dark me-1">{{ $item->kriteria->name ?? '-' }}</span>
@@ -1103,6 +1103,9 @@
     <script>
         document.querySelectorAll(".nav-item-btn").forEach(btn => {
             btn.addEventListener("click", () => {
+
+                // Auto-save current form before switching question
+                saveCurrentForm();
 
                 localStorage.setItem('lastElement', btn.dataset.id);
                 // console.log('ID tersimpan:', btn.dataset.id);
@@ -5269,11 +5272,46 @@
                 else if (isElemen60) computeFinal60();
                 else if (isDualRadio) computeDual();
 
-
-
+                // Auto-save on form changes (debounced) — register once
+                if (!container._autoSaveRegistered) {
+                    container._autoSaveRegistered = true;
+                    let saveTimer;
+                    container.addEventListener('change', () => {
+                        clearTimeout(saveTimer);
+                        saveTimer = setTimeout(saveCurrentForm, 600);
+                    });
+                    container.addEventListener('input', () => {
+                        clearTimeout(saveTimer);
+                        saveTimer = setTimeout(saveCurrentForm, 600);
+                    });
+                }
 
             });
         });
+
+        function saveCurrentForm() {
+            const form = document.getElementById('kriteriaForm');
+            if (!form || !form.action) return Promise.resolve();
+            const formData = new FormData(form);
+            if (!formData.has('nilai_total')) return Promise.resolve();
+            const csrf = form.querySelector('input[name="_token"]');
+            if (!csrf) return Promise.resolve();
+            return fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }).then(r => {
+                if (!r.ok) { console.error('Auto-save HTTP', r.status, r.statusText); return r; }
+                const activeBtn = document.querySelector('.nav-item-btn.active');
+                if (activeBtn) {
+                    ['jawaban','nilai_total','link_bukti','temuan','saran'].forEach(k => {
+                        const v = formData.get(k);
+                        if (v !== null) activeBtn.dataset[k] = v;
+                    });
+                }
+                return r;
+            }).catch(e => console.error('Auto-save gagal:', e));
+        }
     </script>
 
     <script>

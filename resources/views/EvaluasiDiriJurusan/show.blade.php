@@ -240,7 +240,7 @@
                                  style="background: #173b70; color: #fff;">
                                 <div>
                                     <h5 class="mb-0 fw-bold text-white">
-                                        Elemen {{ $su['nomor'] }}: {{ $su['elemen'] ?? '-' }}
+                                        Syarat {{ $su['nomor'] }}: {{ $su['elemen'] ?? '-' }}
                                     </h5>
                                     <small style="color: rgba(255,255,255,0.7);">
                                         <span class="badge bg-light text-dark me-1">{{ $su['kriteria'] }}</span>

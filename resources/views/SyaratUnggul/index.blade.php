@@ -133,7 +133,7 @@
                          style="background: #173b70; color: #fff;">
                         <div>
                             <h5 class="mb-0 fw-bold text-white">
-                                Elemen {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
+                                Syarat {{ $item->nomor }}: {{ $item->elemen ?? '-' }}
                             </h5>
                             <small class="text-white-50">
                                 {{ $item->matriks->elemen ?? '-' }}
