@@ -780,12 +780,12 @@
             <div class="app-content">
                 <!--begin::Container-->
                 <div class="container-fluid">
-                    @if (Request::is('*/create') || Request::is('*/edit') || Request::is('*jurusan/*') || Request::is('*pimpinan/*'))
+                    {{-- @if (Request::is('*/create') || Request::is('*/edit') || Request::is('*jurusan/*') || Request::is('*pimpinan/*'))
                         <a href="{{ url()->previous() }}" class="btn btn-sm mb-3" style="background: #173b70; color: #fff;"><i class="bi bi-arrow-left me-1"></i>Kembali</a>
                     @elseif (Request::is('*isi-evaluasi/*'))
                         <a href="{{ route('evaluasi_diri_jurusan.index') }}"
                             class="btn btn-sm mb-3" style="background: #173b70; color: #fff;"><i class="bi bi-arrow-left me-1"></i>Kembali</a>
-                    @endif
+                    @endif --}}
                     <div class="container-fluid px-3">
                         @yield('content')
                     </div>
@@ -804,7 +804,7 @@
             <!--end::To the end-->
             <!--begin::Copyright-->
             <strong>
-                Copyright &copy; 2025&nbsp;
+                Copyright &copy; 2026&nbsp;
                 <!-- <a href="https://adminlte.io" class="text-decoration-none">UPM FKIP ULM</a>. -->
             </strong>
             All rights reserved.

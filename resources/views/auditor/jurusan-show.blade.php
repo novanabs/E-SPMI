@@ -307,7 +307,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Dokumen</th>
-                        <th>Tanggal Upload</th>
+                        <th>Masa Berlaku</th>
                         <th>Dokumen</th>
                     </tr>
                 </thead>
@@ -320,7 +320,8 @@
 
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->name }}</td>
-                            <td>{{ $item->created_at->translatedFormat('d M Y') }}</td>
+                            <td> {{ \Carbon\Carbon::parse($item->tanggal_penetapan)->translatedFormat('d M Y') }}
+    {{$item->tanggal_berakhir ? '- ' . \Carbon\Carbon::parse($item->tanggal_berakhir)->translatedFormat('d M Y') : '' }}</td>
 
                             <td>
 
@@ -361,7 +362,7 @@
                         <th>No</th>
                         <th>Laporan</th>
                         <th>Mitra</th>
-                        <th>Tanggal</th>
+                        <th>Link Laporan</th>
                         <th>Dokumen</th>
 
                     </tr>
@@ -377,11 +378,21 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->nama_mitra ?? '-' }}</td>
-                            <td>{{ $item->created_at->translatedFormat('d M Y') }}</td>
+                            <td>
+                            <a href="{{ $item->link_bukti_laporan }}" target="_blank" class="btn  btn-success">
+                                {{ $item->tahun }} - Ganjil
+                            </a>
+
+                            @if ($item->link_bukti_laporan_genap)
+                                <a href="{{ $item->link_bukti_laporan_genap }}" target="_blank" class="btn  btn-success">
+                                    {{ $item->tahun }} - Genap
+                                </a>
+                            @endif
+                        </td>
 
                             <td>
 
-                                <a href="{{ $item->link_bukti_laporan }}"
+                                <a href="{{ $item->link_bukti_kerjasama }}"
                                     target="_blank"
                                     class="btn btn-view">
 
@@ -411,50 +422,65 @@
 
             <table class="table table-modern datatable">
 
-                <thead>
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+                    <th>Aspek</th>
+                    <th>Jenis Laporan</th>
+                    {{-- <th>Tanggal</th> --}}
+                    <th>Link Laporan</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach ($evaluasi as $item)
 
                     <tr>
 
-                        <th>No</th>
-                        <th>Aspek</th>
-                        <th>Jenis</th>
-                        <th>Tanggal</th>
-                        <th>Dokumen</th>
+                        <td>{{ $loop->iteration }}</td>
+
+                        <td>{{ $item->aspek }}</td>
+
+                        <td>{{ $item->jenis_laporan }}</td>
+
+                        {{-- <td>
+                            {{ $item->created_at->translatedFormat('d M Y') }}
+                        </td> --}}
+
+                        <td>
+
+                            <a href="{{ $item->link_bukti_laporan }}"
+                                target="_blank"
+                                class="btn btn-view">
+
+                                {{ $item->tahun }} - Ganjil
+
+                            </a>
+
+                            @if ($item->link_bukti_laporan_genap)
+                                <a href="{{ $item->link_bukti_laporan_genap }}"
+                                    target="_blank"
+                                    class="btn btn-view">
+
+                                    {{ $item->tahun }} - Genap
+
+                                </a>
+                            @endif
+
+                        </td>
 
                     </tr>
 
-                </thead>
+                @endforeach
 
-                <tbody>
+            </tbody>
 
-                    @foreach($evaluasi as $item)
-
-                        <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->aspek }}</td>
-                            <td>{{ $item->jenis_laporan }}</td>
-                            <td>{{ $item->created_at->translatedFormat('d M Y') }}</td>
-
-                            <td>
-
-                                <a href="{{ $item->link_bukti_laporan }}"
-                                   target="_blank"
-                                   class="btn btn-view">
-
-                                    Lihat
-
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
+        </table>
 
         </div>
 
@@ -468,48 +494,52 @@
 
             <table class="table table-modern datatable">
 
-                <thead>
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+                    <th>Nama Dokumen</th>
+                    <th>Tahun</th>
+                    <th>Dokumen</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach ($pengendalian as $item)
 
                     <tr>
 
-                        <th>No</th>
-                        <th>Nama Dokumen</th>
-                        <th>Tanggal</th>
-                        <th>Dokumen</th>
+                        <td>{{ $loop->iteration }}</td>
+
+                        <td>{{ $item->name }}</td>
+
+                        <td>
+                            {{ $item->tahun }}
+                        </td>
+
+                        <td>
+
+                            <a href="{{ $item->link_bukti_laporan }}"
+                                target="_blank"
+                                class="btn btn-view">
+
+                                Lihat
+
+                            </a>
+
+                        </td>
 
                     </tr>
 
-                </thead>
+                @endforeach
 
-                <tbody>
+            </tbody>
 
-                    @foreach($pengendalian as $item)
-
-                        <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->created_at->translatedFormat('d M Y') }}</td>
-
-                            <td>
-
-                                <a href="{{ $item->link_bukti_laporan }}"
-                                   target="_blank"
-                                   class="btn btn-view">
-
-                                    Lihat
-
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
+        </table>
 
         </div>
 
@@ -523,48 +553,52 @@
 
             <table class="table table-modern datatable">
 
-                <thead>
+            <thead>
+
+                <tr>
+
+                    <th>No</th>
+                    <th>Nama Dokumen</th>
+                    <th>Tahun</th>
+                    <th>Dokumen</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach ($peningkatan as $item)
 
                     <tr>
 
-                        <th>No</th>
-                        <th>Nama Dokumen</th>
-                        <th>Tanggal</th>
-                        <th>Dokumen</th>
+                        <td>{{ $loop->iteration }}</td>
+
+                        <td>{{ $item->name }}</td>
+
+                        <td>
+                            {{ $item->tahun }}
+                        </td>
+
+                        <td>
+
+                            <a href="{{ $item->link_bukti_laporan }}"
+                                target="_blank"
+                                class="btn btn-view">
+
+                                Lihat
+
+                            </a>
+
+                        </td>
 
                     </tr>
 
-                </thead>
+                @endforeach
 
-                <tbody>
+            </tbody>
 
-                    @foreach($peningkatan as $item)
-
-                        <tr>
-
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->created_at->translatedFormat('d M Y') }}</td>
-
-                            <td>
-
-                                <a href="{{ $item->link_bukti_laporan }}"
-                                   target="_blank"
-                                   class="btn btn-view">
-
-                                    Lihat
-
-                                </a>
-
-                            </td>
-
-                        </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
+        </table>
 
         </div>
 

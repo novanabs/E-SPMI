@@ -208,6 +208,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 }
 
+.status-inactive {
+
+    background: rgba(239,68,68,.10);
+    color: #b91c1c;
+
+}
+
 /* =========================================
    BUTTON
 ========================================= */
@@ -408,12 +415,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                 </div>
 
                 <!-- STATUS -->
+                @php $isActive = $item->tahun_audit >= now()->year; @endphp
 
-                <div class="audit-status status-active">
+                <div class="audit-status {{ $isActive ? 'status-active' : 'status-inactive' }}">
 
+                    @if ($isActive)
                     <i class="fas fa-circle-check"></i>
-
                     Audit Aktif
+                    @else
+                    <i class="fas fa-circle-xmark"></i>
+                    Tidak Aktif
+                    @endif
 
                 </div>
 
@@ -422,14 +434,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                     $hasUser = App\Models\User::where('homebase', $item->jurusan)->where('role', 'admin_jurusan')->exists();
                 @endphp
 
-                @if ($hasUser)
+                @if ($hasUser && $isActive)
                 <a href="{{ route('auditor.evaluasi', $item->id) }}"
                    class="btn-audit">
                 @else
                 <a href="#"
                    class="btn-audit"
                    style="opacity:0.5;pointer-events:none;"
-                   title="Jurusan belum memiliki pengguna terdaftar">
+                   title="{{ !$isActive ? 'Periode audit sudah berakhir' : 'Jurusan belum memiliki pengguna terdaftar' }}">
                 @endif
 
                     <i class="fas fa-arrow-right"></i>

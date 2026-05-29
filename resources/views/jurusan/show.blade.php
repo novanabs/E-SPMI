@@ -391,8 +391,8 @@
                     <th>No</th>
                     <th>Aspek</th>
                     <th>Jenis Laporan</th>
-                    <th>Tanggal</th>
-                    <th>Dokumen</th>
+                    {{-- <th>Tanggal</th> --}}
+                    <th>Link Laporan</th>
 
                 </tr>
 
@@ -410,9 +410,9 @@
 
                         <td>{{ $item->jenis_laporan }}</td>
 
-                        <td>
+                        {{-- <td>
                             {{ $item->created_at->translatedFormat('d M Y') }}
-                        </td>
+                        </td> --}}
 
                         <td>
 
@@ -420,9 +420,19 @@
                                 target="_blank"
                                 class="btn btn-view">
 
-                                Lihat
+                                {{ $item->tahun }} - Ganjil
 
                             </a>
+
+                            @if ($item->link_bukti_laporan_genap)
+                                <a href="{{ $item->link_bukti_laporan_genap }}"
+                                    target="_blank"
+                                    class="btn btn-view">
+
+                                    {{ $item->tahun }} - Genap
+
+                                </a>
+                            @endif
 
                         </td>
 
@@ -453,7 +463,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
-                    <th>Tanggal Upload</th>
+                    <th>Tahun</th>
                     <th>Dokumen</th>
 
                 </tr>
@@ -471,7 +481,7 @@
                         <td>{{ $item->name }}</td>
 
                         <td>
-                            {{ $item->created_at->translatedFormat('d M Y') }}
+                            {{ $item->tahun }}
                         </td>
 
                         <td>
@@ -513,7 +523,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
-                    <th>Tanggal Upload</th>
+                    <th>Tahun</th>
                     <th>Dokumen</th>
 
                 </tr>
@@ -531,7 +541,7 @@
                         <td>{{ $item->name }}</td>
 
                         <td>
-                            {{ $item->created_at->translatedFormat('d M Y') }}
+                            {{ $item->tahun }}
                         </td>
 
                         <td>

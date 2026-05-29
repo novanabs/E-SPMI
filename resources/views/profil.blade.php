@@ -478,7 +478,7 @@ const dosenData = {
     ],
     datasets: [{
         label: 'Jumlah Dosen',
-        data: [10, 20, 40, 35, 3],
+        data: [115, 312, 443, 387, 35],
         backgroundColor: [
             '#2563eb',
             '#14b8a6',
@@ -491,10 +491,10 @@ const dosenData = {
 };
 
 const mahasiswaData = {
-    labels: ['2019', '2020', '2021', '2022', '2023'],
+    labels: ['2019', '2020', '2021', '2022', '2023', '2024'],
     datasets: [{
         label: 'Jumlah Mahasiswa',
-        data: [1200, 1300, 1250, 1400, 1500],
+        data: [1200, 1300, 1250, 1400, 1500, 1580],
         borderColor: '#2563eb',
         backgroundColor: 'rgba(37,99,235,0.08)',
         fill: true,
