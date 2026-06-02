@@ -4420,8 +4420,12 @@
                             ?.value || 0);
                         const skorD = parseInt(document.querySelector('input[name="skor_b"]:checked')
                             ?.value || 0);
-                        const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ?
-                            (skorA + (3 * (skorB + skorC) + skorD) / 8) : 0;
+                        // const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ?
+                        //     (skorA + (3 * (skorB + skorC) + skorD) / 8) : 0;
+                        const jawabanAkhir =
+                            (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ?
+                            ((skorA + (3 * (skorB + skorC) + skorD)) / 8) :
+                            0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final33');
