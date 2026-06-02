@@ -3975,7 +3975,7 @@
                         document.getElementById('cv-pmki').textContent = nmk > 0 ? pmki.toFixed(1) + '%' :
                             '-';
                         document.getElementById('cv-skorC33').textContent = nmk > 0 ? skorC.toFixed(2) :
-                        '-';
+                            '-';
                         return {
                             ndtps,
                             nmk,
@@ -4204,7 +4204,7 @@
                         } = hitungSkorA41();
                         document.getElementById('cv-rms').textContent = rms > 0 ? rms.toFixed(2) : '-';
                         document.getElementById('cv-skora41').textContent = rms > 0 ? skorA.toFixed(2) :
-                        '-';
+                            '-';
                         return {
                             rms,
                             skorA
@@ -5152,7 +5152,7 @@
                         document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(4) : (ndtps >
                             0 ? '0' : '-');
                         document.getElementById('cv-skora53').textContent = base > 0 ? base.toFixed(4) :
-                        '-';
+                            '-';
                         return {
                             base
                         };
@@ -5264,7 +5264,7 @@
                         document.getElementById('cv-ppdm54').textContent = ppdm > 0 ? (ppdm * 100).toFixed(
                             2) + '%' : (npd > 0 ? '0%' : '-');
                         document.getElementById('cv-skora54').textContent = base > 0 ? base.toFixed(4) :
-                        '-';
+                            '-';
                         return {
                             base
                         };
@@ -5402,7 +5402,7 @@
                         document.getElementById('cv-rn55').textContent = ndtps > 0 ? rn.toFixed(4) : '-';
                         document.getElementById('cv-ri55').textContent = ndtps > 0 ? ri.toFixed(4) : '-';
                         document.getElementById('cv-skora55').textContent = base > 0 ? base.toFixed(4) :
-                        '-';
+                            '-';
                         return {
                             base
                         };
@@ -5870,7 +5870,7 @@
                         document.getElementById('cv-ppkdm60').textContent = ppkdm > 0 ? (ppkdm * 100)
                             .toFixed(2) + '%' : (npkdtps > 0 ? '0%' : '-');
                         document.getElementById('cv-skora60').textContent = base > 0 ? base.toFixed(4) :
-                        '-';
+                            '-';
                         return {
                             base
                         };

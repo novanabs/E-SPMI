@@ -8,6 +8,7 @@ use App\Http\Controllers\EvaluasiDiriJurusan;
 use App\Http\Controllers\EvaluasiLamdikController;
 use App\Http\Controllers\EvaluasiLaporanController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\HasilAMIController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
 use App\Http\Controllers\PPEPP\EvaluasiController;
@@ -29,10 +30,25 @@ Route::get('/profil', function () {
     return view('profil');
 })->name('profil');
 
-Route::resource('dashboard', DashboardController::class);
-Route::resource('akreditasi', AkreditasiController::class);
+
 
 Route::middleware('auth')->group(function () {
+    // Export Hasil Audit AMI
+    Route::prefix('audit')->name('audit.')->group(function () {
+
+        // Simpan header (tanggal audit + catatan umum)
+        Route::post('/header', [HasilAMIController::class, 'saveHeader'])->name('saveHeader');
+
+        // Simpan per kriteria
+        Route::post('{jurusan_id}/kriteria', [HasilAMIController::class, 'saveKriteria'])->name('saveKriteria');
+
+        // Export PDF
+        Route::get('/{audit}/export/pdf', [HasilAMIController::class, 'exportPdf'])->name('export.pdf');
+
+    });
+
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('akreditasi', AkreditasiController::class);
 
     Route::resource('dokumen', DokumenController::class);
     Route::resource('evaluasi', EvaluasiController::class);
@@ -61,8 +77,8 @@ Route::middleware('auth')->group(function () {
         return response('<h2>HELLO DARI LARAVEL</h2>', 200);
     });
 
-     Route::get('/dashboard-auditor', [UserController::class, 'dashboardAuditor'])->name('auditor.index');
-    
+    Route::get('/dashboard-auditor', [UserController::class, 'dashboardAuditor'])->name('auditor.index');
+
 
 });
 
@@ -82,13 +98,17 @@ Route::middleware(['auth', 'role:admin_FKIP'])->group(function () {
     Route::resource('evaluasi_diri_jurusan', EvaluasiDiriJurusan::class);
     Route::resource('user', UserController::class);
     Route::get('/manajemen-auditor', [UserController::class, 'auditor'])->name('user.auditor');
-    Route::post('/hubungkan',
-            [UserController::class, 'hubungkan'])
-            ->name('auditor.hubungkan');
+    Route::post(
+        '/hubungkan',
+        [UserController::class, 'hubungkan']
+    )
+        ->name('auditor.hubungkan');
 
-    Route::delete('/hapus-hubungan/{id}',
-            [UserController::class, 'hapusHubungan'])
-            ->name('auditor.hapusHubungan');
+    Route::delete(
+        '/hapus-hubungan/{id}',
+        [UserController::class, 'hapusHubungan']
+    )
+        ->name('auditor.hapusHubungan');
     Route::resource('jurusan', JurusanController::class);
 });
 
