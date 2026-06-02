@@ -52,7 +52,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'madhan@ulm.ac.id',
         ], [
             'name'     => 'Madhan, SPd.',
-            'homebase' => 'Gugus Penjamin Mutu FKIP ULM',
+            'homebase' => 'Pendidikan Komputer',
             'password' => Hash::make('12345'),
             'jabatan'  => 'Auditor',
             'nip'      => '1122334455',
@@ -63,7 +63,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'ari@ulm.ac.id',
         ], [
             'name'     => 'Ari, SPd.',
-            'homebase' => 'Gugus Penjamin Mutu FKIP ULM',
+            'homebase' => 'Pendidikan Komputer',
             'password' => Hash::make('12345'),
             'jabatan'  => 'Auditor',
             'nip'      => '5566778899',

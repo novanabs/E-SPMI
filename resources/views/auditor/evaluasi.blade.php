@@ -1083,7 +1083,7 @@
                                     </label>
                                     <input type="date" id="tanggal_audit" name="tanggal_audit"
                                         class="form-control input-header"
-                                        value="{{ old('tanggal_audit', $auditHeader->tanggal_audit?->format('Y-m-d') ?? '') }}">
+                                        value="{{ old('tanggal_audit', optional($auditHeader)->tanggal_audit?->format('Y-m-d') ?? '') }}">
                                 </div>
                             </div>
 
@@ -1103,7 +1103,7 @@
                         <div class="mt-3">
                             <label class="form-label"><strong>Catatan Umum</strong></label>
                             <textarea id="catatan_umum" class="form-control input-header" maxlength="200" rows="3"
-                                placeholder="Isi catatan umum maksimal 200 karakter...">{{ old('catatan_umum', $auditHeader->catatan_umum ?? '') }}</textarea>
+                                placeholder="Isi catatan umum maksimal 200 karakter...">{{ old('catatan_umum', optional($auditHeader)->catatan_umum ?? '') }}</textarea>
                         </div>
 
                         <input type="hidden" id="auditor_1_id" value="{{ $auditor->get(0)?->user?->id ?? '' }}">

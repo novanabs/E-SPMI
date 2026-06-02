@@ -483,14 +483,14 @@
                                 <p>Profil UPM</p>
                             </a>
                         </li>
-                        <!-- PPEPP LANDING -->
+                        {{-- <!-- PPEPP LANDING -->
                         <li class="nav-item">
                             <a href="{{ route('ppepp.index') }}"
                                 class="nav-link {{ Route::is('ppepp*') ? 'active' : '' }}">
                                 <i class="nav-icon bi bi-diagram-3-fill"></i>
                                 <p>PPEPP</p>
                             </a>
-                        </li>
+                        </li> --}}
                         @if (auth()->check())
                             @if (auth()->user()->role == 'pimpinan')
                                 <li class="nav-item">

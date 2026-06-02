@@ -28,8 +28,7 @@ class DatabaseSeeder extends Seeder
             LEDSeeder2::class,
             SubItemElemenSeeder::class,
             SyaratUnggulSeeder::class,
-            // PilkomEvaluationSeeder::class,
-            UsersMatrikSeeder::class,
+            PilkomEvaluationSeeder::class,
             AkreditasiSeeder::class
         ]);
 

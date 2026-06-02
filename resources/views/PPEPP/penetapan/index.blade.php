@@ -85,46 +85,47 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 table.dataTable {
     border-collapse: separate !important;
-    border-spacing: 0 12px !important;
+    border-spacing: 0 4px !important;
+
 }
 
 table.dataTable thead th {
     border: none !important;
     background: #f8fafc !important;
     color: #0f172a !important;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
-    padding: 18px !important;
+    padding: 10px 12px !important;
     white-space: nowrap;
 }
 
 table.dataTable tbody tr {
     background: white;
     transition: all .25s ease;
-    box-shadow: 0 4px 20px rgba(15,23,42,0.05);
+    box-shadow: 0 2px 8px rgba(15,23,42,0.04);
 }
 
 table.dataTable tbody tr:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 28px rgba(15,23,42,0.08);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(15,23,42,0.06);
 }
 
 table.dataTable tbody td {
     border-top: none !important;
-    padding: 18px !important;
+    padding: 10px 12px !important;
     vertical-align: middle;
     background: white;
     color: #334155;
 }
 
 table.dataTable tbody tr td:first-child {
-    border-top-left-radius: 18px;
-    border-bottom-left-radius: 18px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 table.dataTable tbody tr td:last-child {
-    border-top-right-radius: 18px;
-    border-bottom-right-radius: 18px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 /* PAGINATION */
@@ -261,7 +262,7 @@ table.dataTable tbody tr td:last-child {
     }
 
     table.dataTable tbody td {
-        padding: 14px !important;
+        padding: 8px 10px !important;
     }
 }
 
