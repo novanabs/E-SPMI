@@ -11,9 +11,18 @@ class Evaluasi extends Model
     protected $fillable = [
         'aspek',
         'jenis_laporan',
-        'link_bukti_laporan',
-        'link_bukti_laporan_genap',
         'tahun',
+        'jenis',
+        'link_bukti_laporan',
         'id_users'
     ];
+
+    public function getPeriodeAttribute(): string
+    {
+        return match ($this->jenis) {
+            'Semester Ganjil' => "{$this->tahun} - Ganjil",
+            'Semester Genap'  => "{$this->tahun} - Genap",
+            default           => (string) $this->tahun,
+        };
+    }
 }

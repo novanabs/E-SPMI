@@ -52,7 +52,7 @@ class AkreditasiController extends Controller
         Akreditasi::create($data->all());
 
         return redirect()
-            ->route('akreditasi')
+            ->route('akreditasi.index')
             ->with('success', 'Data akreditasi berhasil ditambahkan');
     }
 
@@ -97,7 +97,7 @@ class AkreditasiController extends Controller
         Akreditasi::where('id', $id)->update($validated);
 
         return redirect()
-            ->route('akreditasi')
+            ->route('akreditasi.index')
             ->with('success', 'Data akreditasi berhasil diupdate!');
     }
 

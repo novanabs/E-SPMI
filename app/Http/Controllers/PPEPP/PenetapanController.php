@@ -14,7 +14,7 @@ class PenetapanController extends Controller
     {
 
         if (!auth()->check()) {
-            return redirect()->route('login-jurusan');
+            return redirect()->route('login');
         }
 
         $id = auth()->id();

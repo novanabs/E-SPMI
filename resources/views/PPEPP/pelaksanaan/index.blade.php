@@ -319,10 +319,9 @@ table.dataTable tbody tr td:last-child {
                 <tr>
                     <th>No</th>
                     <th>Nama Laporan</th>
-                    {{-- <th>Tahun</th> --}}
-                    <th>Link Laporan</th>
+                    <th>Periode</th>
                     <th>Nama Mitra</th>
-                    <th>Dokumen Kerjasama</th>
+                    <th>Link Kerjasama</th>
                     <th>Aksi</th>
                 </tr>
 
@@ -354,30 +353,11 @@ table.dataTable tbody tr td:last-child {
 
                         </td> --}}
 
-                        <td style="min-width: 150px;">
-                            <div class="d-flex flex-column gap-1">
+                        <td>
 
-                                <a href="{{ $item->link_bukti_laporan }}"
-                                    class="btn-link-custom"
-                                    target="_blank">
-                                    
-                                   
-                                    {{ $item->tahun }} - Ganjil
-                                    
-                                </a>
-                                
-                                @if ($item->link_bukti_laporan_genap)
-                                
-                                <a href="{{ $item->link_bukti_laporan_genap }}"
-                                    class="btn-link-custom"
-                                    target="_blank">
-                                    
-                                   
-                                    {{ $item->tahun }} - Genap
-                                    
-                                </a>
-                                @endif
-                            </div>
+                            <span class="fw-semibold">
+                                {{ $item->periode }}
+                            </span>
 
                         </td>
 

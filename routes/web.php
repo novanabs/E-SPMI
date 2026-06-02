@@ -11,6 +11,7 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HasilAMIController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
+use App\Http\Controllers\PPEPPController;
 use App\Http\Controllers\PPEPP\EvaluasiController;
 use App\Http\Controllers\PPEPP\PelaksanaanController;
 use App\Http\Controllers\PPEPP\PenetapanController;
@@ -30,6 +31,8 @@ Route::get('/profil', function () {
     return view('profil');
 })->name('profil');
 
+Route::get('/ppepp', [PPEPPController::class, 'index'])->name('ppepp.index');
+Route::get('/ppepp/{id}', [PPEPPController::class, 'show'])->name('ppepp.show');
 
 
 Route::middleware('auth')->group(function () {

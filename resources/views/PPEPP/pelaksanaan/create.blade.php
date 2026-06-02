@@ -227,52 +227,46 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 </div>
 
-        <div class="form-group">
+<div class="form-group">
 
-            <label for="link_bukti_laporan" class="form-label">
-                Link Bukti Laporan - Semester Ganjil <span class="text-danger">*</span>
-            </label>
+    <label class="form-label">
+        Jenis Pelaksanaan <span class="text-danger">*</span>
+    </label>
 
-            <input type="text"
-                   class="form-control @error('link_bukti_laporan') is-invalid @enderror"
-                   id="link_bukti_laporan"
-                   name="link_bukti_laporan"
-                   placeholder="Masukkan link laporan"
-                   value="{{ old('link_bukti_laporan') }}">
+    <div class="d-flex flex-wrap gap-4 mt-2">
 
-            @error('link_bukti_laporan')
+        @foreach (['Tahun', 'Semester Ganjil', 'Semester Genap'] as $i => $option)
 
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+            <div class="form-check">
 
-            @enderror
+                <input class="form-check-input @error('jenis') is-invalid @enderror"
+                       type="radio"
+                       name="jenis"
+                       id="jenis_{{ $i }}"
+                       value="{{ $option }}"
+                       {{ old('jenis') === $option ? 'checked' : '' }}>
 
-        </div>
-         <div class="form-group">
+                <label class="form-check-label fw-semibold" for="jenis_{{ $i }}">
+                    {{ $option }}
+                </label>
 
-            <label for="link_bukti_laporan_genap" class="form-label">
-                Link Bukti Laporan - Semester Genap
-            </label>
+            </div>
 
-            <input type="text"
-                   class="form-control @error('link_bukti_laporan_genap') is-invalid @enderror"
-                   id="link_bukti_laporan_genap"
-                   name="link_bukti_laporan_genap"
-                   placeholder="Masukkan link laporan"
-                   value="{{ old('link_bukti_laporan_genap') }}">
+        @endforeach
 
-            @error('link_bukti_laporan_genap')
+    </div>
 
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+    @error('jenis')
 
-            @enderror
-
+        <div class="invalid-feedback d-block">
+            {{ $message }}
         </div>
 
-        <div class="form-group">
+    @enderror
+
+</div>
+
+<div class="form-group">
 
             <label for="nama_mitra" class="form-label">
                 Nama Mitra
@@ -294,10 +288,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
             @enderror
 
         </div>
-
-        
-
-       
 
 <div class="form-group">
 

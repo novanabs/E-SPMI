@@ -286,52 +286,69 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     @enderror
 
-</div> 
-        <div class="form-group">
+</div>
 
-            <label for="link_bukti_laporan" class="form-label">
-                Link Bukti Laporan Semester Ganjil <span class="text-danger">*</span>
-            </label>
+<div class="form-group">
 
-            <input type="url"
-                   class="form-control @error('link_bukti_laporan') is-invalid @enderror"
-                   id="link_bukti_laporan"
-                   name="link_bukti_laporan"
-                   placeholder="Masukkan link bukti laporan"
-                   value="{{ old('link_bukti_laporan') }}">
+    <label class="form-label">
+        Jenis Laporan <span class="text-danger">*</span>
+    </label>
 
-            @error('link_bukti_laporan')
+    <div class="d-flex flex-wrap gap-4 mt-2">
 
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+        @foreach (['Tahun', 'Semester Ganjil', 'Semester Genap'] as $i => $option)
 
-            @enderror
+            <div class="form-check">
 
+                <input class="form-check-input @error('jenis') is-invalid @enderror"
+                       type="radio"
+                       name="jenis"
+                       id="jenis_{{ $i }}"
+                       value="{{ $option }}"
+                       {{ old('jenis') === $option ? 'checked' : '' }}>
+
+                <label class="form-check-label fw-semibold" for="jenis_{{ $i }}">
+                    {{ $option }}
+                </label>
+
+            </div>
+
+        @endforeach
+
+    </div>
+
+    @error('jenis')
+
+        <div class="invalid-feedback d-block">
+            {{ $message }}
         </div>
 
-                <div class="form-group">
+    @enderror
 
-            <label for="link_bukti_laporan" class="form-label">
-                Link Bukti Laporan Semester Genap
-            </label>
+</div>
 
-            <input type="url"
-                   class="form-control @error('link_bukti_laporan_genap') is-invalid @enderror"
-                   id="link_bukti_laporan_genap"
-                   name="link_bukti_laporan_genap"
-                   placeholder="Masukkan link bukti laporan"
-                   value="{{ old('link_bukti_laporan_genap') }}">
+<div class="form-group">
 
-            @error('link_bukti_laporan_genap')
+    <label for="link_bukti_laporan" class="form-label">
+        Link Bukti Laporan <span class="text-danger">*</span>
+    </label>
 
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
+    <input type="url"
+           class="form-control @error('link_bukti_laporan') is-invalid @enderror"
+           id="link_bukti_laporan"
+           name="link_bukti_laporan"
+           placeholder="Masukkan link bukti laporan"
+           value="{{ old('link_bukti_laporan') }}">
 
-            @enderror
+    @error('link_bukti_laporan')
 
+        <div class="invalid-feedback">
+            {{ $message }}
         </div>
+
+    @enderror
+
+</div>
 
         <button type="submit" class="btn-save">
 

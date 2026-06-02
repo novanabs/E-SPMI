@@ -372,6 +372,15 @@
 
                             </div>
 
+                            <div class="mt-4">
+                                <a href="{{ route('ppepp.index') }}"
+                                   class="btn btn-light rounded-pill px-4 py-2 fw-bold"
+                                   style="color:#1e3a8a; text-decoration: none; font-size: 14px;">
+                                    <i class="bi bi-diagram-3-fill me-2"></i>
+                                    Lihat Siklus PPEPP
+                                </a>
+                            </div>
+
                         </div>
 
                     </div>

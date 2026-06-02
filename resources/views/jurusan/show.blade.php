@@ -320,9 +320,8 @@
 
                     <th>No</th>
                     <th>Nama Laporan</th>
-                    <th>Mitra</th>
-                    <th>Link Laporan</th>
-                    <th>Dokumen</th>
+                    <th>Periode</th>
+                    <th>Link Kerjasama</th>
 
                 </tr>
 
@@ -337,29 +336,19 @@
 
                         <td>{{ $item->name }}</td>
 
-                        <td>{{ $item->nama_mitra ?? '-' }}</td>
+                        <td>{{ $item->periode }}</td>
 
                         <td>
-                            <a href="{{ $item->link_bukti_laporan }}" target="_blank" class="btn  btn-success">
-                                {{ $item->tahun }} - Ganjil
-                            </a>
 
-                            @if ($item->link_bukti_laporan_genap)
-                                <a href="{{ $item->link_bukti_laporan_genap }}" target="_blank" class="btn  btn-success">
-                                    {{ $item->tahun }} - Genap
+                            @if ($item->link_bukti_kerjasama)
+                                <a href="{{ $item->link_bukti_kerjasama }}"
+                                    target="_blank"
+                                    class="btn btn-success">
+                                    Lihat
                                 </a>
+                            @else
+                                <span class="text-muted">-</span>
                             @endif
-                        </td>
-
-                        <td>
-
-                            <a href="{{ $item->link_bukti_kerjasama }}"
-                                target="_blank"
-                                class="btn btn-view">
-
-                                Lihat
-
-                            </a>
 
                         </td>
 
@@ -420,19 +409,9 @@
                                 target="_blank"
                                 class="btn btn-view">
 
-                                {{ $item->tahun }} - Ganjil
+                                Lihat
 
                             </a>
-
-                            @if ($item->link_bukti_laporan_genap)
-                                <a href="{{ $item->link_bukti_laporan_genap }}"
-                                    target="_blank"
-                                    class="btn btn-view">
-
-                                    {{ $item->tahun }} - Genap
-
-                                </a>
-                            @endif
 
                         </td>
 
@@ -463,7 +442,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
-                    <th>Tahun</th>
+                    <th>Periode</th>
                     <th>Dokumen</th>
 
                 </tr>
@@ -481,7 +460,7 @@
                         <td>{{ $item->name }}</td>
 
                         <td>
-                            {{ $item->tahun }}
+                            {{ $item->periode }}
                         </td>
 
                         <td>
@@ -523,7 +502,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
-                    <th>Tahun</th>
+                    <th>Periode</th>
                     <th>Dokumen</th>
 
                 </tr>
@@ -541,7 +520,7 @@
                         <td>{{ $item->name }}</td>
 
                         <td>
-                            {{ $item->tahun }}
+                            {{ $item->periode }}
                         </td>
 
                         <td>

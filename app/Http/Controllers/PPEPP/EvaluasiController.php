@@ -14,7 +14,7 @@ class EvaluasiController extends Controller
     public function index()
     {
         if (!auth()->check()) {
-            return redirect()->route('login-jurusan');
+            return redirect()->route('login');
         }
 
         $id = auth()->id();
@@ -39,17 +39,19 @@ class EvaluasiController extends Controller
         $request->validate([
             'aspek'              => 'required',
             'jenis_laporan'      => 'required',
+            'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
+            'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'link_bukti_laporan' => 'required',
-            'link_bukti_laporan_genap' => 'nullable',
-            'tahun' => 'required|integer|min:2000|max:' . (date('Y') + 10)
         ], [
             'aspek.required'              => 'Aspek wajib diisi.',
             'jenis_laporan.required'      => 'Jenis laporan wajib diisi.',
+            'tahun.required'              => 'Tahun wajib diisi.',
+            'tahun.integer'               => 'Tahun harus berupa angka.',
+            'tahun.min'                   => 'Tahun tidak boleh kurang dari 2000.',
+            'tahun.max'                   => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
+            'jenis.required'              => 'Jenis pelaksanaan wajib dipilih.',
+            'jenis.in'                    => 'Jenis pelaksanaan tidak valid.',
             'link_bukti_laporan.required' => 'Link bukti laporan wajib diisi.',
-            'tahun.required' => 'Tahun wajib diisi.',
-            'tahun.integer' => 'Tahun harus berupa angka.',
-            'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',
-            'tahun.max' => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
         ]);
 
         $data = $request->merge([
@@ -86,17 +88,19 @@ class EvaluasiController extends Controller
         $validated = $request->validate([
             'aspek'              => 'required',
             'jenis_laporan'      => 'required',
+            'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
+            'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'link_bukti_laporan' => 'required',
-            'link_bukti_laporan_genap' => 'nullable',
-            'tahun' => 'required|integer|min:2000|max:' . (date('Y') + 10)
         ], [
             'aspek.required'              => 'Aspek wajib diisi.',
             'jenis_laporan.required'      => 'Jenis laporan wajib diisi.',
+            'tahun.required'              => 'Tahun wajib diisi.',
+            'tahun.integer'               => 'Tahun harus berupa angka.',
+            'tahun.min'                   => 'Tahun tidak boleh kurang dari 2000.',
+            'tahun.max'                   => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
+            'jenis.required'              => 'Jenis pelaksanaan wajib dipilih.',
+            'jenis.in'                    => 'Jenis pelaksanaan tidak valid.',
             'link_bukti_laporan.required' => 'Link bukti laporan wajib diisi.',
-            'tahun.required' => 'Tahun wajib diisi.',
-            'tahun.integer' => 'Tahun harus berupa angka.',
-            'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',
-            'tahun.max' => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
         ]);
 
         Evaluasi::where('id', $id)->update(

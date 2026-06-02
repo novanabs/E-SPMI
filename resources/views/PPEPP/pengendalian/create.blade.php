@@ -336,7 +336,46 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     @enderror
 
-</div> 
+</div>
+
+<div class="form-group">
+
+    <label class="form-label">
+        Jenis Laporan <span class="text-danger">*</span>
+    </label>
+
+    <div class="d-flex flex-wrap gap-4 mt-2">
+
+        @foreach (['Tahun', 'Semester Ganjil', 'Semester Genap'] as $i => $option)
+
+            <div class="form-check">
+
+                <input class="form-check-input @error('jenis') is-invalid @enderror"
+                       type="radio"
+                       name="jenis"
+                       id="jenis_{{ $i }}"
+                       value="{{ $option }}"
+                       {{ old('jenis') === $option ? 'checked' : '' }}>
+
+                <label class="form-check-label fw-semibold" for="jenis_{{ $i }}">
+                    {{ $option }}
+                </label>
+
+            </div>
+
+        @endforeach
+
+    </div>
+
+    @error('jenis')
+
+        <div class="invalid-feedback d-block">
+            {{ $message }}
+        </div>
+
+    @enderror
+
+</div>
 
         <!-- LINK LAPORAN -->
 

@@ -14,7 +14,7 @@ class PelaksanaanController extends Controller
     public function index()
     {
         if (!auth()->check()) {
-            return redirect()->route('login-jurusan');
+            return redirect()->route('login');
         }
 
         $id = auth()->id();
@@ -37,16 +37,17 @@ class PelaksanaanController extends Controller
     {
         $request->validate([
             'name'               => 'required',
-            'link_bukti_laporan' => 'required',
-            'tahun' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'tahun'              => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
         ], [
             'name.required'               => 'Nama laporan wajib diisi.',
-            'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
-            'tahun.required' => 'Tahun wajib diisi.',
-            'tahun.digits' => 'Tahun harus berupa 4 digit.',
-            'tahun.integer' => 'Tahun harus berupa angka.',
-            'tahun.min' => 'Tahun tidak valid.',
-            'tahun.max' => 'Tahun tidak valid.',
+            'tahun.required'              => 'Tahun wajib diisi.',
+            'tahun.digits'                => 'Tahun harus berupa 4 digit.',
+            'tahun.integer'               => 'Tahun harus berupa angka.',
+            'tahun.min'                   => 'Tahun tidak valid.',
+            'tahun.max'                   => 'Tahun tidak valid.',
+            'jenis.required'              => 'Jenis pelaksanaan wajib dipilih.',
+            'jenis.in'                    => 'Jenis pelaksanaan tidak valid.',
         ]);
 
         $data = $request->merge([
@@ -81,20 +82,11 @@ class PelaksanaanController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'name'                 => 'required',
-            'link_bukti_laporan'   => 'required',
-            'link_bukti_laporan_genap' => 'nullable',
-            'tahun' => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
-            'nama_mitra'           => 'nullable',
-            'link_bukti_kerjasama' => 'nullable'
-        ], [
-            'name.required'               => 'Nama laporan wajib diisi.',
-            'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
-            'tahun.required' => 'Tahun wajib diisi.',
-            'tahun.digits' => 'Tahun harus berupa 4 digit.',
-            'tahun.integer' => 'Tahun harus berupa angka.',
-            'tahun.min' => 'Tahun tidak valid.',
-            'tahun.max' => 'Tahun tidak valid.',
+            'name'               => 'required',
+            'tahun'              => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
+            'nama_mitra'         => 'nullable',
+            'link_bukti_kerjasama' => 'nullable',
         ]);
 
         Pelaksanaan::where('id', $id)->update(

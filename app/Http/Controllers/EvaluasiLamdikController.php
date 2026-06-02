@@ -340,21 +340,14 @@ class EvaluasiLamdikController extends Controller
     {
         $userJurusan = User::findOrFail($idJurusan);
 
-        // Load UPM as default comparison
-        $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
-
-        // Build auditors collection: UPM + shared Auditor (virtual entry using jurusan's ID)
-        $auditors = collect();
-        if ($userUpm) {
-            $userUpm->auditor_label = 'Penilaian UPM';
-            $auditors->push($userUpm);
-        }
-        $auditorVirtual = (object) [
-            'id' => $idJurusan,
-            'name' => 'Auditor',
-            'auditor_label' => 'Auditor',
-        ];
-        $auditors->push($auditorVirtual);
+        // Build auditors collection: only the virtual Auditor entry
+        $auditors = collect([
+            (object) [
+                'id'            => $idJurusan,
+                'name'          => 'Auditor',
+                'auditor_label' => 'Auditor',
+            ],
+        ]);
 
         // Load jurusan self-evaluation data
         $data = MatriksLED::with([
@@ -366,7 +359,6 @@ class EvaluasiLamdikController extends Controller
         ])->orderBy('nomor', 'asc')->get();
 
         // Load shared auditor scores: id_users = jurusan_id, id_user_jurusan = jurusan_id
-        // and UPM scores: id_users = upm_id, id_user_jurusan = jurusan_id
         $auditorIds = $auditors->pluck('id');
         $allAuditorScores = UsersMatrik::where('id_user_jurusan', $idJurusan)
             ->whereIn('id_users', $auditorIds)
@@ -436,10 +428,6 @@ class EvaluasiLamdikController extends Controller
                             return '<strong>' . e($label) . '</strong> : ' . e($ts->saran);
                         })->implode('<br>');
                     }
-                } elseif ($score) {
-                    // For UPM, use users_matrik.temuan/saran
-                    $temuanHtml = $score->temuan ?? '-';
-                    $saranHtml = $score->saran ?? '-';
                 }
 
                 $item->auditorMatriks->push((object)[

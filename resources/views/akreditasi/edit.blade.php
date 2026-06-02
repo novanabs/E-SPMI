@@ -108,7 +108,7 @@
             Simpan
         </button>
 
-        <a href="{{ route('akreditasi') }}" class="mt-3 btn btn-sm btn-secondary">
+        <a href="{{ route('akreditasi.index') }}" class="mt-3 btn btn-sm btn-secondary">
             Kembali
         </a>
     </form>

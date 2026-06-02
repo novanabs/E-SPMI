@@ -349,7 +349,7 @@ table.dataTable tbody tr td:last-child {
                 <tr>
                     <th>No</th>
                     <th>Nama Dokumen</th>
-                    <th>Tahun</th>
+                    <th>Periode</th>
                     <th>Link Laporan</th>
                     <th>Aksi</th>
                 </tr>
@@ -377,7 +377,7 @@ table.dataTable tbody tr td:last-child {
                         <td>
 
                             <div class="document-date">
-                                {{ $item->tahun }}
+                                {{ $item->periode }}
                             </div>
 
                         </td>

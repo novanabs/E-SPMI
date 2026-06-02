@@ -483,6 +483,14 @@
                                 <p>Profil UPM</p>
                             </a>
                         </li>
+                        <!-- PPEPP LANDING -->
+                        <li class="nav-item">
+                            <a href="{{ route('ppepp.index') }}"
+                                class="nav-link {{ Route::is('ppepp*') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-diagram-3-fill"></i>
+                                <p>PPEPP</p>
+                            </a>
+                        </li>
                         @if (auth()->check())
                             @if (auth()->user()->role == 'pimpinan')
                                 <li class="nav-item">
@@ -639,13 +647,13 @@
                                                         </a>
                                                     </li>
 
-                                                    <li class="nav-item">
+                                                    {{-- <li class="nav-item">
                                                         <a href="{{ route('evaluasi_lamdik.index') }}"
                                                             class="nav-link {{ Route::is('evaluasi_lamdik.index') ? 'active' : '' }}">
                                                             <i class="bi bi-dot nav-icon"></i>
                                                             <p>Evaluasi Diri (Lamdik)</p>
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
                                             </li>
                                         @endif
@@ -679,13 +687,13 @@
                                                 <p>PPEPP Jurusan</p>
                                             </a>
                                         </li>
-                                        <li class="nav-item">
+                                        {{-- <li class="nav-item">
                                             <a href="{{ route('evaluasi_diri_jurusan.index') }}"
                                                 class="nav-link {{ Route::is('evaluasi_diri_jurusan*') ? 'active' : '' }}">
                                                 <i class="nav-icon bi bi-bar-chart-line"></i>
                                                 <p>Evaluasi Diri Jurusan</p>
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         <li class="nav-item">
                                             <a href="{{ route('user.index') }}"
                                                 class="nav-link {{ Route::is('user.index') ? 'active' : '' }}">

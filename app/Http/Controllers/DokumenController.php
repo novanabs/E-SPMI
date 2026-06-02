@@ -13,7 +13,7 @@ class DokumenController extends Controller
     public function index()
     {
         if (!auth()->check()) {
-            return redirect()->route('login-jurusan');
+            return redirect()->route('login');
         }
 
         $id = auth()->id();

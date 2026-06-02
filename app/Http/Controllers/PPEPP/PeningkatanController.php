@@ -13,7 +13,7 @@ class PeningkatanController extends Controller
     public function index()
     {
         if (!auth()->check()) {
-            return redirect()->route('login-jurusan');
+            return redirect()->route('login');
         }
 
         $id = auth()->id();
@@ -36,9 +36,17 @@ class PeningkatanController extends Controller
     {
         $request->validate([
             'name'               => 'required',
+            'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
+            'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'link_bukti_laporan' => 'required'
         ], [
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.integer' => 'Tahun harus berupa angka.',
+            'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',
+            'tahun.max' => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
+            'jenis.required' => 'Jenis laporan wajib dipilih.',
+            'jenis.in' => 'Jenis laporan tidak valid.',
         ]);
 
         $data = $request->merge([
@@ -75,8 +83,16 @@ class PeningkatanController extends Controller
         $validated = $request->validate([
             'name'               => 'required|string',
             'link_bukti_laporan' => 'required|string',
+            'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
+            'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
         ], [
             'link_bukti_laporan.required' => 'Link Laporan wajib diisi.',
+            'tahun.required' => 'Tahun wajib diisi.',
+            'tahun.integer' => 'Tahun harus berupa angka.',
+            'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',
+            'tahun.max' => 'Tahun tidak boleh lebih dari ' . (date('Y') + 10) . '.',
+            'jenis.required' => 'Jenis laporan wajib dipilih.',
+            'jenis.in' => 'Jenis laporan tidak valid.',
         ]);
 
         Peningkatan::where('id', $id)->update(

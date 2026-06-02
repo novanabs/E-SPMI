@@ -4,33 +4,6 @@
 
 @section('content')
 
-    @php
-        $auditorList = $auditors ?? collect();
-    @endphp
-
-    {{-- CLICKABLE PILL PANEL --}}
-    <div class="card shadow-sm mb-3 border-0 rounded-3" style="background: #f8faff;">
-        <div class="card-body py-3">
-            <div class="d-flex align-items-center gap-2 flex-wrap">
-                <span class="fw-semibold me-2 text-nowrap" style="color: #173b70;"><i class="bi bi-arrow-left-right me-1"></i>Bandingkan:</span>
-                @forelse ($auditorList as $a)
-                    @php
-                        $isUPM = str_contains($a->auditor_label ?? '', 'UPM');
-                        $pillLabel = $isUPM ? 'UPM' : $a->name;
-                        $dataLabel = $isUPM ? 'UPM' : 'Auditor';
-                    @endphp
-                    <button class="btn btn-sm rounded-pill px-3 {{ $loop->first ? 'btn-primary' : 'btn-outline-secondary' }} auditor-pill" data-auditor-id="{{ $a->id }}" data-label="{{ $dataLabel }}">
-                        <i class="bi {{ $isUPM ? 'bi-shield-fill-check' : 'bi-person-check-fill' }} me-1"></i>{{ $pillLabel }}
-                    </button>
-                @empty
-                    <span class="text-muted small">Tidak ada auditor terdaftar</span>
-                @endforelse
-            </div>
-        </div>
-    </div>
-
-
-
     {{-- NAV TABS --}}
     <ul class="nav nav-tabs" id="perbandinganTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -82,7 +55,7 @@
                 <div class="col-md-5 d-flex">
                     <div class="card shadow-sm h-100 w-100 border-0 rounded-3">
                         <div class="card-header py-2 rounded-top-3" style="background: #173b70; color: #fff;">
-                            <h5 class="mb-0" id="auditorCardTitle"><i class="bi bi-shield-check me-1"></i>Penilaian UPM</h5>
+                            <h5 class="mb-0" id="auditorCardTitle"><i class="bi bi-shield-check me-1"></i>Penilaian Auditor</h5>
                         </div>
                         <div class="card-body py-2">
                             <div id="auditorNamesContainer" class="mb-2"></div>
@@ -135,7 +108,7 @@
                             <th class="text-white" style="background: #173b70;">Kriteria</th>
                             <th class="text-white" style="background: #173b70;">Elemen</th>
                             <th class="text-white" style="background: #173b70;">Penilaian Jurusan</th>
-                            <th id="thAuditor" class="text-white" style="background: #173b70;">Penilaian UPM</th>
+                            <th id="thAuditor" class="text-white" style="background: #173b70;">Penilaian Auditor</th>
                             <th class="text-white" style="background: #173b70; width:5%;">Selisih</th>
                             <th class="text-white" style="background: #173b70; width:22%;">Temuan</th>
                             <th class="text-white" style="background: #173b70; width:22%;">Saran</th>
@@ -179,7 +152,7 @@
                     <h5 class="mb-0"><i class="bi bi-award me-1"></i>Status Akreditasi dan Masa Berlaku</h5>
                     <div>
                         <span class="fs-6 fw-bold me-3" style="color: #a3d9a5;">NA Jurusan: <span id="syaratNaDisplay">—</span></span>
-                        <span class="fs-6 fw-bold" style="color: #ffd699;">NA <span class="auditor-syarat-label">UPM</span>: <span id="syaratNaAuditorDisplay">—</span></span>
+                        <span class="fs-6 fw-bold" style="color: #ffd699;">NA Auditor: <span id="syaratNaAuditorDisplay">—</span></span>
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -230,7 +203,7 @@
             {{-- LEGEND --}}
             <div class="d-flex gap-4 justify-content-end mb-3 px-2 small">
                 <span><span class="d-inline-block rounded-1 me-1" style="width:14px;height:14px;background:#a3d9a5;vertical-align:middle;"></span> Penilaian Mandiri Jurusan</span>
-                <span><span class="d-inline-block rounded-1 me-1" style="width:14px;height:14px;background:#ffd699;vertical-align:middle;"></span> <span class="auditor-syarat-label">UPM</span></span>
+                <span><span class="d-inline-block rounded-1 me-1" style="width:14px;height:14px;background:#ffd699;vertical-align:middle;"></span> Auditor</span>
             </div>
 
             {{-- SYARAT UNGGUL CARDS — comparison jurusan vs auditor --}}
@@ -280,7 +253,7 @@
                                              style="border-left: 4px solid #173b70 !important;">
                                             <div class="d-flex align-items-center gap-2 mb-3">
                                                 <i class="bi bi-shield-check" style="color: #173b70;"></i>
-                                                <span class="fw-semibold auditor-syarat-label">Penilaian UPM</span>
+                                                <span class="fw-semibold">Penilaian Auditor</span>
                                             </div>
                                             <div class="auditor-syarat-body" data-idx="{{ $idx }}">
                                                 {{-- Filled by JS on pill click --}}
@@ -327,11 +300,11 @@
                         </div>
                         <hr>
                         <div class="d-flex">
-                            <p class="mb-1 me-2">Nilai Akreditasi <span class="auditor-syarat-label">UPM</span>:</p>
+                            <p class="mb-1 me-2">Nilai Akreditasi Auditor:</p>
                             <p class="mb-1 fw-bold" id="chart_na_auditor"></p>
                         </div>
                         <div class="d-flex">
-                            <p class="mb-1 me-2">Status <span class="auditor-syarat-label">UPM</span>:</p>
+                            <p class="mb-1 me-2">Status Auditor:</p>
                             <p class="mb-1 fw-bold" id="chart_status_auditor"></p>
                         </div>
                         <div class="d-flex mb-2">
@@ -345,10 +318,10 @@
                                     <th>No</th>
                                     <th>Kriteria</th>
                                     <th>Nilai Jurusan</th>
-                                    <th class="chart-th-auditor">Nilai UPM</th>
+                                    <th class="chart-th-auditor">Nilai Auditor</th>
                                     <th>Nilai Maks</th>
                                     <th>% Jurusan</th>
-                                    <th class="chart-th-auditor">% UPM</th>
+                                    <th class="chart-th-auditor">% Auditor</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -372,7 +345,7 @@
 
                         <div class="d-flex justify-content-between mb-2" id="chartTotalRow">
                             <span>Total Jurusan: <strong id="chartTotalJurusan">0</strong></span>
-                            <span>Total <span class="auditor-syarat-label">UPM</span>: <strong id="chartTotalAuditor">0</strong></span>
+                            <span>Total Auditor: <strong id="chartTotalAuditor">0</strong></span>
                             <span>Maks: <strong id="chartTotalMax">0</strong></span>
                         </div>
                     </div>
@@ -517,11 +490,7 @@
         }
 
         // ---- Render syarat unggul column for an auditor ----
-        function updateSyaratAuditor(auditorId, label) {
-            document.querySelectorAll('.auditor-syarat-label').forEach(el => {
-                el.textContent = 'Penilaian ' + label;
-            });
-
+        function updateSyaratAuditor(auditorId) {
             let data = auditorSyaratData[auditorId];
             if (!data) {
                 document.querySelectorAll('.auditor-syarat-body').forEach(el => {
@@ -544,17 +513,7 @@
         // ---- Update chart tab ----
         let radarChartInstance = null;
 
-        function updateChart(auditorId, label) {
-            // Update labels
-            document.querySelectorAll('.auditor-syarat-label').forEach(el => {
-                if (el.closest('#chart') || el.closest('.auditor-syarat-col')) {
-                    el.textContent = 'Penilaian ' + label;
-                }
-            });
-            document.querySelectorAll('.chart-th-auditor').forEach(el => {
-                el.textContent = 'Nilai ' + label;
-            });
-
+        function updateChart(auditorId) {
             // Update per-aspek table
             let totalJurusan = 0, totalAuditor = 0, totalMax = 0;
             document.querySelectorAll('#chartPerAspekTable tbody tr').forEach(row => {
@@ -656,7 +615,7 @@
                             pointBackgroundColor: '#173b70',
                         },
                         {
-                            label: label + ' (%)',
+                            label: 'Auditor (%)',
                             data: auditorPct,
                             fill: true,
                             backgroundColor: 'rgba(40, 167, 69, 0.2)',
@@ -702,74 +661,24 @@
             document.getElementById("masa_auditor").innerHTML = hasilAuditor.masa;
         }
 
-        // Auditor name mapping for card header
-        var auditorNameMap = @json($auditorNameMap ?? []);
+        // ---- Init ----
+        document.addEventListener("DOMContentLoaded", function() {
+            const auditorId = Object.keys(auditorSyaratData)[0];
 
-        function updateAuditorNames(label) {
+            // Show auditor names
+            var auditorNameMap = @json($auditorNameMap ?? []);
             var container = document.getElementById('auditorNamesContainer');
-            if (!container) return;
-            if (label === 'Auditor') {
+            if (container) {
                 var html = Object.entries(auditorNameMap).map(function(e) {
                     return '<p class="mb-1"><span class="text-muted">' + e[0] + ':</span> <span class="fw-bold">' + e[1] + '</span></p>';
                 }).join('');
                 container.innerHTML = html;
-            } else {
-                container.innerHTML = '';
             }
-        }
 
-        // ---- Tab 1 pill click handler (also syncs tabs 2 & 3) ----
-        document.querySelectorAll(".auditor-pill").forEach(btn => {
-            btn.addEventListener("click", function() {
-                document.querySelectorAll(".auditor-pill").forEach(b => {
-                    b.classList.remove("btn-primary", "active");
-                    b.classList.add("btn-outline-secondary");
-                });
-                this.classList.remove("btn-outline-secondary");
-                this.classList.add("btn-primary", "active");
+            compute(auditorId);
+            updateSyaratAuditor(auditorId);
+            updateChart(auditorId);
 
-                let auditorId = this.dataset.auditorId;
-                let label = this.dataset.label;
-
-                // Tab 1: card + table header
-                document.getElementById("auditorCardTitle").innerHTML =
-                    '<i class="bi bi-shield-check me-1"></i>Penilaian ' + label;
-                document.getElementById("thAuditor").textContent = "Penilaian " + label;
-
-                updateAuditorNames(label);
-
-                // Tab 1: update all rows
-                document.querySelectorAll(".nilai-auditor").forEach(td => {
-                    let data;
-                    try { data = JSON.parse(td.dataset.auditorData); } catch (e) { data = []; }
-                    let valSpan = td.querySelector(".auditor-value");
-                    let row = td.closest("tr");
-                    let match = data.find(d => String(d.id_users) === auditorId);
-                    let score = match ? match.nilai_total : null;
-                    valSpan.textContent = score !== null && score > 0 ? Number(score).toFixed(2) : "-";
-
-                    let jurusanVal = parseFloat(row.querySelector(".nilai-jurusan").dataset.nilai) || 0;
-                    let selCell = row.querySelector(".selisih-cell");
-                    selCell.textContent = score !== null && score > 0 ? Math.abs(jurusanVal - score).toFixed(2) : "-";
-
-                    let temuanCell = row.querySelector(".temuan-cell");
-                    let saranCell = row.querySelector(".saran-cell");
-                    temuanCell.innerHTML = match ? (match.temuan || '-') : '-';
-                    saranCell.innerHTML = match ? (match.saran || '-') : '-';
-                });
-
-                compute(auditorId);
-
-                // Tab 2: update syarat unggul
-                updateSyaratAuditor(auditorId, label);
-
-                // Tab 3: update chart
-                updateChart(auditorId, label);
-            });
-        });
-
-        // ---- Init ----
-        document.addEventListener("DOMContentLoaded", function() {
             $('#penetapanTable').DataTable({
                 pageLength: 65,
                 language: {
@@ -780,25 +689,6 @@
                     emptyTable: "Tidak ada data"
                 }
             });
-
-            let firstPill = document.querySelector('.auditor-pill');
-            if (firstPill) {
-                let auditorId = firstPill.dataset.auditorId;
-                let label = firstPill.dataset.label;
-
-                // Tab 1: card + table header
-                document.getElementById("auditorCardTitle").innerHTML =
-                    '<i class="bi bi-shield-check me-1"></i>Penilaian ' + label;
-                document.getElementById("thAuditor").textContent = "Penilaian " + label;
-
-                updateAuditorNames(label);
-
-                compute(auditorId);
-                updateSyaratAuditor(auditorId, label);
-                updateChart(auditorId, label);
-            } else {
-                compute();
-            }
         });
     </script>
 
@@ -808,9 +698,7 @@
             const content = document.getElementById('previewPdfContent');
             modal.show();
             content.innerHTML = '<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split me-2"></i>Memuat preview...</div>';
-            const activePill = document.querySelector('.auditor-pill.btn-primary');
-            const isUPM = activePill && activePill.dataset.label === 'UPM';
-            const auditorId = activePill && !isUPM ? activePill.dataset.auditorId : '';
+            const auditorId = Object.keys(auditorSyaratData)[0] || '';
             const params = auditorId ? '?auditor_id=' + auditorId : '';
             const url = '/export/preview/perbandingan' + params;
             document.getElementById('downloadPdfLink').href = '/export/export-pdf/perbandingan' + params;
