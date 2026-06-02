@@ -545,10 +545,10 @@ class EvaluasiLamdikController extends Controller
         $dataSyaratUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
             'matriks.userSubItemElements' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan);
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
             },
             'matriks.userMatrik' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan);
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
             },
         ])->get();
 
