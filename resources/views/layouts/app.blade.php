@@ -446,7 +446,7 @@
             <!--begin::Sidebar Brand-->
             <div class="sidebar-brand">
                 <!--begin::Brand Link-->
-                <a href="./index.html" class="brand-link">
+                <a href="{{ route('login') }}" class="brand-link">
                     <!--begin::Brand Image-->
                     <!-- <img
               src="./assets/img/AdminLTELogo.png"
