@@ -18,9 +18,9 @@
     }
 
     .page {
-        min-height:100vh;display:flex;flex-direction:column;
+        display:flex;flex-direction:column;
         align-items:center;justify-content:center;text-align:center;
-        padding:60px 24px;position:relative;overflow:hidden
+        padding:80px 24px 48px;position:relative;overflow:hidden
     }
     .page::before {
         content:'';position:absolute;
@@ -60,23 +60,8 @@
 
     .content .desc {
         font-size:16px;line-height:1.9;opacity:.9;
-        margin-bottom:44px
+        margin-bottom:32px
     }
-
-    /* ── TOGGLE BUTTON ── */
-    .btn-group {display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
-
-    .toggle-btn {
-        background:rgba(255,255,255,.12);backdrop-filter:blur(10px);
-        border:1px solid rgba(255,255,255,.12);
-        color:#fff;border-radius:16px;
-        min-height:56px;padding:0 44px;
-        font-size:15px;font-weight:700;cursor:pointer;
-        transition:.3s;display:inline-flex;align-items:center;gap:10px
-    }
-    .toggle-btn:hover {background:rgba(255,255,255,.18);transform:translateY(-2px)}
-    .toggle-btn .arr {transition:transform .4s}
-    .toggle-btn.open .arr {transform:rotate(180deg)}
 
     .login-page-btn {
         background:rgba(255,255,255,.10);backdrop-filter:blur(10px);
@@ -89,9 +74,9 @@
 
     /* ── CARDS ── */
     .cards-area {
-        display:none;max-width:1080px;margin:0 auto;padding:0 24px 80px
+        display:block;max-width:1080px;margin:0 auto;padding:0 24px 80px;
+        animation:fade .6s ease
     }
-    .cards-area.show {display:block;animation:fade .6s ease}
     @keyframes fade {
         from{opacity:0;transform:translateY(30px)}
         to{opacity:1;transform:translateY(0)}
@@ -146,7 +131,7 @@
     }
 
     @media(max-width:640px) {
-        .page {padding:48px 16px}
+        .page {padding:60px 16px 32px}
         .grid {grid-template-columns:1fr 1fr;gap:12px}
     }
     @media(max-width:420px) {
@@ -171,29 +156,52 @@
             Penetapan, Pelaksanaan, Evaluasi, Pengendalian, dan Peningkatan
             mutu pendidikan di lingkungan FKIP Universitas Lambung Mangkurat.
         </p>
-        <div class="btn-group">
-            @guest
-            <a href="{{ route('login') }}" class="login-page-btn">
-                <i class="bi bi-box-arrow-in-right"></i> Login
-            </a>
-            @endguest
-            <button class="toggle-btn" id="toggleBtn">
-            FKIP +21 Jurusan <span class="arr">↓</span>
-            </button>
-        </div>
+        @guest
+        <a href="{{ route('login') }}" class="login-page-btn">
+            <i class="bi bi-box-arrow-in-right"></i> Login
+        </a>
+        @endguest
     </div>
 </div>
 
 <div class="cards-area" id="cardsWrap">
     <h2>Pilih Unit Kerja</h2>
     <div class="grid">
-        @php $sorted = $entities->sortBy(fn($e) => $e->role === 'admin_FKIP' ? 0 : 1) @endphp
+        @php
+        $icons = [
+            'Pendidikan Komputer'                => '💻',
+            'Pendidikan Ekonomi'                 => '💰',
+            'Pendidikan Matematika'              => '🔢',
+            'Pendidikan Biologi'                 => '🧬',
+            'Pendidikan Fisika'                  => '⚛️',
+            'Pendidikan Kimia'                   => '🧪',
+            'Pendidikan Bahasa Inggris'          => '🇬🇧',
+            'Pendidikan Bahasa dan Sastra Indonesia' => '📖',
+            'Pendidikan Pancasila dan Kewarganegaraan' => '⚖️',
+            'Pendidikan Sejarah'                 => '📜',
+            'Pendidikan Geografi'                => '🌍',
+            'Pendidikan Jasmani'                 => '🏃',
+            'Pendidikan Guru Sekolah Dasar'      => '🏫',
+            'Pendidikan Guru PAUD'               => '🧸',
+            'Pendidikan Khusus'                  => '♿',
+            'Pendidikan Sosiologi'               => '👥',
+            'Pendidikan Seni Pertunjukan'        => '🎭',
+            'Pendidikan IPA'                     => '🔬',
+            'Pendidikan IPS'                     => '🌐',
+            'Teknologi Pendidikan'               => '🖥️',
+            'Bimbingan Konseling'                => '🤝',
+        ];
+        $sorted = $entities->sortBy(fn($e) => $e->role === 'admin_FKIP' ? 0 : 1);
+        @endphp
         @foreach ($sorted as $entity)
-            @php $isFkip = $entity->role === 'admin_FKIP' @endphp
+            @php
+            $isFkip = $entity->role === 'admin_FKIP';
+            $icon = $isFkip ? '🏛️' : ($icons[$entity->homebase] ?? '📚');
+            @endphp
             <a href="{{ route('ppepp.show', $entity->id) }}" class="card">
-                <div class="ico">{{ $isFkip ? '🏛️' : '📚' }}</div>
-                <div class="name">{{ $isFkip ? 'FKIP ULM' : $entity->homebase }}</div>
-                <div class="type">{{ $isFkip ? 'Fakultas' : 'Program Studi' }}</div>
+                <div class="ico">{{ $icon }}</div>
+                <div class="type">{{ $isFkip ? 'Fakultas' : 'Jurusan' }}</div>
+                <div class="name">{{ $isFkip ? 'Keguruan dan Ilmu Pendidikan' : $entity->homebase }}</div>
                 <span class="go">Lihat PPEPP <i class="bi bi-arrow-right"></i></span>
             </a>
         @endforeach
@@ -203,13 +211,16 @@
 <footer>&copy; {{ date('Y') }} E-SPMI FKIP ULM — Quality Assurance Information System</footer>
 
 <script>
-document.getElementById('toggleBtn').addEventListener('click',function(){
-    const w=document.getElementById('cardsWrap'),s=w.classList.toggle('show');
-    this.classList.toggle('open',s);this.querySelector('.arr').textContent=s?'↑':'↓';
-    if(s){setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),120);
-    w.querySelectorAll('.card').forEach((c,i)=>{c.style.opacity='0';c.style.transform='translateY(20px)';
-    requestAnimationFrame(()=>{c.style.transition=`all .45s cubic-bezier(.34,1.56,.64,1) ${i*.06}s`;c.style.opacity='1';c.style.transform='none'})})}
-});
+(function(){
+    const w=document.getElementById('cardsWrap');
+    w.querySelectorAll('.card').forEach((c,i)=>{
+        c.style.opacity='0';c.style.transform='translateY(20px)';
+        requestAnimationFrame(()=>{
+            c.style.transition=`all .45s cubic-bezier(.34,1.56,.64,1) ${i*.06}s`;
+            c.style.opacity='1';c.style.transform='none'
+        });
+    });
+})();
 </script>
 </body>
 </html>
