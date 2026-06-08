@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Audit;
 use App\Models\AuditorJurusan;
 use App\Models\MatriksLED;
 use App\Models\SubItemElemen;
@@ -223,35 +224,11 @@ class EvaluasiLamdikController extends Controller
         ========================= */
         $syarat3 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_3_tahun);
         $syarat5 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_5_tahun);
+        $dataUnggul = $dataSyaratUnggul;
 
-        /* =========================
-           🔥 DEBUG
-        ========================= */
-        // dd($data->map(function ($i) {
-        //     return [
-        //         'elemen'  => $i->nomor,
-        //         '3_tahun' => $i->memenuhi_3_tahun,
-        //         '5_tahun' => $i->memenuhi_5_tahun,
-        //     ];
-        // }), $syarat3, $syarat5);
+        $auditHeader = Audit::where('program_studi', (string) $idUser)->first();
 
-        // dd($syarat3, $syarat5);
-
-        // nanti baru return view
-        // return view('syarat.index', compact('data', 'syarat3', 'syarat5'));
-
-        $dataUnggul = SyaratUnggul::with([
-            'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser);
-            },
-            'matriks.userMatrik'          => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser);
-            }
-        ])->get();
-
-
-        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5', 'dataUnggul'));
+        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5', 'dataUnggul', 'auditHeader'));
     }
 
     public function indexOld()
@@ -287,6 +264,12 @@ class EvaluasiLamdikController extends Controller
             'kepemilikan_kriteria' => 'required|string|in:jurusan,fakultas',
             'id_users'             => 'required|integer',
         ]);
+
+        // Cek apakah penilaian AMI sudah disubmit oleh jurusan
+        $audit = Audit::where('program_studi', (string) auth()->id())->first();
+        if ($audit && $audit->jurusan_submitted_at) {
+            return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit, tidak dapat diubah lagi.');
+        }
 
         UsersMatrik::updateOrCreate(
             [

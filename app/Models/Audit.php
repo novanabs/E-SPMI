@@ -18,11 +18,16 @@ class Audit extends Model
         'auditor_1_id',
         'auditor_2_id',
         'created_by',
-        'status',
+        'jurusan_submitted_at',
+        'jurusan_submitted_by',
+        'auditor_submitted_at',
+        'auditor_submitted_by',
     ];
 
     protected $casts = [
-        'tanggal_audit' => 'date',
+        'tanggal_audit'         => 'date',
+        'jurusan_submitted_at'  => 'datetime',
+        'auditor_submitted_at'  => 'datetime',
     ];
 
     public function auditor1(): BelongsTo

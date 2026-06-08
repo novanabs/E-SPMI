@@ -13,8 +13,40 @@ use Illuminate\Http\Request;
 
 class HasilAMIController extends Controller
 {
-    // Simpan header audit
+    // Submit / finalisasi penilaian AMI
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'program_studi' => 'required|string',
+            'role'          => 'required|in:admin_jurusan,admin_FKIP,auditor',
+        ]);
 
+        $audit = Audit::updateOrCreate(
+            ['program_studi' => $request->program_studi],
+            ['fakultas'     => 'Keguruan dan Ilmu Pendidikan']
+        );
+
+        $role = $request->role;
+
+        if ($role === 'auditor') {
+            $audit->update([
+                'auditor_submitted_at' => now(),
+                'auditor_submitted_by' => auth()->id(),
+            ]);
+        } else {
+            $audit->update([
+                'jurusan_submitted_at' => now(),
+                'jurusan_submitted_by' => auth()->id(),
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Penilaian AMI berhasil disubmit. Data tidak dapat diubah lagi.',
+        ]);
+    }
+
+    // Simpan header audit
     public function saveHeader(Request $request)
     {
 
@@ -37,7 +69,6 @@ class HasilAMIController extends Controller
                     'catatan_umum'  => $request->catatan_umum,
                     'auditor_1_id'  => $request->auditor_1_id ?: null,
                     'auditor_2_id'  => $request->auditor_2_id ?: null,
-                    'status'        => 'draft',
                 ]
             );
 
