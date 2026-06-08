@@ -6024,7 +6024,12 @@
                 container.insertAdjacentHTML('beforeend', `
 
     <div class="mb-3 mt-3">
-        <label class="form-label"><strong>Link Bukti</strong></label>
+        <label class="form-label mb-1">
+    <strong>Link Bukti</strong>
+</label>
+<small class="text-muted d-block mb-2">
+    Pastikan tautan dokumen dapat diakses secara publik (open access) tanpa memerlukan izin atau login.
+</small>
         <div class="input-group">
             <input type="url" class="form-control" name="link_bukti"
                 value="${link_bukti}" placeholder="Masukkan link">
