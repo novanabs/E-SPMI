@@ -271,9 +271,20 @@ class UserController extends Controller
 
         $auditKriterias = AuditKriteria::where('jurusan_id', $userJurusan->id)->get();
 
+        // Load jurusan's original self-assessment data (id_user_jurusan = null)
+        $jurusanMatrik = UsersMatrik::where('id_users', $sharedId)
+            ->whereNull('id_user_jurusan')
+            ->get()
+            ->keyBy('id_matriks_led');
+
+        $jurusanSubItems = UserSubItemElemen::where('id_users', $sharedId)
+            ->whereNull('id_user_jurusan')
+            ->get()
+            ->groupBy('id_matriks');
+
         // dd($auditKriterias);
 
-        return view('auditor.evaluasi', compact('data', 'userJurusan', 'assigned', 'syarat3', 'syarat5', 'dataUnggul', 'kriteria', 'auditor', 'auditKriterias', 'auditHeader'));
+        return view('auditor.evaluasi', compact('data', 'userJurusan', 'assigned', 'syarat3', 'syarat5', 'dataUnggul', 'kriteria', 'auditor', 'auditKriterias', 'auditHeader', 'jurusanMatrik', 'jurusanSubItems'));
     }
 
     public function auditorEvaluasiStore(Request $request)
@@ -292,29 +303,29 @@ class UserController extends Controller
             'id_user_jurusan'      => 'required|integer',
         ]);
 
+        // Cek apakah penilaian AMI sudah disubmit oleh auditor
+        $audit = Audit::where('program_studi', (string) $validated['id_user_jurusan'])->first();
+        if ($audit && $audit->auditor_submitted_at) {
+            return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit oleh auditor, tidak dapat diubah lagi.');
+        }
+
         $target = User::findOrFail($validated['id_user_jurusan']);
         $assigned = AuditorJurusan::where('user_id', auth()->id())
             ->where('jurusan', $target->homebase)->firstOrFail();
 
         $sharedId = $target->id;
 
-        // Don't overwrite existing shared score with zero if the user only saves temuan/saran
-        $existing = UsersMatrik::where('id_users', $sharedId)
-            ->where('id_user_jurusan', $sharedId)
-            ->where('id_matriks_led', $validated['id_matriks_led'])
-            ->first();
-
         $incomingNilaiTotal = $validated['nilai_total'];
         $incomingJawaban = $validated['jawaban'];
 
-        if ($existing && $existing->nilai_total > 0 && $incomingNilaiTotal == 0) {
-            // User likely only filled temuan/saran without touching the score — keep existing score
-            $existing->update([
-                'link_bukti' => $validated['link_bukti'] ?? '',
-            ]);
-        } else {
-            // Save shared score to UsersMatrik: id_users = jurusan_id, id_user_jurusan = jurusan_id
-            UsersMatrik::updateOrCreate(
+        Log::debug('auditorEvaluasiStore', [
+            'incomingNilaiTotal' => $incomingNilaiTotal,
+            'incomingJawaban' => $incomingJawaban,
+            'id_matriks_led' => $validated['id_matriks_led'],
+        ]);
+
+        // Save shared score to UsersMatrik: id_users = jurusan_id, id_user_jurusan = jurusan_id
+        UsersMatrik::updateOrCreate(
                 [
                     'id_users'        => $sharedId,
                     'id_user_jurusan' => $sharedId,
@@ -329,7 +340,6 @@ class UserController extends Controller
                     'kepemilikan_kriteria' => $validated['kepemilikan_kriteria'],
                 ]
             );
-        }
 
         // Save per-auditor temuan/saran to auditor_temuan_saran
         \DB::table('auditor_temuan_saran')->updateOrInsert(

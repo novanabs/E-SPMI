@@ -177,6 +177,7 @@
 
     @php
         $user = auth()->user();
+        $isSubmitted = $auditHeader && $auditHeader->auditor_submitted_at;
     @endphp
 
     @if ($user->role === 'admin_jurusan')
@@ -186,6 +187,28 @@
     @else
         @php $for = ''; @endphp
     @endif
+
+    {{-- Data jawaban asli jurusan untuk ditampilkan di kolom kanan --}}
+    @php
+        $jurusanMatrikJson = $jurusanMatrik->mapWithKeys(function ($m) {
+            return [$m->id_matriks_led => [
+                'jawaban'     => $m->jawaban,
+                'skor_a'      => $m->skor_a,
+                'skor_b'      => $m->skor_b,
+                'nilai_total' => $m->nilai_total,
+                'link_bukti'  => $m->link_bukti,
+            ]];
+        });
+        $jurusanSubItemsJson = $jurusanSubItems->mapWithKeys(function ($items, $matriksId) {
+            return [$matriksId => $items->pluck('nilai', 'id_sub_item_elemen')->toArray()];
+        });
+    @endphp
+    <script>
+        window.jurusanData = {
+            matrik: @json($jurusanMatrikJson),
+            subItems: @json($jurusanSubItemsJson)
+        };
+    </script>
 
     <div id="loading-overlay">
         <div class="spinner"></div>
@@ -404,7 +427,66 @@
                         </div>
                     </div>
 
+                    {{-- Submit / status penilaian AMI --}}
+                    <div class="mt-3">
+                        @if ($isSubmitted)
+                            <div class="alert alert-info d-flex align-items-center justify-content-between mb-0 py-2">
+                                <div>
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <strong>Sudah Disubmit</strong>
+                                    <br><small class="text-muted">{{ optional($auditHeader->auditor_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
+                                </div>
+                            </div>
+                        @else
+                            <button type="button" id="btn-submit-ami" class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
+                                <i class="bi bi-send-fill"></i>
+                                Submit Penilaian AMI
+                            </button>
+                            <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah disubmit.</small>
+                        @endif
+                    </div>
 
+                    <script>
+                        window.isAMISubmitted = {{ $isSubmitted ? 'true' : 'false' }};
+                        const btnSubmitAMI = document.getElementById('btn-submit-ami');
+                        if (btnSubmitAMI) {
+                            btnSubmitAMI.addEventListener('click', function () {
+                                Swal.fire({
+                                    title: 'Submit Penilaian AMI?',
+                                    text: 'Setelah disubmit, seluruh data penilaian tidak dapat diubah lagi.',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Ya, Submit',
+                                    cancelButtonText: 'Batal',
+                                    confirmButtonColor: '#dc3545',
+                                    reverseButtons: true
+                                }).then((result) => {
+                                    if (!result.isConfirmed) return;
+                                    fetch('{{ route('audit.submit') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'X-Requested-With': 'XMLHttpRequest'
+                                        },
+                                        body: JSON.stringify({
+                                            program_studi: '{{ $userJurusan->id ?? '' }}',
+                                            role: 'auditor'
+                                        })
+                                    }).then(r => r.json()).then(data => {
+                                        if (data.success) {
+                                            Swal.fire({ icon: 'success', title: 'Berhasil', text: data.message });
+                                            setTimeout(() => location.reload(), 1500);
+                                        } else {
+                                            Swal.fire({ icon: 'error', title: 'Gagal', text: data.message || 'Terjadi kesalahan.' });
+                                        }
+                                    }).catch(() => {
+                                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan jaringan.' });
+                                    });
+                                });
+                            });
+                        }
+                    </script>
 
                 </div>
             </div>
@@ -1083,7 +1165,8 @@
                                     </label>
                                     <input type="date" id="tanggal_audit" name="tanggal_audit"
                                         class="form-control input-header"
-                                        value="{{ old('tanggal_audit', optional($auditHeader)->tanggal_audit?->format('Y-m-d') ?? '') }}">
+                                        value="{{ old('tanggal_audit', optional($auditHeader)->tanggal_audit?->format('Y-m-d') ?? '') }}"
+                                        {{ $isSubmitted ? 'disabled' : '' }}>
                                 </div>
                             </div>
 
@@ -1103,18 +1186,20 @@
                         <div class="mt-3">
                             <label class="form-label"><strong>Catatan Umum</strong></label>
                             <textarea id="catatan_umum" class="form-control input-header" maxlength="200" rows="3"
-                                placeholder="Isi catatan umum maksimal 200 karakter...">{{ old('catatan_umum', optional($auditHeader)->catatan_umum ?? '') }}</textarea>
+                                placeholder="Isi catatan umum maksimal 200 karakter..." {{ $isSubmitted ? 'disabled' : '' }}>{{ old('catatan_umum', optional($auditHeader)->catatan_umum ?? '') }}</textarea>
                         </div>
 
                         <input type="hidden" id="auditor_1_id" value="{{ $auditor->get(0)?->user?->id ?? '' }}">
                         <input type="hidden" id="auditor_2_id" value="{{ $auditor->get(1)?->user?->id ?? '' }}">
                         <input type="hidden" id="program_studi" value="{{ $userJurusan->id ?? '' }}">
 
+                        @if (!$isSubmitted)
                         <button type="button" class="btn btn-success mt-3 d-inline-flex align-items-center gap-2"
                             id="btn-simpan-header">
                             <span id="status-marker" class="d-none">⚠️</span>
                             <span id="btn-text">Simpan</span>
                         </button>
+                        @endif
                     </div>
                 </div>
 
@@ -1146,6 +1231,7 @@
                     document.addEventListener("DOMContentLoaded", function() {
                         const inputs = document.querySelectorAll('.input-header');
                         const btnSimpan = document.getElementById('btn-simpan-header');
+                        if (!btnSimpan) return; // AMI sudah disubmit
                         const statusMarker = document.getElementById('status-marker');
                         const btnText = document.getElementById('btn-text');
 
@@ -1228,21 +1314,23 @@
                                 <div class="mb-3">
                                     <label class="form-label">Temuan & Catatan Hasil Audit</label>
                                     <textarea class="form-control input-kriteria" rows="4" name="temuan[{{ $itemAmi->id }}]"
-                                        placeholder="Masukkan temuan {{ $currentKriteriaAmi }}">{{ old('temuan.' . $itemAmi->id, $savedKriteria->temuan ?? '') }}</textarea>
+                                        placeholder="Masukkan temuan {{ $currentKriteriaAmi }}" {{ $isSubmitted ? 'disabled' : '' }}>{{ old('temuan.' . $itemAmi->id, $savedKriteria->temuan ?? '') }}</textarea>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Saran dan Rekomendasi</label>
                                     <textarea class="form-control input-kriteria" rows="4" name="rekomendasi[{{ $itemAmi->id }}]"
-                                        placeholder="Masukkan saran {{ $currentKriteriaAmi }}">{{ old('rekomendasi.' . $itemAmi->id, $savedKriteria->rekomendasi ?? '') }}</textarea>
+                                        placeholder="Masukkan saran {{ $currentKriteriaAmi }}" {{ $isSubmitted ? 'disabled' : '' }}>{{ old('rekomendasi.' . $itemAmi->id, $savedKriteria->rekomendasi ?? '') }}</textarea>
                                 </div>
 
+                                @if (!$isSubmitted)
                                 <button type="button"
                                     class="btn btn-success btn-simpan-kriteria d-inline-flex align-items-center gap-2"
                                     data-kriteria-id="{{ $itemAmi->id }}" data-audit-id="{{ $audit->id ?? '' }}">
                                     <span class="status-marker d-none">⚠️</span>
                                     <span class="btn-text">Simpan</span>
                                 </button>
+                                @endif
 
                             </div>
                         </div>
@@ -1285,6 +1373,7 @@
                                 // Cari card induk tempat textarea ini berada
                                 const cardContainer = this.closest('.card-kriteria-container');
                                 const btnSimpan = cardContainer.querySelector('.btn-simpan-kriteria');
+                                if (!btnSimpan) return; // AMI sudah disubmit
                                 const statusMarker = cardContainer.querySelector('.status-marker');
                                 const btnText = cardContainer.querySelector('.btn-text');
 
@@ -1349,8 +1438,9 @@
             </div>
             <script>
                 // Simpan header
-
-                document.getElementById('btn-simpan-header').addEventListener('click', function() {
+                const btnSimpanHeader = document.getElementById('btn-simpan-header');
+                if (btnSimpanHeader) {
+                btnSimpanHeader.addEventListener('click', function() {
                     fetch('{{ route('audit.saveHeader') }}', {
                             method: 'POST',
                             headers: {
@@ -1388,6 +1478,7 @@
                             });
                         });
                 });
+                }
 
                 // Simpan per kriteria
                 document.querySelectorAll('.btn-simpan-kriteria').forEach(function(btn) {
@@ -1612,6 +1703,8 @@
     <script>
         // Auto-save current form before navigating
         function saveCurrentForm() {
+            // Skip jika AMI sudah disubmit
+            if (window.isAMISubmitted) return Promise.resolve();
             const form = document.getElementById('kriteriaForm');
             if (!form || !form.action) return Promise.resolve();
             const formData = new FormData(form);
@@ -3089,6 +3182,23 @@
                     }
                 }
 
+                // Inject two-column answer wrapper & switch container
+                container.insertAdjacentHTML('beforeend', `
+                    <div class="row mt-3" id="answer-row">
+                        <div class="col-md-6 border-end pe-2">
+                            <h6 class="text-muted mb-2"><i class="bi bi-pencil-square me-1"></i>Isian Auditor</h6>
+                            <div id="auditor-col"></div>
+                        </div>
+                        <div class="col-md-6 ps-2">
+                            <h6 class="text-muted mb-2"><i class="bi bi-eye me-1"></i>Jawaban Jurusan</h6>
+                            <div id="jurusan-content-body">
+                                <p class="text-muted fst-italic">Memuat...</p>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                container = document.getElementById('auditor-col');
+
                 // =======================
                 // 🔥 SUB ITEM (VARIABEL)
                 // =======================
@@ -3313,14 +3423,16 @@
                         return saved ? parseFloat(saved.nilai) || 0 : 0;
                     }
 
-                    let kelompok = 'sains';
+                    let kelompok = sessionStorage.getItem('kelompok11') || btn.dataset.kelompok || 'sains';
+                    window._kelompok11 = kelompok;
 
                     function hitungSkorA11() {
                         const NM = val11('NM'),
                             NDTPS = val11('NDTPS');
                         const RMD = NDTPS > 0 ? NM / NDTPS : 0;
+                        const k = window._kelompok11 || 'sains';
                         let skorA;
-                        if (kelompok === 'sains') {
+                        if (k === 'sains') {
                             if (RMD >= 15 && RMD <= 25) skorA = 4;
                             else if (RMD < 15) skorA = (4 * RMD) / 15;
                             else if (RMD > 25 && RMD <= 35) skorA = (70 - 2 * RMD) / 5;
@@ -3341,8 +3453,8 @@
                 <div class="mt-2 mb-2">
                     <label class="form-label"><strong>Kelompok Program Studi</strong></label>
                     <select class="form-select form-select-sm" id="kelompok-select" style="width:auto">
-                        <option value="sains">Sains Teknologi</option>
-                        <option value="sosial">Sosial Humaniora</option>
+                        <option value="sains" ${kelompok === 'sains' ? 'selected' : ''}>Sains Teknologi</option>
+                        <option value="sosial" ${kelompok === 'sosial' ? 'selected' : ''}>Sosial Humaniora</option>
                     </select>
                 </div>
                 <table class="table table-sm table-bordered mt-2 mb-0 bg-light" id="auto-skora11-table">
@@ -3363,6 +3475,9 @@
                     updateSkorA11();
                     document.getElementById('kelompok-select').addEventListener('change', function() {
                         kelompok = this.value;
+                        window._kelompok11 = this.value;
+                        btn.dataset.kelompok = this.value;
+                        sessionStorage.setItem('kelompok11', this.value);
                         updateSkorA11();
                         computeFinal11();
                     });
@@ -6416,19 +6531,19 @@
                 }
 
                 // =======================
-                // 🔥 BUKTI + FIELD LAIN
+                // 🔥 LINK BUKTI JURUSAN + TEMUAN + SARAN (full-width)
                 // =======================
-                container.insertAdjacentHTML('beforeend', `
+                const formEl = document.getElementById('kriteriaForm');
+                const jurusanLink = (window.jurusanData.matrik[id_matriks_led] || {}).link_bukti || '';
+                formEl.insertAdjacentHTML('beforeend', `
 
+    ${jurusanLink ? `
     <div class="mb-3 mt-3">
-        <label class="form-label"><strong>Link Bukti</strong></label>
-        <div class="input-group">
-            <input type="url" class="form-control" name="link_bukti"
-                value="${link_bukti}" placeholder="Masukkan link">
-
-            ${link_bukti ? `<a href="${link_bukti}" target="_blank" class="btn btn-outline-primary">↗</a>` : ''}
+        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+        <div class="border rounded p-2 bg-light">
+            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
         </div>
-    </div>
+    </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
@@ -6446,8 +6561,15 @@
     <input type="hidden" name="id_users" value="{{ $userJurusan->id }}">
     <input type="hidden" name="id_user_jurusan" value="{{ $userJurusan?->id }}">
 
-    <button type="submit" class="btn btn-sm btn-success">Simpan</button>
+    ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);
+
+            // Disable semua input jika AMI sudah disubmit
+            if (window.isAMISubmitted) {
+                formEl.querySelectorAll('input, textarea, select, button').forEach(el => {
+                    el.disabled = true;
+                });
+            }
 
                 document.getElementById("id_matriks_led").value = id_matriks_led;
 
@@ -6494,6 +6616,114 @@
                     });
                 }
 
+                // Render jawaban jurusan di kolom kanan — clone + recompute dengan nilai jurusan
+                const jurusanClone = document.getElementById('auditor-col').cloneNode(true);
+                const jData = window.jurusanData;
+                const jMatrik = jData.matrik[btn.dataset.id] || null;
+                const jSubVals = jData.subItems[btn.dataset.id] || {};
+                const jContainer = document.getElementById('jurusan-content-body');
+
+                if (jMatrik || Object.keys(jSubVals).length > 0) {
+                    // Hapus heading auditor
+                    const h6 = jurusanClone.querySelector('h6');
+                    if (h6) h6.remove();
+
+                    // Isi radio sesuai jawaban jurusan
+                    if (jMatrik) {
+                        jurusanClone.querySelectorAll('input[type="radio"]').forEach(r => {
+                            const val = parseInt(r.value);
+                            if (r.name === 'jawaban' && val === parseInt(jMatrik.jawaban)) r.checked = true;
+                            else if (r.name === 'skor_a' && val === parseInt(jMatrik.skor_a || 0)) r.checked = true;
+                            else if (r.name === 'skor_b' && val === parseInt(jMatrik.skor_b || 0)) r.checked = true;
+                            else r.checked = false;
+                        });
+                    }
+
+                    // Isi variabel sesuai jurusan
+                    jurusanClone.querySelectorAll('.variabel-input').forEach(el => {
+                        const n = (el.getAttribute('name') || '').match(/variabel\[(\d+)\]/);
+                        if (n && jSubVals[n[1]] !== undefined) el.value = jSubVals[n[1]];
+                    });
+
+                    // Set kelompok dropdown ke pilihan jurusan (bukan auditor)
+                    const jKelompok = sessionStorage.getItem('jurusan_kelompok11') || 'sains';
+                    const kelSelect = jurusanClone.querySelector('#kelompok-select');
+                    if (kelSelect) kelSelect.value = jKelompok;
+                    // Simpan & override kelompok utk recompute jurusan
+                    const _savedKelompok = window._kelompok11 || 'sains';
+                    window._kelompok11 = jKelompok;
+
+                    // Override document.getElementById & querySelector → clone
+                    const _gbi = document.getElementById.bind(document);
+                    const _qs = document.querySelector.bind(document);
+                    document.getElementById = function(id) {
+                        return jurusanClone.querySelector('#' + id) || _gbi(id);
+                    };
+                    document.querySelector = function(sel) {
+                        return jurusanClone.querySelector(sel) || _qs(sel);
+                    };
+
+                    // Re-run compute untuk elemen ini pada clone
+                    // Simpan nilai total auditor sebelum recompute (karena compute update #nilai_total via fallback)
+                    const _ntEl = document.getElementById('nilai_total');
+                    const _savedNilaiTotal = _ntEl ? _ntEl.value : 0;
+                    if (isElemen7) computeFinal7();
+                    else if (isElemen11) computeFinal11();
+                    else if (isElemen14) computeFinal14();
+                    else if (isElemen15) computeFinal15();
+                    else if (isElemen16) computeFinal16();
+                    else if (isElemen19) computeFinal19();
+                    else if (isElemen20) computeFinal20();
+                    else if (isElemen21) computeFinal21();
+                    else if (isElemen22) computeFinal22();
+                    else if (isElemen23) computeFinal23();
+                    else if (isElemen33) computeFinal33();
+                    else if (isElemen40) computeFinal40();
+                    else if (isElemen41) computeFinal41();
+                    else if (isElemen42) computeFinal42();
+                    else if (isElemen43) computeFinal43();
+                    else if (isElemen45) computeFinal45();
+                    else if (isElemen46) computeFinal46();
+                    else if (isElemen47) computeFinal47();
+                    else if (isElemen48) computeFinal48();
+                    else if (isElemen53) computeFinal53();
+                    else if (isElemen54) computeFinal54();
+                    else if (isElemen55) computeFinal55();
+                    else if (isElemen56) computeFinal56();
+                    else if (isElemen57) computeFinal57();
+                    else if (isElemen59) computeFinal59();
+                    else if (isElemen60) computeFinal60();
+                    else if (isDualRadio) computeDual();
+
+                    // Restore
+                    document.getElementById = _gbi;
+                    document.querySelector = _qs;
+                    window._kelompok11 = _savedKelompok;
+                    if (_ntEl) _ntEl.value = _savedNilaiTotal;
+
+                    // Override semua badge dengan nilai tersimpan jurusan
+                    if (jMatrik) {
+                        const jw = parseFloat(jMatrik.jawaban) || 0;
+                        const nt = parseFloat(jMatrik.nilai_total) || 0;
+                        jurusanClone.querySelectorAll('[id^="live-"]').forEach(live => {
+                            live.innerHTML = `Skor dipilih: <strong>${jw}</strong> | Nilai: <strong>${nt}</strong>`;
+                        });
+                    }
+
+                    // Buat readonly & hapus name/id
+                    jurusanClone.querySelectorAll('input, textarea, select').forEach(el => {
+                        el.disabled = true;
+                        el.readOnly = true;
+                        el.removeAttribute('name');
+                    });
+                    jurusanClone.querySelectorAll('button').forEach(el => el.remove());
+                    jurusanClone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+
+                    jContainer.innerHTML = '';
+                    jContainer.appendChild(jurusanClone);
+                } else {
+                    jContainer.innerHTML = '<p class="text-muted fst-italic">Belum ada data dari jurusan.</p>';
+                }
 
             });
         });
