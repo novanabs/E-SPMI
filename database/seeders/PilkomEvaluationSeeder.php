@@ -172,10 +172,10 @@ class PilkomEvaluationSeeder extends Seeder
                         'id_sub_item_elemen' => $subDef->id,
                         'id_matriks'         => $matriksId,
                         'id_users'           => $u['id_users'],
+                        'id_user_jurusan'    => $u['id_user_jurusan'],
                     ],
                     [
                         'nilai'           => $nilai,
-                        'id_user_jurusan' => $u['id_user_jurusan'],
                         'created_at'      => now(),
                         'updated_at'      => now(),
                     ]
@@ -240,7 +240,8 @@ class PilkomEvaluationSeeder extends Seeder
                 'catatan_umum'  => 'Audit mutu internal Pendidikan Komputer tahun ' . date('Y'),
                 'auditor_1_id'  => self::AUDITOR_IDS[0],
                 'auditor_2_id'  => self::AUDITOR_IDS[1],
-                'status'        => 'final',
+                'jurusan_submitted_at' => now(),
+                'jurusan_submitted_by' => self::JURUSAN_ID,
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ]

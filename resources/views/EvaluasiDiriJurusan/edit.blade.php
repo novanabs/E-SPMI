@@ -157,6 +157,7 @@
 
     @php
         $user = auth()->user();
+        $isSubmitted = $auditHeader && $auditHeader->jurusan_submitted_at;
     @endphp
 
     @if ($user->role === 'admin_jurusan')
@@ -235,46 +236,60 @@
 
         </div>
 
-        <div class="col-md-3 card">
-            <label for="search-elemen" class="form-label fw-bold">Cari Elemen</label>
-            <input type="text" id="search-elemen" class="form-control mb-3" placeholder="Ketik nama elemen...">
+        <div class="col-md-3">
 
-            <label for="filterColor" class="form-label fw-bold">Filter Warna</label>
-            <select id="filterColor" class="form-select mb-3">
-                <option value="">Semua</option>
-                <option value="green">Hijau</option>
-                <option value="yellow">Kuning</option>
-                <option value="red">Merah</option>
-                <option value="none">Belum Terisi</option>
-            </select>
+                    <div class="card shadow-sm mb-3">
+                        <label for="search-elemen" class="form-label fw-bold">Cari Elemen</label>
+                        <input type="text" id="search-elemen" class="form-control mb-3"
+                            placeholder="Ketik nama elemen...">
+                        <label for="filterColor" class="form-label fw-bold">Filter Warna</label>
+                        <select id="filterColor" class="form-select mb-3">
+                            <option value="">Semua</option>
+                            <option value="green">Hijau</option>
+                            <option value="yellow">Kuning</option>
+                            <option value="red">Merah</option>
+                            <option value="none">Belum Terisi</option>
+                        </select>
 
-            <p class="fw-bold mb-1">Keterangan Warna</p>
+                        <p class="fw-bold mb-1">
+                            Keterangan
+                        </p>
 
-            <div class="d-flex align-items-center mb-1">
-                <div style="width: 15px; height: 15px; background:#28a745; border-radius:3px;" class="me-2"></div>
-                <span>Skor <strong>4</strong> (Baik)</span>
-            </div>
+                        <div class="d-flex align-items-center mb-1">
+                            <div style="width: 15px; height: 15px; background:#28a745; border-radius:3px;" class="me-2">
+                            </div>
+                            <span>Skor <strong>4</strong> (Baik)</span>
+                        </div>
 
-            <div class="d-flex align-items-center mb-1">
-                <div style="width: 15px; height: 15px; background:#ffc107; border-radius:3px;" class="me-2"></div>
-                <span>Skor <strong>3-2</strong> (Cukup)</span>
-            </div>
+                        <div class="d-flex align-items-center mb-1">
+                            <div style="width: 15px; height: 15px; background:#ffc107; border-radius:3px;" class="me-2">
+                            </div>
+                            <span>Skor <strong>3–2</strong> (Cukup)</span>
+                        </div>
 
-            <div class="d-flex align-items-center">
-                <div style="width: 15px; height: 15px; background:#dc3545; border-radius:3px;" class="me-2"></div>
-                <span>Skor <strong>1</strong> (Kurang)</span>
-            </div>
+                        <div class="d-flex align-items-center mb-1">
+                            <div style="width: 15px; height: 15px; background:#dc3545; border-radius:3px;" class="me-2">
+                            </div>
+                            <span>Skor <strong>1</strong> (Kurang)</span>
+                        </div>
 
-            <div class="d-flex align-items-center">
-                <div style="width:15px; height:15px; background:#fff; border:1px solid #ccc; border-radius:3px;" class="me-2"></div>
-                <span>Belum Terisi</span>
-            </div>
+                        <div class="d-flex align-items-center">
+                            <div style="
+                    width:15px;
+                    height:15px;
+                    background:#ffffff;
+                    border:1px solid #ccc;
+                    border-radius:3px;
+                "
+                                class="me-2"></div>
 
-            <div class=" shadow-sm mb-3 mt-3" style=" overflow-y: auto;">
-                <div class=" ">
-                    <strong>Navigasi Elemen</strong>
-                </div>
-                <div class="nav-grid" id="nav-container">
+                            <span>Belum Terisi</span>
+                        </div>
+
+                        <div class="mt-3 mb-1">
+                            <strong>Navigasi Elemen</strong>
+                        </div>
+                        <div class="nav-grid" id="nav-container">
 
                     @php
                         $currentKriteria = null;
@@ -333,7 +348,68 @@
                     @endforeach
 
                 </div>
+                    </div>
+
+            {{-- Submit / status penilaian AMI --}}
+            <div class="mt-3">
+                @if ($isSubmitted)
+                    <div class="alert alert-info d-flex align-items-center justify-content-between mb-0 py-2">
+                        <div>
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <strong>Sudah Disubmit</strong>
+                            <br><small class="text-muted">{{ optional($auditHeader->jurusan_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
+                        </div>
+                    </div>
+                @else
+                    <button type="button" id="btn-submit-ami" class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-send-fill"></i>
+                        Submit Penilaian AMI
+                    </button>
+                    <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah disubmit.</small>
+                @endif
             </div>
+
+            <script>
+                window.isAMISubmitted = {{ $isSubmitted ? 'true' : 'false' }};
+                const btnSubmitAMI = document.getElementById('btn-submit-ami');
+                if (btnSubmitAMI) {
+                    btnSubmitAMI.addEventListener('click', function () {
+                        Swal.fire({
+                            title: 'Submit Penilaian AMI?',
+                            text: 'Setelah disubmit, seluruh data penilaian tidak dapat diubah lagi.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Submit',
+                            cancelButtonText: 'Batal',
+                            confirmButtonColor: '#dc3545',
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (!result.isConfirmed) return;
+                            fetch('{{ route('audit.submit') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({
+                                    program_studi: '{{ $userJurusan->id ?? '' }}',
+                                    role: '{{ auth()->user()->role }}'
+                                })
+                            }).then(r => r.json()).then(data => {
+                                if (data.success) {
+                                    Swal.fire({ icon: 'success', title: 'Berhasil', text: data.message });
+                                    setTimeout(() => location.reload(), 1500);
+                                } else {
+                                    Swal.fire({ icon: 'error', title: 'Gagal', text: data.message || 'Terjadi kesalahan.' });
+                                }
+                            }).catch(() => {
+                                Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan jaringan.' });
+                            });
+                        });
+                    });
+                }
+            </script>
 
         </div>
     </div>
@@ -403,6 +479,7 @@
     <script>
         // Auto-save current form before navigating
         function saveCurrentForm() {
+            if (window.isAMISubmitted) return Promise.resolve();
             const form = document.getElementById('kriteriaForm');
             if (!form || !form.action) return Promise.resolve();
             const formData = new FormData(form);
@@ -2069,13 +2146,15 @@
                         return saved ? parseFloat(saved.nilai) || 0 : 0;
                     }
 
-                    let kelompok = 'sains';
+                    let kelompok = sessionStorage.getItem('kelompok11') || btn.dataset.kelompok || 'sains';
+                    window._kelompok11 = kelompok;
 
                     function hitungSkorA11() {
                         const NM = val11('NM'), NDTPS = val11('NDTPS');
                         const RMD = NDTPS > 0 ? NM / NDTPS : 0;
+                        const k = window._kelompok11 || 'sains';
                         let skorA;
-                        if (kelompok === 'sains') {
+                        if (k === 'sains') {
                             if (RMD >= 15 && RMD <= 25) skorA = 4;
                             else if (RMD < 15) skorA = (4 * RMD) / 15;
                             else if (RMD > 25 && RMD <= 35) skorA = (70 - 2 * RMD) / 5;
@@ -2093,8 +2172,8 @@
                 <div class="mt-2 mb-2">
                     <label class="form-label"><strong>Kelompok Program Studi</strong></label>
                     <select class="form-select form-select-sm" id="kelompok-select" style="width:auto">
-                        <option value="sains">Sains Teknologi</option>
-                        <option value="sosial">Sosial Humaniora</option>
+                        <option value="sains" ${kelompok === 'sains' ? 'selected' : ''}>Sains Teknologi</option>
+                        <option value="sosial" ${kelompok === 'sosial' ? 'selected' : ''}>Sosial Humaniora</option>
                     </select>
                 </div>
                 <table class="table table-sm table-bordered mt-2 mb-0 bg-light" id="auto-skora11-table">
@@ -2112,6 +2191,10 @@
                     updateSkorA11();
                     document.getElementById('kelompok-select').addEventListener('change', function() {
                         kelompok = this.value;
+                        window._kelompok11 = this.value;
+                        btn.dataset.kelompok = this.value;
+                        sessionStorage.setItem('jurusan_kelompok11', this.value);
+                        sessionStorage.setItem('kelompok11', this.value);
                         updateSkorA11();
                         computeFinal11();
                     });
@@ -4579,8 +4662,14 @@
     <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
     <input type="hidden" name="id_user_jurusan" value="{{ $userJurusan->id }}">
 
-    <button type="submit" class="btn btn-sm btn-success">Simpan</button>
+    ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);
+
+            if (window.isAMISubmitted) {
+                container.querySelectorAll('input, textarea, select, button').forEach(el => {
+                    el.disabled = true;
+                });
+            }
 
                 document.getElementById("id_matriks_led").value = id_matriks_led;
 

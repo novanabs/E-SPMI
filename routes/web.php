@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
         // Simpan per kriteria
         Route::post('{jurusan_id}/kriteria', [HasilAMIController::class, 'saveKriteria'])->name('saveKriteria');
 
+        // Submit penilaian AMI (finalisasi)
+        Route::post('/submit', [HasilAMIController::class, 'submit'])->name('submit');
+
         // Export PDF
         Route::get('/{audit}/export/pdf', [HasilAMIController::class, 'exportPdf'])->name('export.pdf');
 

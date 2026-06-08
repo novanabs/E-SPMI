@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Audit;
 use App\Models\AuditorJurusan;
 use App\Models\MatriksLED;
 use App\Models\SyaratUnggul;
@@ -49,6 +50,12 @@ class EvaluasiDiriJurusan extends Controller
             'id_users'             => 'required|integer',
             'id_user_jurusan'      => 'required|integer',
         ]);
+
+        // Cek apakah penilaian AMI sudah disubmit oleh jurusan/admin
+        $audit = Audit::where('program_studi', (string) $validated['id_user_jurusan'])->first();
+        if ($audit && $audit->jurusan_submitted_at) {
+            return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit, tidak dapat diubah lagi.');
+        }
 
         UsersMatrik::updateOrCreate(
             [
@@ -445,7 +452,9 @@ class EvaluasiDiriJurusan extends Controller
         $syarat3 = $dataUnggul->every(fn($i) => $i->memenuhi_3_tahun);
         $syarat5 = $dataUnggul->every(fn($i) => $i->memenuhi_5_tahun);
 
-        return view('EvaluasiDiriJurusan.edit', compact('data', 'userJurusan', 'dataUnggul', 'syarat3', 'syarat5'));
+        $auditHeader = Audit::where('program_studi', $id)->first();
+
+        return view('EvaluasiDiriJurusan.edit', compact('data', 'userJurusan', 'dataUnggul', 'syarat3', 'syarat5', 'auditHeader'));
     }
 
     /**
