@@ -191,13 +191,15 @@
     {{-- Data jawaban asli jurusan untuk ditampilkan di kolom kanan --}}
     @php
         $jurusanMatrikJson = $jurusanMatrik->mapWithKeys(function ($m) {
-            return [$m->id_matriks_led => [
-                'jawaban'     => $m->jawaban,
-                'skor_a'      => $m->skor_a,
-                'skor_b'      => $m->skor_b,
-                'nilai_total' => $m->nilai_total,
-                'link_bukti'  => $m->link_bukti,
-            ]];
+            return [
+                $m->id_matriks_led => [
+                    'jawaban' => $m->jawaban,
+                    'skor_a' => $m->skor_a,
+                    'skor_b' => $m->skor_b,
+                    'nilai_total' => $m->nilai_total,
+                    'link_bukti' => $m->link_bukti,
+                ],
+            ];
         });
         $jurusanSubItemsJson = $jurusanSubItems->mapWithKeys(function ($items, $matriksId) {
             return [$matriksId => $items->pluck('nilai', 'id_sub_item_elemen')->toArray()];
@@ -434,15 +436,18 @@
                                 <div>
                                     <i class="bi bi-check-circle-fill me-2"></i>
                                     <strong>Sudah Disubmit</strong>
-                                    <br><small class="text-muted">{{ optional($auditHeader->auditor_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
+                                    <br><small
+                                        class="text-muted">{{ optional($auditHeader->auditor_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
                                 </div>
                             </div>
                         @else
-                            <button type="button" id="btn-submit-ami" class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
+                            <button type="button" id="btn-submit-ami"
+                                class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
                                 <i class="bi bi-send-fill"></i>
                                 Submit Penilaian AMI
                             </button>
-                            <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah disubmit.</small>
+                            <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah
+                                disubmit.</small>
                         @endif
                     </div>
 
@@ -450,7 +455,7 @@
                         window.isAMISubmitted = {{ $isSubmitted ? 'true' : 'false' }};
                         const btnSubmitAMI = document.getElementById('btn-submit-ami');
                         if (btnSubmitAMI) {
-                            btnSubmitAMI.addEventListener('click', function () {
+                            btnSubmitAMI.addEventListener('click', function() {
                                 Swal.fire({
                                     title: 'Submit Penilaian AMI?',
                                     text: 'Setelah disubmit, seluruh data penilaian tidak dapat diubah lagi.',
@@ -475,13 +480,25 @@
                                         })
                                     }).then(r => r.json()).then(data => {
                                         if (data.success) {
-                                            Swal.fire({ icon: 'success', title: 'Berhasil', text: data.message });
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Berhasil',
+                                                text: data.message
+                                            });
                                             setTimeout(() => location.reload(), 1500);
                                         } else {
-                                            Swal.fire({ icon: 'error', title: 'Gagal', text: data.message || 'Terjadi kesalahan.' });
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Gagal',
+                                                text: data.message || 'Terjadi kesalahan.'
+                                            });
                                         }
                                     }).catch(() => {
-                                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan jaringan.' });
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal',
+                                            text: 'Terjadi kesalahan jaringan.'
+                                        });
                                     });
                                 });
                             });
@@ -499,7 +516,7 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center"
                     style="background: #173b70; color: #fff;">
-                    <h5 class="mb-0">Status Akreditasi dan Masa Berlaku</h5>
+                    <h5 class="mb-0">Status AMI dan Masa Berlaku</h5>
                     <span class="fs-6 fw-bold" id="nilaiAkreditasiDisplay" style="color: #ffd700;">NA: —</span>
                 </div>
                 <div class="card-body p-0">
@@ -509,7 +526,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nilai Akreditasi</th>
+                                    <th>Nilai AMI</th>
                                     <th>Syarat 3 Thn</th>
                                     <th>Syarat 5 Thn</th>
                                     <th>Status</th>
@@ -919,7 +936,7 @@
                 <div class="card-header py-2 d-flex justify-content-between">
                     {{-- <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
                             {{ $syarat5 }}</h5> --}}
-                    <h5 class="mb-0">Hasil Akreditasi {{ $userJurusan->homebase ?? '' }}</h5>
+                    <h5 class="mb-0">Hasil AMI {{ $userJurusan->homebase ?? '' }}</h5>
                     <div>
                         <a class="btn btn-sm btn-success me-2" href="{{ route('auditor.perbandingan', $assigned->id) }}">
                             Bandingkan
@@ -940,12 +957,12 @@
                     <div class="col-md-6 d-flex flex-column">
 
                         <div class="d-flex">
-                            <p class="mb-1 me-2">Nilai Akreditasi:</p>
+                            <p class="mb-1 me-2">Nilai AMI:</p>
                             <p class="mb-1 fw-bold" id="total_nilai_semua"></p>
                         </div>
 
                         <div class="d-flex">
-                            <p class="mb-1 me-2">Status Akreditasi:</p>
+                            <p class="mb-1 me-2">Status AMI:</p>
                             <p class="mb-1 fw-bold" id="status"></p>
                         </div>
 
@@ -1019,7 +1036,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td class="text-start">{{ $aspek }}</td>
-                                        <td>{{ $nilaiAkt }}</td>
+                                        <td>{{ number_format($nilaiAkt, 2) }}</td>
                                         <td>{{ $nilaiMaks }}</td>
 
                                         <td>
@@ -1050,7 +1067,7 @@
                         <div class="d-flex justify-content-between mb-2">
                             <span>
                                 Total Nilai:
-                                <strong>{{ $totalAktual }}</strong> / {{ $totalMaks }}
+                                <strong>{{ number_format($totalAktual, 2) }}</strong> / {{ $totalMaks }}
                             </span>
 
                             <span class="fw-bold">
@@ -1158,7 +1175,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <p><strong>Fakultas:</strong> Keguruan dan Ilmu Pendidikan </p>
-                                <p><strong>Program Studi:</strong> {{ $userJurusan->homebase ?? '' }}</p>
+                                <p><strong>Jurusan:</strong> {{ $userJurusan->homebase ?? '' }}</p>
                                 <div class="mb-3">
                                     <label for="tanggal_audit" class="form-label">
                                         <strong>Tgl Audit</strong>
@@ -1194,11 +1211,11 @@
                         <input type="hidden" id="program_studi" value="{{ $userJurusan->id ?? '' }}">
 
                         @if (!$isSubmitted)
-                        <button type="button" class="btn btn-success mt-3 d-inline-flex align-items-center gap-2"
-                            id="btn-simpan-header">
-                            <span id="status-marker" class="d-none">⚠️</span>
-                            <span id="btn-text">Simpan</span>
-                        </button>
+                            <button type="button" class="btn btn-success mt-3 d-inline-flex align-items-center gap-2"
+                                id="btn-simpan-header">
+                                <span id="status-marker" class="d-none">⚠️</span>
+                                <span id="btn-text">Simpan</span>
+                            </button>
                         @endif
                     </div>
                 </div>
@@ -1293,6 +1310,7 @@
                 <!-- 9 KRITERIA ONLY -->
                 @php
                     $currentKriteriaAmi = null;
+                    $no = 1;
                 @endphp
 
                 @foreach ($kriteria as $itemAmi)
@@ -1305,7 +1323,7 @@
                         <div class="card mb-4 shadow-sm card-kriteria-container">
 
                             <div class="card-header bg-primary text-white">
-                                {{ $currentKriteriaAmi }} <br>
+                                {{ $no++ }}. {{ $currentKriteriaAmi }} <br>
                                 <div class="small">{{ $itemAmi->deskripsi }}</div>
                             </div>
 
@@ -1324,12 +1342,12 @@
                                 </div>
 
                                 @if (!$isSubmitted)
-                                <button type="button"
-                                    class="btn btn-success btn-simpan-kriteria d-inline-flex align-items-center gap-2"
-                                    data-kriteria-id="{{ $itemAmi->id }}" data-audit-id="{{ $audit->id ?? '' }}">
-                                    <span class="status-marker d-none">⚠️</span>
-                                    <span class="btn-text">Simpan</span>
-                                </button>
+                                    <button type="button"
+                                        class="btn btn-success btn-simpan-kriteria d-inline-flex align-items-center gap-2"
+                                        data-kriteria-id="{{ $itemAmi->id }}" data-audit-id="{{ $audit->id ?? '' }}">
+                                        <span class="status-marker d-none">⚠️</span>
+                                        <span class="btn-text">Simpan</span>
+                                    </button>
                                 @endif
 
                             </div>
@@ -1440,44 +1458,44 @@
                 // Simpan header
                 const btnSimpanHeader = document.getElementById('btn-simpan-header');
                 if (btnSimpanHeader) {
-                btnSimpanHeader.addEventListener('click', function() {
-                    fetch('{{ route('audit.saveHeader') }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken,
-                            },
-                            body: JSON.stringify({
-                                tanggal_audit: document.getElementById('tanggal_audit').value,
-                                catatan_umum: document.getElementById('catatan_umum').value,
-                                auditor_1_id: document.getElementById('auditor_1_id').value,
-                                auditor_2_id: document.getElementById('auditor_2_id').value,
-                                program_studi: document.getElementById('program_studi').value,
+                    btnSimpanHeader.addEventListener('click', function() {
+                        fetch('{{ route('audit.saveHeader') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': csrfToken,
+                                },
+                                body: JSON.stringify({
+                                    tanggal_audit: document.getElementById('tanggal_audit').value,
+                                    catatan_umum: document.getElementById('catatan_umum').value,
+                                    auditor_1_id: document.getElementById('auditor_1_id').value,
+                                    auditor_2_id: document.getElementById('auditor_2_id').value,
+                                    program_studi: document.getElementById('program_studi').value,
+                                })
                             })
-                        })
-                        .then(res => res.json())
-                        .then(data => {
-                            document.querySelectorAll('.btn-simpan-kriteria').forEach(btn => {});
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: 'Berhasil disimpan.',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                showConfirmButton: false,
+                            .then(res => res.json())
+                            .then(data => {
+                                document.querySelectorAll('.btn-simpan-kriteria').forEach(btn => {});
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Berhasil disimpan.',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
+                            })
+                            .catch(() => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal',
+                                    text: 'Gagal menyimpan header.',
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                });
                             });
-                        })
-                        .catch(() => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: 'Gagal menyimpan header.',
-                                timer: 2000,
-                                timerProgressBar: true,
-                                showConfirmButton: false,
-                            });
-                        });
-                });
+                    });
                 }
 
                 // Simpan per kriteria
@@ -1672,7 +1690,7 @@
                 // console.log(total);
             });
 
-            document.getElementById("total_nilai_semua").innerText = total;
+            document.getElementById("total_nilai_semua").innerText = total.toFixed(2);
             document.getElementById("nilaiAkreditasiDisplay").innerText = "NA: " + total.toFixed(2);
 
             let hasil = hitungAkreditasi(total, syarat3, syarat5);
@@ -6538,12 +6556,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-    <div class="mb-3 mt-3">
-        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-        <div class="border rounded p-2 bg-light">
-            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-        </div>
-    </div>` : ''}
+                                <div class="mb-3 mt-3">
+                                    <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                    <div class="border rounded p-2 bg-light">
+                                        <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                    </div>
+                                </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
@@ -6564,12 +6582,12 @@
     ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);
 
-            // Disable semua input jika AMI sudah disubmit
-            if (window.isAMISubmitted) {
-                formEl.querySelectorAll('input, textarea, select, button').forEach(el => {
-                    el.disabled = true;
-                });
-            }
+                // Disable semua input jika AMI sudah disubmit
+                if (window.isAMISubmitted) {
+                    formEl.querySelectorAll('input, textarea, select, button').forEach(el => {
+                        el.disabled = true;
+                    });
+                }
 
                 document.getElementById("id_matriks_led").value = id_matriks_led;
 
@@ -6632,9 +6650,12 @@
                     if (jMatrik) {
                         jurusanClone.querySelectorAll('input[type="radio"]').forEach(r => {
                             const val = parseInt(r.value);
-                            if (r.name === 'jawaban' && val === parseInt(jMatrik.jawaban)) r.checked = true;
-                            else if (r.name === 'skor_a' && val === parseInt(jMatrik.skor_a || 0)) r.checked = true;
-                            else if (r.name === 'skor_b' && val === parseInt(jMatrik.skor_b || 0)) r.checked = true;
+                            if (r.name === 'jawaban' && val === parseInt(jMatrik.jawaban)) r
+                                .checked = true;
+                            else if (r.name === 'skor_a' && val === parseInt(jMatrik.skor_a || 0)) r
+                                .checked = true;
+                            else if (r.name === 'skor_b' && val === parseInt(jMatrik.skor_b || 0)) r
+                                .checked = true;
                             else r.checked = false;
                         });
                     }
@@ -6706,7 +6727,8 @@
                         const jw = parseFloat(jMatrik.jawaban) || 0;
                         const nt = parseFloat(jMatrik.nilai_total) || 0;
                         jurusanClone.querySelectorAll('[id^="live-"]').forEach(live => {
-                            live.innerHTML = `Skor dipilih: <strong>${jw}</strong> | Nilai: <strong>${nt}</strong>`;
+                            live.innerHTML =
+                                `Skor dipilih: <strong>${jw}</strong> | Nilai: <strong>${nt}</strong>`;
                         });
                     }
 
@@ -6722,7 +6744,8 @@
                     jContainer.innerHTML = '';
                     jContainer.appendChild(jurusanClone);
                 } else {
-                    jContainer.innerHTML = '<p class="text-muted fst-italic">Belum ada data dari jurusan.</p>';
+                    jContainer.innerHTML =
+                        '<p class="text-muted fst-italic">Belum ada data dari jurusan.</p>';
                 }
 
             });

@@ -307,19 +307,19 @@
                         <div class="d-flex align-items-center mb-1">
                             <div style="width: 15px; height: 15px; background:#28a745; border-radius:3px;" class="me-2">
                             </div>
-                            <span>Skor <strong>4</strong> (Baik)</span>
+                            <span>Nilai <strong>4</strong> (Baik)</span>
                         </div>
 
                         <div class="d-flex align-items-center mb-1">
                             <div style="width: 15px; height: 15px; background:#ffc107; border-radius:3px;" class="me-2">
                             </div>
-                            <span>Skor <strong>3–2</strong> (Cukup)</span>
+                            <span>Nilai <strong>3–2</strong> (Cukup)</span>
                         </div>
 
                         <div class="d-flex align-items-center mb-1">
                             <div style="width: 15px; height: 15px; background:#dc3545; border-radius:3px;" class="me-2">
                             </div>
-                            <span>Skor <strong>1</strong> (Kurang)</span>
+                            <span>Nilai <strong>1</strong> (Kurang)</span>
                         </div>
 
                         <div class="d-flex align-items-center">
@@ -409,15 +409,18 @@
                                 <div>
                                     <i class="bi bi-check-circle-fill me-2"></i>
                                     <strong>Sudah Disubmit</strong>
-                                    <br><small class="text-muted">{{ optional($auditHeader->jurusan_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
+                                    <br><small
+                                        class="text-muted">{{ optional($auditHeader->jurusan_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
                                 </div>
                             </div>
                         @else
-                            <button type="button" id="btn-submit-ami" class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
+                            <button type="button" id="btn-submit-ami"
+                                class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
                                 <i class="bi bi-send-fill"></i>
                                 Submit Penilaian AMI
                             </button>
-                            <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah disubmit.</small>
+                            <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah
+                                disubmit.</small>
                         @endif
                     </div>
 
@@ -425,7 +428,7 @@
                         window.isAMISubmitted = {{ $isSubmitted ? 'true' : 'false' }};
                         const btnSubmitAMI = document.getElementById('btn-submit-ami');
                         if (btnSubmitAMI) {
-                            btnSubmitAMI.addEventListener('click', function () {
+                            btnSubmitAMI.addEventListener('click', function() {
                                 Swal.fire({
                                     title: 'Submit Penilaian AMI?',
                                     text: 'Setelah disubmit, seluruh data penilaian tidak dapat diubah lagi.',
@@ -450,13 +453,25 @@
                                         })
                                     }).then(r => r.json()).then(data => {
                                         if (data.success) {
-                                            Swal.fire({ icon: 'success', title: 'Berhasil', text: data.message });
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Berhasil',
+                                                text: data.message
+                                            });
                                             setTimeout(() => location.reload(), 1500);
                                         } else {
-                                            Swal.fire({ icon: 'error', title: 'Gagal', text: data.message || 'Terjadi kesalahan.' });
+                                            Swal.fire({
+                                                icon: 'error',
+                                                title: 'Gagal',
+                                                text: data.message || 'Terjadi kesalahan.'
+                                            });
                                         }
                                     }).catch(() => {
-                                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Terjadi kesalahan jaringan.' });
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal',
+                                            text: 'Terjadi kesalahan jaringan.'
+                                        });
                                     });
                                 });
                             });
@@ -474,7 +489,7 @@
             <div class="card shadow-sm mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center"
                     style="background: #173b70; color: #fff;">
-                    <h5 class="mb-0">Status Akreditasi dan Masa Berlaku</h5>
+                    <h5 class="mb-0">Status AMI dan Masa Berlaku</h5>
                     <span class="fs-6 fw-bold" id="nilaiAkreditasiDisplay" style="color: #ffd700;">NA: —</span>
                 </div>
                 <div class="card-body p-0">
@@ -484,7 +499,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>No</th>
-                                    <th>Nilai Akreditasi</th>
+                                    <th>Nilai AMI</th>
                                     <th>Syarat 3 Thn</th>
                                     <th>Syarat 5 Thn</th>
                                     <th>Status</th>
@@ -927,7 +942,7 @@
                 <div class="card-header py-2 d-flex justify-content-between">
                     {{-- <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
                             {{ $syarat5 }}</h5> --}}
-                    <h5 class="mb-0">Hasil Akreditasi</h5>
+                    <h5 class="mb-0">Hasil AMI</h5>
                     <button class="btn btn-sm btn-primary ms-auto" onclick="previewPdf()">
                         Export PDF
                     </button>
@@ -943,12 +958,12 @@
                     <div class="col-md-6 d-flex flex-column">
 
                         <div class="d-flex">
-                            <p class="mb-1 me-2">Nilai Akreditasi:</p>
+                            <p class="mb-1 me-2">Nilai AMI:</p>
                             <p class="mb-1 fw-bold" id="total_nilai_semua"></p>
                         </div>
 
                         <div class="d-flex">
-                            <p class="mb-1 me-2">Status Akreditasi:</p>
+                            <p class="mb-1 me-2">Status AMI:</p>
                             <p class="mb-1 fw-bold" id="status"></p>
                         </div>
 
@@ -1022,7 +1037,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td class="text-start">{{ $aspek }}</td>
-                                        <td>{{ $nilaiAkt }}</td>
+                                        <td>{{ number_format($nilaiAkt, 2) }}</td>
                                         <td>{{ $nilaiMaks }}</td>
 
                                         <td>
@@ -1053,7 +1068,7 @@
                         <div class="d-flex justify-content-between mb-2">
                             <span>
                                 Total Nilai:
-                                <strong>{{ $totalAktual }}</strong> / {{ $totalMaks }}
+                                <strong>{{ number_format($totalAktual, 2) }}</strong> / {{ $totalMaks }}
                             </span>
 
                             <span class="fw-bold">
@@ -1279,7 +1294,7 @@
                 // console.log(total);
             });
 
-            document.getElementById("total_nilai_semua").innerText = total;
+            document.getElementById("total_nilai_semua").innerText = total.toFixed(2);
             document.getElementById("nilaiAkreditasiDisplay").innerText = "NA: " + total.toFixed(2);
 
             let hasil = hitungAkreditasi(total, syarat3, syarat5);
@@ -2932,7 +2947,7 @@
                         const live = document.getElementById('live-final');
                         if (sb > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' :
                                 'Isi data variabel dan pilih Skor (b)';
@@ -3064,7 +3079,7 @@
                         const live = document.getElementById('live-final11');
                         if (sb > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' :
                                 'Isi data variabel dan pilih Skor (b)';
@@ -3178,7 +3193,7 @@
                         const live = document.getElementById('live-final14');
                         if (sb > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = skorA > 0 ? 'Pilih Skor (b) untuk hasil akhir' :
                                 'Isi data variabel dan pilih Skor (b)';
@@ -3285,7 +3300,7 @@
                         const live = document.getElementById('live-final15');
                         if (sb > 0 && skorA > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${sb}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else if (skorA > 0) {
                             live.innerHTML = 'Pilih Skor (b) untuk hasil akhir';
                         } else {
@@ -3520,7 +3535,7 @@
                         const live = document.getElementById('live-final19');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi semua data untuk hasil akhir';
                         }
@@ -3624,7 +3639,7 @@
                         const live = document.getElementById('live-final20');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi BKD dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3731,7 +3746,7 @@
                         const live = document.getElementById('live-final21');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NRD/NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3836,7 +3851,7 @@
                         const live = document.getElementById('live-final22');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NDTPSPK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -3941,7 +3956,7 @@
                         const live = document.getElementById('live-final23');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(1)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NTENDIKPK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4091,16 +4106,14 @@
                             ?.value || 0);
                         // const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0)
                         //     ? (skorA + (3 * (skorB + skorC) + skorD) / 8) : 0;
-                        const jawabanAkhir =
-                            (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ?
-                            ((skorA + (3 * (skorB + skorC) + skorD)) / 8) :
-                            0;
+                        const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ? ((skorA + (
+                            3 * (skorB + skorC) + skorD)) / 8) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
 
                         const live = document.getElementById('live-final33');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC.toFixed(2)}</strong> | Skor(d): <strong>${skorD}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${skorA}</strong> | Skor(b): <strong>${skorB.toFixed(1)}</strong> | Skor(c): <strong>${skorC.toFixed(2)}</strong> | Skor(d): <strong>${skorD}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi semua data untuk hasil akhir';
                         }
@@ -4206,7 +4219,7 @@
                         const live = document.getElementById('live-final40');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi RIPK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4309,7 +4322,7 @@
                         const live = document.getElementById('live-final41');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi RMS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4413,7 +4426,7 @@
                         const live = document.getElementById('live-final42');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PMTK dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4518,7 +4531,7 @@
                         const live = document.getElementById('live-final43');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PKMS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4625,7 +4638,7 @@
                             '%' : '-';
                         document.getElementById('cv-faktor45').textContent = faktor < 1 ? faktor.toFixed(
                             4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora45').textContent = skorA > 0 ? skorA.toFixed(4) :
+                        document.getElementById('cv-skora45').textContent = skorA > 0 ? skorA.toFixed(2) :
                             '-';
 
                         return {
@@ -4664,7 +4677,7 @@
                         const live = document.getElementById('live-final45');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PLB, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4770,7 +4783,7 @@
                             '%' : '-';
                         document.getElementById('cv-faktor46').textContent = faktor < 1 ? faktor.toFixed(
                             4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora46').textContent = skorA > 0 ? skorA.toFixed(4) :
+                        document.getElementById('cv-skora46').textContent = skorA > 0 ? skorA.toFixed(2) :
                             '-';
 
                         return {
@@ -4809,7 +4822,7 @@
                         const live = document.getElementById('live-final46');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi WTMP, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -4915,7 +4928,7 @@
                             '%' : '-';
                         document.getElementById('cv-faktor47').textContent = faktor < 1 ? faktor.toFixed(
                             4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora47').textContent = skorA > 0 ? skorA.toFixed(4) :
+                        document.getElementById('cv-skora47').textContent = skorA > 0 ? skorA.toFixed(2) :
                             '-';
 
                         return {
@@ -4954,7 +4967,7 @@
                         const live = document.getElementById('live-final47');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi PBS, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5063,7 +5076,7 @@
                             ' (' + tkiStr + ')' : '-';
                         document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(
                             4) : '-';
-                        document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(4) : '-';
+                        document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(2) : '-';
                         document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
                             nj : '-';
                         document.getElementById('cv-pj48').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
@@ -5071,7 +5084,7 @@
                             '%' : '-';
                         document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(
                             4) : (faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) :
+                        document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(2) :
                             '-';
 
                         return {
@@ -5110,7 +5123,7 @@
                         const live = document.getElementById('live-final48');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${skorA.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi TK1–TK9, NL, NJ dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5211,13 +5224,13 @@
                         document.getElementById('cv-ndtps53').textContent = ndtps > 0 ? ndtps : '-';
                         document.getElementById('cv-counts53').textContent = (ni + nn + nl > 0) ? ni + '/' +
                             nn + '/' + nl : '-';
-                        document.getElementById('cv-ri53').textContent = ri > 0 ? ri.toFixed(4) : (ndtps >
+                        document.getElementById('cv-ri53').textContent = ri > 0 ? ri.toFixed(2) : (ndtps >
                             0 ? '0' : '-');
-                        document.getElementById('cv-rn53').textContent = rn > 0 ? rn.toFixed(4) : (ndtps >
+                        document.getElementById('cv-rn53').textContent = rn > 0 ? rn.toFixed(2) : (ndtps >
                             0 ? '0' : '-');
-                        document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(4) : (ndtps >
+                        document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(2) : (ndtps >
                             0 ? '0' : '-');
-                        document.getElementById('cv-skora53').textContent = base > 0 ? base.toFixed(4) :
+                        document.getElementById('cv-skora53').textContent = base > 0 ? base.toFixed(2) :
                             '-';
                         return {
                             base
@@ -5255,7 +5268,7 @@
                         const live = document.getElementById('live-final53');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5329,7 +5342,7 @@
                             ' / ' + npd : '-';
                         document.getElementById('cv-ppdm54').textContent = ppdm > 0 ? (ppdm * 100).toFixed(
                             2) + '%' : (npd > 0 ? '0%' : '-');
-                        document.getElementById('cv-skora54').textContent = base > 0 ? base.toFixed(4) :
+                        document.getElementById('cv-skora54').textContent = base > 0 ? base.toFixed(2) :
                             '-';
                         return {
                             base
@@ -5367,7 +5380,7 @@
                         const live = document.getElementById('live-final54');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NPM, NPD dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5464,10 +5477,10 @@
                             base
                         } = hitungSkorA55();
                         document.getElementById('cv-ndtps55').textContent = ndtps > 0 ? ndtps : '-';
-                        document.getElementById('cv-rw55').textContent = ndtps > 0 ? rw.toFixed(4) : '-';
-                        document.getElementById('cv-rn55').textContent = ndtps > 0 ? rn.toFixed(4) : '-';
-                        document.getElementById('cv-ri55').textContent = ndtps > 0 ? ri.toFixed(4) : '-';
-                        document.getElementById('cv-skora55').textContent = base > 0 ? base.toFixed(4) :
+                        document.getElementById('cv-rw55').textContent = ndtps > 0 ? rw.toFixed(2) : '-';
+                        document.getElementById('cv-rn55').textContent = ndtps > 0 ? rn.toFixed(2) : '-';
+                        document.getElementById('cv-ri55').textContent = ndtps > 0 ? ri.toFixed(2) : '-';
+                        document.getElementById('cv-skora55').textContent = base > 0 ? base.toFixed(2) :
                             '-';
                         return {
                             base
@@ -5505,7 +5518,7 @@
                         const live = document.getElementById('live-final55');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NA1–NA4, NB1–NB3, NC1–NC3, NDTPS dan pilih Skor (b)';
                         }
@@ -5619,7 +5632,7 @@
                         const live = document.getElementById('live-final56');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NDTPS_PUB, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5692,7 +5705,7 @@
                         } = hitungSkorA57();
                         document.getElementById('cv-ras57').textContent = (nas > 0 || ndtps > 0) ? nas +
                             ' / ' + ndtps : '-';
-                        document.getElementById('cv-rsa57').textContent = rsa > 0 ? rsa.toFixed(4) : (
+                        document.getElementById('cv-rsa57').textContent = rsa > 0 ? rsa.toFixed(2) : (
                             ndtps > 0 ? '0' : '-');
                         document.getElementById('cv-skora57').textContent = base > 0 ? base : (ndtps > 0 ?
                             '1' : '-');
@@ -5732,7 +5745,7 @@
                         const live = document.getElementById('live-final57');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NAS, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5821,10 +5834,10 @@
                             base
                         } = hitungSkorA59();
                         document.getElementById('cv-ndtps59').textContent = ndtps > 0 ? ndtps : '-';
-                        document.getElementById('cv-rl59').textContent = ndtps > 0 ? rl.toFixed(4) : '-';
-                        document.getElementById('cv-rn59').textContent = ndtps > 0 ? rn.toFixed(4) : '-';
-                        document.getElementById('cv-ri59').textContent = ndtps > 0 ? ri.toFixed(4) : '-';
-                        document.getElementById('cv-skora59').textContent = base > 0 ? base.toFixed(4) : (
+                        document.getElementById('cv-rl59').textContent = ndtps > 0 ? rl.toFixed(2) : '-';
+                        document.getElementById('cv-rn59').textContent = ndtps > 0 ? rn.toFixed(2) : '-';
+                        document.getElementById('cv-ri59').textContent = ndtps > 0 ? ri.toFixed(2) : '-';
+                        document.getElementById('cv-skora59').textContent = base > 0 ? base.toFixed(2) : (
                             ndtps > 0 ? '1' : '-');
                         return {
                             base
@@ -5862,7 +5875,7 @@
                         const live = document.getElementById('live-final59');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -5935,7 +5948,7 @@
                             npkm + ' / ' + npkdtps : '-';
                         document.getElementById('cv-ppkdm60').textContent = ppkdm > 0 ? (ppkdm * 100)
                             .toFixed(2) + '%' : (npkdtps > 0 ? '0%' : '-');
-                        document.getElementById('cv-skora60').textContent = base > 0 ? base.toFixed(4) :
+                        document.getElementById('cv-skora60').textContent = base > 0 ? base.toFixed(2) :
                             '-';
                         return {
                             base
@@ -5973,7 +5986,7 @@
                         const live = document.getElementById('live-final60');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
                             live.innerHTML = 'Isi NPkM, NPkDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
@@ -6029,7 +6042,7 @@
                         const live = document.getElementById('live-dual');
                         if (sa && sb) {
                             live.innerHTML =
-                                `Skor(a): <strong>${sa}</strong> | Skor(b): <strong>${sb}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(2)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
+                                `Skor(a): <strong>${sa}</strong> | Skor(b): <strong>${sb}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else if (sa) {
                             live.innerHTML = `Skor(a): <strong>${sa}</strong> — pilih juga Skor(b)`;
                         } else if (sb) {
@@ -6073,12 +6086,12 @@
                         if (radio.checked) {
                             let hasil = parseFloat(radio.value) * parseFloat(poin);
                             liveSkor.innerHTML =
-                                `Skor dipilih: <strong>${radio.value}</strong> | Nilai: <strong>${hasil}</strong>`;
+                                `Skor dipilih: <strong>${radio.value}</strong> | Total: <strong>${hasil}</strong>`;
                         }
                         radio.addEventListener('change', function() {
                             let hasil = parseFloat(this.value) * parseFloat(poin);
                             liveSkor.innerHTML =
-                                `Skor dipilih: <strong>${this.value}</strong> | Nilai: <strong>${hasil}</strong>`;
+                                `Skor dipilih: <strong>${this.value}</strong> | Total: <strong>${hasil}</strong>`;
                             document.getElementById('nilai_total').value = hasil;
                         });
                     });
@@ -6112,11 +6125,11 @@
     ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);
 
-            if (window.isAMISubmitted) {
-                container.querySelectorAll('input, textarea, select, button').forEach(el => {
-                    el.disabled = true;
-                });
-            }
+                if (window.isAMISubmitted) {
+                    container.querySelectorAll('input, textarea, select, button').forEach(el => {
+                        el.disabled = true;
+                    });
+                }
 
                 document.getElementById("id_matriks_led").value = id_matriks_led;
 

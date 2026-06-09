@@ -1,5 +1,5 @@
 <div style="font-family: Arial, sans-serif; font-size: 14px">
-    <table width="100%" style="margin-bottom:10px">
+    <table width="100%" style="margin-bottom:10px" hidden>
         <tr>
             <td width="15%" valign="top">
                 <img src="{{ $logo }}" width="80" alt="Logo ULM">
@@ -12,16 +12,14 @@
                     FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN
                 </strong><br>
                 <strong style="text-transform: uppercase">
-                    {{ auth()->user()->homebase }}
+
                 </strong><br>
             </td>
             <td width="15%"></td>
         </tr>
     </table>
 
-    <hr>
-
-    <h3 style="text-align:center">HASIL AUDIT MUTU INTERNAL</h3>
+    <h3 style="text-align:center">HASIL AMI JURUSAN {{ strtoupper(auth()->user()->homebase) }}</h3>
 
     <br>
 
@@ -35,17 +33,17 @@
             <td>: {{ $generated_by }}</td>
         </tr> --}}
         @if ($showAuditor)
-        <tr>
-            <td><strong>Auditor 1</strong></td>
-            <td>: {{ $auditorNameMap['Auditor 1'] ?? '-' }}</td>
-        </tr>
-        <tr>
-            <td><strong>Auditor 2</strong></td>
-            <td>: {{ $auditorNameMap['Auditor 2'] ?? '-' }}</td>
-        </tr>
+            <tr>
+                <td><strong>Auditor 1</strong></td>
+                <td>: {{ $auditorNameMap['Auditor 1'] ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><strong>Auditor 2</strong></td>
+                <td>: {{ $auditorNameMap['Auditor 2'] ?? '-' }}</td>
+            </tr>
         @endif
     </table>
- <table width="100%" border="1" cellpadding="6" cellspacing="0"
+    <table width="100%" border="1" cellpadding="6" cellspacing="0"
         style="border-collapse:collapse; font-family:Arial; font-size:14px">
         <tr style="background:#f2f2f2; text-align:center">
             <th width="40%">Penilaian Mandiri Jurusan</th>
@@ -71,14 +69,14 @@
         </tr>
     </table>
     {{-- CHART RADAR PER ASPEK --}}
-  
+
     {{-- <h4 style="text-align:center; margin:0 0 10px 0;">Grafik Capaian Per Aspek</h4> --}}
     <div style="text-align:center;">
         <img src="{{ $radarChart }}" width="520" height="480" alt="Radar Chart">
     </div>
     <br>
 
-   
+
 
     <br>
 
@@ -92,19 +90,22 @@
                 <th width="7%">Nilai Jurusan</th>
                 <th width="7%">{{ $showAuditor ? 'Nilai Auditor' : 'Nilai UPM' }}</th>
                 <th width="7%">Selisih</th>
-                <th >Temuan</th>
-                <th >Saran</th>
+                <th>Temuan</th>
+                <th>Saran</th>
             </tr>
         </thead>
 
         <tbody>
-            @php $no = 0; $prevKriteria = null; @endphp
+            @php
+                $no = 0;
+                $prevKriteria = null;
+            @endphp
             @foreach ($elemen as $item)
                 @php
                     $kriteriaName = $item->kriteria->name ?? '-';
                     $nilaiJurusan = data_get($item, 'userMatrik.nilai_total');
                     $nilaiAuditor = $showAuditor
-                        ? ($auditorScores->get($item->id)?->nilai_total ?? null)
+                        ? $auditorScores->get($item->id)?->nilai_total ?? null
                         : data_get($item, 'userMatrikByUser.nilai_total');
 
                     $selisih =
@@ -194,7 +195,7 @@
                 <td align="left" valign="top" width="33%">
                     ________________, {{ $tanggal }}<br><br>
                     <strong>Mengetahui,</strong><br>
-                    <strong>{{$userJurusan->jabatan}} {{$userJurusan->homebase}}</strong>
+                    <strong>Ketua Jurusan {{ $userJurusan->homebase }}</strong>
                     <br><br><br><br><br><br>
                     <strong>{{ $userJurusan->name ?? '_______________________________' }}</strong><br>
                     NIP. {{ $userJurusan->nip ?? '' }}

@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::whereIn('role', ['pimpinan', 'admin_jurusan', 'auditor'])->get();
+        $data = User::whereIn('role', ['pimpinan', 'admin_jurusan', 'auditor', 'admin_fkip'])->get();
 
         return view('user.index', compact('data'));
     }
@@ -320,26 +320,26 @@ class UserController extends Controller
 
         Log::debug('auditorEvaluasiStore', [
             'incomingNilaiTotal' => $incomingNilaiTotal,
-            'incomingJawaban' => $incomingJawaban,
-            'id_matriks_led' => $validated['id_matriks_led'],
+            'incomingJawaban'    => $incomingJawaban,
+            'id_matriks_led'     => $validated['id_matriks_led'],
         ]);
 
         // Save shared score to UsersMatrik: id_users = jurusan_id, id_user_jurusan = jurusan_id
         UsersMatrik::updateOrCreate(
-                [
-                    'id_users'        => $sharedId,
-                    'id_user_jurusan' => $sharedId,
-                    'id_matriks_led'  => $validated['id_matriks_led'],
-                ],
-                [
-                    'jawaban'              => $incomingJawaban,
-                    'skor_a'               => $validated['skor_a'] ?? null,
-                    'skor_b'               => $validated['skor_b'] ?? null,
-                    'nilai_total'          => $incomingNilaiTotal,
-                    'link_bukti'           => $validated['link_bukti'] ?? '',
-                    'kepemilikan_kriteria' => $validated['kepemilikan_kriteria'],
-                ]
-            );
+            [
+                'id_users'        => $sharedId,
+                'id_user_jurusan' => $sharedId,
+                'id_matriks_led'  => $validated['id_matriks_led'],
+            ],
+            [
+                'jawaban'              => $incomingJawaban,
+                'skor_a'               => $validated['skor_a'] ?? null,
+                'skor_b'               => $validated['skor_b'] ?? null,
+                'nilai_total'          => $incomingNilaiTotal,
+                'link_bukti'           => $validated['link_bukti'] ?? '',
+                'kepemilikan_kriteria' => $validated['kepemilikan_kriteria'],
+            ]
+        );
 
         // Save per-auditor temuan/saran to auditor_temuan_saran
         \DB::table('auditor_temuan_saran')->updateOrInsert(

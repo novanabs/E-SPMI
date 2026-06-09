@@ -79,7 +79,7 @@
                             {{ $item->userMatrik->jawaban ?? '-' }}
                         </td>
                         <td align="center">
-                            {{ $item->userMatrik ? $item->userMatrik->jawaban * $item->poin : '-' }}
+                            {{ $item->userMatrik ? number_format($item->userMatrik->jawaban * $item->poin, 2) : '-' }}
                         </td>
                     </tr>
                 @endforeach
