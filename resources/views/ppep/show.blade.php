@@ -282,7 +282,7 @@
                     @foreach ($penetapan as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
                             <td>
                                 {{ \Carbon\Carbon::parse($item->tanggal_penetapan)->translatedFormat('d M Y') }}
                                 {{ $item->tanggal_berakhir ? '- ' . \Carbon\Carbon::parse($item->tanggal_berakhir)->translatedFormat('d M Y') : '' }}
@@ -313,7 +313,7 @@
                     @foreach ($pelaksanaan as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
                             <td>{{ $item->periode }}</td>
                             <td>
                                 @if ($item->link_bukti_kerjasama)
@@ -336,7 +336,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Aspek</th>
+                        <th>Bidang</th>
                         <th>Jenis Laporan</th>
                         <th>Periode</th>
                         <th>Link Laporan</th>
@@ -346,7 +346,7 @@
                     @foreach ($evaluasi as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->aspek }}</td>
+                            <td>{{ $item->bidang }}</td>
                             <td>{{ $item->jenis_laporan }}</td>
                             <td>{{ $item->periode }}</td>
                             <td>
@@ -375,7 +375,7 @@
                     @foreach ($pengendalian as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
                             <td>{{ $item->periode }}</td>
                             <td>
                                 <a href="{{ $item->link_bukti_laporan }}" target="_blank" class="btn btn-view">Lihat</a>
@@ -403,7 +403,7 @@
                     @foreach ($peningkatan as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
                             <td>{{ $item->periode }}</td>
                             <td>
                                 <a href="{{ $item->link_bukti_laporan }}" target="_blank" class="btn btn-view">Lihat</a>

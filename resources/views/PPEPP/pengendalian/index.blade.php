@@ -355,7 +355,7 @@
                                 <div class="document-title">
                                     {{ $item->name }}
                                     @if ($item->bidang)
-                                        <span class="text-muted">({{ $item->bidang }})</span>
+                                        <strong>({{ $item->bidang }})</strong>
                                     @endif
                                 </div>
 
