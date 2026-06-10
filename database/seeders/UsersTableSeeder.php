@@ -15,29 +15,40 @@ class UsersTableSeeder extends Seeder
     public function run(): void
     {
         User::firstOrCreate([
-            'email' => 'pilkom@ulm.ac.id',
+            'email' => 'matematika@ulm.ac.id',
         ], [
-            'name'     => 'Dr. Harja Santana Purba, M.Kom.',
-            'homebase' => 'Pendidikan Komputer',
-            'nip'      => '123456789',
+            'name'     => 'Dr. Hj. Noor Fajriah, M.Si',
+            'homebase' => 'Pendidikan Matematika',
+            'nip'      => '196808271993032001',
             'jabatan'  => 'Ketua Jurusan',
             'password' => Hash::make('12345'),
             'role'     => 'admin_jurusan',
         ]);
 
-        User::firstOrCreate(
-            [
-                'email' => 'penko@ulm.ac.id',
-            ],
-            [
-                'name'     => 'Dr. Muhammad Rahmattullah, M.Pd.',
-                'nip'      => '987654321',
-                'jabatan'  => 'Ketua Jurusan',
-                'homebase' => 'Pendidikan Ekonomi',
-                'password' => Hash::make('12345'),
-                'role'     => 'admin_jurusan',
-            ]
-        );
+        // User::firstOrCreate([
+        //     'email' => 'pilkom@ulm.ac.id',
+        // ], [
+        //     'name'     => 'Dr. Harja Santana Purba, M.Kom.',
+        //     'homebase' => 'Pendidikan Komputer',
+        //     'nip'      => '123456789',
+        //     'jabatan'  => 'Ketua Jurusan',
+        //     'password' => Hash::make('12345'),
+        //     'role'     => 'admin_jurusan',
+        // ]);
+
+        // User::firstOrCreate(
+        //     [
+        //         'email' => 'penko@ulm.ac.id',
+        //     ],
+        //     [
+        //         'name'     => 'Dr. Muhammad Rahmattullah, M.Pd.',
+        //         'nip'      => '987654321',
+        //         'jabatan'  => 'Ketua Jurusan',
+        //         'homebase' => 'Pendidikan Ekonomi',
+        //         'password' => Hash::make('12345'),
+        //         'role'     => 'admin_jurusan',
+        //     ]
+        // );
 
         User::firstOrCreate([
             'email' => 'upmfkip1@ulm.ac.id',
@@ -48,27 +59,27 @@ class UsersTableSeeder extends Seeder
             'role'     => 'admin_FKIP',
         ]);
 
-        User::firstOrCreate([
-            'email' => 'madhan@ulm.ac.id',
-        ], [
-            'name'     => 'Madhan, SPd.',
-            'homebase' => 'Pendidikan Komputer',
-            'password' => Hash::make('12345'),
-            'jabatan'  => 'Auditor',
-            'nip'      => '1122334455',
-            'role'     => 'auditor',
-        ]);
+        // User::firstOrCreate([
+        //     'email' => 'madhan@ulm.ac.id',
+        // ], [
+        //     'name'     => 'Madhan, SPd.',
+        //     'homebase' => 'Pendidikan Komputer',
+        //     'password' => Hash::make('12345'),
+        //     'jabatan'  => 'Auditor',
+        //     'nip'      => '1122334455',
+        //     'role'     => 'auditor',
+        // ]);
 
-        User::firstOrCreate([
-            'email' => 'ari@ulm.ac.id',
-        ], [
-            'name'     => 'Ari, SPd.',
-            'homebase' => 'Pendidikan Komputer',
-            'password' => Hash::make('12345'),
-            'jabatan'  => 'Auditor',
-            'nip'      => '5566778899',
-            'role'     => 'auditor',
-        ]);
+        // User::firstOrCreate([
+        //     'email' => 'ari@ulm.ac.id',
+        // ], [
+        //     'name'     => 'Ari, SPd.',
+        //     'homebase' => 'Pendidikan Komputer',
+        //     'password' => Hash::make('12345'),
+        //     'jabatan'  => 'Auditor',
+        //     'nip'      => '5566778899',
+        //     'role'     => 'auditor',
+        // ]);
 
         
 
