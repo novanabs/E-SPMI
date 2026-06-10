@@ -31,7 +31,9 @@
 <body>
 
     <h2 class="text-center">
-        HASIL AUDIT MUTU INTERNAL PRODI
+        BERITA ACARA HASIL AMI <br>
+        JURUSAN {{ strtoupper($jurusan->homebase) }} <br>
+        TAHUN {{ $tahun }}
     </h2>
 
     <table style="margin-bottom:20px">
@@ -41,7 +43,7 @@
         </tr>
 
         <tr>
-            <td>Program Studi</td>
+            <td>Jurusan</td>
             <td>{{ $jurusan->homebase }}</td>
         </tr>
 
@@ -54,12 +56,12 @@
 
         <tr>
             <td>Auditor I</td>
-            <td>{{ $auditor->get(0)?->user?->name }}</td>
+            <td>{{ $auditors->get(0)?->user?->name }}</td>
         </tr>
 
         <tr>
             <td>Auditor II</td>
-            <td>{{ $auditor->get(1)?->user?->name }}</td>
+            <td>{{ $auditors->get(1)?->user?->name }}</td>
         </tr>
 
         <tr>
@@ -68,64 +70,111 @@
         </tr>
     </table>
 
-    <table>
+    @php
+        $namaKriteria = array_keys($perAspekJurusan);
+
+        $kriteriaMap = $auditKriterias->keyBy('id');
+
+        $skorA = $perAspekAuditor[$jurusan->id] ?? [];
+    @endphp
+
+    <table border="1" width="100%" cellspacing="0" cellpadding="5">
         <thead>
             <tr>
-                <th width="5%">No</th>
+                <th width="5%">#</th>
                 <th width="25%">Kriteria</th>
-                <th width="35%">Temuan Audit</th>
-                <th width="35%">Saran & Rekomendasi</th>
+                <th width="10%">Skor Jurusan</th>
+                <th width="10%">Skor Auditor</th>
+                <th width="10%">Selisih</th>
+                <th width="20%">Temuan</th>
+                <th width="20%">Rekomendasi</th>
             </tr>
         </thead>
 
         <tbody>
-
-            @foreach ($auditKriterias as $index => $kriteria)
+            @foreach ($namaKriteria as $index => $nama)
                 @php
-                    $audit = $kriteria->auditKriterias->first();
+                    $kriteriaId = $index + 1;
+
+                    $sJ = $perAspekJurusan[$nama] ?? 0;
+                    $sA = $skorA[$nama] ?? 0;
+                    $selisih = $sJ - $sA;
+
+                    $kriteria = $kriteriaMap[$kriteriaId] ?? null;
+                    $audit = $kriteria?->auditKriterias?->first();
                 @endphp
+
                 <tr>
+                    <td align="center">{{ $kriteriaId }}</td>
+
+                    <td>{{ $nama }}</td>
+
                     <td align="center">
-                        {{ $index + 1 }}
+                        {{ number_format($sJ, 2) }}
+                    </td>
+
+                    <td align="center">
+                        {{ number_format($sA, 2) }}
+                    </td>
+
+                    <td align="center">
+                        {{ number_format($selisih, 2) }}
                     </td>
 
                     <td>
-                        {{ $kriteria->name }}
+                        {{ $audit?->temuan ?: '-' }}
                     </td>
 
                     <td>
-                        {{ $audit && $audit->temuan ? $audit->temuan : '-' }}
-                    </td>
-
-                    <td>
-                        {{ $audit && $audit->rekomendasi ? $audit->rekomendasi : '-' }}
+                        {{ $audit?->rekomendasi ?: '-' }}
                     </td>
                 </tr>
             @endforeach
-
         </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="2" align="right"><strong>Total</strong></td>
+
+                <td align="center">
+                    <strong>{{ number_format(array_sum($perAspekJurusan), 2) }}</strong>
+                </td>
+
+                <td align="center">
+                    <strong>{{ number_format(array_sum($skorA), 2) }}</strong>
+                </td>
+
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
     </table>
 
     <br><br><br>
 
     <table style="border:none">
         <tr>
-            <td style="border:none;text-align:center">
-                Ketua Jurusan
+            <td style="border:none;text-align:left">
+                Banjarmasin, {{ now()->translatedFormat('d F Y') }}
+
+                <br><br>
+
+                Ketua Jurusan {{ $jurusan->homebase }}
+
                 <br><br><br><br><br>
+
                 {{ $jurusan->name }}
             </td>
 
             <td style="border:none;text-align:center">
                 Auditor I
-                <br><br><br><br><br>
-                <b>{{ $auditor->get(0)?->user?->name }}</b>
+                <br><br><br><br><br><br><br>
+                <b>{{ $auditors->get(0)?->user?->name }}</b>
             </td>
 
             <td style="border:none;text-align:center">
                 Auditor II
-                <br><br><br><br><br>
-                <b>{{ $auditor->get(1)?->user?->name }}</b>
+                <br><br><br><br><br><br><br>
+                <b>{{ $auditors->get(1)?->user?->name }}</b>
             </td>
 
 

@@ -424,7 +424,8 @@
                             <li><a class="dropdown-item" href="/login-pimpinan">Login Pimpinan</a></li>
                             <hr class="my-0"> --}}
                             @if (auth()->check())
-                                <li><a class="dropdown-item" href="{{ route('reset.password') }}">Reset Password</a>
+                                <li hidden><a class="dropdown-item" href="{{ route('reset.password') }}">Reset
+                                        Password</a>
                                 </li>
                                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
                             @else

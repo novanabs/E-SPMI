@@ -2,19 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Models\Audit;
+use App\Models\AuditKriteria;
+use App\Models\AuditorJurusan;
+use App\Models\Kriteria;
 use App\Models\MatriksLED;
-use App\Models\UsersMatrik;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\UsersMatrik;
 use Barryvdh\DomPDF\Facade\Pdf;
-use setasign\Fpdi\Fpdi;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use setasign\Fpdi\Fpdi;
 
 class ExportController extends Controller
 {
-    public function previewPdf()
+    public function previewPdf(Request $request)
     {
+        // Ambil Tahun, Id Jurusan
+
+        $jurusanId = $request->idJurusan;
+
+        $jurusan = User::findOrFail($jurusanId);
+
+        $auditHeader = Audit::where(
+            'program_studi',
+            $jurusanId
+        )->latest()->first();
+
+        // Ambil semua kriteria, tapi muat auditKriterias yang filternya sesuai jurusan_id
+        $auditKriterias = Kriteria::with([
+            'auditKriterias' => function ($query) use ($jurusanId) {
+                $query->where('jurusan_id', $jurusanId);
+            }
+        ])->get();
+
+
+        $auditor = AuditorJurusan::where('jurusan', $jurusan->homebase)
+            ->get();
+
+
+
+
+        $pdf = Pdf::loadView(
+            'exports.audit-pdf',
+            compact(
+                'jurusan',
+                'auditHeader',
+                'auditKriterias',
+                'auditors'
+            )
+        )->setPaper('a4', 'portrait');
+
+        return $pdf->stream(
+            'AMI_' .
+            str_replace(' ', '_', $jurusan->homebase) .
+            '.pdf'
+        );
+    }
+    public function previewPdfOld()
+    {
+
+
+
+
         $user = auth()->user();
         $userId = auth()->user()->id;
         $tahun = request('tahun');
@@ -60,7 +111,7 @@ class ExportController extends Controller
             'tanggal'      => now()->format('d-m-Y'),
             'waktu'        => now()->format('H:i:s'),
             'logo'         => $logoBase64,
-            
+
 
             'nilai'        => $totalNilai,
             'status'       => $status,
@@ -141,7 +192,7 @@ class ExportController extends Controller
         $idUserUpm = $userUpm?->id;
 
         $auditorId = request('auditor_id');
-        $showAuditor = $auditorId && (int)$auditorId === (int)$idJurusan;
+        $showAuditor = $auditorId && (int) $auditorId === (int) $idJurusan;
 
         // Logo base64
         $logoPath = public_path('img/ulm.png');
@@ -236,40 +287,40 @@ class ExportController extends Controller
         $radarChart = $this->generateRadarChartBase64($perAspekJurusan, $perAspekAuditor, $perAspekMax, $showAuditor);
 
         return view('pdf.preview_perbandingan', [
-            'logo'             => $logoBase64,
-            'generated_by'     => $user->name,
-            'tanggal'          => now()->translatedFormat('j F Y'),
-            'waktu'            => now()->format('H:i:s'),
+            'logo'               => $logoBase64,
+            'generated_by'       => $user->name,
+            'tanggal'            => now()->translatedFormat('j F Y'),
+            'waktu'              => now()->format('H:i:s'),
 
-            'userJurusan'      => $userJurusan,
-            'userUpm'          => $userUpm,
+            'userJurusan'        => $userJurusan,
+            'userUpm'            => $userUpm,
 
-            'elemen'           => $elemen,
-            'showAuditor'      => $showAuditor,
-            'auditorScores'    => $auditorScores,
+            'elemen'             => $elemen,
+            'showAuditor'        => $showAuditor,
+            'auditorScores'      => $auditorScores,
             'auditorTemuanSaran' => $auditorTemuanSaran,
-            'auditorLabelMap'  => $auditorLabelMap,
-            'auditorNameMap'   => $auditorNameMap,
-            'auditorNipMap'    => $auditorNipMap,
+            'auditorLabelMap'    => $auditorLabelMap,
+            'auditorNameMap'     => $auditorNameMap,
+            'auditorNipMap'      => $auditorNipMap,
 
             // HASIL PERHITUNGAN
-            'totalJurusan'     => $totalJurusan,
-            'totalAuditor'     => $totalAuditor,
-            'selisih'          => $selisih,
+            'totalJurusan'       => $totalJurusan,
+            'totalAuditor'       => $totalAuditor,
+            'selisih'            => $selisih,
 
-            'statusJurusan'    => $hasilJurusan['status'],
-            'masaJurusan' => $hasilJurusan['masa'],
+            'statusJurusan'      => $hasilJurusan['status'],
+            'masaJurusan'        => $hasilJurusan['masa'],
 
-            'statusAuditor'    => $hasilAuditor['status'],
-            'masaAuditor' => $hasilAuditor['masa'],
+            'statusAuditor'      => $hasilAuditor['status'],
+            'masaAuditor'        => $hasilAuditor['masa'],
 
             // Per-aspek untuk chart
-            'perAspekJurusan'  => $perAspekJurusan,
-            'perAspekAuditor'  => $perAspekAuditor,
-            'perAspekMax'      => $perAspekMax,
+            'perAspekJurusan'    => $perAspekJurusan,
+            'perAspekAuditor'    => $perAspekAuditor,
+            'perAspekMax'        => $perAspekMax,
 
             // Radar chart PNG (GD)
-            'radarChart'       => $radarChart,
+            'radarChart'         => $radarChart,
         ]);
     }
 
@@ -285,7 +336,7 @@ class ExportController extends Controller
         $idUserUpm = $userUpm?->id;
 
         $auditorId = request('auditor_id');
-        $showAuditor = $auditorId && (int)$auditorId === (int)$idJurusan;
+        $showAuditor = $auditorId && (int) $auditorId === (int) $idJurusan;
 
         // Logo base64 (cepat & aman untuk PDF)
         $logoPath = public_path('img/ulm.png');
@@ -380,40 +431,40 @@ class ExportController extends Controller
         $radarChart = $this->generateRadarChartBase64($perAspekJurusan, $perAspekAuditor, $perAspekMax, $showAuditor);
 
         $data = [
-            'logo'             => $logoBase64,
-            'generated_by'     => $user->name,
-            'tanggal'          => now()->translatedFormat('j F Y'),
-            'waktu'            => now()->format('H:i:s'),
+            'logo'               => $logoBase64,
+            'generated_by'       => $user->name,
+            'tanggal'            => now()->translatedFormat('j F Y'),
+            'waktu'              => now()->format('H:i:s'),
 
-            'userJurusan'      => $userJurusan,
-            'userUpm'          => $userUpm,
+            'userJurusan'        => $userJurusan,
+            'userUpm'            => $userUpm,
 
-            'elemen'           => $elemen,
-            'showAuditor'      => $showAuditor,
-            'auditorScores'    => $auditorScores,
+            'elemen'             => $elemen,
+            'showAuditor'        => $showAuditor,
+            'auditorScores'      => $auditorScores,
             'auditorTemuanSaran' => $auditorTemuanSaran,
-            'auditorLabelMap'  => $auditorLabelMap,
-            'auditorNameMap'   => $auditorNameMap,
-            'auditorNipMap'    => $auditorNipMap,
+            'auditorLabelMap'    => $auditorLabelMap,
+            'auditorNameMap'     => $auditorNameMap,
+            'auditorNipMap'      => $auditorNipMap,
 
             // HASIL PERHITUNGAN
-            'totalJurusan'     => $totalJurusan,
-            'totalAuditor'     => $totalAuditor,
-            'selisih'          => $selisih,
+            'totalJurusan'       => $totalJurusan,
+            'totalAuditor'       => $totalAuditor,
+            'selisih'            => $selisih,
 
-            'statusJurusan'    => $hasilJurusan['status'],
-            'masaJurusan' => $hasilJurusan['masa'],
+            'statusJurusan'      => $hasilJurusan['status'],
+            'masaJurusan'        => $hasilJurusan['masa'],
 
-            'statusAuditor'    => $hasilAuditor['status'],
-            'masaAuditor' => $hasilAuditor['masa'],
+            'statusAuditor'      => $hasilAuditor['status'],
+            'masaAuditor'        => $hasilAuditor['masa'],
 
             // Per-aspek untuk chart
-            'perAspekJurusan'  => $perAspekJurusan,
-            'perAspekAuditor'  => $perAspekAuditor,
-            'perAspekMax'      => $perAspekMax,
+            'perAspekJurusan'    => $perAspekJurusan,
+            'perAspekAuditor'    => $perAspekAuditor,
+            'perAspekMax'        => $perAspekMax,
 
             // Radar chart PNG (GD)
-            'radarChart'       => $radarChart,
+            'radarChart'         => $radarChart,
         ];
 
         // Render portrait page + landscape pages, then merge
@@ -557,40 +608,40 @@ class ExportController extends Controller
         $radarChart = $this->generateRadarChartBase64($perAspekJurusan, $perAspekAuditor, $perAspekMax, $showAuditor);
 
         return view('pdf.preview_perbandingan', [
-            'logo'             => $logoBase64,
-            'generated_by'     => $userJurusan->name,
-            'tanggal'          => now()->translatedFormat('j F Y'),
-            'waktu'            => now()->format('H:i:s'),
+            'logo'               => $logoBase64,
+            'generated_by'       => $userJurusan->name,
+            'tanggal'            => now()->translatedFormat('j F Y'),
+            'waktu'              => now()->format('H:i:s'),
 
-            'userJurusan'      => $userJurusan,
-            'userUpm'          => $userUpm,
+            'userJurusan'        => $userJurusan,
+            'userUpm'            => $userUpm,
 
-            'elemen'           => $elemen,
-            'showAuditor'      => $showAuditor,
-            'auditorScores'    => $auditorScores,
+            'elemen'             => $elemen,
+            'showAuditor'        => $showAuditor,
+            'auditorScores'      => $auditorScores,
             'auditorTemuanSaran' => $auditorTemuanSaran,
-            'auditorLabelMap'  => $auditorLabelMap,
-            'auditorNameMap'   => $auditorNameMap,
-            'auditorNipMap'    => $auditorNipMap,
+            'auditorLabelMap'    => $auditorLabelMap,
+            'auditorNameMap'     => $auditorNameMap,
+            'auditorNipMap'      => $auditorNipMap,
 
             // HASIL PERHITUNGAN
-            'totalJurusan'     => $totalJurusan,
-            'totalAuditor'     => $totalAuditor,
-            'selisih'          => $selisih,
+            'totalJurusan'       => $totalJurusan,
+            'totalAuditor'       => $totalAuditor,
+            'selisih'            => $selisih,
 
-            'statusJurusan'    => $hasilJurusan['status'],
-            'masaJurusan' => $hasilJurusan['masa'],
+            'statusJurusan'      => $hasilJurusan['status'],
+            'masaJurusan'        => $hasilJurusan['masa'],
 
-            'statusAuditor'    => $hasilAuditor['status'],
-            'masaAuditor' => $hasilAuditor['masa'],
+            'statusAuditor'      => $hasilAuditor['status'],
+            'masaAuditor'        => $hasilAuditor['masa'],
 
             // Per-aspek untuk chart
-            'perAspekJurusan'  => $perAspekJurusan,
-            'perAspekAuditor'  => $perAspekAuditor,
-            'perAspekMax'      => $perAspekMax,
+            'perAspekJurusan'    => $perAspekJurusan,
+            'perAspekAuditor'    => $perAspekAuditor,
+            'perAspekMax'        => $perAspekMax,
 
             // Radar chart PNG (GD)
-            'radarChart'       => $radarChart,
+            'radarChart'         => $radarChart,
         ]);
     }
 
@@ -698,40 +749,40 @@ class ExportController extends Controller
         $radarChart = $this->generateRadarChartBase64($perAspekJurusan, $perAspekAuditor, $perAspekMax, $showAuditor);
 
         $data = [
-            'logo'             => $logoBase64,
-            'generated_by'     => $userJurusan->name,
-            'tanggal'          => now()->translatedFormat('j F Y'),
-            'waktu'            => now()->format('H:i:s'),
+            'logo'               => $logoBase64,
+            'generated_by'       => $userJurusan->name,
+            'tanggal'            => now()->translatedFormat('j F Y'),
+            'waktu'              => now()->format('H:i:s'),
 
-            'userJurusan'      => $userJurusan,
-            'userUpm'          => $userUpm,
+            'userJurusan'        => $userJurusan,
+            'userUpm'            => $userUpm,
 
-            'elemen'           => $elemen,
-            'showAuditor'      => $showAuditor,
-            'auditorScores'    => $auditorScores,
+            'elemen'             => $elemen,
+            'showAuditor'        => $showAuditor,
+            'auditorScores'      => $auditorScores,
             'auditorTemuanSaran' => $auditorTemuanSaran,
-            'auditorLabelMap'  => $auditorLabelMap,
-            'auditorNameMap'   => $auditorNameMap,
-            'auditorNipMap'    => $auditorNipMap,
+            'auditorLabelMap'    => $auditorLabelMap,
+            'auditorNameMap'     => $auditorNameMap,
+            'auditorNipMap'      => $auditorNipMap,
 
             // HASIL PERHITUNGAN
-            'totalJurusan'     => $totalJurusan,
-            'totalAuditor'     => $totalAuditor,
-            'selisih'          => $selisih,
+            'totalJurusan'       => $totalJurusan,
+            'totalAuditor'       => $totalAuditor,
+            'selisih'            => $selisih,
 
-            'statusJurusan'    => $hasilJurusan['status'],
-            'masaJurusan' => $hasilJurusan['masa'],
+            'statusJurusan'      => $hasilJurusan['status'],
+            'masaJurusan'        => $hasilJurusan['masa'],
 
-            'statusAuditor'    => $hasilAuditor['status'],
-            'masaAuditor' => $hasilAuditor['masa'],
+            'statusAuditor'      => $hasilAuditor['status'],
+            'masaAuditor'        => $hasilAuditor['masa'],
 
             // Per-aspek untuk chart
-            'perAspekJurusan'  => $perAspekJurusan,
-            'perAspekAuditor'  => $perAspekAuditor,
-            'perAspekMax'      => $perAspekMax,
+            'perAspekJurusan'    => $perAspekJurusan,
+            'perAspekAuditor'    => $perAspekAuditor,
+            'perAspekMax'        => $perAspekMax,
 
             // Radar chart PNG (GD)
-            'radarChart'       => $radarChart,
+            'radarChart'         => $radarChart,
         ];
 
         // Render portrait page + landscape pages, then merge
@@ -776,7 +827,8 @@ class ExportController extends Controller
     {
         $labels = array_keys($perAspekJurusan);
         $n = count($labels);
-        if ($n === 0) return '';
+        if ($n === 0)
+            return '';
 
         $pctJur = [];
         $pctAud = [];
@@ -797,13 +849,13 @@ class ExportController extends Controller
         $bg = imagecolorallocate($img, 255, 255, 255);
         imagefill($img, 0, 0, $bg);
 
-        $gridColor  = imagecolorallocate($img, 200, 200, 200);
-        $axisColor  = imagecolorallocate($img, 180, 180, 180);
-        $textColor  = imagecolorallocate($img, 0, 0, 0);
-        $jurColor   = imagecolorallocate($img, 23, 59, 112);
-        $audColor   = imagecolorallocate($img, 212, 160, 48);
-        $jurFill    = imagecolorallocate($img, 220, 230, 242);
-        $audFill    = imagecolorallocate($img, 255, 242, 217);
+        $gridColor = imagecolorallocate($img, 200, 200, 200);
+        $axisColor = imagecolorallocate($img, 180, 180, 180);
+        $textColor = imagecolorallocate($img, 0, 0, 0);
+        $jurColor = imagecolorallocate($img, 23, 59, 112);
+        $audColor = imagecolorallocate($img, 212, 160, 48);
+        $jurFill = imagecolorallocate($img, 220, 230, 242);
+        $audFill = imagecolorallocate($img, 255, 242, 217);
 
         $angles = [];
         for ($i = 0; $i < $n; $i++) {
@@ -838,7 +890,7 @@ class ExportController extends Controller
         for ($i = 0; $i < $n; $i++) {
             $x2 = $cx + $r * cos($angles[$i]);
             $y2 = $cy + $r * sin($angles[$i]);
-            imageline($img, $cx, $cy, (int)$x2, (int)$y2, $axisColor);
+            imageline($img, $cx, $cy, (int) $x2, (int) $y2, $axisColor);
         }
 
         // 3. Data polygons (fill + outline)
@@ -855,21 +907,21 @@ class ExportController extends Controller
             $yy = $cy - $r * $lv;
             $label = "{$pct}%";
             $fw = imagefontwidth(2) * strlen($label);
-            imagestring($img, 2, (int)($cx - $fw / 2), (int)($yy - 8), $label, $textColor);
+            imagestring($img, 2, (int) ($cx - $fw / 2), (int) ($yy - 8), $label, $textColor);
         }
         $zLabel = '0%';
         $zFw = imagefontwidth(2) * strlen($zLabel);
-        imagestring($img, 2, (int)($cx - $zFw / 2), (int)($cy - 8), $zLabel, $textColor);
+        imagestring($img, 2, (int) ($cx - $zFw / 2), (int) ($cy - 8), $zLabel, $textColor);
 
         // 5. Data point circles (on top of everything)
         for ($i = 0; $i < $n; $i++) {
             $xj = $cx + $r * ($pctJur[$i] / 100) * cos($angles[$i]);
             $yj = $cy + $r * ($pctJur[$i] / 100) * sin($angles[$i]);
-            imagefilledellipse($img, (int)round($xj), (int)round($yj), 8, 8, $jurColor);
+            imagefilledellipse($img, (int) round($xj), (int) round($yj), 8, 8, $jurColor);
 
             $xa = $cx + $r * ($pctAud[$i] / 100) * cos($angles[$i]);
             $ya = $cy + $r * ($pctAud[$i] / 100) * sin($angles[$i]);
-            imagefilledellipse($img, (int)round($xa), (int)round($ya), 8, 8, $audColor);
+            imagefilledellipse($img, (int) round($xa), (int) round($ya), 8, 8, $audColor);
         }
 
         // 6. Kriteria labels
@@ -881,21 +933,21 @@ class ExportController extends Controller
             $fw = imagefontwidth(2) * strlen($label);
             $fh = imagefontheight(2);
 
-            $ax = (int)round($lx);
-            $ay = (int)round($ly);
+            $ax = (int) round($lx);
+            $ay = (int) round($ly);
             if (cos($angles[$i]) > 0.1) {
-                $ax = (int)round($lx);
+                $ax = (int) round($lx);
             } elseif (cos($angles[$i]) < -0.1) {
-                $ax = (int)round($lx - $fw);
+                $ax = (int) round($lx - $fw);
             } else {
-                $ax = (int)round($lx - $fw / 2);
+                $ax = (int) round($lx - $fw / 2);
             }
             if (sin($angles[$i]) > 0.1) {
-                $ay = (int)round($ly + $fh);
+                $ay = (int) round($ly + $fh);
             } elseif (sin($angles[$i]) < -0.1) {
-                $ay = (int)round($ly);
+                $ay = (int) round($ly);
             } else {
-                $ay = (int)round($ly - $fh / 2);
+                $ay = (int) round($ly - $fh / 2);
             }
 
             imagestring($img, 2, $ax, $ay, $label, $textColor);
@@ -922,16 +974,16 @@ class ExportController extends Controller
 
         foreach ($elemen as $item) {
             $nama = $item->kriteria->name ?? '-';
-            $perAspekJurusan[$nama] = ($perAspekJurusan[$nama] ?? 0) + (float)(data_get($item, 'userMatrik.nilai_total') ?: 0);
+            $perAspekJurusan[$nama] = ($perAspekJurusan[$nama] ?? 0) + (float) (data_get($item, 'userMatrik.nilai_total') ?: 0);
         }
 
         $perAspekAuditor = [];
         foreach ($elemen as $item) {
             $nama = $item->kriteria->name ?? '-';
             if ($showAuditor) {
-                $nilai = (float)($auditorScores->get($item->id)?->nilai_total ?? 0);
+                $nilai = (float) ($auditorScores->get($item->id)?->nilai_total ?? 0);
             } else {
-                $nilai = (float)(data_get($item, 'userMatrikByUser.nilai_total') ?: 0);
+                $nilai = (float) (data_get($item, 'userMatrikByUser.nilai_total') ?: 0);
             }
             $perAspekAuditor[$nama] = ($perAspekAuditor[$nama] ?? 0) + $nilai;
         }
@@ -951,7 +1003,7 @@ class ExportController extends Controller
             'matriks.userSubItemElements' => function ($q) use ($userId, $tahun) {
                 $q->where('id_users', $userId)->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($userId, $tahun) {
+            'matriks.userMatrik'          => function ($q) use ($userId, $tahun) {
                 $q->where('id_users', $userId)->where('tahun', $tahun);
             },
         ])->get();
@@ -961,7 +1013,8 @@ class ExportController extends Controller
 
         foreach ($dataSyaratUnggul as $item) {
             $matriks = $item->matriks;
-            if (!$matriks) continue;
+            if (!$matriks)
+                continue;
 
             $subItems = $matriks->subItemElemen ?? collect();
             $userValues = $matriks->userSubItemElements ?? collect();
@@ -974,10 +1027,14 @@ class ExportController extends Controller
                 $NDS3 = $NDL = $NDLK = $NDGB = 0;
                 foreach ($subItems as $sub) {
                     $n = (float) ($nilaiMap[$sub->id] ?? 0);
-                    if ($sub->variabel == 'NDS3') $NDS3 = $n;
-                    if ($sub->variabel == 'NDL') $NDL = $n;
-                    if ($sub->variabel == 'NDLK') $NDLK = $n;
-                    if ($sub->variabel == 'NDGB') $NDGB = $n;
+                    if ($sub->variabel == 'NDS3')
+                        $NDS3 = $n;
+                    if ($sub->variabel == 'NDL')
+                        $NDL = $n;
+                    if ($sub->variabel == 'NDLK')
+                        $NDLK = $n;
+                    if ($sub->variabel == 'NDGB')
+                        $NDGB = $n;
                 }
                 $totalLektor = $NDL + $NDLK + $NDGB;
                 $m3 = $NDS3 >= 1 && $totalLektor >= 2;
@@ -987,34 +1044,49 @@ class ExportController extends Controller
                 $m3 = $jawaban >= 3.0;
                 $m5 = $jawaban >= 3.5;
             } elseif ($item->nomor == 5) {
-                $NM = 0; $S1=$S2=$S3=$S4=$S5=$S6=0; $INT=$ISBN=$PATEN=0;
+                $NM = 0;
+                $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
+                $INT = $ISBN = $PATEN = 0;
                 foreach ($subItems as $sub) {
                     $n = (float) ($nilaiMap[$sub->id] ?? 0);
-                    if ($sub->variabel == 'NM') $NM = $n;
-                    if ($sub->variabel == 'SINTA1_MHS') $S1 = $n;
-                    if ($sub->variabel == 'SINTA2_MHS') $S2 = $n;
-                    if ($sub->variabel == 'SINTA3_MHS') $S3 = $n;
-                    if ($sub->variabel == 'SINTA4_MHS') $S4 = $n;
-                    if ($sub->variabel == 'SINTA5_MHS') $S5 = $n;
-                    if ($sub->variabel == 'SINTA6_MHS') $S6 = $n;
-                    if ($sub->variabel == 'INT_MHS') $INT = $n;
-                    if ($sub->variabel == 'ISBN_MHS') $ISBN = $n;
-                    if ($sub->variabel == 'PATEN_MHS') $PATEN = $n;
+                    if ($sub->variabel == 'NM')
+                        $NM = $n;
+                    if ($sub->variabel == 'SINTA1_MHS')
+                        $S1 = $n;
+                    if ($sub->variabel == 'SINTA2_MHS')
+                        $S2 = $n;
+                    if ($sub->variabel == 'SINTA3_MHS')
+                        $S3 = $n;
+                    if ($sub->variabel == 'SINTA4_MHS')
+                        $S4 = $n;
+                    if ($sub->variabel == 'SINTA5_MHS')
+                        $S5 = $n;
+                    if ($sub->variabel == 'SINTA6_MHS')
+                        $S6 = $n;
+                    if ($sub->variabel == 'INT_MHS')
+                        $INT = $n;
+                    if ($sub->variabel == 'ISBN_MHS')
+                        $ISBN = $n;
+                    if ($sub->variabel == 'PATEN_MHS')
+                        $PATEN = $n;
                 }
                 if ($NM > 0) {
-                    $total3 = $S1+$S2+$S3+$S4+$S5+$INT+$ISBN+$PATEN;
-                    $persen3 = ($total3/$NM)*100;
+                    $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
+                    $persen3 = ($total3 / $NM) * 100;
                     $m3 = $persen3 >= 15;
-                    $total5 = $S1+$S2+$S3+$S4+$INT+$ISBN+$PATEN;
-                    $persen5 = ($total5/$NM)*100;
+                    $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
+                    $persen5 = ($total5 / $NM) * 100;
                     $m5 = $persen5 >= 25;
                 }
             } elseif ($item->nomor == 6) {
-                $NDTPS = 0; $NDTPS_PUB = 0;
+                $NDTPS = 0;
+                $NDTPS_PUB = 0;
                 foreach ($subItems as $sub) {
                     $n = (float) ($nilaiMap[$sub->id] ?? 0);
-                    if ($sub->variabel == 'NDTPS') $NDTPS = $n;
-                    if ($sub->variabel == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                    if ($sub->variabel == 'NDTPS')
+                        $NDTPS = $n;
+                    if ($sub->variabel == 'NDTPS_PUB')
+                        $NDTPS_PUB = $n;
                 }
                 if ($NDTPS > 0) {
                     $persen = ($NDTPS_PUB / $NDTPS) * 100;
@@ -1023,8 +1095,10 @@ class ExportController extends Controller
                 }
             }
 
-            if (!$m3) $syarat3 = false;
-            if (!$m5) $syarat5 = false;
+            if (!$m3)
+                $syarat3 = false;
+            if (!$m5)
+                $syarat5 = false;
         }
 
         return [$syarat3, $syarat5];
@@ -1033,13 +1107,17 @@ class ExportController extends Controller
     private function hitungAkreditasiDenganSyarat(float $nilai, bool $syarat3, bool $syarat5): array
     {
         if ($nilai >= 361) {
-            if ($syarat5) return ['status' => 'Terakreditasi Unggul', 'masa' => '5 Tahun'];
-            if ($syarat3) return ['status' => 'Terakreditasi Unggul', 'masa' => '3 Tahun'];
+            if ($syarat5)
+                return ['status' => 'Terakreditasi Unggul', 'masa' => '5 Tahun'];
+            if ($syarat3)
+                return ['status' => 'Terakreditasi Unggul', 'masa' => '3 Tahun'];
             return ['status' => 'Terakreditasi', 'masa' => '5 Tahun'];
         }
         if ($nilai >= 321) {
-            if ($syarat5) return ['status' => 'Terakreditasi Unggul', 'masa' => '5 Tahun'];
-            if ($syarat3) return ['status' => 'Terakreditasi Unggul', 'masa' => '3 Tahun'];
+            if ($syarat5)
+                return ['status' => 'Terakreditasi Unggul', 'masa' => '5 Tahun'];
+            if ($syarat3)
+                return ['status' => 'Terakreditasi Unggul', 'masa' => '3 Tahun'];
             return ['status' => 'Terakreditasi', 'masa' => '5 Tahun'];
         }
         if ($nilai >= 200) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Audit;
+use App\Models\AuditKriteria;
 use App\Models\AuditorJurusan;
 use App\Models\MatriksLED;
 use App\Models\SubItemElemen;
@@ -49,7 +50,7 @@ class EvaluasiLamdikController extends Controller
             'userSubItemElements' => function ($q) use ($idUser, $tahun) {
                 $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'userMatrik' => function ($q) use ($idUser, $tahun) {
+            'userMatrik'          => function ($q) use ($idUser, $tahun) {
                 $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
@@ -59,7 +60,7 @@ class EvaluasiLamdikController extends Controller
             'matriks.userSubItemElements' => function ($q) use ($idUser, $tahun) {
                 $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($idUser, $tahun) {
+            'matriks.userMatrik'          => function ($q) use ($idUser, $tahun) {
                 $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             }
         ])->get();
@@ -217,8 +218,10 @@ class EvaluasiLamdikController extends Controller
                     $var = $sub->variabel;
                     $nilai = (float) ($nilaiMap[$id] ?? 0);
 
-                    if ($var == 'NDTPS') $NDTPS = $nilai;
-                    if ($var == 'NDTPS_PUB') $NDTPS_PUB = $nilai;
+                    if ($var == 'NDTPS')
+                        $NDTPS = $nilai;
+                    if ($var == 'NDTPS_PUB')
+                        $NDTPS_PUB = $nilai;
                 }
 
                 if ($NDTPS > 0) {
@@ -295,10 +298,10 @@ class EvaluasiLamdikController extends Controller
 
         UsersMatrik::updateOrCreate(
             [
-                'id_users'       => $validated['id_users'],
-                'id_matriks_led' => $validated['id_matriks_led'],
+                'id_users'        => $validated['id_users'],
+                'id_matriks_led'  => $validated['id_matriks_led'],
                 'id_user_jurusan' => null,
-                'tahun'          => $tahun,
+                'tahun'           => $tahun,
             ],
             $validated
         );
@@ -443,7 +446,7 @@ class EvaluasiLamdikController extends Controller
 
                 $temuanHtml = '-';
                 $saranHtml = '-';
-                if ((int)$auditor->id === (int)$idJurusan) {
+                if ((int) $auditor->id === (int) $idJurusan) {
                     // For shared Auditor (virtual), combine temuan/saran from both auditors
                     $filteredTemuan = $tsItems->filter(fn($ts) => !empty($ts->temuan));
                     if ($filteredTemuan->isNotEmpty()) {
@@ -461,16 +464,16 @@ class EvaluasiLamdikController extends Controller
                     }
                 }
 
-                $item->auditorMatriks->push((object)[
-                    'id_users'   => $auditor->id,
-                    'nama'       => $auditor->name,
-                    'nilai_total'=> $score?->nilai_total,
-                    'jawaban'    => $score?->jawaban,
-                    'temuan'     => $temuanHtml,
-                    'saran'      => $saranHtml,
-                    'skor_a'     => $score?->skor_a,
-                    'skor_b'     => $score?->skor_b,
-                    'exists'     => !is_null($score),
+                $item->auditorMatriks->push((object) [
+                    'id_users'    => $auditor->id,
+                    'nama'        => $auditor->name,
+                    'nilai_total' => $score?->nilai_total,
+                    'jawaban'     => $score?->jawaban,
+                    'temuan'      => $temuanHtml,
+                    'saran'       => $saranHtml,
+                    'skor_a'      => $score?->skor_a,
+                    'skor_b'      => $score?->skor_b,
+                    'exists'      => !is_null($score),
                 ]);
             }
         });
@@ -484,7 +487,8 @@ class EvaluasiLamdikController extends Controller
                 $memenuhi3 = false;
                 $memenuhi5 = false;
                 $matriks = $item->matriks;
-                if (!$matriks) continue;
+                if (!$matriks)
+                    continue;
 
                 $subItems = $matriks->subItemElemen ?? collect();
                 $nilaiMap = $nilaiMapCallback($matriks);
@@ -494,12 +498,17 @@ class EvaluasiLamdikController extends Controller
                 if ($item->nomor == 1) {
                     $NDS3 = $NDL = $NDLK = $NDGB = 0;
                     foreach ($subItems as $sub) {
-                        $id = $sub->id; $var = $sub->variabel;
+                        $id = $sub->id;
+                        $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
-                        if ($var == 'NDS3') $NDS3 = $n;
-                        if ($var == 'NDL') $NDL = $n;
-                        if ($var == 'NDLK') $NDLK = $n;
-                        if ($var == 'NDGB') $NDGB = $n;
+                        if ($var == 'NDS3')
+                            $NDS3 = $n;
+                        if ($var == 'NDL')
+                            $NDL = $n;
+                        if ($var == 'NDLK')
+                            $NDLK = $n;
+                        if ($var == 'NDGB')
+                            $NDGB = $n;
                     }
                     $totalLektor = $NDL + $NDLK + $NDGB;
                     $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
@@ -511,39 +520,56 @@ class EvaluasiLamdikController extends Controller
                     $memenuhi5 = $nilai >= 3.5;
                     $detail = ['skor' => $nilai];
                 } elseif ($item->nomor == 5) {
-                    $NM = 0; $S1=$S2=$S3=$S4=$S5=$S6=0; $INT=$ISBN=$PATEN=0;
+                    $NM = 0;
+                    $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
+                    $INT = $ISBN = $PATEN = 0;
                     foreach ($subItems as $sub) {
-                        $id = $sub->id; $var = $sub->variabel;
+                        $id = $sub->id;
+                        $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
-                        if ($var == 'NM') $NM = $n;
-                        if ($var == 'SINTA1_MHS') $S1 = $n;
-                        if ($var == 'SINTA2_MHS') $S2 = $n;
-                        if ($var == 'SINTA3_MHS') $S3 = $n;
-                        if ($var == 'SINTA4_MHS') $S4 = $n;
-                        if ($var == 'SINTA5_MHS') $S5 = $n;
-                        if ($var == 'SINTA6_MHS') $S6 = $n;
-                        if ($var == 'INT_MHS') $INT = $n;
-                        if ($var == 'ISBN_MHS') $ISBN = $n;
-                        if ($var == 'PATEN_MHS') $PATEN = $n;
+                        if ($var == 'NM')
+                            $NM = $n;
+                        if ($var == 'SINTA1_MHS')
+                            $S1 = $n;
+                        if ($var == 'SINTA2_MHS')
+                            $S2 = $n;
+                        if ($var == 'SINTA3_MHS')
+                            $S3 = $n;
+                        if ($var == 'SINTA4_MHS')
+                            $S4 = $n;
+                        if ($var == 'SINTA5_MHS')
+                            $S5 = $n;
+                        if ($var == 'SINTA6_MHS')
+                            $S6 = $n;
+                        if ($var == 'INT_MHS')
+                            $INT = $n;
+                        if ($var == 'ISBN_MHS')
+                            $ISBN = $n;
+                        if ($var == 'PATEN_MHS')
+                            $PATEN = $n;
                     }
                     if ($NM > 0) {
-                        $total3 = $S1+$S2+$S3+$S4+$S5+$INT+$ISBN+$PATEN;
-                        $persen3 = ($total3/$NM)*100;
+                        $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
+                        $persen3 = ($total3 / $NM) * 100;
                         $memenuhi3 = $persen3 >= 15;
-                        $total5 = $S1+$S2+$S3+$S4+$INT+$ISBN+$PATEN;
-                        $persen5 = ($total5/$NM)*100;
+                        $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
+                        $persen5 = ($total5 / $NM) * 100;
                         $memenuhi5 = $persen5 >= 25;
                         $detail = ['NM' => $NM, 'S1' => $S1, 'S2' => $S2, 'S3' => $S3, 'S4' => $S4, 'S5' => $S5, 'S6' => $S6, 'INT' => $INT, 'ISBN' => $ISBN, 'PATEN' => $PATEN, 'total3' => $total3, 'persen3' => $persen3, 'total5' => $total5, 'persen5' => $persen5];
                     } else {
                         $detail = ['NM' => 0];
                     }
                 } elseif ($item->nomor == 6) {
-                    $NDTPS = 0; $NDTPS_PUB = 0;
+                    $NDTPS = 0;
+                    $NDTPS_PUB = 0;
                     foreach ($subItems as $sub) {
-                        $id = $sub->id; $var = $sub->variabel;
+                        $id = $sub->id;
+                        $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
-                        if ($var == 'NDTPS') $NDTPS = $n;
-                        if ($var == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                        if ($var == 'NDTPS')
+                            $NDTPS = $n;
+                        if ($var == 'NDTPS_PUB')
+                            $NDTPS_PUB = $n;
                     }
                     if ($NDTPS > 0) {
                         $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
@@ -556,15 +582,15 @@ class EvaluasiLamdikController extends Controller
                     }
                 }
                 $syaratResult[] = [
-                    'nomor'        => $item->nomor,
-                    'elemen'       => $item->elemen,
-                    'indikator'    => $item->indikator,
-                    'kriteria'     => $item->matriks?->kriteria?->name ?? '-',
-                    'memenuhi_3'   => $memenuhi3,
-                    'memenuhi_5'   => $memenuhi5,
-                    'detail'       => $detail,
-                    'syarat_3'     => json_decode($item->syarat_tahun, true)['3_tahun'] ?? '-',
-                    'syarat_5'     => json_decode($item->syarat_tahun, true)['5_tahun'] ?? '-',
+                    'nomor'      => $item->nomor,
+                    'elemen'     => $item->elemen,
+                    'indikator'  => $item->indikator,
+                    'kriteria'   => $item->matriks?->kriteria?->name ?? '-',
+                    'memenuhi_3' => $memenuhi3,
+                    'memenuhi_5' => $memenuhi5,
+                    'detail'     => $detail,
+                    'syarat_3'   => json_decode($item->syarat_tahun, true)['3_tahun'] ?? '-',
+                    'syarat_5'   => json_decode($item->syarat_tahun, true)['5_tahun'] ?? '-',
                 ];
             }
             return $syaratResult;
@@ -578,7 +604,7 @@ class EvaluasiLamdikController extends Controller
             'matriks.userSubItemElements' => function ($q) use ($idJurusan, $tahun) {
                 $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($idJurusan, $tahun) {
+            'matriks.userMatrik'          => function ($q) use ($idJurusan, $tahun) {
                 $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
         ])->get();
@@ -636,10 +662,35 @@ class EvaluasiLamdikController extends Controller
             $perAspekMax[$nama] = $max;
         }
 
+        // Ambil komentar hasil AMI oleh Auditor
+        $auditHeader = Audit::where('program_studi', (string) $idJurusan)
+            ->where('tahun', $tahun)
+            ->first();
+        $auditKriterias = AuditKriteria::where('jurusan_id', $idJurusan)->get();
+        $auditor = AuditorJurusan::where('jurusan', $userJurusan->homebase)
+            ->get();
+
+        // dd($auditHeader, $auditor, $perAspekJurusan, $perAspekAuditor, $auditKriterias);
+
+
         return view('EvaluasiLamdik.show', compact(
-            'data', 'syarat3', 'syarat5', 'auditors', 'userJurusan',
-            'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax',
-            'auditorLabelMap', 'auditorNameMap', 'tahun'
+            'data',
+            'syarat3',
+            'syarat5',
+            'auditors',
+            'userJurusan',
+            'jurusanSyarat',
+            'auditorSyaratData',
+            'perAspekJurusan',
+            'perAspekAuditor',
+            'perAspekMax',
+            'auditorLabelMap',
+            'auditorNameMap',
+            'tahun',
+            'auditor',
+            'auditHeader',
+            'auditKriterias',
+            'idJurusan',
         ));
     }
 

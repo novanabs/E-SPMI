@@ -8,8 +8,8 @@
 
     <style>
         /* =========================
-                       PAGE HEADER
-                    ========================= */
+                           PAGE HEADER
+                        ========================= */
 
         .page-header {
 
@@ -39,8 +39,8 @@
         }
 
         /* =========================
-                       TABLE CARD
-                    ========================= */
+                           TABLE CARD
+                        ========================= */
 
         .table-card {
 
@@ -72,8 +72,8 @@
         }
 
         /* =========================
-                       BUTTON
-                    ========================= */
+                           BUTTON
+                        ========================= */
 
         .btn {
 
@@ -118,8 +118,8 @@
         }
 
         /* =========================
-                       TABLE
-                    ========================= */
+                           TABLE
+                        ========================= */
 
         .table {
 
@@ -164,8 +164,8 @@
         }
 
         /* =========================
-                       ROLE BADGE
-                    ========================= */
+                           ROLE BADGE
+                        ========================= */
 
         .role-badge {
 
@@ -193,8 +193,8 @@
         }
 
         /* =========================
-                       PASSWORD BOX
-                    ========================= */
+                           PASSWORD BOX
+                        ========================= */
 
         .password-box {
 
@@ -214,8 +214,8 @@
         }
 
         /* =========================
-                       DATATABLE
-                    ========================= */
+                           DATATABLE
+                        ========================= */
 
         .dataTables_filter input,
         .dataTables_length select {
@@ -235,8 +235,8 @@
         }
 
         /* =========================
-                       RESPONSIVE
-                    ========================= */
+                           RESPONSIVE
+                        ========================= */
 
         @media(max-width:768px) {
 
@@ -345,7 +345,7 @@
 
                                 <span class="role-badge {{ $item->role == 'admin_FKIP' ? 'role-admin' : 'role-user' }}"
                                     style="white-space: nowrap;">
-                                    {{ $item->role == 'admin_FKIP' ? 'UPM' : ($item->role == 'admin_jurusan' ? 'Admin Jurusan' : $item->role) }}
+                                    {{ $item->role == 'admin_FKIP' ? 'UPM' : ($item->role == 'admin_jurusan' ? 'Ketua Jurusan' : $item->role) }}
                                 </span>
 
                             </td>

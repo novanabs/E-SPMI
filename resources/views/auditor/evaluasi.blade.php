@@ -204,7 +204,8 @@
             <i class="bi bi-info-circle-fill fs-5"></i>
             <div>
                 <strong>Jurusan sudah melakukan finalisasi penilaian AMI.</strong>
-                <br><small class="text-muted">Disubmit pada: {{ optional($auditHeader->jurusan_submitted_at)->format('d M Y, H:i') }}</small>
+                <br><small class="text-muted">Disubmit pada:
+                    {{ optional($auditHeader->jurusan_submitted_at)->format('d M Y, H:i') }}</small>
             </div>
         </div>
     @endif
@@ -887,7 +888,7 @@
                     {{-- <h5 class="mb-0">Hasil Akreditasi {{ $syarat3 }}
                             {{ $syarat5 }}</h5> --}}
                     <h5 class="mb-0">Hasil AMI {{ $userJurusan->homebase ?? '' }}</h5>
-                    <div>
+                    <div hidden>
                         <a class="btn btn-sm btn-success me-2" href="{{ route('auditor.perbandingan', $assigned->id) }}">
                             Bandingkan
                         </a>
@@ -1110,8 +1111,11 @@
                 <h3 class="text-center">HASIL AUDIT MUTU INTERNAL PRODI</h3>
 
                 <div class="d-flex justify-content-end mb-3">
-                    <a href="{{ route('audit.export.pdf', $userJurusan->id) }}" class="btn btn-outline-danger"
-                        target="_blank">
+                    <a href="{{ route('audit.export.pdf', [
+                        'audit' => $userJurusan->id,
+                        'tahun' => $tahun,
+                    ]) }}"
+                        class="btn btn-outline-danger ms-auto" target="_blank">
                         <i class="bi bi-file-earmark-pdf"></i> Export PDF
                     </a>
                 </div>
@@ -1128,7 +1132,7 @@
                                 <p><strong>Jurusan:</strong> {{ $userJurusan->homebase ?? '' }}</p>
                                 <div class="mb-3">
                                     <label for="tanggal_audit" class="form-label">
-                                        <strong>Tgl Audit</strong>
+                                        <strong>Tanggal Audit</strong>
                                     </label>
                                     <input type="date" id="tanggal_audit" name="tanggal_audit"
                                         class="form-control input-header"
@@ -6506,12 +6510,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-                                <div class="mb-3 mt-3">
-                                    <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-                                    <div class="border rounded p-2 bg-light">
-                                        <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-                                    </div>
-                                </div>` : ''}
+                                                    <div class="mb-3 mt-3">
+                                                        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                                        <div class="border rounded p-2 bg-light">
+                                                            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                                        </div>
+                                                    </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>

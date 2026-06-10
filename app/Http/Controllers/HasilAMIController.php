@@ -7,6 +7,7 @@ use App\Models\Audit;
 use App\Models\AuditKriteria;
 use App\Models\AuditorJurusan;
 use App\Models\Kriteria;
+use App\Models\MatriksLED;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class HasilAMIController extends Controller
 
         $audit = Audit::updateOrCreate(
             ['program_studi' => $request->program_studi, 'tahun' => $request->tahun],
-            ['fakultas'     => 'Keguruan dan Ilmu Pendidikan']
+            ['fakultas' => 'Keguruan dan Ilmu Pendidikan']
         );
 
         $audit->update([
@@ -102,9 +103,12 @@ class HasilAMIController extends Controller
     }
 
     // Export ke Excel
-    public function exportPdf($jurusanId)
+    public function exportPdf(Request $request, $jurusanId)
     {
+        // Ini jadi controller untuk Hasil AMI di Login Jurusan
+        // dd($jurusanId, $request->tahun);
         $jurusan = User::findOrFail($jurusanId);
+        $tahun = $request->tahun;
 
 
         $auditHeader = Audit::where(
@@ -120,8 +124,27 @@ class HasilAMIController extends Controller
         ])->get();
 
 
-        $auditor = AuditorJurusan::where('jurusan', $jurusan->homebase)
+        $auditors = AuditorJurusan::where('jurusan', $jurusan->homebase)
             ->get();
+
+        $data = MatriksLED::with([
+            'kriteria',
+            'subItemElemen',
+            'userMatrik' => function ($q) use ($jurusanId, $tahun) {
+                $q->where('id_users', $jurusanId)->whereNull('id_user_jurusan')->where('tahun', $tahun);
+            },
+        ])->orderBy('nomor', 'asc')->get();
+
+        $perAspekJurusan = [];
+        $perAspekAuditor = []; // [auditor_id][kriteria_name] => total
+        foreach ($data as $item) {
+            $nama = $item->kriteria->name;
+            $perAspekJurusan[$nama] = ($perAspekJurusan[$nama] ?? 0) + ($item->userMatrik->nilai_total ?? 0);
+            foreach ($auditors as $auditor) {
+                $score = $auditorScores[$item->id][$auditor->id] ?? null;
+                $perAspekAuditor[$auditor->id][$nama] = ($perAspekAuditor[$auditor->id][$nama] ?? 0) + ($score?->nilai_total ?? 0);
+            }
+        }
 
 
         $pdf = Pdf::loadView(
@@ -130,7 +153,10 @@ class HasilAMIController extends Controller
                 'jurusan',
                 'auditHeader',
                 'auditKriterias',
-                'auditor'
+                'auditors',
+                'tahun',
+                'perAspekJurusan',
+                'perAspekAuditor',
             )
         )->setPaper('a4', 'portrait');
 

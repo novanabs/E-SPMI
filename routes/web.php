@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
 
     // Masalah nya karena tadi mnenggunaan /akreditasi/---
 
-    Route::get('/export/preview', [ExportController::class, 'previewPdf']);
+    Route::post('/export/preview', [ExportController::class, 'previewPdf']);
     Route::get('/export/preview/perbandingan', [ExportController::class, 'previewPdfPerbandingan']);
     Route::get('/export/preview/perbandingan/upm/{id}', [ExportController::class, 'previewPdfPerbandinganUpm']);
 

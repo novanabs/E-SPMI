@@ -1,28 +1,10 @@
 <div style="font-family: Arial, sans-serif; font-size: 14px">
-    <table width="100%" style="margin-bottom:10px">
-        <tr>
-            <td width="15%" valign="top">
-                <img src="{{ $logo }}" width="80" alt="Logo ULM">
-            </td>
-            <td align="center" valign="middle">
-                <strong>
-                    UNIVERSITAS LAMBUNG MANGKURAT
-                </strong><br>
-                <strong>
-                    FAKULTAS KEGURUAN DAN ILMU PENDIDIKAN
-                </strong><br>
-                <strong style="text-transform: uppercase">
-                    {{ auth()->user()->homebase }}
-                </strong><br>
-            </td>
-            <td width="15%"></td>
-        </tr>
-    </table>
 
-    <hr>
+    <h3 style="text-align:center">
+        BERITA ACARA HASIL AMI <br>
+        JURUSAN {{ strtoupper(auth()->user()->homebase) }} <br>
 
-
-    <h3 style="text-align:center">LAPORAN HASIL AKREDITASI</h3>
+    </h3>
 
     <br>
 
