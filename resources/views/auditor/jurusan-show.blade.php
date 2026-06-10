@@ -427,6 +427,7 @@
                 <tr>
 
                     <th>No</th>
+                    <th>Nama Laporan</th>
                     <th>Bidang</th>
                     <th>Jenis Laporan</th>
                     {{-- <th>Tanggal</th> --}}
@@ -443,6 +444,8 @@
                     <tr>
 
                         <td>{{ $loop->iteration }}</td>
+
+                        <td>{{ $item->name ?? '-' }}</td>
 
                         <td>{{ $item->bidang }}</td>
 

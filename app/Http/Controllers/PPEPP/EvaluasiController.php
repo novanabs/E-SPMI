@@ -37,6 +37,7 @@ class EvaluasiController extends Controller
     {
         // dd($request);
         $request->validate([
+            'name'               => 'nullable|string|max:255',
             'bidang'             => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
             'jenis_laporan'      => 'required',
             'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),

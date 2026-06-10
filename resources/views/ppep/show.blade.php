@@ -336,6 +336,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
+                        <th>Nama Laporan</th>
                         <th>Bidang</th>
                         <th>Jenis Laporan</th>
                         <th>Periode</th>
@@ -346,6 +347,7 @@
                     @foreach ($evaluasi as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->name ?? '-' }}</td>
                             <td>{{ $item->bidang }}</td>
                             <td>{{ $item->jenis_laporan }}</td>
                             <td>{{ $item->periode }}</td>
