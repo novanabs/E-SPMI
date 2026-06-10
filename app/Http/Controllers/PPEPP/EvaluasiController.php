@@ -37,13 +37,14 @@ class EvaluasiController extends Controller
     {
         // dd($request);
         $request->validate([
-            'aspek'              => 'required',
+            'bidang'             => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
             'jenis_laporan'      => 'required',
             'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
             'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'link_bukti_laporan' => 'required',
         ], [
-            'aspek.required'              => 'Aspek wajib diisi.',
+            'bidang.required'             => 'Bidang wajib dipilih.',
+            'bidang.in'                   => 'Bidang tidak valid.',
             'jenis_laporan.required'      => 'Jenis laporan wajib diisi.',
             'tahun.required'              => 'Tahun wajib diisi.',
             'tahun.integer'               => 'Tahun harus berupa angka.',
@@ -86,13 +87,14 @@ class EvaluasiController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'aspek'              => 'required',
+            'bidang'             => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
             'jenis_laporan'      => 'required',
             'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
             'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'link_bukti_laporan' => 'required',
         ], [
-            'aspek.required'              => 'Aspek wajib diisi.',
+            'bidang.required'             => 'Bidang wajib dipilih.',
+            'bidang.in'                   => 'Bidang tidak valid.',
             'jenis_laporan.required'      => 'Jenis laporan wajib diisi.',
             'tahun.required'              => 'Tahun wajib diisi.',
             'tahun.integer'               => 'Tahun harus berupa angka.',

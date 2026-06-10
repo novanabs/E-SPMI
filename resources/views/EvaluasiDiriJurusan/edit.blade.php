@@ -155,6 +155,22 @@
         }
     </style>
 
+    @if (!isset($tahun))
+        @include('EvaluasiLamdik._year_cards', [
+            'tahunList' => $tahunList,
+            'title' => 'Isi AMI — ' . ($userJurusan->homebase ?? 'Jurusan'),
+            'subtitle' => 'Pilih tahun audit untuk mengisi borang AMI atas nama jurusan.',
+            'homebase' => $userJurusan->homebase ?? 'Jurusan',
+            'icon' => 'fas fa-calendar-alt',
+            'btnLabel' => 'Isi AMI',
+            'routeName' => 'evaluasi_diri_jurusan.edit.custom',
+            'routeParamName' => 'evaluasi_diri_jurusan',
+            'routeParamValue' => $userJurusan->id,
+            'addYearRouteName' => 'evaluasi_diri_jurusan.edit.custom',
+            'addYearRouteValue' => $userJurusan->id,
+        ])
+    @else
+
     @php
         $user = auth()->user();
         $isSubmitted = $auditHeader && $auditHeader->jurusan_submitted_at;
@@ -394,7 +410,8 @@
                                 },
                                 body: JSON.stringify({
                                     program_studi: '{{ $userJurusan->id ?? '' }}',
-                                    role: '{{ auth()->user()->role }}'
+                                    role: '{{ auth()->user()->role }}',
+                                    tahun: '{{ $tahun }}'
                                 })
                             }).then(r => r.json()).then(data => {
                                 if (data.success) {
@@ -4661,6 +4678,7 @@
     <input type="hidden" name="kepemilikan_kriteria" value="{{ $for }}">
     <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
     <input type="hidden" name="id_user_jurusan" value="{{ $userJurusan->id }}">
+    <input type="hidden" name="tahun" value="{{ $tahun }}">
 
     ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);
@@ -4842,5 +4860,7 @@
             });
         });
     </script>
+
+    @endif
 
 @endsection

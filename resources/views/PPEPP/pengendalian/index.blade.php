@@ -322,7 +322,7 @@
 
     <div class="table-card">
         Link dokumen pendukung dan template dapat diunduh pada link berikut:
-        <a href="https://docs.google.com/document/d/1n35WsisQ8y2zvpW-X-B0e4euU1BRclTT/edit?usp=sharing&ouid=111108309923080163994&rtpof=true&sd=true"
+        <a href="https://drive.google.com/drive/folders/14TJyYvX9lvnp4pxs7PHHq_KB0_SAbcXX?usp=sharing"
             target="_blank" class="template-link">Link</a>
 
         <div class="table-responsive">
@@ -354,6 +354,9 @@
 
                                 <div class="document-title">
                                     {{ $item->name }}
+                                    @if ($item->bidang)
+                                        <span class="text-muted">({{ $item->bidang }})</span>
+                                    @endif
                                 </div>
 
                             </td>

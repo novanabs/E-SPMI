@@ -176,6 +176,22 @@
         }
     </style>
 
+    @if (!isset($tahun))
+        @include('EvaluasiLamdik._year_cards', [
+            'tahunList' => $tahunList,
+            'title' => 'Isi AMI — ' . ($user->homebase ?? 'Jurusan'),
+            'subtitle' => 'Pilih tahun audit untuk mengisi borang Akreditasi Mutu Internal (AMI). Data setiap tahun disimpan secara terpisah.',
+            'homebase' => $user->homebase ?? 'Jurusan',
+            'icon' => 'fas fa-calendar-alt',
+            'btnLabel' => 'Isi AMI',
+            'routeName' => 'evaluasi_lamdik.index',
+            'routeParamName' => '',
+            'routeParamValue' => '',
+            'addYearRouteName' => 'evaluasi_lamdik.index',
+            'addYearRouteValue' => [],
+        ])
+    @else
+
     @php
         $user = auth()->user();
         $isSubmitted = $auditHeader && $auditHeader->jurusan_submitted_at;
@@ -449,7 +465,8 @@
                                         },
                                         body: JSON.stringify({
                                             program_studi: '{{ auth()->id() ?? '' }}',
-                                            role: '{{ auth()->user()->role }}'
+                                            role: '{{ auth()->user()->role }}',
+                                            tahun: '{{ $tahun }}'
                                         })
                                     }).then(r => r.json()).then(data => {
                                         if (data.success) {
@@ -1173,7 +1190,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <a href="{{ url('/export/export-pdf') }}" target="_blank" class="btn btn-primary">
+                    <a href="{{ url('/export/export-pdf?tahun=' . $tahun) }}" target="_blank" class="btn btn-primary">
                         Export
                     </a>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
@@ -1194,7 +1211,7 @@
 
             content.innerHTML = '<div class="text-center text-muted">Memuat preview...</div>';
 
-            fetch('/export/preview')
+            fetch('/export/preview?tahun={{ $tahun }}')
                 .then(res => res.text())
                 .then(html => {
                     // console.log(html);
@@ -6121,6 +6138,7 @@
     <input type="hidden" name="id_matriks_led" id="id_matriks_led" value="${id_matriks_led}">
     <input type="hidden" name="kepemilikan_kriteria" value="{{ $for }}">
     <input type="hidden" name="id_users" value="{{ auth()->user()->id }}">
+    <input type="hidden" name="tahun" value="{{ $tahun }}">
 
     ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);
@@ -6391,8 +6409,6 @@
         });
     </script>
 
-
-
-
+    @endif
 
 @endsection

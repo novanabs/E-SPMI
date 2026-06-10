@@ -49,19 +49,25 @@ class EvaluasiDiriJurusan extends Controller
             'kepemilikan_kriteria' => 'required|string|in:jurusan,fakultas',
             'id_users'             => 'required|integer',
             'id_user_jurusan'      => 'required|integer',
+            'tahun'                => 'required|digits:4|integer|min:2000|max:2099',
         ]);
 
+        $tahun = $validated['tahun'];
+
         // Cek apakah penilaian AMI sudah disubmit oleh jurusan/admin
-        $audit = Audit::where('program_studi', (string) $validated['id_user_jurusan'])->first();
+        $audit = Audit::where('program_studi', (string) $validated['id_user_jurusan'])
+            ->where('tahun', $tahun)
+            ->first();
         if ($audit && $audit->jurusan_submitted_at) {
             return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit, tidak dapat diubah lagi.');
         }
 
         UsersMatrik::updateOrCreate(
             [
-                'id_users'        => $validated['id_users'], //ini upm
-                'id_user_jurusan' => $validated['id_user_jurusan'], // ini id jurusan yang di evaluasi
-                'id_matriks_led'  => $validated['id_matriks_led'], // ini id matriks yang 65
+                'id_users'        => $validated['id_users'],
+                'id_user_jurusan' => $validated['id_user_jurusan'],
+                'id_matriks_led'  => $validated['id_matriks_led'],
+                'tahun'           => $tahun,
             ],
             $validated
         );
@@ -74,29 +80,53 @@ class EvaluasiDiriJurusan extends Controller
                         'id_sub_item_elemen' => $idSubItem,
                         'id_users'          => $validated['id_users'],
                         'id_user_jurusan'   => $validated['id_user_jurusan'],
+                        'tahun'             => $tahun,
                     ],
-                    ['nilai' => $nilai]
+                    ['nilai' => $nilai, 'tahun' => $tahun]
                 );
             }
         }
 
-        return redirect()->route('evaluasi_diri_jurusan.edit.custom', $validated['id_user_jurusan'])
-            ->with('success', 'Data berhasil diperbarui');
+        return redirect()->route('evaluasi_diri_jurusan.edit.custom', [
+            'evaluasi_diri_jurusan' => $validated['id_user_jurusan'],
+            'tahun' => $tahun,
+        ])->with('success', 'Data berhasil diperbarui');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
+        $tahun = $request->query('tahun');
+
+        if (!$tahun) {
+            $tahunList = UsersMatrik::where('id_users', $id)
+                ->whereNull('id_user_jurusan')
+                ->whereNotNull('tahun')
+                ->distinct()
+                ->pluck('tahun')
+                ->sort()
+                ->values();
+
+            if (!$tahunList->contains(now()->year)) {
+                $tahunList->push(now()->year);
+                $tahunList = $tahunList->sort()->values();
+            }
+
+            $user = User::findOrFail($id);
+
+            return view('EvaluasiDiriJurusan.show', compact('tahunList', 'user'));
+        }
+
         $user = User::findOrFail($id);
         $idJurusan = $id;
 
         $data = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userMatrik' => function ($q) use ($id) {
-                $q->where('id_users', $id);
+            'userMatrik' => function ($q) use ($id, $tahun) {
+                $q->where('id_users', $id)->where('tahun', $tahun);
             },
         ])->orderBy('nomor', 'asc')->get();
 
@@ -117,6 +147,7 @@ class EvaluasiDiriJurusan extends Controller
         $auditorIds = $auditors->pluck('id');
         $allAuditorScores = UsersMatrik::where('id_user_jurusan', $idJurusan)
             ->whereIn('id_users', $auditorIds)
+            ->where('tahun', $tahun)
             ->get()
             ->groupBy('id_matriks_led');
 
@@ -141,6 +172,7 @@ class EvaluasiDiriJurusan extends Controller
             ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
             ->where('auditor_jurusan.jurusan', $user->homebase)
             ->where('users.role', 'auditor')
+            ->where('auditor_jurusan.tahun_audit', $tahun)
             ->orderBy('auditor_jurusan.created_at')
             ->pluck('auditor_jurusan.user_id');
 
@@ -295,11 +327,11 @@ class EvaluasiDiriJurusan extends Controller
 
         $dataSyaratUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan);
+            'matriks.userSubItemElements' => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan);
+            'matriks.userMatrik' => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->where('tahun', $tahun);
             },
         ])->get();
 
@@ -313,6 +345,7 @@ class EvaluasiDiriJurusan extends Controller
 
         $allAuditorSubItems = UserSubItemElemen::whereIn('id_users', $auditorIds)
             ->where('id_user_jurusan', $idJurusan)
+            ->where('tahun', $tahun)
             ->get()
             ->groupBy('id_matriks');
 
@@ -350,37 +383,61 @@ class EvaluasiDiriJurusan extends Controller
         return view('EvaluasiDiriJurusan.show', compact(
             'data', 'user', 'auditors', 'syarat3', 'syarat5',
             'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax',
-            'auditorLabelMap', 'auditorNameMap'
+            'auditorLabelMap', 'auditorNameMap', 'tahun'
         ));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
+        $tahun = $request->query('tahun');
+
+        if (!$tahun) {
+            $tahunList = UsersMatrik::where('id_users', auth()->id())
+                ->where('id_user_jurusan', $id)
+                ->whereNotNull('tahun')
+                ->distinct()
+                ->pluck('tahun')
+                ->sort()
+                ->values();
+
+            if (!$tahunList->contains(now()->year)) {
+                $tahunList->push(now()->year);
+                $tahunList = $tahunList->sort()->values();
+            }
+
+            $userJurusan = User::findOrFail($id);
+
+            return view('EvaluasiDiriJurusan.edit', compact('tahunList', 'userJurusan'));
+        }
+
         $userJurusan = User::findOrFail($id);
         $idUserLogin = auth()->user()->id;
 
         $data = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userSubItemElements' => function ($q) use ($idUserLogin, $id) {
+            'userSubItemElements' => function ($q) use ($idUserLogin, $id, $tahun) {
                 $q->where('id_users', $idUserLogin)
-                  ->where('id_user_jurusan', $id);
+                  ->where('id_user_jurusan', $id)
+                  ->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($idUserLogin, $id) {
+            'userMatrikByUser' => function ($q) use ($idUserLogin, $id, $tahun) {
                 $q->where('id_users', $idUserLogin)
-                  ->where('id_user_jurusan', $id);
+                  ->where('id_user_jurusan', $id)
+                  ->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 
         $dataUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
             'matriks.userSubItemElements',
-            'matriks.userMatrik' => function ($q) use ($idUserLogin, $id) {
+            'matriks.userMatrik' => function ($q) use ($idUserLogin, $id, $tahun) {
                 $q->where('id_users', $idUserLogin)
-                  ->where('id_user_jurusan', $id);
+                  ->where('id_user_jurusan', $id)
+                  ->where('tahun', $tahun);
             }
         ])->get();
 
@@ -452,9 +509,9 @@ class EvaluasiDiriJurusan extends Controller
         $syarat3 = $dataUnggul->every(fn($i) => $i->memenuhi_3_tahun);
         $syarat5 = $dataUnggul->every(fn($i) => $i->memenuhi_5_tahun);
 
-        $auditHeader = Audit::where('program_studi', $id)->first();
+        $auditHeader = Audit::where('program_studi', $id)->where('tahun', $tahun)->first();
 
-        return view('EvaluasiDiriJurusan.edit', compact('data', 'userJurusan', 'dataUnggul', 'syarat3', 'syarat5', 'auditHeader'));
+        return view('EvaluasiDiriJurusan.edit', compact('data', 'userJurusan', 'dataUnggul', 'syarat3', 'syarat5', 'auditHeader', 'tahun'));
     }
 
     /**

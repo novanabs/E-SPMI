@@ -513,7 +513,7 @@
                                 @endphp
                                 <li class="nav-item">
                                     <a href="{{ route('auditor.index') }}"
-                                        class="nav-link {{ Route::is('auditor.index') ? 'active' : '' }}">
+                                        class="nav-link {{ Route::is('auditor.index') || Route::is('auditor.evaluasi') || Route::is('auditor.perbandingan') ? 'active' : '' }}">
                                         <i class="nav-icon bi bi-person-gear"></i>
                                         <p>Penilaian AMI</p>
                                     </a>

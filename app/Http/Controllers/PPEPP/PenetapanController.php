@@ -37,11 +37,14 @@ class PenetapanController extends Controller
 {
     $request->validate([
         'name'                   => 'required',
+        'bidang'                 => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
         'tanggal_penetapan'      => 'required|date',
         'tanggal_berakhir'       => 'nullable|date',
         'link_bukti_dokumen'     => 'required'
     ], [
         'name.required'                  => 'Nama dokumen wajib diisi.',
+        'bidang.required'                => 'Bidang wajib dipilih.',
+        'bidang.in'                      => 'Bidang tidak valid.',
         'tanggal_penetapan.required'     => 'Tanggal penetapan wajib diisi.',
         'tanggal_berakhir.date'          => 'Tanggal berakhir harus berupa tanggal yang valid.',
         'link_bukti_dokumen.required'    => 'Link dokumen wajib diisi.',
@@ -83,11 +86,14 @@ class PenetapanController extends Controller
 {
     $validated = $request->validate([
         'name'                   => 'required|string',
+        'bidang'                 => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
         'tanggal_penetapan'      => 'required|date',
         'tanggal_berakhir'       => 'nullable|date',
         'link_bukti_dokumen'     => 'required|string',
     ], [
         'name.required'                  => 'Nama dokumen wajib diisi.',
+        'bidang.required'                => 'Bidang wajib dipilih.',
+        'bidang.in'                      => 'Bidang tidak valid.',
         'tanggal_penetapan.required'     => 'Tanggal penetapan wajib diisi.',
         'tanggal_berakhir.date'          => 'Tanggal berakhir harus berupa tanggal yang valid.',
         'link_bukti_dokumen.required'    => 'Link dokumen wajib diisi.',

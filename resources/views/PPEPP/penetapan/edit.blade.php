@@ -45,6 +45,27 @@
                     @enderror
                 </div>
 
+                {{-- Bidang --}}
+                <div class="mb-4">
+                    <label for="bidang" class="form-label fw-semibold">
+                        Bidang <span class="text-danger">*</span>
+                    </label>
+
+                    <select id="bidang" name="bidang"
+                        class="form-select form-select-lg rounded-3 @error('bidang') is-invalid @enderror">
+                        <option value="">-- Pilih Bidang --</option>
+                        <option value="Pendidikan" {{ old('bidang', $data->bidang) == 'Pendidikan' ? 'selected' : '' }}>1) Pendidikan</option>
+                        <option value="Penelitian" {{ old('bidang', $data->bidang) == 'Penelitian' ? 'selected' : '' }}>2) Penelitian</option>
+                        <option value="Pengabdian kepada Masyarakat" {{ old('bidang', $data->bidang) == 'Pengabdian kepada Masyarakat' ? 'selected' : '' }}>3) Pengabdian kepada Masyarakat</option>
+                    </select>
+
+                    @error('bidang')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+
                   {{-- Tanggal Penetapan --}}
                 <div class="mb-4">
                     <label for="tanggal_penetapan" class="form-label fw-semibold">

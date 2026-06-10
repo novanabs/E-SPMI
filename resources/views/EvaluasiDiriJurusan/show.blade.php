@@ -4,6 +4,23 @@
 
 @section('content')
 
+    @if (!isset($tahun))
+        @include('EvaluasiLamdik._year_cards', [
+            'tahunList' => $tahunList,
+            'title' => 'Hasil AMI — ' . ($user->homebase ?? 'Jurusan'),
+            'subtitle' => 'Pilih tahun audit untuk melihat hasil perbandingan AMI.',
+            'homebase' => $user->homebase ?? 'Jurusan',
+            'icon' => 'fas fa-chart-bar',
+            'btnLabel' => 'Lihat Hasil',
+            'showAddYear' => false,
+            'routeName' => 'evaluasi_diri_jurusan.show',
+            'routeParamName' => 'evaluasi_diri_jurusan',
+            'routeParamValue' => $user->id,
+            'addYearRouteName' => 'evaluasi_diri_jurusan.show',
+            'addYearRouteValue' => $user->id,
+        ])
+    @else
+
     @php
         $auditorList = $auditors ?? collect();
     @endphp
@@ -819,7 +836,8 @@
             const activePill = document.querySelector('.auditor-pill.btn-primary');
             const isUPM = activePill && activePill.dataset.label === 'UPM';
             const auditorId = activePill && !isUPM ? activePill.dataset.auditorId : '';
-            const params = auditorId ? '?auditor_id=' + auditorId : '';
+            const tahunParam = 'tahun={{ $tahun }}';
+            const params = (auditorId ? '?auditor_id=' + auditorId + '&' + tahunParam : '?' + tahunParam);
             const url = '/export/preview/perbandingan' + params;
             document.getElementById('downloadPdfLink').href = '/export/export-pdf/perbandingan' + params;
             fetch(url)
@@ -828,5 +846,7 @@
                 .catch(() => { content.innerHTML = '<div class="text-danger text-center py-4"><i class="bi bi-exclamation-triangle me-2"></i>Gagal memuat preview</div>'; });
         }
     </script>
+
+    @endif
 
 @endsection

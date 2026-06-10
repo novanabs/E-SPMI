@@ -19,33 +19,48 @@ class EvaluasiLamdikController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $idUser = auth()->id();
+        $tahun = $request->query('tahun');
 
+        if (!$tahun) {
+            $tahunList = UsersMatrik::where('id_users', $idUser)
+                ->whereNull('id_user_jurusan')
+                ->whereNotNull('tahun')
+                ->distinct()
+                ->pluck('tahun')
+                ->sort()
+                ->values();
+
+            if (!$tahunList->contains(now()->year)) {
+                $tahunList->push(now()->year);
+                $tahunList = $tahunList->sort()->values();
+            }
+
+            $user = auth()->user();
+
+            return view('EvaluasiLamdik.index', compact('tahunList', 'user'));
+        }
 
         $data = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userSubItemElements' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
+            'userSubItemElements' => function ($q) use ($idUser, $tahun) {
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'userMatrik' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
+            'userMatrik' => function ($q) use ($idUser, $tahun) {
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 
-        // dd($data->first()->userMatrik->nilai_total);
-
-        // Ini untuk mengetahui syarat unggul
-
         $dataSyaratUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
+            'matriks.userSubItemElements' => function ($q) use ($idUser, $tahun) {
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($idUser) {
-                $q->where('id_users', $idUser)->whereNull('id_user_jurusan');
+            'matriks.userMatrik' => function ($q) use ($idUser, $tahun) {
+                $q->where('id_users', $idUser)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             }
         ])->get();
 
@@ -226,9 +241,11 @@ class EvaluasiLamdikController extends Controller
         $syarat5 = $dataSyaratUnggul->every(fn($i) => $i->memenuhi_5_tahun);
         $dataUnggul = $dataSyaratUnggul;
 
-        $auditHeader = Audit::where('program_studi', (string) $idUser)->first();
+        $auditHeader = Audit::where('program_studi', (string) $idUser)
+            ->where('tahun', $tahun)
+            ->first();
 
-        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5', 'dataUnggul', 'auditHeader'));
+        return view('EvaluasiLamdik.index', compact('data', 'syarat3', 'syarat5', 'dataUnggul', 'auditHeader', 'tahun'));
     }
 
     public function indexOld()
@@ -263,10 +280,15 @@ class EvaluasiLamdikController extends Controller
             'id_matriks_led'       => 'required|integer',
             'kepemilikan_kriteria' => 'required|string|in:jurusan,fakultas',
             'id_users'             => 'required|integer',
+            'tahun'                => 'required|digits:4|integer|min:2000|max:2099',
         ]);
 
+        $tahun = $validated['tahun'];
+
         // Cek apakah penilaian AMI sudah disubmit oleh jurusan
-        $audit = Audit::where('program_studi', (string) auth()->id())->first();
+        $audit = Audit::where('program_studi', (string) auth()->id())
+            ->where('tahun', $tahun)
+            ->first();
         if ($audit && $audit->jurusan_submitted_at) {
             return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit, tidak dapat diubah lagi.');
         }
@@ -276,6 +298,7 @@ class EvaluasiLamdikController extends Controller
                 'id_users'       => $validated['id_users'],
                 'id_matriks_led' => $validated['id_matriks_led'],
                 'id_user_jurusan' => null,
+                'tahun'          => $tahun,
             ],
             $validated
         );
@@ -286,7 +309,7 @@ class EvaluasiLamdikController extends Controller
 
             $idUserJurusan = null;
 
-            DB::transaction(function () use ($request, $idUserJurusan) {
+            DB::transaction(function () use ($request, $tahun, $idUserJurusan) {
 
                 foreach ($request->variabel as $idSubItem => $nilai) {
 
@@ -301,17 +324,19 @@ class EvaluasiLamdikController extends Controller
                             'id_sub_item_elemen' => $idSubItem,
                             'id_users'           => $request->id_users,
                             'id_user_jurusan'    => null,
+                            'tahun'              => $tahun,
                         ],
                         [
                             'nilai'           => $nilai,
                             'id_user_jurusan' => $idUserJurusan,
+                            'tahun'           => $tahun,
                         ]
                     );
                 }
             });
         }
 
-        return redirect()->route('evaluasi_lamdik.index')
+        return redirect()->route('evaluasi_lamdik.index', ['tahun' => $tahun])
             ->with('success', 'Data berhasil diperbarui');
 
     }
@@ -319,8 +344,29 @@ class EvaluasiLamdikController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $idJurusan)
+    public function show(Request $request, string $idJurusan)
     {
+        $tahun = $request->query('tahun');
+
+        if (!$tahun) {
+            $tahunList = UsersMatrik::where('id_users', $idJurusan)
+                ->whereNull('id_user_jurusan')
+                ->whereNotNull('tahun')
+                ->distinct()
+                ->pluck('tahun')
+                ->sort()
+                ->values();
+
+            if (!$tahunList->contains(now()->year)) {
+                $tahunList->push(now()->year);
+                $tahunList = $tahunList->sort()->values();
+            }
+
+            $userJurusan = User::findOrFail($idJurusan);
+
+            return view('EvaluasiLamdik.show', compact('tahunList', 'userJurusan'));
+        }
+
         $userJurusan = User::findOrFail($idJurusan);
 
         // Build auditors collection: only the virtual Auditor entry
@@ -336,8 +382,8 @@ class EvaluasiLamdikController extends Controller
         $data = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userMatrik' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'userMatrik' => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
         ])->orderBy('nomor', 'asc')->get();
 
@@ -345,6 +391,7 @@ class EvaluasiLamdikController extends Controller
         $auditorIds = $auditors->pluck('id');
         $allAuditorScores = UsersMatrik::where('id_user_jurusan', $idJurusan)
             ->whereIn('id_users', $auditorIds)
+            ->where('tahun', $tahun)
             ->get()
             ->groupBy('id_matriks_led');
 
@@ -370,6 +417,7 @@ class EvaluasiLamdikController extends Controller
             ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
             ->where('auditor_jurusan.jurusan', $userJurusan->homebase)
             ->where('users.role', 'auditor')
+            ->where('auditor_jurusan.tahun_audit', $tahun)
             ->orderBy('auditor_jurusan.created_at')
             ->pluck('auditor_jurusan.user_id');
 
@@ -527,11 +575,11 @@ class EvaluasiLamdikController extends Controller
         ========================= */
         $dataSyaratUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'matriks.userSubItemElements' => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'matriks.userMatrik' => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
         ])->get();
 
@@ -549,6 +597,7 @@ class EvaluasiLamdikController extends Controller
         // Load all sub-item elements for all auditors at once
         $allAuditorSubItems = UserSubItemElemen::whereIn('id_users', $auditorIds)
             ->where('id_user_jurusan', $idJurusan)
+            ->where('tahun', $tahun)
             ->get()
             ->groupBy('id_matriks');
 
@@ -590,7 +639,7 @@ class EvaluasiLamdikController extends Controller
         return view('EvaluasiLamdik.show', compact(
             'data', 'syarat3', 'syarat5', 'auditors', 'userJurusan',
             'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax',
-            'auditorLabelMap', 'auditorNameMap'
+            'auditorLabelMap', 'auditorNameMap', 'tahun'
         ));
     }
 

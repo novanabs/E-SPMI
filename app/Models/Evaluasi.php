@@ -9,7 +9,7 @@ class Evaluasi extends Model
     protected $table = 'laporan_evaluasi';
 
     protected $fillable = [
-        'aspek',
+        'bidang',
         'jenis_laporan',
         'tahun',
         'jenis',

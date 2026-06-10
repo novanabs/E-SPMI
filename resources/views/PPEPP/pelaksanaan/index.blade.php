@@ -350,6 +350,9 @@
 
                                 <div class="report-title">
                                     {{ $item->name }}
+                                    @if ($item->bidang)
+                                        <span class="text-muted">({{ $item->bidang }})</span>
+                                    @endif
                                 </div>
 
                             </td>

@@ -203,6 +203,27 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
         </div>
 
+        <div class="form-group">
+
+            <label for="bidang" class="form-label">
+                Bidang <span class="text-danger">*</span>
+            </label>
+
+            <select class="form-select @error('bidang') is-invalid @enderror" id="bidang" name="bidang">
+                <option value="">-- Pilih Bidang --</option>
+                <option value="Pendidikan" {{ old('bidang', $data->bidang) == 'Pendidikan' ? 'selected' : '' }}>1) Pendidikan</option>
+                <option value="Penelitian" {{ old('bidang', $data->bidang) == 'Penelitian' ? 'selected' : '' }}>2) Penelitian</option>
+                <option value="Pengabdian kepada Masyarakat" {{ old('bidang', $data->bidang) == 'Pengabdian kepada Masyarakat' ? 'selected' : '' }}>3) Pengabdian kepada Masyarakat</option>
+            </select>
+
+            @error('bidang')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+
+        </div>
+
                <div class="form-group">
 
     <label for="tahun" class="form-label">

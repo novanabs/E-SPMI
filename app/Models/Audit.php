@@ -12,6 +12,7 @@ class Audit extends Model
 {
     protected $fillable = [
         'program_studi',
+        'tahun',
         'fakultas',
         'tanggal_audit',
         'catatan_umum',

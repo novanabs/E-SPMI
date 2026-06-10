@@ -14,6 +14,7 @@ class UserSubItemElemen extends Model
         'nilai',
         'id_users',
         'id_user_jurusan',
+        'tahun',
     ];
 
     public function matriksLED()

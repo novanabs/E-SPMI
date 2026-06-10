@@ -177,7 +177,8 @@
 
     @php
         $user = auth()->user();
-        $isSubmitted = $auditHeader && $auditHeader->auditor_submitted_at;
+        $isSubmitted = false;
+        $jurusanFinal = $auditHeader && $auditHeader->jurusan_submitted_at;
     @endphp
 
     @if ($user->role === 'admin_jurusan')
@@ -186,6 +187,26 @@
         @php $for = 'fakultas'; @endphp
     @else
         @php $for = ''; @endphp
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    @if ($jurusanFinal)
+        <div class="alert alert-info d-flex align-items-center gap-3 mb-3">
+            <i class="bi bi-info-circle-fill fs-5"></i>
+            <div>
+                <strong>Jurusan sudah melakukan finalisasi penilaian AMI.</strong>
+                <br><small class="text-muted">Disubmit pada: {{ optional($auditHeader->jurusan_submitted_at)->format('d M Y, H:i') }}</small>
+            </div>
+        </div>
     @endif
 
     {{-- Data jawaban asli jurusan untuk ditampilkan di kolom kanan --}}
@@ -429,80 +450,9 @@
                         </div>
                     </div>
 
-                    {{-- Submit / status penilaian AMI --}}
-                    <div class="mt-3">
-                        @if ($isSubmitted)
-                            <div class="alert alert-info d-flex align-items-center justify-content-between mb-0 py-2">
-                                <div>
-                                    <i class="bi bi-check-circle-fill me-2"></i>
-                                    <strong>Sudah Disubmit</strong>
-                                    <br><small
-                                        class="text-muted">{{ optional($auditHeader->auditor_submitted_at)->format('d M Y, H:i') ?? '' }}</small>
-                                </div>
-                            </div>
-                        @else
-                            <button type="button" id="btn-submit-ami"
-                                class="btn btn-danger btn-sm w-100 d-inline-flex align-items-center justify-content-center gap-2">
-                                <i class="bi bi-send-fill"></i>
-                                Submit Penilaian AMI
-                            </button>
-                            <small class="text-muted d-block mt-1 text-center">Data tidak dapat diubah setelah
-                                disubmit.</small>
-                        @endif
-                    </div>
 
                     <script>
-                        window.isAMISubmitted = {{ $isSubmitted ? 'true' : 'false' }};
-                        const btnSubmitAMI = document.getElementById('btn-submit-ami');
-                        if (btnSubmitAMI) {
-                            btnSubmitAMI.addEventListener('click', function() {
-                                Swal.fire({
-                                    title: 'Submit Penilaian AMI?',
-                                    text: 'Setelah disubmit, seluruh data penilaian tidak dapat diubah lagi.',
-                                    icon: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonText: 'Ya, Submit',
-                                    cancelButtonText: 'Batal',
-                                    confirmButtonColor: '#dc3545',
-                                    reverseButtons: true
-                                }).then((result) => {
-                                    if (!result.isConfirmed) return;
-                                    fetch('{{ route('audit.submit') }}', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        },
-                                        body: JSON.stringify({
-                                            program_studi: '{{ $userJurusan->id ?? '' }}',
-                                            role: 'auditor'
-                                        })
-                                    }).then(r => r.json()).then(data => {
-                                        if (data.success) {
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'Berhasil',
-                                                text: data.message
-                                            });
-                                            setTimeout(() => location.reload(), 1500);
-                                        } else {
-                                            Swal.fire({
-                                                icon: 'error',
-                                                title: 'Gagal',
-                                                text: data.message || 'Terjadi kesalahan.'
-                                            });
-                                        }
-                                    }).catch(() => {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Gagal',
-                                            text: 'Terjadi kesalahan jaringan.'
-                                        });
-                                    });
-                                });
-                            });
-                        }
+                        window.isAMISubmitted = false;
                     </script>
 
                 </div>
@@ -6578,6 +6528,7 @@
     <input type="hidden" name="kepemilikan_kriteria" value="{{ $for }}">
     <input type="hidden" name="id_users" value="{{ $userJurusan->id }}">
     <input type="hidden" name="id_user_jurusan" value="{{ $userJurusan?->id }}">
+    <input type="hidden" name="tahun" value="{{ $tahun }}">
 
     ${window.isAMISubmitted ? '' : '<button type="submit" class="btn btn-sm btn-success">Simpan</button>'}
 `);

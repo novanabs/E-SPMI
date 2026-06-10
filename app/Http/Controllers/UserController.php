@@ -106,6 +106,7 @@ class UserController extends Controller
     public function auditorEvaluasi($id)
     {
         $assigned = AuditorJurusan::where('user_id', auth()->id())->findOrFail($id);
+        $tahun = $assigned->tahun_audit;
         $userJurusan = User::where('homebase', $assigned->jurusan)
             ->where('role', 'admin_jurusan')->first();
         if (!$userJurusan) {
@@ -119,13 +120,15 @@ class UserController extends Controller
         // Load current auditor's temuan/saran from auditor_temuan_saran
         $data = MatriksLED::with([
             'kriteria',
-            'userSubItemElements' => function ($q) use ($sharedId) {
+            'userSubItemElements' => function ($q) use ($sharedId, $tahun) {
                 $q->where('id_users', $sharedId)
-                    ->where('id_user_jurusan', $sharedId);
+                    ->where('id_user_jurusan', $sharedId)
+                    ->where('tahun', $tahun);
             },
-            'userMatrik'          => function ($q) use ($sharedId) {
+            'userMatrik'          => function ($q) use ($sharedId, $tahun) {
                 $q->where('id_user_jurusan', $sharedId)
-                    ->where('id_users', $sharedId);
+                    ->where('id_users', $sharedId)
+                    ->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 
@@ -149,13 +152,15 @@ class UserController extends Controller
         // Hitung syarat unggul (berdasarkan shared data)
         $dataSyaratUnggul = SyaratUnggul::with([
             'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($sharedId) {
+            'matriks.userSubItemElements' => function ($q) use ($sharedId, $tahun) {
                 $q->where('id_users', $sharedId)
-                    ->where('id_user_jurusan', $sharedId);
+                    ->where('id_user_jurusan', $sharedId)
+                    ->where('tahun', $tahun);
             },
-            'matriks.userMatrik'          => function ($q) use ($sharedId) {
+            'matriks.userMatrik'          => function ($q) use ($sharedId, $tahun) {
                 $q->where('id_users', $sharedId)
-                    ->where('id_user_jurusan', $sharedId);
+                    ->where('id_user_jurusan', $sharedId)
+                    ->where('tahun', $tahun);
             }
         ])->get();
 
@@ -264,6 +269,7 @@ class UserController extends Controller
         // dd($auditor);
 // Ambil id jurusan
         $auditHeader = Audit::where('program_studi', $userJurusan->id ?? '')
+            ->where('tahun', $tahun)
             ->first();
 
         // dd($auditHeader);
@@ -274,17 +280,19 @@ class UserController extends Controller
         // Load jurusan's original self-assessment data (id_user_jurusan = null)
         $jurusanMatrik = UsersMatrik::where('id_users', $sharedId)
             ->whereNull('id_user_jurusan')
+            ->where('tahun', $tahun)
             ->get()
             ->keyBy('id_matriks_led');
 
         $jurusanSubItems = UserSubItemElemen::where('id_users', $sharedId)
             ->whereNull('id_user_jurusan')
+            ->where('tahun', $tahun)
             ->get()
             ->groupBy('id_matriks');
 
         // dd($auditKriterias);
 
-        return view('auditor.evaluasi', compact('data', 'userJurusan', 'assigned', 'syarat3', 'syarat5', 'dataUnggul', 'kriteria', 'auditor', 'auditKriterias', 'auditHeader', 'jurusanMatrik', 'jurusanSubItems'));
+        return view('auditor.evaluasi', compact('data', 'userJurusan', 'assigned', 'syarat3', 'syarat5', 'dataUnggul', 'kriteria', 'auditor', 'auditKriterias', 'auditHeader', 'jurusanMatrik', 'jurusanSubItems', 'tahun'));
     }
 
     public function auditorEvaluasiStore(Request $request)
@@ -301,17 +309,16 @@ class UserController extends Controller
             'kepemilikan_kriteria' => 'required|string|in:jurusan,fakultas',
             'id_users'             => 'required|integer',
             'id_user_jurusan'      => 'required|integer',
+            'tahun'                => 'required|digits:4|integer|min:2000|max:2099',
         ]);
 
-        // Cek apakah penilaian AMI sudah disubmit oleh auditor
-        $audit = Audit::where('program_studi', (string) $validated['id_user_jurusan'])->first();
-        if ($audit && $audit->auditor_submitted_at) {
-            return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit oleh auditor, tidak dapat diubah lagi.');
-        }
+        $tahun = $validated['tahun'];
 
         $target = User::findOrFail($validated['id_user_jurusan']);
         $assigned = AuditorJurusan::where('user_id', auth()->id())
-            ->where('jurusan', $target->homebase)->firstOrFail();
+            ->where('jurusan', $target->homebase)
+            ->where('tahun_audit', $tahun)
+            ->firstOrFail();
 
         $sharedId = $target->id;
 
@@ -330,6 +337,7 @@ class UserController extends Controller
                 'id_users'        => $sharedId,
                 'id_user_jurusan' => $sharedId,
                 'id_matriks_led'  => $validated['id_matriks_led'],
+                'tahun'           => $tahun,
             ],
             [
                 'jawaban'              => $incomingJawaban,
@@ -338,6 +346,7 @@ class UserController extends Controller
                 'nilai_total'          => $incomingNilaiTotal,
                 'link_bukti'           => $validated['link_bukti'] ?? '',
                 'kepemilikan_kriteria' => $validated['kepemilikan_kriteria'],
+                'tahun'                => $tahun,
             ]
         );
 
@@ -365,8 +374,9 @@ class UserController extends Controller
                         'id_sub_item_elemen' => $idSubItem,
                         'id_users'           => $sharedId,
                         'id_user_jurusan'    => $sharedId,
+                        'tahun'              => $tahun,
                     ],
-                    ['nilai' => $nilai]
+                    ['nilai' => $nilai, 'tahun' => $tahun]
                 );
             }
         }
@@ -378,6 +388,7 @@ class UserController extends Controller
     public function auditorPerbandingan($id)
     {
         $assigned = AuditorJurusan::where('user_id', auth()->id())->findOrFail($id);
+        $tahun = $assigned->tahun_audit;
 
 
         $userJurusan = User::where('homebase', $assigned->jurusan)
@@ -399,12 +410,13 @@ class UserController extends Controller
 
         $data = MatriksLED::with([
             'kriteria',
-            'userMatrik'       => function ($q) use ($userJurusan) {
-                $q->where('id_users', $userJurusan->id);
+            'userMatrik'       => function ($q) use ($userJurusan, $tahun) {
+                $q->where('id_users', $userJurusan->id)->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($sharedId) {
+            'userMatrikByUser' => function ($q) use ($sharedId, $tahun) {
                 $q->where('id_users', $sharedId)
-                    ->where('id_user_jurusan', $sharedId);
+                    ->where('id_user_jurusan', $sharedId)
+                    ->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 

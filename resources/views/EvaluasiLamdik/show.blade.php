@@ -4,6 +4,23 @@
 
 @section('content')
 
+    @if (!isset($tahun))
+        @include('EvaluasiLamdik._year_cards', [
+            'tahunList' => $tahunList,
+            'title' => 'Hasil AMI — ' . ($userJurusan->homebase ?? 'Jurusan'),
+            'subtitle' => 'Pilih tahun audit untuk melihat hasil perbandingan AMI.',
+            'homebase' => $userJurusan->homebase ?? 'Jurusan',
+            'icon' => 'fas fa-chart-bar',
+            'btnLabel' => 'Lihat Hasil',
+            'showAddYear' => false,
+            'routeName' => 'evaluasi_lamdik.show',
+            'routeParamName' => 'evaluasi_lamdik',
+            'routeParamValue' => $userJurusan->id,
+            'addYearRouteName' => 'evaluasi_lamdik.show',
+            'addYearRouteValue' => $userJurusan->id,
+        ])
+    @else
+
     {{-- NAV TABS --}}
     <ul class="nav nav-tabs" id="perbandinganTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -811,7 +828,8 @@
             content.innerHTML =
                 '<div class="text-center text-muted py-4"><i class="bi bi-hourglass-split me-2"></i>Memuat preview...</div>';
             const auditorId = Object.keys(auditorSyaratData)[0] || '';
-            const params = auditorId ? '?auditor_id=' + auditorId : '';
+            const tahunParam = 'tahun={{ $tahun }}';
+            const params = (auditorId ? '?auditor_id=' + auditorId + '&' + tahunParam : '?' + tahunParam);
             const url = '/export/preview/perbandingan' + params;
             document.getElementById('downloadPdfLink').href = '/export/export-pdf/perbandingan' + params;
             fetch(url)
@@ -825,5 +843,7 @@
                 });
         }
     </script>
+
+    @endif
 
 @endsection

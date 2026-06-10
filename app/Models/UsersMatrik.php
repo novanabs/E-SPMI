@@ -18,6 +18,7 @@ class UsersMatrik extends Model
         'isian',
         'id_users',
         'id_user_jurusan',
+        'tahun',
         'id_matriks_led',
         'link_bukti',
         'kepemilikan_kriteria',

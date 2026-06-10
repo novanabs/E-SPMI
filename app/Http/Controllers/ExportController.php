@@ -17,13 +17,14 @@ class ExportController extends Controller
     {
         $user = auth()->user();
         $userId = auth()->user()->id;
+        $tahun = request('tahun');
         $logoPath = public_path('img/ulm.png');
         $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
 
         $elemen = MatriksLED::with([
             'kriteria',
-            'userMatrik' => function ($q) use ($userId) {
-                $q->where('id_users', $userId);
+            'userMatrik' => function ($q) use ($userId, $tahun) {
+                $q->where('id_users', $userId)->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 
@@ -75,6 +76,7 @@ class ExportController extends Controller
     {
         $user = auth()->user();
         $userId = auth()->user()->id;
+        $tahun = request('tahun');
 
         $logoPath = public_path('img/ulm.png');
         $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
@@ -82,8 +84,8 @@ class ExportController extends Controller
 
         $elemen = MatriksLED::with([
             'kriteria',
-            'userMatrik' => function ($q) use ($userId) {
-                $q->where('id_users', $userId);
+            'userMatrik' => function ($q) use ($userId, $tahun) {
+                $q->where('id_users', $userId)->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 
@@ -132,6 +134,7 @@ class ExportController extends Controller
     {
         $user = auth()->user();
         $userJurusan = auth()->user();
+        $tahun = request('tahun');
 
         $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
         $idJurusan = $userJurusan->id;
@@ -140,19 +143,20 @@ class ExportController extends Controller
         $auditorId = request('auditor_id');
         $showAuditor = $auditorId && (int)$auditorId === (int)$idJurusan;
 
-        // Logo base64 (cepat & aman untuk PDF)
+        // Logo base64
         $logoPath = public_path('img/ulm.png');
         $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
 
         $elemen = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userMatrik'       => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'userMatrik'       => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan) {
+            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan, $tahun) {
                 $q->where('id_users', $idUserUpm)
-                    ->where('id_user_jurusan', $idJurusan);
+                    ->where('id_user_jurusan', $idJurusan)
+                    ->where('tahun', $tahun);
             },
         ])
             ->orderBy('nomor', 'asc')
@@ -168,6 +172,7 @@ class ExportController extends Controller
         if ($showAuditor) {
             $auditorScores = UsersMatrik::where('id_users', $idJurusan)
                 ->where('id_user_jurusan', $idJurusan)
+                ->where('tahun', $tahun)
                 ->get()
                 ->keyBy('id_matriks_led');
 
@@ -180,6 +185,7 @@ class ExportController extends Controller
                 ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
                 ->where('auditor_jurusan.jurusan', $userJurusan->homebase)
                 ->where('users.role', 'auditor')
+                ->where('auditor_jurusan.tahun_audit', $tahun)
                 ->orderBy('auditor_jurusan.created_at')
                 ->pluck('auditor_jurusan.user_id');
 
@@ -221,7 +227,7 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan);
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
         $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
 
@@ -272,6 +278,7 @@ class ExportController extends Controller
     {
         $user = auth()->user();
         $userJurusan = auth()->user();
+        $tahun = request('tahun');
 
         $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
         $idJurusan = $userJurusan->id;
@@ -287,12 +294,13 @@ class ExportController extends Controller
         $elemen = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userMatrik'       => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'userMatrik'       => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan) {
+            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan, $tahun) {
                 $q->where('id_users', $idUserUpm)
-                    ->where('id_user_jurusan', $idJurusan);
+                    ->where('id_user_jurusan', $idJurusan)
+                    ->where('tahun', $tahun);
             },
         ])
             ->orderBy('nomor', 'asc')
@@ -308,6 +316,7 @@ class ExportController extends Controller
         if ($showAuditor) {
             $auditorScores = UsersMatrik::where('id_users', $idJurusan)
                 ->where('id_user_jurusan', $idJurusan)
+                ->where('tahun', $tahun)
                 ->get()
                 ->keyBy('id_matriks_led');
 
@@ -320,6 +329,7 @@ class ExportController extends Controller
                 ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
                 ->where('auditor_jurusan.jurusan', $userJurusan->homebase)
                 ->where('users.role', 'auditor')
+                ->where('auditor_jurusan.tahun_audit', $tahun)
                 ->orderBy('auditor_jurusan.created_at')
                 ->pluck('auditor_jurusan.user_id');
 
@@ -361,7 +371,7 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan);
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
         $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
 
@@ -446,26 +456,27 @@ class ExportController extends Controller
     public function previewPdfPerbandinganUpm(string $id)
     {
 
-        $userJurusan = auth()->user();
+        $tahun = request('tahun');
 
         $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
         $userJurusan = User::findOrFail($id);
         $idJurusan = $userJurusan->id;
         $idUserUpm = $userUpm?->id;
 
-        // Logo base64 (cepat & aman untuk PDF)
+        // Logo base64
         $logoPath = public_path('img/ulm.png');
         $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
 
         $elemen = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userMatrik'       => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'userMatrik'       => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan) {
+            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan, $tahun) {
                 $q->where('id_users', $idUserUpm)
-                    ->where('id_user_jurusan', $idJurusan);
+                    ->where('id_user_jurusan', $idJurusan)
+                    ->where('tahun', $tahun);
             },
         ])
             ->orderBy('nomor', 'asc')
@@ -482,6 +493,7 @@ class ExportController extends Controller
         if ($showAuditor) {
             $auditorScores = UsersMatrik::where('id_users', $idJurusan)
                 ->where('id_user_jurusan', $idJurusan)
+                ->where('tahun', $tahun)
                 ->get()
                 ->keyBy('id_matriks_led');
 
@@ -494,6 +506,7 @@ class ExportController extends Controller
                 ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
                 ->where('auditor_jurusan.jurusan', $userJurusan->homebase)
                 ->where('users.role', 'auditor')
+                ->where('auditor_jurusan.tahun_audit', $tahun)
                 ->orderBy('auditor_jurusan.created_at')
                 ->pluck('auditor_jurusan.user_id');
 
@@ -535,7 +548,7 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan);
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
         $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
 
@@ -584,26 +597,27 @@ class ExportController extends Controller
 
     public function exportPdfPerbandinganUpm(string $id)
     {
-        $userJurusan = auth()->user();
+        $tahun = request('tahun');
 
         $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
         $userJurusan = User::findOrFail($id);
         $idJurusan = $userJurusan->id;
         $idUserUpm = $userUpm?->id;
 
-        // Logo base64 (cepat & aman untuk PDF)
+        // Logo base64
         $logoPath = public_path('img/ulm.png');
         $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
 
         $elemen = MatriksLED::with([
             'kriteria',
             'subItemElemen',
-            'userMatrik'       => function ($q) use ($idJurusan) {
-                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan');
+            'userMatrik'       => function ($q) use ($idJurusan, $tahun) {
+                $q->where('id_users', $idJurusan)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan) {
+            'userMatrikByUser' => function ($q) use ($idUserUpm, $idJurusan, $tahun) {
                 $q->where('id_users', $idUserUpm)
-                    ->where('id_user_jurusan', $idJurusan);
+                    ->where('id_user_jurusan', $idJurusan)
+                    ->where('tahun', $tahun);
             },
         ])
             ->orderBy('nomor', 'asc')
@@ -620,6 +634,7 @@ class ExportController extends Controller
         if ($showAuditor) {
             $auditorScores = UsersMatrik::where('id_users', $idJurusan)
                 ->where('id_user_jurusan', $idJurusan)
+                ->where('tahun', $tahun)
                 ->get()
                 ->keyBy('id_matriks_led');
 
@@ -632,6 +647,7 @@ class ExportController extends Controller
                 ->join('users', 'auditor_jurusan.user_id', '=', 'users.id')
                 ->where('auditor_jurusan.jurusan', $userJurusan->homebase)
                 ->where('users.role', 'auditor')
+                ->where('auditor_jurusan.tahun_audit', $tahun)
                 ->orderBy('auditor_jurusan.created_at')
                 ->pluck('auditor_jurusan.user_id');
 
@@ -673,7 +689,7 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan);
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
         $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
 
@@ -928,15 +944,15 @@ class ExportController extends Controller
         return [$perAspekJurusan, $perAspekAuditor, $perAspekMax];
     }
 
-    private function computeSyaratForUser(int $userId): array
+    private function computeSyaratForUser(int $userId, $tahun = null): array
     {
         $dataSyaratUnggul = \App\Models\SyaratUnggul::with([
             'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($userId) {
-                $q->where('id_users', $userId);
+            'matriks.userSubItemElements' => function ($q) use ($userId, $tahun) {
+                $q->where('id_users', $userId)->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($userId) {
-                $q->where('id_users', $userId);
+            'matriks.userMatrik' => function ($q) use ($userId, $tahun) {
+                $q->where('id_users', $userId)->where('tahun', $tahun);
             },
         ])->get();
 

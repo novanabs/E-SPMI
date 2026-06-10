@@ -13,32 +13,24 @@ use Illuminate\Http\Request;
 
 class HasilAMIController extends Controller
 {
-    // Submit / finalisasi penilaian AMI
+    // Submit / finalisasi penilaian AMI (hanya untuk jurusan/FKIP, bukan auditor)
     public function submit(Request $request)
     {
         $request->validate([
             'program_studi' => 'required|string',
-            'role'          => 'required|in:admin_jurusan,admin_FKIP,auditor',
+            'role'          => 'required|in:admin_jurusan,admin_FKIP',
+            'tahun'         => 'required|digits:4|integer|min:2000|max:2099',
         ]);
 
         $audit = Audit::updateOrCreate(
-            ['program_studi' => $request->program_studi],
+            ['program_studi' => $request->program_studi, 'tahun' => $request->tahun],
             ['fakultas'     => 'Keguruan dan Ilmu Pendidikan']
         );
 
-        $role = $request->role;
-
-        if ($role === 'auditor') {
-            $audit->update([
-                'auditor_submitted_at' => now(),
-                'auditor_submitted_by' => auth()->id(),
-            ]);
-        } else {
-            $audit->update([
-                'jurusan_submitted_at' => now(),
-                'jurusan_submitted_by' => auth()->id(),
-            ]);
-        }
+        $audit->update([
+            'jurusan_submitted_at' => now(),
+            'jurusan_submitted_by' => auth()->id(),
+        ]);
 
         return response()->json([
             'success' => true,

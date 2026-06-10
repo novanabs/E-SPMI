@@ -159,7 +159,7 @@
         </div>
 
         <div class="page-subtitle">
-            Tambahkan laporan evaluasi berdasarkan aspek dan jenis laporan
+            Tambahkan laporan evaluasi berdasarkan bidang dan jenis laporan
         </div>
 
     </div>
@@ -179,31 +179,31 @@
 
             <div class="form-group">
 
-                <label for="aspek" class="form-label">
-                    Aspek <span class="text-danger">*</span>
+                <label for="bidang" class="form-label">
+                    Bidang <span class="text-danger">*</span>
                 </label>
 
-                <select class="form-select @error('aspek') is-invalid @enderror" name="aspek" id="aspek">
+                <select class="form-select @error('bidang') is-invalid @enderror" name="bidang" id="bidang">
 
                     <option value="" disabled selected>
-                        -- Pilih Aspek --
+                        -- Pilih Bidang --
                     </option>
 
-                    <option value="Pendidikan" {{ old('aspek') == 'Pendidikan' ? 'selected' : '' }}>
-                        Pendidikan
+                    <option value="Pendidikan" {{ old('bidang') == 'Pendidikan' ? 'selected' : '' }}>
+                        1) Pendidikan
                     </option>
 
-                    <option value="Penelitian" {{ old('aspek') == 'Penelitian' ? 'selected' : '' }}>
-                        Penelitian
+                    <option value="Penelitian" {{ old('bidang') == 'Penelitian' ? 'selected' : '' }}>
+                        2) Penelitian
                     </option>
 
-                    <option value="Pengabdian" {{ old('aspek') == 'Pengabdian' ? 'selected' : '' }}>
-                        Pengabdian
+                    <option value="Pengabdian kepada Masyarakat" {{ old('bidang') == 'Pengabdian kepada Masyarakat' ? 'selected' : '' }}>
+                        3) Pengabdian kepada Masyarakat
                     </option>
 
                 </select>
 
-                @error('aspek')
+                @error('bidang')
                     <div class="invalid-feedback">
                         {{ $message }}
                     </div>

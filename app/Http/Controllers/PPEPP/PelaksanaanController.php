@@ -37,10 +37,13 @@ class PelaksanaanController extends Controller
     {
         $request->validate([
             'name'               => 'required',
+            'bidang'             => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
             'tahun'              => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
             'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
         ], [
             'name.required'               => 'Nama laporan wajib diisi.',
+            'bidang.required'             => 'Bidang wajib dipilih.',
+            'bidang.in'                   => 'Bidang tidak valid.',
             'tahun.required'              => 'Tahun wajib diisi.',
             'tahun.digits'                => 'Tahun harus berupa 4 digit.',
             'tahun.integer'               => 'Tahun harus berupa angka.',
@@ -83,6 +86,7 @@ class PelaksanaanController extends Controller
     {
         $validated = $request->validate([
             'name'               => 'required',
+            'bidang'             => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
             'tahun'              => 'required|digits:4|integer|min:1900|max:' . (date('Y') + 1),
             'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'nama_mitra'         => 'nullable',

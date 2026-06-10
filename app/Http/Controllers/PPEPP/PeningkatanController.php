@@ -36,11 +36,14 @@ class PeningkatanController extends Controller
     {
         $request->validate([
             'name'               => 'required',
+            'bidang'             => 'required|in:Pendidikan,Penelitian,Pengabdian kepada Masyarakat',
             'tahun'              => 'required|integer|min:2000|max:' . (date('Y') + 10),
             'jenis'              => 'required|in:Tahun,Semester Ganjil,Semester Genap',
             'link_bukti_laporan' => 'required'
         ], [
             'link_bukti_laporan.required' => 'Link laporan wajib diisi.',
+            'bidang.required' => 'Bidang wajib dipilih.',
+            'bidang.in' => 'Bidang tidak valid.',
             'tahun.required' => 'Tahun wajib diisi.',
             'tahun.integer' => 'Tahun harus berupa angka.',
             'tahun.min' => 'Tahun tidak boleh kurang dari 2000.',

@@ -299,6 +299,51 @@
 
     </div>
 
+    <div class="card shadow-sm mb-4 border-0 rounded-3">
+        <div class="card-header py-2 rounded-top-3" style="background: #173b70; color: #fff;">
+            <h6 class="mb-0"><i class="fas fa-download me-2"></i>Unduh Template Laporan</h6>
+        </div>
+        <div class="card-body py-3">
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/1Rws-oQPs_7vCR4oVD03hRR_ShtnssbRC?usp=sharing" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Template Monev Pembelajaran
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/19ANnqY44nHb7tWH1uTCHrg1CfQmZshYU?usp=drive_link" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Template Monev Penelitian
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/1F7QR2WJ1opwtSHclBEHiOtfu46OeKf01?usp=sharing" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Template Monev Pengabdian
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/1vNBaeVnFASUW9vgOJF5H0qNF0WW7vwqn?usp=sharing" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Template Monev Kerjasama
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/1_Fw0Hm0bOtIMngIl7MciFuP4MWvgvQW2?usp=sharing" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Template Monev CPL
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/1_6kJ44cpRcozgWUnubH3DAf5BVGyw_zu?usp=sharing" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Portofolio Mata Kuliah
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://drive.google.com/drive/folders/1N_ml9ovkaiQcqwjE56sW5Y-be_IzRBw6?usp=drive_link" target="_blank" class="text-decoration-none">
+                        <i class="fas fa-file-pdf text-danger me-1"></i> Lainnya
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="table-card">
 
         <div class="table-responsive">
@@ -309,7 +354,7 @@
 
                     <tr>
                         <th>No</th>
-                        <th>Aspek</th>
+                        <th>Bidang</th>
                         <th>Jenis Laporan</th>
                         {{-- <th>Waktu Unggah</th> --}}
                         <th>Periode</th>
@@ -332,7 +377,7 @@
                                 <span class="aspect-badge">
 
                                     <i class="fas fa-chart-line"></i>
-                                    {{ $item->aspek }}
+                                    {{ $item->bidang }}
 
                                 </span>
 
