@@ -687,13 +687,13 @@
                                                 <p>PPEPP Jurusan</p>
                                             </a>
                                         </li>
-                                        {{-- <li class="nav-item">
+                                        <li class="nav-item">
                                             <a href="{{ route('evaluasi_diri_jurusan.index') }}"
                                                 class="nav-link {{ Route::is('evaluasi_diri_jurusan*') ? 'active' : '' }}">
-                                                <i class="nav-icon bi bi-bar-chart-line"></i>
-                                                <p>Evaluasi Diri Jurusan</p>
+                                                <i class="nav-icon bi bi-bar-chart-line-fill"></i>
+                                                <p>Hasil AMI Jurusan</p>
                                             </a>
-                                        </li> --}}
+                                        </li>
                                         <li class="nav-item">
                                             <a href="{{ route('user.index') }}"
                                                 class="nav-link {{ Route::is('user.index') ? 'active' : '' }}">

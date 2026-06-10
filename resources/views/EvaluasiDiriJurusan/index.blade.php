@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Evaluasi Diri Jurusan')
+@section('title', 'Hasil AMI Jurusan')
 
 @section('content')
 
@@ -265,14 +265,14 @@
 
     <div class="page-title-modern">
 
-        Evaluasi Diri Jurusan
+        Hasil AMI Jurusan
 
     </div>
 
     <div class="page-subtitle-modern">
 
-        Kelola dan bandingkan hasil evaluasi diri setiap jurusan
-        untuk mendukung peningkatan mutu pendidikan di lingkungan FKIP ULM.
+        Lihat hasil Audit Mutu Internal (AMI) setiap jurusan per tahun.
+        Data mencakup evaluasi diri, syarat unggul, dan perbandingan nilai.
 
     </div>
 
@@ -351,16 +351,7 @@
 
                                     <i class="bi bi-bar-chart-line-fill"></i>
 
-                                    Bandingkan
-
-                                </a>
-
-                                <a class="btn btn-modern btn-evaluasi"
-                                    href="{{ route('evaluasi_diri_jurusan.edit.custom', $item->id) }}">
-
-                                    <i class="bi bi-pencil-square"></i>
-
-                                    Isi Evaluasi
+                                    Lihat Hasil AMI
 
                                 </a>
 
