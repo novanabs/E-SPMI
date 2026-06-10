@@ -115,8 +115,15 @@ class EvaluasiDiriJurusan extends Controller
             }
 
             $user = User::findOrFail($id);
+            $userJurusan = $user;
 
-            return view('EvaluasiDiriJurusan.show', compact('tahunList', 'user'));
+            return view('EvaluasiLamdik.show', compact('tahunList', 'userJurusan'))->with([
+                'routeName' => 'evaluasi_diri_jurusan.show',
+                'routeParamName' => 'evaluasi_diri_jurusan',
+                'routeParamValue' => $user->id,
+                'addYearRouteName' => 'evaluasi_diri_jurusan.show',
+                'addYearRouteValue' => $user->id,
+            ]);
         }
 
         $user = User::findOrFail($id);
@@ -380,11 +387,19 @@ class EvaluasiDiriJurusan extends Controller
             $perAspekMax[$nama] = $max;
         }
 
-        return view('EvaluasiDiriJurusan.show', compact(
-            'data', 'user', 'auditors', 'syarat3', 'syarat5',
+        $userJurusan = $user;
+
+        return view('EvaluasiLamdik.show', compact(
+            'data', 'userJurusan', 'auditors', 'syarat3', 'syarat5',
             'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax',
             'auditorLabelMap', 'auditorNameMap', 'tahun'
-        ));
+        ))->with([
+            'routeName' => 'evaluasi_diri_jurusan.show',
+            'routeParamName' => 'evaluasi_diri_jurusan',
+            'routeParamValue' => $user->id,
+            'addYearRouteName' => 'evaluasi_diri_jurusan.show',
+            'addYearRouteValue' => $user->id,
+        ]);
     }
 
     /**

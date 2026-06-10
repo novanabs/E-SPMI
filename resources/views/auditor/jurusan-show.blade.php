@@ -319,7 +319,7 @@
                         <tr>
 
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
                             <td> {{ \Carbon\Carbon::parse($item->tanggal_penetapan)->translatedFormat('d M Y') }}
     {{$item->tanggal_berakhir ? '- ' . \Carbon\Carbon::parse($item->tanggal_berakhir)->translatedFormat('d M Y') : '' }}</td>
 
@@ -376,7 +376,7 @@
                         <tr>
 
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
                             <td>{{ $item->nama_mitra ?? '-' }}</td>
                             <td>
                             <a href="{{ $item->link_bukti_laporan }}" target="_blank" class="btn  btn-success">
@@ -427,7 +427,8 @@
                 <tr>
 
                     <th>No</th>
-                    <th>Aspek</th>
+                    <th>Nama Laporan</th>
+                    <th>Bidang</th>
                     <th>Jenis Laporan</th>
                     {{-- <th>Tanggal</th> --}}
                     <th>Link Laporan</th>
@@ -444,7 +445,9 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->aspek }}</td>
+                        <td>{{ $item->name ?? '-' }}</td>
+
+                        <td>{{ $item->bidang }}</td>
 
                         <td>{{ $item->jenis_laporan }}</td>
 

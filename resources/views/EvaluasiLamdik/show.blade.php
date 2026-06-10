@@ -13,11 +13,11 @@
             'icon' => 'fas fa-chart-bar',
             'btnLabel' => 'Lihat Hasil',
             'showAddYear' => false,
-            'routeName' => 'evaluasi_lamdik.show',
-            'routeParamName' => 'evaluasi_lamdik',
-            'routeParamValue' => $userJurusan->id,
-            'addYearRouteName' => 'evaluasi_lamdik.show',
-            'addYearRouteValue' => $userJurusan->id,
+            'routeName' => $routeName ?? 'evaluasi_lamdik.show',
+            'routeParamName' => $routeParamName ?? 'evaluasi_lamdik',
+            'routeParamValue' => $routeParamValue ?? $userJurusan->id,
+            'addYearRouteName' => $addYearRouteName ?? 'evaluasi_lamdik.show',
+            'addYearRouteValue' => $addYearRouteValue ?? $userJurusan->id,
         ])
     @else
         {{-- NAV TABS --}}

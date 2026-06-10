@@ -274,7 +274,7 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
 
                         <td>
                                 {{ \Carbon\Carbon::parse($item->tanggal_penetapan)->translatedFormat('d M Y') }}
@@ -334,7 +334,7 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
 
                         <td>{{ $item->periode }}</td>
 
@@ -378,7 +378,8 @@
                 <tr>
 
                     <th>No</th>
-                    <th>Aspek</th>
+                    <th>Nama Laporan</th>
+                    <th>Bidang</th>
                     <th>Jenis Laporan</th>
                     {{-- <th>Tanggal</th> --}}
                     <th>Link Laporan</th>
@@ -395,7 +396,9 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->aspek }}</td>
+                        <td>{{ $item->name ?? '-' }}</td>
+
+                        <td>{{ $item->bidang }}</td>
 
                         <td>{{ $item->jenis_laporan }}</td>
 
@@ -457,7 +460,7 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
 
                         <td>
                             {{ $item->periode }}
@@ -517,7 +520,7 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}</td>
+                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
 
                         <td>
                             {{ $item->periode }}

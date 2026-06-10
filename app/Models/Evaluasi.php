@@ -9,6 +9,7 @@ class Evaluasi extends Model
     protected $table = 'laporan_evaluasi';
 
     protected $fillable = [
+        'name',
         'bidang',
         'jenis_laporan',
         'tahun',

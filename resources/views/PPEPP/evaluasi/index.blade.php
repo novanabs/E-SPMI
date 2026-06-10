@@ -355,6 +355,7 @@
                     <tr>
                         <th>No</th>
                         <th>Bidang</th>
+                        <th>Nama Laporan</th>
                         <th>Jenis Laporan</th>
                         {{-- <th>Waktu Unggah</th> --}}
                         <th>Periode</th>
@@ -376,10 +377,18 @@
 
                                 <span class="aspect-badge">
 
-                                    <i class="fas fa-chart-line"></i>
+                                    <i class="fas {{ $item->bidang == 'Pendidikan' ? 'fa-book' : ($item->bidang == 'Penelitian' ? 'fa-flask' : 'fa-handshake-angle') }}"></i>
                                     {{ $item->bidang }}
 
                                 </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="report-title">
+                                    {{ $item->name ?? '-' }}
+                                </div>
 
                             </td>
 
