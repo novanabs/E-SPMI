@@ -134,23 +134,17 @@ class EvaluasiDiriJurusan extends Controller
             'kriteria',
             'subItemElemen',
             'userMatrik' => function ($q) use ($id, $tahun) {
-                $q->where('id_users', $id)->where('tahun', $tahun);
+                $q->where('id_users', $id)->whereNull('id_user_jurusan')->where('tahun', $tahun);
             },
         ])->orderBy('nomor', 'asc')->get();
 
-        $userUpm = User::where('email', 'upmfkip1@ulm.ac.id')->first();
-
-        $auditors = collect();
-        if ($userUpm) {
-            $userUpm->auditor_label = 'Penilaian UPM';
-            $auditors->push($userUpm);
-        }
-        $auditorVirtual = (object) [
-            'id'            => $idJurusan,
-            'name'          => 'Auditor',
-            'auditor_label' => 'Auditor',
-        ];
-        $auditors->push($auditorVirtual);
+        $auditors = collect([
+            (object) [
+                'id'            => $idJurusan,
+                'name'          => 'Auditor',
+                'auditor_label' => 'Auditor',
+            ],
+        ]);
 
         $auditorIds = $auditors->pluck('id');
         $allAuditorScores = UsersMatrik::where('id_user_jurusan', $idJurusan)
@@ -207,12 +201,16 @@ class EvaluasiDiriJurusan extends Controller
                 $saranHtml = '-';
                 if ((int) $auditor->id === (int) $idJurusan) {
                     // For shared Auditor (virtual), combine temuan/saran from both auditors
-                    if ($tsItems->isNotEmpty()) {
-                        $temuanHtml = $tsItems->map(function ($ts) use ($auditorLabelMap) {
+                    $filteredTemuan = $tsItems->filter(fn($ts) => !empty($ts->temuan));
+                    if ($filteredTemuan->isNotEmpty()) {
+                        $temuanHtml = $filteredTemuan->map(function ($ts) use ($auditorLabelMap) {
                             $label = $auditorLabelMap[$ts->id_users] ?? 'Auditor';
                             return '<strong>' . e($label) . '</strong> : ' . e($ts->temuan);
                         })->implode('<br>');
-                        $saranHtml = $tsItems->map(function ($ts) use ($auditorLabelMap) {
+                    }
+                    $filteredSaran = $tsItems->filter(fn($ts) => !empty($ts->saran));
+                    if ($filteredSaran->isNotEmpty()) {
+                        $saranHtml = $filteredSaran->map(function ($ts) use ($auditorLabelMap) {
                             $label = $auditorLabelMap[$ts->id_users] ?? 'Auditor';
                             return '<strong>' . e($label) . '</strong> : ' . e($ts->saran);
                         })->implode('<br>');
