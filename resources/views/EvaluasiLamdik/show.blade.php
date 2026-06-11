@@ -57,7 +57,7 @@
                 {{-- SUMMARY CARDS --}}
                 <div class="row align-items-stretch g-3 py-3 py-md-0 my-2 my-md-0">
                     <div class="text-end">
-                        <button class="btn btn-sm btn-outline-primary ms-2" onclick="previewPdf()">
+                        <button class="btn btn-sm btn-outline-primary ms-2" onclick="previewPdf()" hidden>
                             <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
                         </button>
                         <a class="btn btn-sm ms-2" style="background: #173b70; color: #fff;"
@@ -339,7 +339,7 @@
                         <h5 class="mb-0"><i class="bi bi-graph-up me-1"></i>Hasil AMI
                             {{ $userJurusan->homebase ?? '' }}</h5>
                         <div>
-                            <button class="btn btn-sm btn-success me-2" onclick="previewPdf()">
+                            <button class="btn btn-sm btn-success me-2" onclick="previewPdf()" hidden>
                                 <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
                             </button>
                         </div>
@@ -459,7 +459,7 @@
                                         'audit' => $userJurusan->id,
                                         'tahun' => $tahun,
                                     ]) }}"
-                                        class="btn btn-outline-danger ms-auto" target="_blank">
+                                        class="btn btn-outline-danger ms-auto" target="_blank" hidden>
                                         <i class="bi bi-file-earmark-pdf"></i> Export PDF
                                     </a>
                                 </div>

@@ -8,8 +8,8 @@
 
     <style>
         /* =========================
-           PAGE STYLE
-        ========================= */
+               PAGE STYLE
+            ========================= */
 
         .page-header {
             background: linear-gradient(135deg, #0f172a, #1e3a8a);
@@ -32,8 +32,8 @@
         }
 
         /* =========================
-           FORM CARD
-        ========================= */
+               FORM CARD
+            ========================= */
 
         .form-card {
             background: white;
@@ -43,8 +43,8 @@
         }
 
         /* =========================
-           ALERT
-        ========================= */
+               ALERT
+            ========================= */
 
         .required-info {
             background: rgba(239, 68, 68, 0.08);
@@ -60,8 +60,8 @@
         }
 
         /* =========================
-           FORM
-        ========================= */
+               FORM
+            ========================= */
 
         .form-group {
             margin-bottom: 22px;
@@ -107,8 +107,8 @@
         }
 
         /* =========================
-           BUTTON
-        ========================= */
+               BUTTON
+            ========================= */
 
         .btn-save {
             border: none;
@@ -130,8 +130,8 @@
         }
 
         /* =========================
-           RESPONSIVE
-        ========================= */
+               RESPONSIVE
+            ========================= */
 
         @media(max-width: 768px) {
 
@@ -202,7 +202,9 @@
                     <option value="">-- Pilih Bidang --</option>
                     <option value="Pendidikan" {{ old('bidang') == 'Pendidikan' ? 'selected' : '' }}>1) Pendidikan</option>
                     <option value="Penelitian" {{ old('bidang') == 'Penelitian' ? 'selected' : '' }}>2) Penelitian</option>
-                    <option value="Pengabdian kepada Masyarakat" {{ old('bidang') == 'Pengabdian kepada Masyarakat' ? 'selected' : '' }}>3) Pengabdian kepada Masyarakat</option>
+                    <option value="Pengabdian kepada Masyarakat"
+                        {{ old('bidang') == 'Pengabdian kepada Masyarakat' ? 'selected' : '' }}>3) Pengabdian kepada
+                        Masyarakat</option>
                 </select>
 
                 @error('bidang')
@@ -283,7 +285,7 @@
             <div class="form-group">
 
                 <label for="link_bukti_kerjasama" class="form-label">
-                    Link Bukti Kerjasama
+                    Link
                 </label>
                 <small class="text-muted d-block mb-3">
                     Pastikan tautan dokumen dapat diakses secara publik (open access) tanpa memerlukan izin atau
@@ -291,7 +293,7 @@
                 </small>
 
                 <input type="url" class="form-control @error('link_bukti_kerjasama') is-invalid @enderror"
-                    id="link_bukti_kerjasama" name="link_bukti_kerjasama" placeholder="Masukkan link bukti kerjasama"
+                    id="link_bukti_kerjasama" name="link_bukti_kerjasama" placeholder="Masukkan link "
                     value="{{ old('link_bukti_kerjasama') }}">
 
                 @error('link_bukti_kerjasama')

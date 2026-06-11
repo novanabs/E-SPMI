@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Audit;
+use App\Models\AuditKriteria;
 use App\Models\AuditorJurusan;
 use App\Models\MatriksLED;
 use App\Models\SyaratUnggul;
 use App\Models\User;
-use App\Models\UserSubItemElemen;
 use App\Models\UsersMatrik;
+use App\Models\UserSubItemElemen;
 use Illuminate\Http\Request;
 
 class EvaluasiDiriJurusan extends Controller
@@ -76,11 +77,11 @@ class EvaluasiDiriJurusan extends Controller
             foreach ($request->variabel as $idSubItem => $nilai) {
                 UserSubItemElemen::updateOrCreate(
                     [
-                        'id_matriks'        => $validated['id_matriks_led'],
+                        'id_matriks'         => $validated['id_matriks_led'],
                         'id_sub_item_elemen' => $idSubItem,
-                        'id_users'          => $validated['id_users'],
-                        'id_user_jurusan'   => $validated['id_user_jurusan'],
-                        'tahun'             => $tahun,
+                        'id_users'           => $validated['id_users'],
+                        'id_user_jurusan'    => $validated['id_user_jurusan'],
+                        'tahun'              => $tahun,
                     ],
                     ['nilai' => $nilai, 'tahun' => $tahun]
                 );
@@ -89,7 +90,7 @@ class EvaluasiDiriJurusan extends Controller
 
         return redirect()->route('evaluasi_diri_jurusan.edit.custom', [
             'evaluasi_diri_jurusan' => $validated['id_user_jurusan'],
-            'tahun' => $tahun,
+            'tahun'                 => $tahun,
         ])->with('success', 'Data berhasil diperbarui');
     }
 
@@ -118,10 +119,10 @@ class EvaluasiDiriJurusan extends Controller
             $userJurusan = $user;
 
             return view('EvaluasiLamdik.show', compact('tahunList', 'userJurusan'))->with([
-                'routeName' => 'evaluasi_diri_jurusan.show',
-                'routeParamName' => 'evaluasi_diri_jurusan',
-                'routeParamValue' => $user->id,
-                'addYearRouteName' => 'evaluasi_diri_jurusan.show',
+                'routeName'         => 'evaluasi_diri_jurusan.show',
+                'routeParamName'    => 'evaluasi_diri_jurusan',
+                'routeParamValue'   => $user->id,
+                'addYearRouteName'  => 'evaluasi_diri_jurusan.show',
                 'addYearRouteValue' => $user->id,
             ]);
         }
@@ -145,8 +146,8 @@ class EvaluasiDiriJurusan extends Controller
             $auditors->push($userUpm);
         }
         $auditorVirtual = (object) [
-            'id' => $idJurusan,
-            'name' => 'Auditor',
+            'id'            => $idJurusan,
+            'name'          => 'Auditor',
             'auditor_label' => 'Auditor',
         ];
         $auditors->push($auditorVirtual);
@@ -204,7 +205,7 @@ class EvaluasiDiriJurusan extends Controller
 
                 $temuanHtml = '-';
                 $saranHtml = '-';
-                if ((int)$auditor->id === (int)$idJurusan) {
+                if ((int) $auditor->id === (int) $idJurusan) {
                     // For shared Auditor (virtual), combine temuan/saran from both auditors
                     if ($tsItems->isNotEmpty()) {
                         $temuanHtml = $tsItems->map(function ($ts) use ($auditorLabelMap) {
@@ -222,7 +223,7 @@ class EvaluasiDiriJurusan extends Controller
                     $saranHtml = $score->saran ?? '-';
                 }
 
-                $item->auditorMatriks->push((object)[
+                $item->auditorMatriks->push((object) [
                     'id_users'    => $auditor->id,
                     'nama'        => $auditor->name,
                     'nilai_total' => $score?->nilai_total,
@@ -242,7 +243,8 @@ class EvaluasiDiriJurusan extends Controller
                 $memenuhi3 = false;
                 $memenuhi5 = false;
                 $matriks = $item->matriks;
-                if (!$matriks) continue;
+                if (!$matriks)
+                    continue;
 
                 $subItems = $matriks->subItemElemen ?? collect();
                 $nilaiMap = $nilaiMapCallback($matriks);
@@ -251,12 +253,17 @@ class EvaluasiDiriJurusan extends Controller
                 if ($item->nomor == 1) {
                     $NDS3 = $NDL = $NDLK = $NDGB = 0;
                     foreach ($subItems as $sub) {
-                        $id = $sub->id; $var = $sub->variabel;
+                        $id = $sub->id;
+                        $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
-                        if ($var == 'NDS3') $NDS3 = $n;
-                        if ($var == 'NDL') $NDL = $n;
-                        if ($var == 'NDLK') $NDLK = $n;
-                        if ($var == 'NDGB') $NDGB = $n;
+                        if ($var == 'NDS3')
+                            $NDS3 = $n;
+                        if ($var == 'NDL')
+                            $NDL = $n;
+                        if ($var == 'NDLK')
+                            $NDLK = $n;
+                        if ($var == 'NDGB')
+                            $NDGB = $n;
                     }
                     $totalLektor = $NDL + $NDLK + $NDGB;
                     $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
@@ -270,42 +277,57 @@ class EvaluasiDiriJurusan extends Controller
                 } elseif ($item->nomor == 5) {
                     $NM = 0;
                     foreach ($subItems as $sub) {
-                        $id = $sub->id; $var = $sub->variabel;
+                        $id = $sub->id;
+                        $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
-                        if ($var == 'NM') $NM = $n;
+                        if ($var == 'NM')
+                            $NM = $n;
                     }
-                    $S1=$S2=$S3=$S4=$S5=$S6=$INT=$ISBN=$PATEN = 0;
+                    $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = $INT = $ISBN = $PATEN = 0;
                     foreach ($subItems as $sub) {
                         $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$sub->id] ?? 0);
-                        if ($var == 'SINTA1_MHS') $S1 = $n;
-                        if ($var == 'SINTA2_MHS') $S2 = $n;
-                        if ($var == 'SINTA3_MHS') $S3 = $n;
-                        if ($var == 'SINTA4_MHS') $S4 = $n;
-                        if ($var == 'SINTA5_MHS') $S5 = $n;
-                        if ($var == 'SINTA6_MHS') $S6 = $n;
-                        if ($var == 'INT_MHS') $INT = $n;
-                        if ($var == 'ISBN_MHS') $ISBN = $n;
-                        if ($var == 'PATEN_MHS') $PATEN = $n;
+                        if ($var == 'SINTA1_MHS')
+                            $S1 = $n;
+                        if ($var == 'SINTA2_MHS')
+                            $S2 = $n;
+                        if ($var == 'SINTA3_MHS')
+                            $S3 = $n;
+                        if ($var == 'SINTA4_MHS')
+                            $S4 = $n;
+                        if ($var == 'SINTA5_MHS')
+                            $S5 = $n;
+                        if ($var == 'SINTA6_MHS')
+                            $S6 = $n;
+                        if ($var == 'INT_MHS')
+                            $INT = $n;
+                        if ($var == 'ISBN_MHS')
+                            $ISBN = $n;
+                        if ($var == 'PATEN_MHS')
+                            $PATEN = $n;
                     }
                     if ($NM > 0) {
-                        $total3 = $S1+$S2+$S3+$S4+$S5+$INT+$ISBN+$PATEN;
-                        $persen3 = ($total3/$NM)*100;
+                        $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
+                        $persen3 = ($total3 / $NM) * 100;
                         $memenuhi3 = $persen3 >= 15;
-                        $total5 = $S1+$S2+$S3+$S4+$INT+$ISBN+$PATEN;
-                        $persen5 = ($total5/$NM)*100;
+                        $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
+                        $persen5 = ($total5 / $NM) * 100;
                         $memenuhi5 = $persen5 >= 25;
                         $detail = ['NM' => $NM, 'S1' => $S1, 'S2' => $S2, 'S3' => $S3, 'S4' => $S4, 'S5' => $S5, 'S6' => $S6, 'INT' => $INT, 'ISBN' => $ISBN, 'PATEN' => $PATEN, 'total3' => $total3, 'persen3' => $persen3, 'total5' => $total5, 'persen5' => $persen5];
                     } else {
                         $detail = ['NM' => 0];
                     }
                 } elseif ($item->nomor == 6) {
-                    $NDTPS = 0; $NDTPS_PUB = 0;
+                    $NDTPS = 0;
+                    $NDTPS_PUB = 0;
                     foreach ($subItems as $sub) {
-                        $id = $sub->id; $var = $sub->variabel;
+                        $id = $sub->id;
+                        $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
-                        if ($var == 'NDTPS') $NDTPS = $n;
-                        if ($var == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                        if ($var == 'NDTPS')
+                            $NDTPS = $n;
+                        if ($var == 'NDTPS_PUB')
+                            $NDTPS_PUB = $n;
                     }
                     if ($NDTPS > 0) {
                         $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
@@ -337,7 +359,7 @@ class EvaluasiDiriJurusan extends Controller
             'matriks.userSubItemElements' => function ($q) use ($idJurusan, $tahun) {
                 $q->where('id_users', $idJurusan)->where('tahun', $tahun);
             },
-            'matriks.userMatrik' => function ($q) use ($idJurusan, $tahun) {
+            'matriks.userMatrik'          => function ($q) use ($idJurusan, $tahun) {
                 $q->where('id_users', $idJurusan)->where('tahun', $tahun);
             },
         ])->get();
@@ -388,18 +410,39 @@ class EvaluasiDiriJurusan extends Controller
         }
 
         $userJurusan = $user;
+        $auditHeader = Audit::where('program_studi', (string) $idJurusan)
+            ->where('tahun', $tahun)
+            ->first();
+        $auditKriterias = AuditKriteria::where('jurusan_id', $idJurusan)->get();
+        $auditor = AuditorJurusan::where('jurusan', $userJurusan->homebase)
+            ->get();
+
 
         return view('EvaluasiLamdik.show', compact(
-            'data', 'userJurusan', 'auditors', 'syarat3', 'syarat5',
-            'jurusanSyarat', 'auditorSyaratData', 'perAspekJurusan', 'perAspekAuditor', 'perAspekMax',
-            'auditorLabelMap', 'auditorNameMap', 'tahun'
+            'data',
+            'userJurusan',
+            'auditors',
+            'syarat3',
+            'syarat5',
+            'jurusanSyarat',
+            'auditorSyaratData',
+            'perAspekJurusan',
+            'perAspekAuditor',
+            'perAspekMax',
+            'auditorLabelMap',
+            'auditorNameMap',
+            'tahun',
+            'auditHeader',
+            'auditKriterias',
+            'auditor',
+            'idJurusan'
         ))->with([
-            'routeName' => 'evaluasi_diri_jurusan.show',
-            'routeParamName' => 'evaluasi_diri_jurusan',
-            'routeParamValue' => $user->id,
-            'addYearRouteName' => 'evaluasi_diri_jurusan.show',
-            'addYearRouteValue' => $user->id,
-        ]);
+                    'routeName'         => 'evaluasi_diri_jurusan.show',
+                    'routeParamName'    => 'evaluasi_diri_jurusan',
+                    'routeParamValue'   => $user->id,
+                    'addYearRouteName'  => 'evaluasi_diri_jurusan.show',
+                    'addYearRouteValue' => $user->id,
+                ]);
     }
 
     /**
@@ -436,13 +479,13 @@ class EvaluasiDiriJurusan extends Controller
             'subItemElemen',
             'userSubItemElements' => function ($q) use ($idUserLogin, $id, $tahun) {
                 $q->where('id_users', $idUserLogin)
-                  ->where('id_user_jurusan', $id)
-                  ->where('tahun', $tahun);
+                    ->where('id_user_jurusan', $id)
+                    ->where('tahun', $tahun);
             },
-            'userMatrikByUser' => function ($q) use ($idUserLogin, $id, $tahun) {
+            'userMatrikByUser'    => function ($q) use ($idUserLogin, $id, $tahun) {
                 $q->where('id_users', $idUserLogin)
-                  ->where('id_user_jurusan', $id)
-                  ->where('tahun', $tahun);
+                    ->where('id_user_jurusan', $id)
+                    ->where('tahun', $tahun);
             }
         ])->orderBy('nomor', 'asc')->get();
 
@@ -451,8 +494,8 @@ class EvaluasiDiriJurusan extends Controller
             'matriks.userSubItemElements',
             'matriks.userMatrik' => function ($q) use ($idUserLogin, $id, $tahun) {
                 $q->where('id_users', $idUserLogin)
-                  ->where('id_user_jurusan', $id)
-                  ->where('tahun', $tahun);
+                    ->where('id_user_jurusan', $id)
+                    ->where('tahun', $tahun);
             }
         ])->get();
 
@@ -472,10 +515,14 @@ class EvaluasiDiriJurusan extends Controller
                 foreach ($subItems as $sub) {
                     $v = $sub['variabel'];
                     $n = $nilaiMap[$sub['id']] ?? 0;
-                    if ($v == 'NDS3') $NDS3 = $n;
-                    if ($v == 'NDL') $NDL = $n;
-                    if ($v == 'NDLK') $NDLK = $n;
-                    if ($v == 'NDGB') $NDGB = $n;
+                    if ($v == 'NDS3')
+                        $NDS3 = $n;
+                    if ($v == 'NDL')
+                        $NDL = $n;
+                    if ($v == 'NDLK')
+                        $NDLK = $n;
+                    if ($v == 'NDGB')
+                        $NDGB = $n;
                 }
                 $totalLektor = $NDL + $NDLK + $NDGB;
                 $item->memenuhi_3_tahun = $NDS3 >= 1 && $totalLektor >= 2;
@@ -485,32 +532,49 @@ class EvaluasiDiriJurusan extends Controller
                 $item->memenuhi_3_tahun = $jawaban >= 3.0;
                 $item->memenuhi_5_tahun = $jawaban >= 3.5;
             } elseif ($item->nomor == 5) {
-                $NM = 0; $S1=$S2=$S3=$S4=$S5=$S6=0; $INT=$ISBN=$PATEN=0;
+                $NM = 0;
+                $S1 = $S2 = $S3 = $S4 = $S5 = $S6 = 0;
+                $INT = $ISBN = $PATEN = 0;
                 foreach ($subItems as $sub) {
-                    $v = $sub['variabel']; $n = $nilaiMap[$sub['id']] ?? 0;
-                    if ($v == 'NM') $NM = $n;
-                    if ($v == 'SINTA1_MHS') $S1 = $n;
-                    if ($v == 'SINTA2_MHS') $S2 = $n;
-                    if ($v == 'SINTA3_MHS') $S3 = $n;
-                    if ($v == 'SINTA4_MHS') $S4 = $n;
-                    if ($v == 'SINTA5_MHS') $S5 = $n;
-                    if ($v == 'SINTA6_MHS') $S6 = $n;
-                    if ($v == 'INT_MHS') $INT = $n;
-                    if ($v == 'ISBN_MHS') $ISBN = $n;
-                    if ($v == 'PATEN_MHS') $PATEN = $n;
+                    $v = $sub['variabel'];
+                    $n = $nilaiMap[$sub['id']] ?? 0;
+                    if ($v == 'NM')
+                        $NM = $n;
+                    if ($v == 'SINTA1_MHS')
+                        $S1 = $n;
+                    if ($v == 'SINTA2_MHS')
+                        $S2 = $n;
+                    if ($v == 'SINTA3_MHS')
+                        $S3 = $n;
+                    if ($v == 'SINTA4_MHS')
+                        $S4 = $n;
+                    if ($v == 'SINTA5_MHS')
+                        $S5 = $n;
+                    if ($v == 'SINTA6_MHS')
+                        $S6 = $n;
+                    if ($v == 'INT_MHS')
+                        $INT = $n;
+                    if ($v == 'ISBN_MHS')
+                        $ISBN = $n;
+                    if ($v == 'PATEN_MHS')
+                        $PATEN = $n;
                 }
                 if ($NM > 0) {
-                    $total3 = $S1+$S2+$S3+$S4+$S5+$INT+$ISBN+$PATEN;
-                    $item->memenuhi_3_tahun = (($total3/$NM)*100) >= 15;
-                    $total5 = $S1+$S2+$S3+$S4+$INT+$ISBN+$PATEN;
-                    $item->memenuhi_5_tahun = (($total5/$NM)*100) >= 25;
+                    $total3 = $S1 + $S2 + $S3 + $S4 + $S5 + $INT + $ISBN + $PATEN;
+                    $item->memenuhi_3_tahun = (($total3 / $NM) * 100) >= 15;
+                    $total5 = $S1 + $S2 + $S3 + $S4 + $INT + $ISBN + $PATEN;
+                    $item->memenuhi_5_tahun = (($total5 / $NM) * 100) >= 25;
                 }
             } elseif ($item->nomor == 6) {
-                $NDTPS = 0; $NDTPS_PUB = 0;
+                $NDTPS = 0;
+                $NDTPS_PUB = 0;
                 foreach ($subItems as $sub) {
-                    $v = $sub['variabel']; $n = $nilaiMap[$sub['id']] ?? 0;
-                    if ($v == 'NDTPS') $NDTPS = $n;
-                    if ($v == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                    $v = $sub['variabel'];
+                    $n = $nilaiMap[$sub['id']] ?? 0;
+                    if ($v == 'NDTPS')
+                        $NDTPS = $n;
+                    if ($v == 'NDTPS_PUB')
+                        $NDTPS_PUB = $n;
                 }
                 if ($NDTPS > 0) {
                     $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
