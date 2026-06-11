@@ -197,6 +197,18 @@
             margin-bottom: 4px;
         }
 
+        .aspect-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.12);
+            color: #2563eb;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
         .document-date {
             color: #64748b;
             font-size: 13px;
@@ -334,6 +346,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Dokumen</th>
+                        <th>Bidang</th>
                         <th>Periode</th>
                         <th>Link Laporan</th>
                         <th>Aksi</th>
@@ -354,10 +367,22 @@
 
                                 <div class="document-title">
                                     {{ $item->name }}
-                                    @if ($item->bidang)
-                                        <strong>({{ $item->bidang }})</strong>
-                                    @endif
                                 </div>
+
+                            </td>
+
+                            <td>
+
+                                @if ($item->bidang)
+                                    <span class="aspect-badge">
+
+                                        <i class="fas {{ $item->bidang == 'Pendidikan' ? 'fa-book' : ($item->bidang == 'Penelitian' ? 'fa-flask' : 'fa-handshake-angle') }}"></i>
+                                        {{ $item->bidang }}
+
+                                    </span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
 
                             </td>
 

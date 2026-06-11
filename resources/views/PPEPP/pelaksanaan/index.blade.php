@@ -180,6 +180,18 @@
             font-size: 13px;
         }
 
+        .aspect-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.12);
+            color: #2563eb;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
         .badge-empty {
             background: #f1f5f9;
             color: #64748b;
@@ -329,6 +341,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Laporan</th>
+                        <th>Bidang</th>
                         <th>Periode</th>
                         <th>Nama Mitra</th>
                         <th>Link</th>
@@ -350,10 +363,22 @@
 
                                 <div class="report-title">
                                     {{ $item->name }}
-                                    @if ($item->bidang)
-                                        <strong>({{ $item->bidang }})</strong>
-                                    @endif
                                 </div>
+
+                            </td>
+
+                            <td>
+
+                                @if ($item->bidang)
+                                    <span class="aspect-badge">
+
+                                        <i class="fas {{ $item->bidang == 'Pendidikan' ? 'fa-book' : ($item->bidang == 'Penelitian' ? 'fa-flask' : 'fa-handshake-angle') }}"></i>
+                                        {{ $item->bidang }}
+
+                                    </span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
 
                             </td>
 

@@ -303,7 +303,7 @@
                 <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
                     placeholder="cth: LAPORAN PENGENDALIAN PENDIDIKAN" value="{{ old('name') }}">
 
-                <small class="form-text text-muted">Jika bidang dipilih, akan otomatis ditampilkan di daftar dalam format <strong>Nama Laporan (Bidang)</strong>. Jika tidak memilih bidang, tuliskan langsung di nama laporan, misal: LAPORAN PENGENDALIAN PENDIDIKAN, LAPORAN PENGENDALIAN PENELITIAN, LAPORAN PENGENDALIAN PENGABDIAN.</small>
+                <small class="form-text text-muted">Bidang akan ditampilkan sebagai kolom terpisah di daftar. Jika tidak memilih bidang, tuliskan langsung di nama laporan, misal: LAPORAN PENGENDALIAN PENDIDIKAN, LAPORAN PENGENDALIAN PENELITIAN, LAPORAN PENGENDALIAN PENGABDIAN.</small>
 
                 @error('name')
                     <div class="invalid-feedback">

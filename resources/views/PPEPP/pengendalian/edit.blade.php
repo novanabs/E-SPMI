@@ -312,7 +312,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                    placeholder="cth: LAPORAN PENGENDALIAN PENDIDIKAN"
                    value="{{ old('name', $data->name) }}">
 
-            <small class="form-text text-muted">Jika bidang dipilih, akan otomatis ditampilkan di daftar dalam format <strong>Nama Laporan (Bidang)</strong>. Jika tidak memilih bidang, tuliskan langsung di nama laporan, misal: LAPORAN PENGENDALIAN PENDIDIKAN, LAPORAN PENGENDALIAN PENELITIAN, LAPORAN PENGENDALIAN PENGABDIAN.</small>
+            <small class="form-text text-muted">Bidang akan ditampilkan sebagai kolom terpisah di daftar. Jika tidak memilih bidang, tuliskan langsung di nama laporan, misal: LAPORAN PENGENDALIAN PENDIDIKAN, LAPORAN PENGENDALIAN PENELITIAN, LAPORAN PENGENDALIAN PENGABDIAN.</small>
 
             @error('name')
                 <div class="invalid-feedback">

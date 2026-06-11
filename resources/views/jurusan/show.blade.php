@@ -137,6 +137,18 @@
     .btn-view:hover {
         color: white;
     }
+
+    .aspect-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(59, 130, 246, 0.12);
+        color: #2563eb;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+    }
 </style>
 
 <div class="ppepp-header">
@@ -261,9 +273,11 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Dokumen</th>
+                    <th>Bidang</th>
                     <th>Masa Berlaku</th>
                     <th>Dokumen</th>
                 </tr>
+
             </thead>
 
             <tbody>
@@ -274,7 +288,9 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
+                        <td>{{ $item->name }}</td>
+
+                        <td>@if($item->bidang)<span class="aspect-badge"><i class="bi {{ $item->bidang == 'Pendidikan' ? 'bi-book' : ($item->bidang == 'Penelitian' ? 'bi-flask' : 'bi-hand-index-thumb') }}"></i> {{ $item->bidang }}</span>@else - @endif</td>
 
                         <td>
                                 {{ \Carbon\Carbon::parse($item->tanggal_penetapan)->translatedFormat('d M Y') }}
@@ -320,6 +336,7 @@
 
                     <th>No</th>
                     <th>Nama Laporan</th>
+                    <th>Bidang</th>
                     <th>Periode</th>
                     <th>Link Kerjasama</th>
 
@@ -334,7 +351,9 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
+                        <td>{{ $item->name }}</td>
+
+                        <td>@if($item->bidang)<span class="aspect-badge"><i class="bi {{ $item->bidang == 'Pendidikan' ? 'bi-book' : ($item->bidang == 'Penelitian' ? 'bi-flask' : 'bi-hand-index-thumb') }}"></i> {{ $item->bidang }}</span>@else - @endif</td>
 
                         <td>{{ $item->periode }}</td>
 
@@ -445,6 +464,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
+                    <th>Bidang</th>
                     <th>Periode</th>
                     <th>Dokumen</th>
 
@@ -460,7 +480,9 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
+                        <td>{{ $item->name }}</td>
+
+                        <td>@if($item->bidang)<span class="aspect-badge"><i class="bi {{ $item->bidang == 'Pendidikan' ? 'bi-book' : ($item->bidang == 'Penelitian' ? 'bi-flask' : 'bi-hand-index-thumb') }}"></i> {{ $item->bidang }}</span>@else - @endif</td>
 
                         <td>
                             {{ $item->periode }}
@@ -505,6 +527,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
+                    <th>Bidang</th>
                     <th>Periode</th>
                     <th>Dokumen</th>
 
@@ -520,7 +543,9 @@
 
                         <td>{{ $loop->iteration }}</td>
 
-                        <td>{{ $item->name }}{!! $item->bidang ? ' <strong>(' . e($item->bidang) . ')</strong>' : '' !!}</td>
+                        <td>{{ $item->name }}</td>
+
+                        <td>@if($item->bidang)<span class="aspect-badge"><i class="bi {{ $item->bidang == 'Pendidikan' ? 'bi-book' : ($item->bidang == 'Penelitian' ? 'bi-flask' : 'bi-hand-index-thumb') }}"></i> {{ $item->bidang }}</span>@else - @endif</td>
 
                         <td>
                             {{ $item->periode }}
