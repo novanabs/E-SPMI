@@ -8,8 +8,8 @@
 
     <style>
         /* =========================
-                   PAGE STYLE
-                ========================= */
+                       PAGE STYLE
+                    ========================= */
         .template-link {
             color: #2563eb;
             font-weight: 700;
@@ -61,8 +61,8 @@
         }
 
         /* =========================
-                   CARD
-                ========================= */
+                       CARD
+                    ========================= */
 
         .table-card {
             background: white;
@@ -72,8 +72,8 @@
         }
 
         /* =========================
-                   DATATABLE
-                ========================= */
+                       DATATABLE
+                    ========================= */
 
         .dataTables_wrapper {
             padding: 0;
@@ -166,8 +166,8 @@
         }
 
         /* =========================
-                   CUSTOM CONTENT
-                ========================= */
+                       CUSTOM CONTENT
+                    ========================= */
 
         .report-title {
             font-weight: 700;
@@ -331,7 +331,7 @@
                         <th>Nama Laporan</th>
                         <th>Periode</th>
                         <th>Nama Mitra</th>
-                        <th>Link Kerjasama</th>
+                        <th>Link</th>
                         <th>Aksi</th>
                     </tr>
 

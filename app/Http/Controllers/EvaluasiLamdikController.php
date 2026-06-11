@@ -670,6 +670,8 @@ class EvaluasiLamdikController extends Controller
         $auditor = AuditorJurusan::where('jurusan', $userJurusan->homebase)
             ->get();
 
+        // dd($auditHeader, $tahun);
+
         // dd($auditHeader, $auditor, $perAspekJurusan, $perAspekAuditor, $auditKriterias);
 
 

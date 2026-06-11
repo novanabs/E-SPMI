@@ -50,6 +50,7 @@ class HasilAMIController extends Controller
                 'auditor_1_id'  => 'nullable|exists:users,id',
                 'auditor_2_id'  => 'nullable|exists:users,id',
                 'program_studi' => 'required|string',
+                'tahun'         => 'required|string',
             ]);
 
             $audit = Audit::updateOrCreate(
@@ -60,6 +61,7 @@ class HasilAMIController extends Controller
                     'fakultas'      => 'Keguruan dan Ilmu Pendidikan',
                     'tanggal_audit' => $request->tanggal_audit,
                     'catatan_umum'  => $request->catatan_umum,
+                    'tahun'         => $request->tahun,
                     'auditor_1_id'  => $request->auditor_1_id ?: null,
                     'auditor_2_id'  => $request->auditor_2_id ?: null,
                 ]

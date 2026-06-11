@@ -1108,14 +1108,14 @@
             {{-- Hasil AMI --}}
             <div class="card shadow-sm">
 
-                <h3 class="text-center">HASIL AUDIT MUTU INTERNAL PRODI</h3>
+                <h3 class="text-center">HASIL AUDIT MUTU INTERNAL JURUSAN</h3>
 
                 <div class="d-flex justify-content-end mb-3">
                     <a href="{{ route('audit.export.pdf', [
                         'audit' => $userJurusan->id,
                         'tahun' => $tahun,
                     ]) }}"
-                        class="btn btn-outline-danger ms-auto" target="_blank">
+                        class="btn btn-outline-danger ms-auto" target="_blank" hidden>
                         <i class="bi bi-file-earmark-pdf"></i> Export PDF
                     </a>
                 </div>
@@ -1163,6 +1163,7 @@
                         <input type="hidden" id="auditor_1_id" value="{{ $auditor->get(0)?->user?->id ?? '' }}">
                         <input type="hidden" id="auditor_2_id" value="{{ $auditor->get(1)?->user?->id ?? '' }}">
                         <input type="hidden" id="program_studi" value="{{ $userJurusan->id ?? '' }}">
+                        <input type="hidden" id="tahun" value="{{ $tahun }}">
 
                         @if (!$isSubmitted)
                             <button type="button" class="btn btn-success mt-3 d-inline-flex align-items-center gap-2"
@@ -1425,6 +1426,7 @@
                                     auditor_1_id: document.getElementById('auditor_1_id').value,
                                     auditor_2_id: document.getElementById('auditor_2_id').value,
                                     program_studi: document.getElementById('program_studi').value,
+                                    tahun: document.getElementById('tahun').value,
                                 })
                             })
                             .then(res => res.json())
@@ -6510,12 +6512,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-                                                    <div class="mb-3 mt-3">
-                                                        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-                                                        <div class="border rounded p-2 bg-light">
-                                                            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-                                                        </div>
-                                                    </div>` : ''}
+                                                            <div class="mb-3 mt-3">
+                                                                <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                                                <div class="border rounded p-2 bg-light">
+                                                                    <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                                                </div>
+                                                            </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
