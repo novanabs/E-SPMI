@@ -162,19 +162,22 @@
 
                 <br><br><br><br><br>
 
-                {{ $jurusan->name }}
+                {{ $jurusan->name }} <br>
+                NIP. {{ $jurusan->nip }}
             </td>
 
             <td style="border:none;text-align:center">
                 Auditor I
                 <br><br><br><br><br><br><br>
-                <b>{{ $auditors->get(0)?->user?->name }}</b>
+                <b>{{ $auditors->get(0)?->user?->name }}</b><br>
+                NIP. {{ $auditors->get(0)?->user?->nip }}
             </td>
 
             <td style="border:none;text-align:center">
                 Auditor II
                 <br><br><br><br><br><br><br>
-                <b>{{ $auditors->get(1)?->user?->name }}</b>
+                <b>{{ $auditors->get(1)?->user?->name }}</b><br>
+                NIP. {{ $auditors->get(1)?->user?->nip }}
             </td>
 
 
