@@ -11,14 +11,15 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HasilAMIController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\PimpinanController;
-use App\Http\Controllers\PPEPPController;
 use App\Http\Controllers\PPEPP\EvaluasiController;
 use App\Http\Controllers\PPEPP\PelaksanaanController;
 use App\Http\Controllers\PPEPP\PenetapanController;
 use App\Http\Controllers\PPEPP\PengendalianController;
 use App\Http\Controllers\PPEPP\PeningkatanController;
+use App\Http\Controllers\PPEPPController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SyaratController;
+use App\Http\Controllers\TahunAuditController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -100,6 +101,17 @@ Route::middleware(['auth', 'role:admin_FKIP'])->group(function () {
         '/admin/reset-password/{user}',
         [UserController::class, 'resetPassword']
     );
+
+    // Untuk tahun edit
+
+    Route::get('/tahun-audit', [TahunAuditController::class, 'index'])
+        ->name('tahun-audit.index');
+
+    Route::post('/tahun-audit', [TahunAuditController::class, 'store'])
+        ->name('tahun-audit.store');
+
+    Route::delete('/tahun-audit/{id}', [TahunAuditController::class, 'destroy'])
+        ->name('tahun-audit.destroy');
 
     Route::resource('evaluasi_diri_jurusan', EvaluasiDiriJurusan::class);
     Route::resource('user', UserController::class);

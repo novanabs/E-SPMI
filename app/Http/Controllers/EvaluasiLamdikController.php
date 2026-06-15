@@ -8,6 +8,7 @@ use App\Models\AuditorJurusan;
 use App\Models\MatriksLED;
 use App\Models\SubItemElemen;
 use App\Models\SyaratUnggul;
+use App\Models\TahunAudit;
 use App\Models\User;
 use App\Models\UsersMatrik;
 use App\Models\UserSubItemElemen;
@@ -26,13 +27,7 @@ class EvaluasiLamdikController extends Controller
         $tahun = $request->query('tahun');
 
         if (!$tahun) {
-            $tahunList = UsersMatrik::where('id_users', $idUser)
-                ->whereNull('id_user_jurusan')
-                ->whereNotNull('tahun')
-                ->distinct()
-                ->pluck('tahun')
-                ->sort()
-                ->values();
+            $tahunList = TahunAudit::pluck('tahun');
 
             if (!$tahunList->contains(now()->year)) {
                 $tahunList->push(now()->year);

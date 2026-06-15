@@ -689,6 +689,13 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
+                                            <a href="{{ route('tahun-audit.index') }}"
+                                                class="nav-link {{ Route::is('tahun-audit*') ? 'active' : '' }}">
+                                                <i class="nav-icon bi bi-calendar"></i>
+                                                <p>Tahun Audit</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a href="{{ route('evaluasi_diri_jurusan.index') }}"
                                                 class="nav-link {{ Route::is('evaluasi_diri_jurusan*') ? 'active' : '' }}">
                                                 <i class="nav-icon bi bi-bar-chart-line-fill"></i>
