@@ -522,6 +522,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
+                    <th>Bidang</th>
                     <th>Tahun</th>
                     <th>Dokumen</th>
 
@@ -538,6 +539,8 @@
                         <td>{{ $loop->iteration }}</td>
 
                         <td>{{ $item->name }}</td>
+
+                        <td>@if($item->bidang)<span class="aspect-badge"><i class="bi {{ $item->bidang == 'Pendidikan' ? 'bi-book' : ($item->bidang == 'Penelitian' ? 'bi-flask' : 'bi-hand-index-thumb') }}"></i> {{ $item->bidang }}</span>@else - @endif</td>
 
                         <td>
                             {{ $item->tahun }}
@@ -581,6 +584,7 @@
 
                     <th>No</th>
                     <th>Nama Dokumen</th>
+                    <th>Bidang</th>
                     <th>Tahun</th>
                     <th>Dokumen</th>
 
@@ -597,6 +601,8 @@
                         <td>{{ $loop->iteration }}</td>
 
                         <td>{{ $item->name }}</td>
+
+                        <td>@if($item->bidang)<span class="aspect-badge"><i class="bi {{ $item->bidang == 'Pendidikan' ? 'bi-book' : ($item->bidang == 'Penelitian' ? 'bi-flask' : 'bi-hand-index-thumb') }}"></i> {{ $item->bidang }}</span>@else - @endif</td>
 
                         <td>
                             {{ $item->tahun }}
