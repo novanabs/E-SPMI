@@ -654,9 +654,6 @@
                                     if ($v == 'SINTA5_MHS') {
                                         $S5 = $n;
                                     }
-                                    if ($v == 'SINTA6_MHS') {
-                                        $S6 = $n;
-                                    }
                                     if ($v == 'INT_MHS') {
                                         $INT = $n;
                                     }
@@ -817,7 +814,8 @@
                                                     {{ $PATEN ?? 0 }}</span>
                                                 @if (($NM ?? 0) > 0)
                                                     <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total
-                                                        (3thn) =
+                                                        (3thn)
+                                                        =
                                                         {{ $total3 ?? 0 }}</span>
                                                     <span
                                                         class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}%
@@ -2330,15 +2328,39 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-start">
+                        <td class="text-start" rowspan="2">
                             <strong>(a)</strong> Evaluasi tingkat kepuasan pengguna lulusan terhadap kompetensi lulusan, 9 aspek: (1) etika, (2) keahlian bidang ilmu, (3) bahasa asing, (4) TI, (5) komunikasi, (6) kerjasama, (7) pengembangan diri, (8) berpikir kritis, (9) kreativitas.<br><br>
                             Masukkan TKi (1–4) untuk setiap aspek. TKi = (4 × a<sub>i</sub>) + (3 × b<sub>i</sub>) + (2 × c<sub>i</sub>) + d<sub>i</sub>
                         </td>
-                        <td colspan="4" class="text-start small">
-                            a<sub>i</sub> = % "Sangat Baik" &nbsp;|&nbsp; b<sub>i</sub> = % "Baik" &nbsp;|&nbsp; c<sub>i</sub> = % "Cukup" &nbsp;|&nbsp; d<sub>i</sub> = % "Kurang"<br>
-                            Skor(a) = Σ TKi / 9
+                        <td colspan="4" class="text-start small text-center">
+                            Skor = TKi/9
                         </td>
+                        
+                        
                     </tr>
+                    <tr>
+                        <td colspan="4" class="text-start small">
+                            Skor = TKi/9 Tingkat kepuasan aspek ke-i dihitung dengan rumus sebagai berikut:<br>
+        TKi = (4 x ai) + (3 x bi) + (2 x ci) + di &nbsp;&nbsp;i = 1, 2, ..., 9<br>
+        ai = persentase "sangat baik".<br>
+        bi = persentase "baik".<br>
+        ci = persentase "cukup".<br>
+        di = persentase "kurang".<br>
+        <br>
+        Ketentuan persentase responden lulusan:<br>
+        - untuk program studi dengan jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) ≥ 150 orang, maka Prmin = 30%.<br>
+        - untuk program studi dengan jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) &lt; 150 orang, maka Prmin = 50% - ((NL / 150) x 20%)<br>
+        <br>
+        Jika persentase responden memenuhi ketentuan di atas, maka Skor akhir = Skor.<br>
+        Jika persentase responden tidak memenuhi ketentuan di atas, maka berlaku penyesuaian sebagai berikut:<br>
+        Skor akhir = (PJ / Prmin) x Skor.<br>
+        <br>
+        NL = Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2)<br>
+        NJ = Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak<br>
+        PJ = Persentase lulusan yang terlacak = (NJ / NL) x 100%<br>
+        Prmin = Persentase responden minimum
+                        </td>
+                        </tr>
                     <tr>
                         <td colspan="5" class="text-start small">
                             <strong>Penyesuaian responden:</strong> berlaku ketentuan yang sama seperti elemen 45 (NL/NJ/PJ/Prmin).
@@ -2815,21 +2837,32 @@
                             const userData = userSubItemMap[item.id] || null;
                             const nilai = userData ? userData.nilai : '';
 
+                            const isTK48 =
+                                item.nomor_elemen == 48 &&
+                                /^TK[1-9]$/.test(item.variabel);
+
                             container.insertAdjacentHTML('beforeend', `
             <div class="mb-3 variabel-item">
-                <label class="form-label">
-                    <strong>${item.variabel}</strong> : ${item.deskripsi}
-                </label>
+        <label class="form-label">
+            <strong>${item.variabel}</strong> : ${item.deskripsi}
+        </label>
 
-                <input
-                    type="number"
-                    class="form-control variabel-input"
-                    name="variabel[${item.id}]"
-                    value="${nilai}"
-                    min="0"
-                    step="any"
-                >
-            </div>
+        <input
+            type="number"
+            class="form-control variabel-input"
+            name="variabel[${item.id}]"
+            value="${nilai}"
+            min="0"
+            ${isTK48 ? 'max="4"' : ''}
+            step="any"
+        >
+
+        ${
+            isTK48
+                ? '<small class="text-danger">Nilai maksimal = 4.</small>'
+                : ''
+        }
+    </div>
         `);
                         });
                     }
@@ -3260,7 +3293,7 @@
                         function hitungSkorA15() {
                             const NM = val15('NM');
                             const sumPub = val15('SINTA1_MHS') + val15('SINTA2_MHS') + val15('SINTA3_MHS') +
-                                val15('SINTA4_MHS') + val15('SINTA5_MHS') + val15('SINTA6_MHS') +
+                                val15('SINTA4_MHS') + val15('SINTA5_MHS') +
                                 val15('INT_MHS') + val15('ISBN_MHS') + val15('PATEN_MHS');
                             const pkim = NM > 0 ? (sumPub / NM) * 100 : 0;
                             let skorA;

@@ -47,7 +47,7 @@ class SubItemElemenSeeder extends Seeder
             [
                 'nomor_elemen' => 7,
                 'variabel'     => 'NN',
-                'deskripsi'    => 'Jumlah kerjasama tingkat nasioanal'
+                'deskripsi'    => 'Jumlah kerjasama tingkat nasional'
             ],
             [
                 'nomor_elemen' => 7,
@@ -214,22 +214,22 @@ class SubItemElemenSeeder extends Seeder
             [
                 'nomor_elemen' => 40,
                 'variabel'     => 'RIPK',
-                'deskripsi'    => 'Rata-rata masa studi lulusan (dalam tahun)'
+                'deskripsi'    => 'Rata-rata IPK lulusan'
             ],
             [
                 'nomor_elemen' => 41,
                 'variabel'     => 'RMS',
-                'deskripsi'    => 'Rata-rata masa studi lulusan (dalam tahun)'
+                'deskripsi'    => 'Rata-rata masa studi lulusan (dalam tahun) (TS-3 sampai TS-5)'
             ],
             [
                 'nomor_elemen' => 42,
                 'variabel'     => 'PMTK',
-                'deskripsi'    => 'Persentase mahasiswa dapat menyelesaikan studi sesuai masa tempuh kurikulum (MTK)'
+                'deskripsi'    => 'Persentase mahasiswa dapat menyelesaikan studi sesuai masa tempuh kurikulum (MTK) (dari TS-7 sampai TS-3)'
             ],
             [
                 'nomor_elemen' => 43,
                 'variabel'     => 'PKMS',
-                'deskripsi'    => 'Persentase keberhasilan studi mahasiswa'
+                'deskripsi'    => 'Persentase keberhasilan studi mahasiswa (TS-6)'
             ],
             [
                 'nomor_elemen' => 44,
@@ -254,7 +254,7 @@ class SubItemElemenSeeder extends Seeder
             [
                 'nomor_elemen' => 46,
                 'variabel'     => 'WTMP',
-                'deskripsi'    => 'aktu tunggu lulusan untuk mendapatkan pekerjaan pertama dalam 3 tahun, mulai TS-4 s.d. TS-2.'
+                'deskripsi'    => 'Waktu tunggu lulusan untuk mendapatkan pekerjaan pertama dalam 3 tahun, mulai TS-4 s.d. TS-2.'
             ],
             [
                 'nomor_elemen' => 46,
@@ -463,7 +463,6 @@ class SubItemElemenSeeder extends Seeder
                 'variabel'     => 'SINTA6_MHS',
                 'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 6'
             ],
-
             [
                 'nomor_elemen' => 15,
                 'variabel'     => 'INT_MHS',
@@ -490,7 +489,18 @@ class SubItemElemenSeeder extends Seeder
                Produktivitas Publikasi DTPS
             ========================================= */
 
-[
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'SINTA_1_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 1'
+            ],
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'SINTA_2_MHS',
+                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 2'
+            ],
+
+            [
                 'nomor_elemen' => 56,
                 'variabel'     => 'NDTPS',
                 'deskripsi'    => 'Jumlah Dosen Tetap Program Studi'
@@ -516,6 +526,12 @@ class SubItemElemenSeeder extends Seeder
                 ]
             );
         }
+
+        // Hapus data yang sudah tidak digunakan
+        DB::table('sub_item_elemen')
+            ->where('nomor_elemen', 15)
+            ->where('variabel', 'SINTA6_MHS')
+            ->delete();
 
     }
 }
