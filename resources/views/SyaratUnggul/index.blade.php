@@ -218,7 +218,7 @@
                                 <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
                                     Data Saat Ini
                                 </h6>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-flex flex-wrap gap-2 mt-2">
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">NDTPS = {{ $NDTPS ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">S4 = {{ $S4 ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">S3 = {{ $S3 ?? 0 }}</span>
@@ -226,6 +226,20 @@
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">S1 = {{ $S1 ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">INT = {{ $INT ?? 0 }}</span>
                                 </div>
+                                @if (($NDTPS ?? 0) > 0)
+                                <div class="mt-3">
+                                    <div class="mb-2">
+                                        <span class="badge bg-success text-white fs-6 px-3 py-1">3 Tahun</span>
+                                        <small class="text-muted ms-2">Total = S4 + S3 + S2 + S1 + INT = <strong>{{ $total3 ?? 0 }}</strong></small><br>
+                                        <small class="text-muted ms-5">Persen = {{ $total3 ?? 0 }} / {{ $NDTPS ?? 0 }} × 100% = <strong>{{ number_format($persen3 ?? 0, 1) }}%</strong> {{ ($persen3??0) >= 20 ? '✅' : '❌' }}</small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary text-white fs-6 px-3 py-1">5 Tahun</span>
+                                        <small class="text-muted ms-2">Total = S2 + S1 + INT = <strong>{{ $total5 ?? 0 }}</strong></small><br>
+                                        <small class="text-muted ms-5">Persen = {{ $total5 ?? 0 }} / {{ $NDTPS ?? 0 }} × 100% = <strong>{{ number_format($persen5 ?? 0, 1) }}%</strong> {{ ($persen5??0) >= 20 ? '✅' : '❌' }}</small>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                         @endif
 

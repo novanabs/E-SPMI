@@ -43,10 +43,10 @@
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">S1 = {{ $d['S1'] ?? 0 }}</span>
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">INT = {{ $d['INT'] ?? 0 }}</span>
             @if (($d['NDTPS'] ?? 0) > 0)
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) = {{ $d['total3'] ?? 0 }}</span>
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($d['persen3'] ?? 0, 1) }}% (3thn)</span>
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) = {{ $d['total5'] ?? 0 }}</span>
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($d['persen5'] ?? 0, 1) }}% (5thn)</span>
+                <div class="mt-2 w-100">
+                    <small class="text-muted d-block">3 Tahun: Total = S4+S3+S2+S1+INT = <strong>{{ $d['total3'] ?? 0 }}</strong> → {{ number_format($d['persen3'] ?? 0, 1) }}%</small>
+                    <small class="text-muted d-block">5 Tahun: Total = S2+S1+INT = <strong>{{ $d['total5'] ?? 0 }}</strong> → {{ number_format($d['persen5'] ?? 0, 1) }}%</small>
+                </div>
             @endif
         @endif
     </div>

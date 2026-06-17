@@ -499,10 +499,8 @@
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S1 = ${d.S1 ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">INT = ${d.INT ?? 0}</span>`;
                 if ((d.NDTPS ?? 0) > 0) {
-                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) = ${d.total3 ?? 0}</span>`;
-                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">${(d.persen3 ?? 0).toFixed(1)}% (3thn)</span>`;
-                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) = ${d.total5 ?? 0}</span>`;
-                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">${(d.persen5 ?? 0).toFixed(1)}% (5thn)</span>`;
+                    html += `<div class="mt-2 w-100"><small class="text-muted d-block">3 Tahun: Total = S4+S3+S2+S1+INT = <strong>${d.total3 ?? 0}</strong> &rarr; ${(d.persen3 ?? 0).toFixed(1)}%</small>`;
+                    html += `<small class="text-muted d-block">5 Tahun: Total = S2+S1+INT = <strong>${d.total5 ?? 0}</strong> &rarr; ${(d.persen5 ?? 0).toFixed(1)}%</small></div>`;
                 }
             }
             html += '</div></div>';
