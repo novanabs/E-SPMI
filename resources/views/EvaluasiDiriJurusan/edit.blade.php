@@ -1500,11 +1500,11 @@
                     <tr>
                         <td class="text-start">
                             <strong>(a)</strong> Evaluasi tingkat kepuasan pengguna lulusan terhadap kompetensi lulusan, 9 aspek: (1) etika, (2) keahlian bidang ilmu, (3) bahasa asing, (4) TI, (5) komunikasi, (6) kerjasama, (7) pengembangan diri, (8) berpikir kritis, (9) kreativitas.<br><br>
-                            Masukkan TKi (1–4) untuk setiap aspek. TKi = (4 × a<sub>i</sub>) + (3 × b<sub>i</sub>) + (2 × c<sub>i</sub>) + d<sub>i</sub>
+                            Masukkan persentase (%) Sangat Baik, Baik, Cukup, Kurang per aspek.<br>
+                            TKi = (4 × SB + 3 × B + 2 × C + K) / 100
                         </td>
                         <td colspan="4" class="text-start small">
-                            a<sub>i</sub> = % "Sangat Baik" &nbsp;|&nbsp; b<sub>i</sub> = % "Baik" &nbsp;|&nbsp; c<sub>i</sub> = % "Cukup" &nbsp;|&nbsp; d<sub>i</sub> = % "Kurang"<br>
-                            Skor(a) = Σ TKi / 9
+                            Skor(a) = Σ TKi / 9 &nbsp;|&nbsp; Maks TKi = 400%
                         </td>
                     </tr>
                     <tr>
@@ -1981,6 +1981,8 @@
                         if (isElemen33 && ['PDIPPKM', 'PMKI'].includes(item.variabel)) return;
                         // Skip NDTPS_PUB for element 56 — auto-computed from SINTA fields
                         if (isElemen56 && item.variabel === 'NDTPS_PUB') return;
+                        // Skip all elemen 48 sub-items — rendered as table
+                        if (isElemen48) return;
 
                         const userData = userSubItemMap[item.id] || null;
                         const nilai = userData ? userData.nilai : '';
@@ -3774,9 +3776,7 @@
                     });
 
                 } else if (isElemen48) {
-                    // Element 48: TK1..TK9 → avg Skor(a), NL/NJ → respondent factor, radio Skor(b)
-                    // Final: (3 × adjusted_Skor(a) + Skor(b)) / 4
-                    const tkVars = ['TK1','TK2','TK3','TK4','TK5','TK6','TK7','TK8','TK9'];
+                    // Element 48: TKi = (4×SB + 3×B + 2×C + K) / 100 → avg → Skor(a), radio Skor(b)
                     const tkLabels = ['Etika','Keahlian bidang ilmu','Bahasa asing','TI','Komunikasi','Kerjasama','Pengembangan diri','Berpikir kritis','Kreativitas'];
                     const v2id48 = {};
                     subItems.forEach(item => { v2id48[item.variabel] = item.id; });
@@ -3790,17 +3790,28 @@
                         return saved ? parseFloat(saved.nilai) || 0 : 0;
                     }
 
+                    function hitungTKi(i) {
+                        const sb = val48('TK' + i + '_SB'), b = val48('TK' + i + '_B'),
+                              c = val48('TK' + i + '_C'), k = val48('TK' + i + '_K');
+                        const total = sb + b + c + k;
+                        const tki = total > 0 ? (4 * sb + 3 * b + 2 * c + k) / 100 : 0;
+                        return { sb, b, c, k, total, tki };
+                    }
+
                     function hitungSkorA48() {
-                        const tkValues = tkVars.map(v => val48(v));
-                        const count = tkValues.filter(v => v > 0).length;
-                        const sum = tkValues.reduce((a, b) => a + b, 0);
+                        let sum = 0, count = 0;
+                        const tkiValues = [];
+                        for (let i = 1; i <= 9; i++) {
+                            const { tki, total } = hitungTKi(i);
+                            tkiValues.push({ i, tki, total });
+                            if (total > 0) { sum += tki; count++; }
+                        }
                         const base = count > 0 ? sum / count : 0;
-                        return { tkValues, count, sum, base };
+                        return { tkiValues, count, sum, base };
                     }
 
                     function hitungResponden48() {
-                        const nl = val48('NL');
-                        const nj = val48('NJ');
+                        const nl = val48('NL'), nj = val48('NJ');
                         let pj = 0, prmin = 0, faktor = 1;
                         if (nl > 0 && nj > 0) {
                             pj = (nj / nl) * 100;
@@ -3810,9 +3821,40 @@
                         return { nl, nj, pj, prmin, faktor };
                     }
 
+                    // Render NL/NJ + TK input table FIRST
+                    function renderTKiTable48() {
+                        let html = '<h6 class="mt-3">Data Responden</h6>';
+                        const nlData = userSubItemMap[v2id48['NL']] || null;
+                        const njData = userSubItemMap[v2id48['NJ']] || null;
+                        html += `<div class="row mb-3"><div class="col-6"><label class="form-label"><strong>NL</strong> — Jumlah lulusan</label><input type="number" class="form-control variabel-input" name="variabel[${v2id48['NL']}]" value="${nlData ? nlData.nilai : ''}" min="0" step="any"></div>`;
+                        html += `<div class="col-6"><label class="form-label"><strong>NJ</strong> — Jumlah lulusan terlacak</label><input type="number" class="form-control variabel-input" name="variabel[${v2id48['NJ']}]" value="${njData ? njData.nilai : ''}" min="0" step="any"></div></div>`;
+                        html += '<h6 class="mt-3">TKi per Aspek</h6>';
+                        html += '<div class="table-responsive"><table class="table table-sm table-bordered align-middle text-center" id="tki-input-table48"><thead class="table-light"><tr><th style="width:140px">Aspek</th><th>%Sangat Baik</th><th>%Baik</th><th>%Cukup</th><th>%Kurang</th><th style="width:80px">TKi</th></tr></thead><tbody>';
+                        for (let i = 1; i <= 9; i++) {
+                            const sbId = v2id48['TK' + i + '_SB'], bId = v2id48['TK' + i + '_B'], cId = v2id48['TK' + i + '_C'], kId = v2id48['TK' + i + '_K'];
+                            const sbV = (userSubItemMap[sbId] || {}).nilai || '';
+                            const bV = (userSubItemMap[bId] || {}).nilai || '';
+                            const cV = (userSubItemMap[cId] || {}).nilai || '';
+                            const kV = (userSubItemMap[kId] || {}).nilai || '';
+                            html += '<tr>';
+                            html += `<td class="text-start fw-semibold">${tkLabels[i-1]}</td>`;
+                            html += `<td><input type="number" class="form-control form-control-sm variabel-input" name="variabel[${sbId}]" value="${sbV}" min="0" max="100" step="any" style="width:80px;display:inline;"></td>`;
+                            html += `<td><input type="number" class="form-control form-control-sm variabel-input" name="variabel[${bId}]" value="${bV}" min="0" max="100" step="any" style="width:80px;display:inline;"></td>`;
+                            html += `<td><input type="number" class="form-control form-control-sm variabel-input" name="variabel[${cId}]" value="${cV}" min="0" max="100" step="any" style="width:80px;display:inline;"></td>`;
+                            html += `<td><input type="number" class="form-control form-control-sm variabel-input" name="variabel[${kId}]" value="${kV}" min="0" max="100" step="any" style="width:80px;display:inline;"></td>`;
+                            html += `<td class="fw-bold tki-cell48" id="tki-cell-${i}">-</td>`;
+                            html += '</tr>';
+                        }
+                        html += '</tbody></table></div>';
+                        return html;
+                    }
+                    container.insertAdjacentHTML('beforeend', renderTKiTable48());
+
                     container.insertAdjacentHTML('beforeend', `
                 <table class="table table-sm table-bordered mt-2 mb-0 bg-light" id="auto-skora48-table">
-                    <tr><td style="width:120px"><strong>Σ TKi</strong></td><td id="cv-sum48" class="fw-bold">-</td></tr>
+                    <thead><tr><th colspan="2" class="text-center">Perhitungan TKi</th></tr></thead>
+                    <tbody id="tki-rows48"></tbody>
+                    <tr><td><strong>Σ TKi</strong></td><td id="cv-sum48" class="fw-bold">-</td></tr>
                     <tr><td><strong>Rata-rata</strong></td><td id="cv-avg48" class="fw-bold">-</td></tr>
                     <tr><td><strong>Base Skor(a)</strong></td><td id="cv-base48" class="fw-bold">-</td></tr>
                     <tr><td><strong>NL / NJ</strong></td><td id="cv-nlnj48" class="fw-bold">-</td></tr>
@@ -3826,12 +3868,23 @@
                     const skorBOptions48 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA48() {
-                        const { tkValues, count, sum, base } = hitungSkorA48();
+                        const { tkiValues, count, sum, base } = hitungSkorA48();
                         const { nl, nj, pj, prmin, faktor } = hitungResponden48();
                         const skorA = base > 0 ? base * faktor : 0;
 
-                        const tkiStr = tkValues.map((v, i) => v > 0 ? `TK${i+1}=${v.toFixed(2)}` : null).filter(Boolean).join(', ');
-                        document.getElementById('cv-sum48').textContent = count > 0 ? sum.toFixed(2) + ' (' + tkiStr + ')' : '-';
+                        let tkiHtml = '';
+                        tkiValues.forEach(({ i, tki, total }) => {
+                            if (total > 0) {
+                                tkiHtml += `<tr><td style="width:120px">${tkLabels[i-1]}</td><td>TKi = (4×SB+3×B+2×C+K)/100 = <strong>${tki.toFixed(4)}</strong></td></tr>`;
+                            }
+                        });
+                        document.getElementById('tki-rows48').innerHTML = tkiHtml;
+                        // Update TKi cells in input table
+                        tkiValues.forEach(({ i, tki, total }) => {
+                            const cell = document.getElementById('tki-cell-' + i);
+                            if (cell) cell.textContent = total > 0 ? tki.toFixed(4) : '-';
+                        });
+                        document.getElementById('cv-sum48').textContent = count > 0 ? sum.toFixed(4) : '-';
                         document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(4) : '-';
                         document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(4) : '-';
                         document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' + nj : '-';
@@ -3839,7 +3892,6 @@
                         document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(2) + '%' : '-';
                         document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(4) : (faktor > 0 ? '1' : '-');
                         document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) : '-';
-
                         return { skorA };
                     }
 
@@ -3867,12 +3919,11 @@
                         const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value || 0);
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
                         const nilaiAkhir = jawabanAkhir * poin;
-
                         const live = document.getElementById('live-final48');
                         if (jawabanAkhir > 0) {
                             live.innerHTML = `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
                         } else {
-                            live.innerHTML = 'Isi TK1–TK9, NL, NJ dan pilih Skor (b) untuk hasil akhir';
+                            live.innerHTML = 'Isi persentase TKi (SB, B, C, K), NL, NJ dan pilih Skor (b)';
                         }
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
                         document.getElementById('skor_a_hidden').value = skorA;
@@ -3883,6 +3934,9 @@
 
                     document.querySelectorAll('.variabel-input').forEach(el => {
                         el.addEventListener('input', computeFinal48);
+                    });
+                    document.querySelectorAll('.skor-radio-skor_b').forEach(el => {
+                        el.addEventListener('change', computeFinal48);
                     });
                     document.querySelectorAll('.skor-radio-skor_b').forEach(el => {
                         el.addEventListener('change', computeFinal48);
