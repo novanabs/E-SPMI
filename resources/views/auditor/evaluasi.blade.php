@@ -788,8 +788,12 @@
                                                 {{ $INT ?? 0 }}</span>
                                             @if (($NDTPS ?? 0) > 0)
                                                 <div class="mt-2 w-100">
-                                                    <small class="text-muted d-block">3 Tahun: Total = S4+S3+S2+S1+INT = <strong>{{ $total3 ?? 0 }}</strong> → {{ number_format($persen3 ?? 0, 1) }}%</small>
-                                                    <small class="text-muted d-block">5 Tahun: Total = S2+S1+INT = <strong>{{ $total5 ?? 0 }}</strong> → {{ number_format($persen5 ?? 0, 1) }}%</small>
+                                                    <small class="text-muted d-block">3 Tahun: Total = S4+S3+S2+S1+INT =
+                                                        <strong>{{ $total3 ?? 0 }}</strong> →
+                                                        {{ number_format($persen3 ?? 0, 1) }}%</small>
+                                                    <small class="text-muted d-block">5 Tahun: Total = S2+S1+INT =
+                                                        <strong>{{ $total5 ?? 0 }}</strong> →
+                                                        {{ number_format($persen5 ?? 0, 1) }}%</small>
                                                 </div>
                                             @endif
                                         </div>
@@ -1137,7 +1141,7 @@
                         'audit' => $userJurusan->id,
                         'tahun' => $tahun,
                     ]) }}"
-                        class="btn btn-outline-danger ms-auto" target="_blank" hidden>
+                        class="btn btn-outline-danger ms-auto" target="_blank">
                         <i class="bi bi-file-earmark-pdf"></i> Export PDF
                     </a>
                 </div>
@@ -2712,22 +2716,45 @@
                         <th class="bg-danger text-white">1</th>
                     </tr>
                 </thead>
-                <tbody>
+                 <tbody>
                     <tr>
-                        <td class="text-start">
+                        <td class="text-start" rowspan="2">
                             <strong>(a)</strong> Evaluasi tingkat kepuasan pengguna lulusan terhadap kompetensi lulusan, 9 aspek: (1) etika, (2) keahlian bidang ilmu, (3) bahasa asing, (4) TI, (5) komunikasi, (6) kerjasama, (7) pengembangan diri, (8) berpikir kritis, (9) kreativitas.<br><br>
-                            Masukkan persentase (%) Sangat Baik, Baik, Cukup, Kurang per aspek.<br>
-                            TKi = (4 × SB + 3 × B + 2 × C + K) / 100
+                            Masukkan TKi (1–4) untuk setiap aspek. TKi = (4 × a<sub>i</sub>) + (3 × b<sub>i</sub>) + (2 × c<sub>i</sub>) + d<sub>i</sub>
                         </td>
-                        <td colspan="4" class="text-start small">
-                            Skor(a) = Σ TKi / 9 &nbsp;|&nbsp; Maks TKi = 400%
+                        <td colspan="4" class="text-start small text-center">
+                            Skor = TKi/9
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="4" class="text-start small">
+                            Skor = TKi/9 Tingkat kepuasan aspek ke-i dihitung dengan rumus sebagai berikut:<br>
+        TKi = (4 x ai) + (3 x bi) + (2 x ci) + di &nbsp;&nbsp;i = 1, 2, ..., 9<br>
+        ai = persentase "sangat baik".<br>
+        bi = persentase "baik".<br>
+        ci = persentase "cukup".<br>
+        di = persentase "kurang".<br>
+        <br>
+        Ketentuan persentase responden lulusan:<br>
+        - untuk program studi dengan jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) ≥ 150 orang, maka Prmin = 30%.<br>
+        - untuk program studi dengan jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) &lt; 150 orang, maka Prmin = 50% - ((NL / 150) x 20%)<br>
+        <br>
+        Jika persentase responden memenuhi ketentuan di atas, maka Skor akhir = Skor.<br>
+        Jika persentase responden tidak memenuhi ketentuan di atas, maka berlaku penyesuaian sebagai berikut:<br>
+        Skor akhir = (PJ / Prmin) x Skor.<br>
+        <br>
+        NL = Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2)<br>
+        NJ = Jumlah lulusan dalam 3 tahun (TS-4 s.d. TS-2) yang terlacak<br>
+        PJ = Persentase lulusan yang terlacak = (NJ / NL) x 100%<br>
+        Prmin = Persentase responden minimum
+                        </td>
+                        </tr>
                     <tr>
                         <td colspan="5" class="text-start small">
                             <strong>Penyesuaian responden:</strong> berlaku ketentuan yang sama seperti elemen 45 (NL/NJ/PJ/Prmin).
                         </td>
                     </tr>
+                    
                     <tr>
                         <td class="text-start"><strong>(b)</strong> PS melakukan analisis terhadap tingkat kepuasan pengguna lulusan, faktor-faktor penyebab, dan dampaknya.</td>
                         <td>Analisis kepuasan + faktor penyebab + dampak</td>
@@ -5438,34 +5465,68 @@
                     }
 
                     function hitungTKi(i) {
-                        const sb = val48('TK' + i + '_SB'), b = val48('TK' + i + '_B'),
-                              c = val48('TK' + i + '_C'), k = val48('TK' + i + '_K');
+                        const sb = val48('TK' + i + '_SB'),
+                            b = val48('TK' + i + '_B'),
+                            c = val48('TK' + i + '_C'),
+                            k = val48('TK' + i + '_K');
                         const total = sb + b + c + k;
                         const tki = total > 0 ? (4 * sb + 3 * b + 2 * c + k) / 100 : 0;
-                        return { sb, b, c, k, total, tki };
+                        return {
+                            sb,
+                            b,
+                            c,
+                            k,
+                            total,
+                            tki
+                        };
                     }
 
                     function hitungSkorA48() {
-                        let sum = 0, count = 0;
+                        let sum = 0,
+                            count = 0;
                         const tkiValues = [];
                         for (let i = 1; i <= 9; i++) {
-                            const { tki, total } = hitungTKi(i);
-                            tkiValues.push({ i, tki, total });
-                            if (total > 0) { sum += tki; count++; }
+                            const {
+                                tki,
+                                total
+                            } = hitungTKi(i);
+                            tkiValues.push({
+                                i,
+                                tki,
+                                total
+                            });
+                            if (total > 0) {
+                                sum += tki;
+                                count++;
+                            }
                         }
                         const base = count > 0 ? sum / count : 0;
-                        return { tkiValues, count, sum, base };
+                        return {
+                            tkiValues,
+                            count,
+                            sum,
+                            base
+                        };
                     }
 
                     function hitungResponden48() {
-                        const nl = val48('NL'), nj = val48('NJ');
-                        let pj = 0, prmin = 0, faktor = 1;
+                        const nl = val48('NL'),
+                            nj = val48('NJ');
+                        let pj = 0,
+                            prmin = 0,
+                            faktor = 1;
                         if (nl > 0 && nj > 0) {
                             pj = (nj / nl) * 100;
                             prmin = nl >= 150 ? 30 : 50 - ((nl / 150) * 20);
                             faktor = pj >= prmin ? 1 : pj / prmin;
                         }
-                        return { nl, nj, pj, prmin, faktor };
+                        return {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        };
                     }
 
                     function renderTKiTable48() {
@@ -5524,35 +5585,61 @@
                     const skorBOptions48 = (pilihan && pilihan.options) ? pilihan.options : {};
 
                     function updateSkorA48() {
-                        const { tkiValues, count, sum, base } = hitungSkorA48();
-                        const { nl, nj, pj, prmin, faktor } = hitungResponden48();
+                        const {
+                            tkiValues,
+                            count,
+                            sum,
+                            base
+                        } = hitungSkorA48();
+                        const {
+                            nl,
+                            nj,
+                            pj,
+                            prmin,
+                            faktor
+                        } = hitungResponden48();
                         const skorA = base > 0 ? base * faktor : 0;
 
                         let tkiHtml = '';
-                        tkiValues.forEach(({ i, tki, total }) => {
+                        tkiValues.forEach(({
+                            i,
+                            tki,
+                            total
+                        }) => {
                             if (total > 0) {
                                 tkiHtml +=
                                     `<tr><td style="width:120px">${tkLabels[i-1]}</td><td>TKi = (4×SB+3×B+2×C+K)/100 = <strong>${tki.toFixed(4)}</strong></td></tr>`;
                             }
                         });
                         document.getElementById('tki-rows48').innerHTML = tkiHtml;
-                        tkiValues.forEach(({ i, tki, total }) => {
+                        tkiValues.forEach(({
+                            i,
+                            tki,
+                            total
+                        }) => {
                             const cell = document.getElementById('tki-cell-' + i);
                             if (cell) cell.textContent = total > 0 ? tki.toFixed(4) : '-';
                         });
                         document.getElementById('cv-sum48').textContent = count > 0 ? sum.toFixed(4) : '-';
-                        document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(4) :
+                        document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(
+                                4) :
                             '-';
                         document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(4) : '-';
-                        document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' + nj :
+                        document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            nj :
                             '-';
                         document.getElementById('cv-pj48').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                        document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(2) + '%' :
+                        document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            '%' :
                             '-';
-                        document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(4) : (
+                        document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(
+                            4) : (
                             faktor > 0 ? '1' : '-');
-                        document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) : '-';
-                        return { skorA };
+                        document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) :
+                            '-';
+                        return {
+                            skorA
+                        };
                     }
 
                     updateSkorA48();
@@ -5575,7 +5662,9 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                     function computeFinal48() {
-                        const { skorA } = updateSkorA48();
+                        const {
+                            skorA
+                        } = updateSkorA48();
                         const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
                             ?.value || 0);
                         const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
@@ -6013,8 +6102,12 @@
                     }
 
                     function hitungSkorA56() {
-                        const s4 = val56('S4_DTPS'), s3 = val56('S3_DTPS'), s2 = val56('S2_DTPS'),
-                              s1 = val56('S1_DTPS'), int = val56('INT_DTPS'), ndtps = val56('NDTPS');
+                        const s4 = val56('S4_DTPS'),
+                            s3 = val56('S3_DTPS'),
+                            s2 = val56('S2_DTPS'),
+                            s1 = val56('S1_DTPS'),
+                            int = val56('INT_DTPS'),
+                            ndtps = val56('NDTPS');
                         const ndtps_pub = s4 + s3 + s2 + s1 + int;
                         let ppdtps = 0,
                             base = 0;
@@ -6051,7 +6144,8 @@
                             ppdtps,
                             base
                         } = hitungSkorA56();
-                        document.getElementById('cv-ndpub56').innerHTML = ndtps_pub > 0 ? ndtps_pub + ' <small class="text-muted">(S4+S3+S2+S1+INT)</small>' : '0';
+                        document.getElementById('cv-ndpub56').innerHTML = ndtps_pub > 0 ? ndtps_pub +
+                            ' <small class="text-muted">(S4+S3+S2+S1+INT)</small>' : '0';
                         document.getElementById('cv-ndtps56').textContent = ndtps > 0 ? ndtps : '-';
                         document.getElementById('cv-ppdtps56').textContent = ndtps > 0 ? (ppdtps * 100)
                             .toFixed(2) + '%' : '-';
@@ -6095,7 +6189,8 @@
                             live.innerHTML =
                                 `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
-                            live.innerHTML = 'Isi S4, S3, S2, S1, INT, NDTPS dan pilih Skor (b) untuk hasil akhir';
+                            live.innerHTML =
+                                'Isi S4, S3, S2, S1, INT, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
                         document.getElementById('skor_a_hidden').value = base;
@@ -6566,12 +6661,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-                                                            <div class="mb-3 mt-3">
-                                                                <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-                                                                <div class="border rounded p-2 bg-light">
-                                                                    <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-                                                                </div>
-                                                            </div>` : ''}
+                                                                    <div class="mb-3 mt-3">
+                                                                        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                                                        <div class="border rounded p-2 bg-light">
+                                                                            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                                                        </div>
+                                                                    </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
