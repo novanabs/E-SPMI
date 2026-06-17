@@ -42,7 +42,6 @@ class PilkomEvaluationSeeder extends Seeder
             ['nomor_elemen' => 56, 'variabel' => 'S3_DTPS',     'deskripsi' => 'Jumlah DTPS publikasi Sinta 3 (penulis pertama/corresponding)'],
             ['nomor_elemen' => 56, 'variabel' => 'S4_DTPS',     'deskripsi' => 'Jumlah DTPS publikasi Sinta 4 (penulis pertama/corresponding)'],
             ['nomor_elemen' => 56, 'variabel' => 'INT_DTPS',    'deskripsi' => 'Jumlah DTPS publikasi jurnal internasional (penulis pertama/corresponding)'],
-            ['nomor_elemen' => 56, 'variabel' => 'INTREP_DTPS', 'deskripsi' => 'Jumlah DTPS publikasi jurnal internasional bereputasi (penulis pertama/corresponding)'],
         ];
 
         foreach ($missing as $item) {
@@ -189,7 +188,7 @@ class PilkomEvaluationSeeder extends Seeder
         $map = [
             19 => ['NDS3' => 2, 'NDTPS' => 18, 'NDGB' => 0, 'NDLK' => 1, 'NDL' => 2],
             15 => ['NM' => 100, 'SINTA1_MHS' => 5, 'SINTA2_MHS' => 5, 'SINTA3_MHS' => 5, 'SINTA4_MHS' => 5, 'SINTA5_MHS' => 5, 'SINTA6_MHS' => 0, 'INT_MHS' => 5, 'ISBN_MHS' => 5, 'PATEN_MHS' => 0],
-            56 => ['NDTPS' => 18, 'NDTPS_PUB' => 6, 'S1_DTPS' => 3, 'S2_DTPS' => 3, 'S3_DTPS' => 0, 'S4_DTPS' => 0, 'INT_DTPS' => 0, 'INTREP_DTPS' => 3],
+            56 => ['NDTPS' => 18, 'NDTPS_PUB' => 6, 'S1_DTPS' => 3, 'S2_DTPS' => 3, 'S3_DTPS' => 0, 'S4_DTPS' => 0, 'INT_DTPS' => 3],
             7  => ['RK' => 5, 'N1' => 10, 'N2' => 8, 'N3' => 6, 'NDTPS' => 18, 'NI' => 3, 'NN' => 10, 'NW' => 15],
             11 => ['NM' => 200, 'NDTPS' => 18],
             14 => ['NM' => 200, 'NI' => 2, 'NN' => 15, 'NW' => 30],

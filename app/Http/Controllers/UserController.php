@@ -120,6 +120,7 @@ class UserController extends Controller
         // Load current auditor's temuan/saran from auditor_temuan_saran
         $data = MatriksLED::with([
             'kriteria',
+            'subItemElemen',
             'userSubItemElements' => function ($q) use ($sharedId, $tahun) {
                 $q->where('id_users', $sharedId)
                     ->where('id_user_jurusan', $sharedId)
@@ -239,22 +240,30 @@ class UserController extends Controller
                 }
             } elseif ($item->nomor == 6) {
                 $NDTPS = 0;
-                $NDTPS_PUB = 0;
+                $S4 = $S3 = $S2 = $S1 = $INT = 0;
                 foreach ($subItems as $sub) {
                     $id = $sub->id;
                     $var = $sub->variabel;
                     $nilai = (float) ($nilaiMap[$id] ?? 0);
                     if ($var == 'NDTPS')
                         $NDTPS = $nilai;
-                    if ($var == 'NDTPS_PUB')
-                        $NDTPS_PUB = $nilai;
+                    if ($var == 'S4_DTPS')
+                        $S4 = $nilai;
+                    if ($var == 'S3_DTPS')
+                        $S3 = $nilai;
+                    if ($var == 'S2_DTPS')
+                        $S2 = $nilai;
+                    if ($var == 'S1_DTPS')
+                        $S1 = $nilai;
+                    if ($var == 'INT_DTPS')
+                        $INT = $nilai;
                 }
                 if ($NDTPS > 0) {
-                    $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
-                    $persen5 = $persen3;
-                    if ($persen3 >= 20)
+                    $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                    $total5 = $S2 + $S1 + $INT;
+                    if (($total3 / $NDTPS) * 100 >= 20)
                         $item->memenuhi_3_tahun = true;
-                    if ($persen5 >= 20)
+                    if (($total5 / $NDTPS) * 100 >= 20)
                         $item->memenuhi_5_tahun = true;
                 }
             }
@@ -368,6 +377,9 @@ class UserController extends Controller
         // Save sub-items as shared (id_users = jurusan_id)
         if ($request->has('variabel')) {
             foreach ($request->variabel as $idSubItem => $nilai) {
+                if ($nilai === null || $nilai === '') {
+                    continue;
+                }
                 UserSubItemElemen::updateOrCreate(
                     [
                         'id_matriks'         => $validated['id_matriks_led'],

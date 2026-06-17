@@ -1080,18 +1080,29 @@ class ExportController extends Controller
                 }
             } elseif ($item->nomor == 6) {
                 $NDTPS = 0;
-                $NDTPS_PUB = 0;
+                $S4 = $S3 = $S2 = $S1 = $INT = 0;
                 foreach ($subItems as $sub) {
                     $n = (float) ($nilaiMap[$sub->id] ?? 0);
                     if ($sub->variabel == 'NDTPS')
                         $NDTPS = $n;
-                    if ($sub->variabel == 'NDTPS_PUB')
-                        $NDTPS_PUB = $n;
+                    if ($sub->variabel == 'S4_DTPS')
+                        $S4 = $n;
+                    if ($sub->variabel == 'S3_DTPS')
+                        $S3 = $n;
+                    if ($sub->variabel == 'S2_DTPS')
+                        $S2 = $n;
+                    if ($sub->variabel == 'S1_DTPS')
+                        $S1 = $n;
+                    if ($sub->variabel == 'INT_DTPS')
+                        $INT = $n;
                 }
                 if ($NDTPS > 0) {
-                    $persen = ($NDTPS_PUB / $NDTPS) * 100;
-                    $m3 = $persen >= 20;
-                    $m5 = $persen >= 20;
+                    $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                    $total5 = $S2 + $S1 + $INT;
+                    $persen3 = ($total3 / $NDTPS) * 100;
+                    $persen5 = ($total5 / $NDTPS) * 100;
+                    $m3 = $persen3 >= 20;
+                    $m5 = $persen5 >= 20;
                 }
             }
 

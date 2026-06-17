@@ -86,20 +86,25 @@ class SyaratController extends Controller
                     $m5 = ((($S1+$S2+$S3+$S4+$INT+$ISBN+$PATEN)/$NM)*100) >= 25;
                 }
             } elseif ($item->nomor == 6) {
-                $NDTPS = 0; $NDTPS_PUB = 0;
+                $NDTPS = 0;
+                $S4 = $S3 = $S2 = $S1 = $INT = 0;
                 $subItems = $item->matriks->subItemElemen ?? collect();
                 $userValues = $item->matriks->userSubItemElements ?? collect();
                 $nilaiMap = $userValues->pluck('nilai', 'id_sub_item_elemen');
                 foreach ($subItems as $sub) {
                     $v = $sub->variabel; $n = (float) ($nilaiMap[$sub->id] ?? 0);
                     if ($v == 'NDTPS') $NDTPS = $n;
-                    if ($v == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                    if ($v == 'S4_DTPS') $S4 = $n;
+                    if ($v == 'S3_DTPS') $S3 = $n;
+                    if ($v == 'S2_DTPS') $S2 = $n;
+                    if ($v == 'S1_DTPS') $S1 = $n;
+                    if ($v == 'INT_DTPS') $INT = $n;
                 }
                 if ($NDTPS > 0) {
-                    $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
-                    $persen5 = $persen3;
-                    $m3 = $persen3 >= 20;
-                    $m5 = $persen5 >= 20;
+                    $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                    $total5 = $S2 + $S1 + $INT;
+                    $m3 = ($total3 / $NDTPS) * 100 >= 20;
+                    $m5 = ($total5 / $NDTPS) * 100 >= 20;
                 }
             }
 

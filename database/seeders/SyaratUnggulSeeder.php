@@ -71,7 +71,7 @@ class SyaratUnggulSeeder extends Seeder
                 'indikator'    => "Dalam 3 tahun terakhir, DTPS memiliki publikasi di jurnal nasional dan/atau jurnal internasional sebagai penulis pertama atau corresponding author.",
                 'syarat_tahun' => json_encode([
                     '3_tahun' => "≥ 20% DTPS memiliki publikasi pada jurnal nasional minimal Sinta 4 dan/atau jurnal internasional sebagai penulis pertama atau corresponding author.",
-                    '5_tahun' => "≥ 20% DTPS memiliki publikasi pada jurnal nasional minimal Sinta 4 dan/atau jurnal internasional sebagai penulis pertama atau corresponding author."
+                    '5_tahun' => "≥ 20% DTPS memiliki publikasi pada jurnal nasional minimal Sinta 2 dan/atau jurnal internasional sebagai penulis pertama atau corresponding author."
                 ]),
             ],
         ];

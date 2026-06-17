@@ -21,7 +21,7 @@ class SeedAriSeeder extends Seeder
 
     /**
      * Add missing sub_item_elemen for syarat 6 (Element 56 — Publikasi DTPS).
-     * The controller expects variabels S1_DTPS–S4_DTPS, INT_DTPS, INTREP_DTPS.
+     * The controller expects variabels S1_DTPS–S4_DTPS, INT_DTPS.
      */
     protected function addMissingSubItemElemen(): void
     {
@@ -31,7 +31,6 @@ class SeedAriSeeder extends Seeder
             ['nomor_elemen' => 56, 'variabel' => 'S3_DTPS',     'deskripsi' => 'Jumlah DTPS publikasi Sinta 3 (penulis pertama/corresponding)'],
             ['nomor_elemen' => 56, 'variabel' => 'S4_DTPS',     'deskripsi' => 'Jumlah DTPS publikasi Sinta 4 (penulis pertama/corresponding)'],
             ['nomor_elemen' => 56, 'variabel' => 'INT_DTPS',    'deskripsi' => 'Jumlah DTPS publikasi jurnal internasional (penulis pertama/corresponding)'],
-            ['nomor_elemen' => 56, 'variabel' => 'INTREP_DTPS', 'deskripsi' => 'Jumlah DTPS publikasi jurnal internasional bereputasi (penulis pertama/corresponding)'],
         ];
 
         foreach ($missing as $item) {
@@ -178,8 +177,7 @@ class SeedAriSeeder extends Seeder
                 'S2_DTPS'     => 3,
                 'S3_DTPS'     => 0,
                 'S4_DTPS'     => 0,
-                'INT_DTPS'    => 0,
-                'INTREP_DTPS' => 3,
+                'INT_DTPS'    => 3,
             ],
 
             /* ========= Elemen 7 — Kerjasama Tridharma ========= */

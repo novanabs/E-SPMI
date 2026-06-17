@@ -718,7 +718,6 @@
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S3 = ${d.S3 ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S4 = ${d.S4 ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S5 = ${d.S5 ?? 0}</span>`;
-                html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S6 = ${d.S6 ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">INT = ${d.INT ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">ISBN = ${d.ISBN ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">PATEN = ${d.PATEN ?? 0}</span>`;
@@ -734,11 +733,16 @@
                 }
             } else if (su.nomor == 6) {
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS = ${d.NDTPS ?? 0}</span>`;
-                html +=
-                    `<span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS_PUB = ${d.NDTPS_PUB ?? 0}</span>`;
+                html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S4 = ${d.S4 ?? 0}</span>`;
+                html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S3 = ${d.S3 ?? 0}</span>`;
+                html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S2 = ${d.S2 ?? 0}</span>`;
+                html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">S1 = ${d.S1 ?? 0}</span>`;
+                html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">INT = ${d.INT ?? 0}</span>`;
                 if ((d.NDTPS ?? 0) > 0) {
-                    html +=
-                        `<span class="badge bg-light text-dark border px-3 py-2 fs-6">${(d.persen3 ?? 0).toFixed(1)}%</span>`;
+                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) = ${d.total3 ?? 0}</span>`;
+                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">${(d.persen3 ?? 0).toFixed(1)}% (3thn)</span>`;
+                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) = ${d.total5 ?? 0}</span>`;
+                    html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">${(d.persen5 ?? 0).toFixed(1)}% (5thn)</span>`;
                 }
             }
             html += '</div></div>';

@@ -116,15 +116,21 @@
                         $memenuhi5 = $persen5 >= 25;
                     }
                 } elseif ($item->nomor == 6) {
-                    $NDTPS = 0; $NDTPS_PUB = 0;
+                    $NDTPS = 0; $S4 = $S3 = $S2 = $S1 = $INT = 0;
                     foreach ($subItems as $sub) {
                         $v = $sub['variabel']; $n = $nilaiMap[$sub['id']] ?? 0;
                         if ($v == 'NDTPS') $NDTPS = $n;
-                        if ($v == 'NDTPS_PUB') $NDTPS_PUB = $n;
+                        if ($v == 'S4_DTPS') $S4 = $n;
+                        if ($v == 'S3_DTPS') $S3 = $n;
+                        if ($v == 'S2_DTPS') $S2 = $n;
+                        if ($v == 'S1_DTPS') $S1 = $n;
+                        if ($v == 'INT_DTPS') $INT = $n;
                     }
                     if ($NDTPS > 0) {
-                        $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
-                        $persen5 = $persen3;
+                        $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                        $total5 = $S2 + $S1 + $INT;
+                        $persen3 = ($total3 / $NDTPS) * 100;
+                        $persen5 = ($total5 / $NDTPS) * 100;
                         $memenuhi3 = $persen3 >= 20;
                         $memenuhi5 = $persen5 >= 20;
                     }
@@ -196,7 +202,6 @@
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">S3 = {{ $S3 ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">S4 = {{ $S4 ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">S5 = {{ $S5 ?? 0 }}</span>
-                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">S6 = {{ $S6 ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">INT = {{ $INT ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">ISBN = {{ $ISBN ?? 0 }}</span>
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">PATEN = {{ $PATEN ?? 0 }}</span>
@@ -215,7 +220,11 @@
                                 </h6>
                                 <div class="d-flex flex-wrap gap-2">
                                     <span class="badge bg-light text-dark border fs-6 px-3 py-2">NDTPS = {{ $NDTPS ?? 0 }}</span>
-                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">NDTPS_PUB = {{ $NDTPS_PUB ?? 0 }}</span>
+                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">S4 = {{ $S4 ?? 0 }}</span>
+                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">S3 = {{ $S3 ?? 0 }}</span>
+                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">S2 = {{ $S2 ?? 0 }}</span>
+                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">S1 = {{ $S1 ?? 0 }}</span>
+                                    <span class="badge bg-light text-dark border fs-6 px-3 py-2">INT = {{ $INT ?? 0 }}</span>
                                 </div>
                             </div>
                         @endif

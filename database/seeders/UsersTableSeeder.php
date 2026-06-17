@@ -25,16 +25,16 @@ class UsersTableSeeder extends Seeder
             'role'     => 'admin_jurusan',
         ]);
 
-        // User::firstOrCreate([
-        //     'email' => 'pilkom@ulm.ac.id',
-        // ], [
-        //     'name'     => 'Dr. Harja Santana Purba, M.Kom.',
-        //     'homebase' => 'Pendidikan Komputer',
-        //     'nip'      => '123456789',
-        //     'jabatan'  => 'Ketua Jurusan',
-        //     'password' => Hash::make('12345'),
-        //     'role'     => 'admin_jurusan',
-        // ]);
+        User::firstOrCreate([
+            'email' => 'pilkom@ulm.ac.id',
+        ], [
+            'name'     => 'Dr. Harja Santana Purba, M.Kom.',
+            'homebase' => 'Pendidikan Komputer',
+            'nip'      => '123456789',
+            'jabatan'  => 'Ketua Jurusan',
+            'password' => Hash::make('12345'),
+            'role'     => 'admin_jurusan',
+        ]);
 
         // User::firstOrCreate(
         //     [
@@ -59,27 +59,27 @@ class UsersTableSeeder extends Seeder
             'role'     => 'admin_FKIP',
         ]);
 
-        // User::firstOrCreate([
-        //     'email' => 'madhan@ulm.ac.id',
-        // ], [
-        //     'name'     => 'Madhan, SPd.',
-        //     'homebase' => 'Pendidikan Komputer',
-        //     'password' => Hash::make('12345'),
-        //     'jabatan'  => 'Auditor',
-        //     'nip'      => '1122334455',
-        //     'role'     => 'auditor',
-        // ]);
+        User::firstOrCreate([
+            'email' => 'madhan@ulm.ac.id',
+        ], [
+            'name'     => 'Madhan, SPd.',
+            'homebase' => 'Pendidikan Komputer',
+            'password' => Hash::make('12345'),
+            'jabatan'  => 'Auditor',
+            'nip'      => '1122334455',
+            'role'     => 'auditor',
+        ]);
 
-        // User::firstOrCreate([
-        //     'email' => 'ari@ulm.ac.id',
-        // ], [
-        //     'name'     => 'Ari, SPd.',
-        //     'homebase' => 'Pendidikan Komputer',
-        //     'password' => Hash::make('12345'),
-        //     'jabatan'  => 'Auditor',
-        //     'nip'      => '5566778899',
-        //     'role'     => 'auditor',
-        // ]);
+        User::firstOrCreate([
+            'email' => 'ari@ulm.ac.id',
+        ], [
+            'name'     => 'Ari, SPd.',
+            'homebase' => 'Pendidikan Komputer',
+            'password' => Hash::make('12345'),
+            'jabatan'  => 'Auditor',
+            'nip'      => '5566778899',
+            'role'     => 'auditor',
+        ]);
 
         
 

@@ -491,13 +491,28 @@ class SubItemElemenSeeder extends Seeder
 
             [
                 'nomor_elemen' => 56,
-                'variabel'     => 'SINTA_1_MHS',
-                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 1'
+                'variabel'     => 'S4_DTPS',
+                'deskripsi'    => 'Jumlah DTPS publikasi Sinta 4 (penulis pertama/corresponding)'
             ],
             [
                 'nomor_elemen' => 56,
-                'variabel'     => 'SINTA_2_MHS',
-                'deskripsi'    => 'Jumlah publikasi mahasiswa pada jurnal Sinta 2'
+                'variabel'     => 'S3_DTPS',
+                'deskripsi'    => 'Jumlah DTPS publikasi Sinta 3 (penulis pertama/corresponding)'
+            ],
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'S2_DTPS',
+                'deskripsi'    => 'Jumlah DTPS publikasi Sinta 2 (penulis pertama/corresponding)'
+            ],
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'S1_DTPS',
+                'deskripsi'    => 'Jumlah DTPS publikasi Sinta 1 (penulis pertama/corresponding)'
+            ],
+            [
+                'nomor_elemen' => 56,
+                'variabel'     => 'INT_DTPS',
+                'deskripsi'    => 'Jumlah DTPS publikasi jurnal internasional (penulis pertama/corresponding)'
             ],
 
             [

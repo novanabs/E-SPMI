@@ -206,7 +206,7 @@ class EvaluasiLamdikController extends Controller
             ========================= */ elseif ($item->nomor == 6) {
 
                 $NDTPS = 0;
-                $NDTPS_PUB = 0;
+                $S4 = $S3 = $S2 = $S1 = $INT = 0;
 
                 foreach ($subItems as $sub) {
                     $id = $sub->id;
@@ -215,13 +215,23 @@ class EvaluasiLamdikController extends Controller
 
                     if ($var == 'NDTPS')
                         $NDTPS = $nilai;
-                    if ($var == 'NDTPS_PUB')
-                        $NDTPS_PUB = $nilai;
+                    if ($var == 'S4_DTPS')
+                        $S4 = $nilai;
+                    if ($var == 'S3_DTPS')
+                        $S3 = $nilai;
+                    if ($var == 'S2_DTPS')
+                        $S2 = $nilai;
+                    if ($var == 'S1_DTPS')
+                        $S1 = $nilai;
+                    if ($var == 'INT_DTPS')
+                        $INT = $nilai;
                 }
 
                 if ($NDTPS > 0) {
-                    $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
-                    $persen5 = $persen3;
+                    $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                    $total5 = $S2 + $S1 + $INT;
+                    $persen3 = ($total3 / $NDTPS) * 100;
+                    $persen5 = ($total5 / $NDTPS) * 100;
                     if ($persen3 >= 20) {
                         $item->memenuhi_3_tahun = true;
                     }
@@ -556,22 +566,32 @@ class EvaluasiLamdikController extends Controller
                     }
                 } elseif ($item->nomor == 6) {
                     $NDTPS = 0;
-                    $NDTPS_PUB = 0;
+                    $S4 = $S3 = $S2 = $S1 = $INT = 0;
                     foreach ($subItems as $sub) {
                         $id = $sub->id;
                         $var = $sub->variabel;
                         $n = (float) ($nilaiMap[$id] ?? 0);
                         if ($var == 'NDTPS')
                             $NDTPS = $n;
-                        if ($var == 'NDTPS_PUB')
-                            $NDTPS_PUB = $n;
+                        if ($var == 'S4_DTPS')
+                            $S4 = $n;
+                        if ($var == 'S3_DTPS')
+                            $S3 = $n;
+                        if ($var == 'S2_DTPS')
+                            $S2 = $n;
+                        if ($var == 'S1_DTPS')
+                            $S1 = $n;
+                        if ($var == 'INT_DTPS')
+                            $INT = $n;
                     }
                     if ($NDTPS > 0) {
-                        $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
-                        $persen5 = $persen3;
+                        $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                        $total5 = $S2 + $S1 + $INT;
+                        $persen3 = ($total3 / $NDTPS) * 100;
+                        $persen5 = ($total5 / $NDTPS) * 100;
                         $memenuhi3 = $persen3 >= 20;
                         $memenuhi5 = $persen5 >= 20;
-                        $detail = ['NDTPS' => $NDTPS, 'NDTPS_PUB' => $NDTPS_PUB, 'persen3' => $persen3, 'persen5' => $persen5];
+                        $detail = ['NDTPS' => $NDTPS, 'S4' => $S4, 'S3' => $S3, 'S2' => $S2, 'S1' => $S1, 'INT' => $INT, 'total3' => $total3, 'persen3' => $persen3, 'total5' => $total5, 'persen5' => $persen5];
                     } else {
                         $detail = ['NDTPS' => 0];
                     }

@@ -619,20 +619,34 @@
                             }
                         } elseif ($item->nomor == 6) {
                             $NDTPS = 0;
-                            $NDTPS_PUB = 0;
+                            $S4 = $S3 = $S2 = $S1 = $INT = 0;
                             foreach ($subItems as $sub) {
                                 $v = $sub['variabel'];
                                 $n = $nilaiMap[$sub['id']] ?? 0;
                                 if ($v == 'NDTPS') {
                                     $NDTPS = $n;
                                 }
-                                if ($v == 'NDTPS_PUB') {
-                                    $NDTPS_PUB = $n;
+                                if ($v == 'S4_DTPS') {
+                                    $S4 = $n;
+                                }
+                                if ($v == 'S3_DTPS') {
+                                    $S3 = $n;
+                                }
+                                if ($v == 'S2_DTPS') {
+                                    $S2 = $n;
+                                }
+                                if ($v == 'S1_DTPS') {
+                                    $S1 = $n;
+                                }
+                                if ($v == 'INT_DTPS') {
+                                    $INT = $n;
                                 }
                             }
                             if ($NDTPS > 0) {
-                                $persen3 = ($NDTPS_PUB / $NDTPS) * 100;
-                                $persen5 = $persen3;
+                                $total3 = $S4 + $S3 + $S2 + $S1 + $INT;
+                                $total5 = $S2 + $S1 + $INT;
+                                $persen3 = ($total3 / $NDTPS) * 100;
+                                $persen5 = ($total5 / $NDTPS) * 100;
                                 $memenuhi3 = $persen3 >= 20;
                                 $memenuhi5 = $persen5 >= 20;
                             }
@@ -733,8 +747,6 @@
                                                 {{ $S4 ?? 0 }}</span>
                                             <span class="badge bg-light text-dark border px-3 py-2 fs-6">S5 =
                                                 {{ $S5 ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S6 =
-                                                {{ $S6 ?? 0 }}</span>
                                             <span class="badge bg-light text-dark border px-3 py-2 fs-6">INT =
                                                 {{ $INT ?? 0 }}</span>
                                             <span class="badge bg-light text-dark border px-3 py-2 fs-6">ISBN =
@@ -764,11 +776,25 @@
                                         <div class="d-flex flex-wrap gap-2 mt-2">
                                             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS =
                                                 {{ $NDTPS ?? 0 }}</span>
-                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS_PUB =
-                                                {{ $NDTPS_PUB ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S4 =
+                                                {{ $S4 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S3 =
+                                                {{ $S3 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S2 =
+                                                {{ $S2 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">S1 =
+                                                {{ $S1 ?? 0 }}</span>
+                                            <span class="badge bg-light text-dark border px-3 py-2 fs-6">INT =
+                                                {{ $INT ?? 0 }}</span>
                                             @if (($NDTPS ?? 0) > 0)
-                                                <span
-                                                    class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}%</span>
+                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) =
+                                                    {{ $total3 ?? 0 }}</span>
+                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen3 ?? 0, 1) }}%
+                                                    (3thn)</span>
+                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) =
+                                                    {{ $total5 ?? 0 }}</span>
+                                                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($persen5 ?? 0, 1) }}%
+                                                    (5thn)</span>
                                             @endif
                                         </div>
                                     </div>
@@ -2885,7 +2911,7 @@
                             PPDTPS = (N<sub>DTPS_PUB</sub> / N<sub>DTPS</sub>) × 100%
                         </td>
                         <td colspan="4" class="formula-row">
-                            N<sub>DTPS_PUB</sub> = Jumlah DTPS yang memiliki publikasi di jurnal nasional terakreditasi min. Sinta 4 dan/atau internasional sebagai penulis pertama atau <em>corresponding author</em>
+                            N<sub>DTPS_PUB</sub> = S4_DTPS + S3_DTPS + S2_DTPS + S1_DTPS + INT_DTPS &nbsp;|&nbsp; N<sub>DTPS</sub> = Jumlah Dosen Tetap Program Studi
                         </td>
                     </tr>
                     <tr>
@@ -3190,6 +3216,8 @@
                         if (isElemen21 && ['RRD'].includes(item.variabel)) return;
                         // Skip PDIPPKM, PMKI for element 33 — auto-computed
                         if (isElemen33 && ['PDIPPKM', 'PMKI'].includes(item.variabel)) return;
+                        // Skip NDTPS_PUB for element 56 — auto-computed from SINTA fields
+                        if (isElemen56 && item.variabel === 'NDTPS_PUB') return;
 
                         const userData = userSubItemMap[item.id] || null;
                         const nilai = userData ? userData.nilai : '';
@@ -5944,7 +5972,7 @@
                     });
 
                 } else if (isElemen56) {
-                    // Element 56: NDTPS_PUB/NDTPS → PPDTPS → Skor(a), radio Skor(b)
+                    // Element 56: S4+S3+S2+S1+INT / NDTPS → PPDTPS → Skor(a), radio Skor(b)
                     const v2id56 = {};
                     subItems.forEach(item => {
                         v2id56[item.variabel] = item.id;
@@ -5960,8 +5988,9 @@
                     }
 
                     function hitungSkorA56() {
-                        const ndtps_pub = val56('NDTPS_PUB'),
-                            ndtps = val56('NDTPS');
+                        const s4 = val56('S4_DTPS'), s3 = val56('S3_DTPS'), s2 = val56('S2_DTPS'),
+                              s1 = val56('S1_DTPS'), int = val56('INT_DTPS'), ndtps = val56('NDTPS');
+                        const ndtps_pub = s4 + s3 + s2 + s1 + int;
                         let ppdtps = 0,
                             base = 0;
                         if (ndtps > 0) {
@@ -5981,7 +6010,7 @@
 
                     container.insertAdjacentHTML('beforeend', `
                 <table class="table table-sm table-bordered mt-2 mb-0 bg-light" id="auto-skora56-table">
-                    <tr><td style="width:120px"><strong>NDTPS_PUB</strong></td><td id="cv-ndpub56" class="fw-bold">-</td></tr>
+                    <tr><td style="width:120px"><strong>NDTPS_PUB</strong></td><td id="cv-ndpub56" class="fw-bold">- <small class="text-muted">(S4+S3+S2+S1+INT)</small></td></tr>
                     <tr><td><strong>NDTPS</strong></td><td id="cv-ndtps56" class="fw-bold">-</td></tr>
                     <tr><td><strong>PPDTPS</strong></td><td id="cv-ppdtps56" class="fw-bold">-</td></tr>
                     <tr class="table-primary"><td><strong>Skor (a)</strong></td><td id="cv-skora56" class="fw-bold">-</td></tr>
@@ -5997,7 +6026,7 @@
                             ppdtps,
                             base
                         } = hitungSkorA56();
-                        document.getElementById('cv-ndpub56').textContent = ndtps_pub > 0 ? ndtps_pub : '0';
+                        document.getElementById('cv-ndpub56').innerHTML = ndtps_pub > 0 ? ndtps_pub + ' <small class="text-muted">(S4+S3+S2+S1+INT)</small>' : '0';
                         document.getElementById('cv-ndtps56').textContent = ndtps > 0 ? ndtps : '-';
                         document.getElementById('cv-ppdtps56').textContent = ndtps > 0 ? (ppdtps * 100)
                             .toFixed(2) + '%' : '-';
@@ -6039,9 +6068,9 @@
                         const live = document.getElementById('live-final56');
                         if (jawabanAkhir > 0) {
                             live.innerHTML =
-                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Akhir: <strong>${jawabanAkhir.toFixed(4)}</strong> | Nilai: <strong>${nilaiAkhir.toFixed(4)}</strong>`;
+                                `Skor(a): <strong>${base}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                         } else {
-                            live.innerHTML = 'Isi NDTPS_PUB, NDTPS dan pilih Skor (b) untuk hasil akhir';
+                            live.innerHTML = 'Isi S4, S3, S2, S1, INT, NDTPS dan pilih Skor (b) untuk hasil akhir';
                         }
                         document.getElementById('jawaban_hidden').value = jawabanAkhir;
                         document.getElementById('skor_a_hidden').value = base;

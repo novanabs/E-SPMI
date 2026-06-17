@@ -1501,6 +1501,7 @@ TEXT,
                 ]),
                 'harkat_penskoran'     => <<<TEXT
 ━━━ SKOR (a) — PERSENTASE DTPS PUBLIKASI ━━━
+NDTPS_PUB = S4_DTPS + S3_DTPS + S2_DTPS + S1_DTPS + INT_DTPS
 PPDTPS = (NDTPS_PUB / NDTPS) × 100%
 PPDTPS ≥ 20% → Skor = 4
 15% ≤ PPDTPS < 20% → Skor = 3
