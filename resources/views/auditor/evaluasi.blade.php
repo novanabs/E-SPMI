@@ -5537,7 +5537,7 @@
                             `<div class="row mb-3"><div class="col-6"><label class="form-label"><strong>NL</strong> — Jumlah lulusan</label><input type="number" class="form-control variabel-input" name="variabel[${v2id48['NL']}]" value="${nlData ? nlData.nilai : ''}" min="0" step="any"></div>`;
                         html +=
                             `<div class="col-6"><label class="form-label"><strong>NJ</strong> — Jumlah lulusan terlacak</label><input type="number" class="form-control variabel-input" name="variabel[${v2id48['NJ']}]" value="${njData ? njData.nilai : ''}" min="0" step="any"></div></div>`;
-                        html += '<h6 class="mt-3">TKi per Aspek</h6>';
+                        html += '<h6 class="mt-3">TKi per Aspek (Minimal 100%, Maksimal 400%</h6>';
                         html +=
                             '<div class="table-responsive"><table class="table table-sm table-bordered align-middle text-center" id="tki-input-table48"><thead class="table-light"><tr><th style="width:140px">Aspek</th><th>%Sangat Baik</th><th>%Baik</th><th>%Cukup</th><th>%Kurang</th><th style="width:80px">TKi</th></tr></thead><tbody>';
                         for (let i = 1; i <= 9; i++) {
@@ -5608,7 +5608,7 @@
                         }) => {
                             if (total > 0) {
                                 tkiHtml +=
-                                    `<tr><td style="width:120px">${tkLabels[i-1]}</td><td>TKi = (4×SB+3×B+2×C+K)/100 = <strong>${tki.toFixed(4)}</strong></td></tr>`;
+                                    `<tr><td style="width:120px">${tkLabels[i-1]}</td><td>TKi = (4×SB+3×B+2×C+K)/100 = <strong>${tki*100}%</strong></td></tr>`;
                             }
                         });
                         document.getElementById('tki-rows48').innerHTML = tkiHtml;
@@ -5618,7 +5618,7 @@
                             total
                         }) => {
                             const cell = document.getElementById('tki-cell-' + i);
-                            if (cell) cell.textContent = total > 0 ? tki.toFixed(4) : '-';
+                            if (cell) cell.textContent = total > 0 ? (tki * 100) + "%" : '-';
                         });
                         document.getElementById('cv-sum48').textContent = count > 0 ? sum.toFixed(4) : '-';
                         document.getElementById('cv-avg48').textContent = count > 0 ? (sum / count).toFixed(
@@ -6661,12 +6661,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-                                                                    <div class="mb-3 mt-3">
-                                                                        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-                                                                        <div class="border rounded p-2 bg-light">
-                                                                            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-                                                                        </div>
-                                                                    </div>` : ''}
+                                                                                        <div class="mb-3 mt-3">
+                                                                                            <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                                                                            <div class="border rounded p-2 bg-light">
+                                                                                                <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                                                                            </div>
+                                                                                        </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
