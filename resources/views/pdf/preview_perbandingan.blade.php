@@ -52,13 +52,13 @@
         </tr>
         <tr>
             <td valign="top">
-                Nilai Akreditasi : <strong>{{ number_format($totalJurusan, 2) }}</strong><br>
+                Nilai AMI : <strong>{{ number_format($totalJurusan, 2) }}</strong><br>
                 Status : <strong>{{ $statusJurusan }}</strong><br>
                 Masa Berlaku : <strong>{{ $masaJurusan }}</strong>
             </td>
 
             <td valign="top">
-                Nilai Akreditasi : <strong>{{ number_format($totalAuditor, 2) }}</strong><br>
+                Nilai AMI : <strong>{{ number_format($totalAuditor, 2) }}</strong><br>
                 Status : <strong>{{ $statusAuditor }}</strong><br>
                 Masa Berlaku : <strong>{{ $masaAuditor }}</strong>
             </td>

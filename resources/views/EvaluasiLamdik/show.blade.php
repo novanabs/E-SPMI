@@ -57,7 +57,7 @@
                 {{-- SUMMARY CARDS --}}
                 <div class="row align-items-stretch g-3 py-3 py-md-0 my-2 my-md-0">
                     <div class="text-end">
-                        <button class="btn btn-sm btn-outline-primary ms-2" onclick="previewPdf()" hidden>
+                        <button class="btn btn-sm btn-outline-primary ms-2" onclick="previewPdf()">
                             <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
                         </button>
                         <a class="btn btn-sm ms-2" style="background: #173b70; color: #fff;"
@@ -387,7 +387,6 @@
                                             <th class="chart-th-auditor">Nilai Auditor</th>
                                             <th>Nilai Maks</th>
                                             <th>% Jurusan</th>
-                                            <th class="chart-th-auditor">% Auditor</th>
                                             <th class="chart-th-auditor">% Auditor</th>
                                         </tr>
                                     </thead>
