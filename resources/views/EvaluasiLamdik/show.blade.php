@@ -57,9 +57,13 @@
                 {{-- SUMMARY CARDS --}}
                 <div class="row align-items-stretch g-3 py-3 py-md-0 my-2 my-md-0">
                     <div class="text-end">
-                        <button class="btn btn-sm btn-outline-primary ms-2" onclick="previewPdf()">
-                            <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
-                        </button>
+                        @auth
+                            @if (auth()->user()->role == 'admin_jurusan')
+                                <button class="btn btn-sm btn-outline-primary ms-2" onclick="previewPdf()">
+                                    <i class="bi bi-file-earmark-pdf me-1"></i>Export PDF
+                                </button>
+                            @endif
+                        @endauth
                         <a class="btn btn-sm ms-2" style="background: #173b70; color: #fff;"
                             href="{{ route('evaluasi_lamdik.index') }}" hidden>
                             <i class="bi bi-pencil-square me-1"></i>Isi Evaluasi
