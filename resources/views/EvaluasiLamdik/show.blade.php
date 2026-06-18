@@ -388,6 +388,7 @@
                                             <th>Nilai Maks</th>
                                             <th>% Jurusan</th>
                                             <th class="chart-th-auditor">% Auditor</th>
+                                            <th class="chart-th-auditor">% Auditor</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -456,7 +457,7 @@
                                     Export PDF
                                 </button> --}}
                                     <a href="{{ route('audit.export.pdf', [
-                                        'audit' => $userJurusan->id,
+                                        'audit' => $idJurusan,
                                         'tahun' => $tahun,
                                     ]) }}"
                                         class="btn btn-outline-danger ms-auto" target="_blank">

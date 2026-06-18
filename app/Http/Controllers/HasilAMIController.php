@@ -108,15 +108,14 @@ class HasilAMIController extends Controller
     public function exportPdf(Request $request, $jurusanId)
     {
         // Ini jadi controller untuk Hasil AMI di Login Jurusan
-        // dd($jurusanId, $request->tahun);
+        // dd($jurusanId, $request->tahun, $request->audit);
+
         $jurusan = User::findOrFail($jurusanId);
         $tahun = $request->tahun;
 
-
-        $auditHeader = Audit::where(
-            'program_studi',
-            $jurusanId
-        )->latest()->first();
+        $auditHeader = Audit::where('program_studi', $jurusanId)
+            ->where('tahun', $tahun)
+            ->first();
 
         // Ambil semua kriteria, tapi muat auditKriterias yang filternya sesuai jurusan_id
         $auditKriterias = Kriteria::with([
