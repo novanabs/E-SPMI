@@ -18,7 +18,7 @@ class EvaluasiController extends Controller
         }
 
         $id = auth()->id();
-        $data = Evaluasi::where('id_users', $id)->latest()->paginate(10);
+        $data = Evaluasi::where('id_users', $id)->latest()->get();
         return view('PPEPP.evaluasi.index', compact('data'));
     }
 
