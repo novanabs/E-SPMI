@@ -174,6 +174,33 @@
             padding-left: 10 !important;
             padding-right: 10 !important;
         }
+
+        #nav-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: flex-start;
+            /* 👈 diubah dari center jadi flex-start */
+            justify-content: center;
+            padding-top: 40px;
+            /* 👈 jarak spinner dari atas, sesuaikan sesuai selera */
+            z-index: 10;
+            border-radius: inherit;
+
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        #nav-loading.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 
     @if (!isset($tahun))
@@ -260,7 +287,7 @@
                 <div class="row">
 
                     <div class="col-md-9">
-                        <div class="card shadow-sm">
+                        <div class="card shadow-sm" style="position: relative;">
                             <div class="card-body py-2">
 
                                 <div class="row">
@@ -274,8 +301,8 @@
                                     <div class="card-body">
                                         <p class="fw-bold">Bobot : <span id="content-poin"></span></p>
                                         <span id="content-body" class="mt-2"></span>
-                                        <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}"
-                                            method="POST">
+                                        <form id="kriteriaForm" action="{{ route('evaluasi_lamdik.store') }}" method="POST"
+                                            autocomplete="off">
                                         </form>
                                     </div>
 
@@ -292,7 +319,12 @@
                                 </button>
                             </div>
 
-
+                            <div id="nav-loading">
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="spinner-border text-white" role="status"></div>
+                                    <span class="text-white small mt-2">Memuat...</span>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -1375,13 +1407,18 @@
 
         <script>
             document.querySelectorAll(".nav-item-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
+                btn.addEventListener("click", async () => {
 
-                    // Auto-save current form before switching question
-                    saveCurrentForm();
+                    // Tangkap tombol yang SEDANG aktif SEBELUM apapun berubah
+                    const prevActiveBtn = document.querySelector('.nav-item-btn.active');
+
+                    document.getElementById('nav-loading').classList.add('show'); // 👈 tampilkan (fade in)
+
+                    await saveCurrentForm(prevActiveBtn);
 
                     localStorage.setItem('lastElement', btn.dataset.id);
                     // console.log('ID tersimpan:', btn.dataset.id);
+                    console.log('==============================================================');
                     console.log('Isi btn:', btn.dataset);
 
                     // --- Isi konten utama ---
@@ -1417,10 +1454,14 @@
                     document.getElementById("content-title").innerText = btn.dataset.title;
                     document.getElementById("kriteria-title").innerText = btn.dataset.kriteria;
                     document.getElementById("content-body").innerText = (isElemen7 || isElemen11 ||
-                            isElemen14 || isElemen15 || isElemen16 || isElemen19 || isElemen20 || isElemen21 ||
-                            isElemen22 || isElemen23 || isElemen33 || isElemen40 || isElemen41 || isElemen42 ||
-                            isElemen43 || isElemen45 || isElemen46 || isElemen47 || isElemen48 || isElemen53 ||
-                            isElemen54 || isElemen55 || isElemen56 || isElemen57 || isElemen59 || isElemen60) ?
+                            isElemen14 || isElemen15 || isElemen16 || isElemen19 || isElemen20 ||
+                            isElemen21 ||
+                            isElemen22 || isElemen23 || isElemen33 || isElemen40 || isElemen41 ||
+                            isElemen42 ||
+                            isElemen43 || isElemen45 || isElemen46 || isElemen47 || isElemen48 ||
+                            isElemen53 ||
+                            isElemen54 || isElemen55 || isElemen56 || isElemen57 || isElemen59 || isElemen60
+                        ) ?
                         '' : btn.dataset.content;
                     document.getElementById("content-poin").innerText = poin;
 
@@ -2973,8 +3014,9 @@
                             let B;
                             if (NI >= 2) B = 4;
                             else if (NI > 0 && NI < 2 && NN >= 6) B = 3 + (NI / 2);
-                            else if (NI > 0 && NI < 2 && NN > 0 && NN < 6) B = 2 + (2 * NI / 2) + (NN / 6) - (
-                                NI * NN) / (2 * 6);
+                            else if (NI > 0 && NI < 2 && NN > 0 && NN < 6) B = 2 + (2 * NI / 2) + (NN / 6) -
+                                (
+                                    NI * NN) / (2 * 6);
                             else if (NI === 0 && NN === 0 && NW >= 9) B = 2;
                             else B = 1;
                             const skorA = Math.min(4, ((2 * A) + B) / 3);
@@ -3030,7 +3072,8 @@
 
                         function computeFinal7() {
                             const skorA = updateSkorADisplay();
-                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                                ?.value ||
                                 0);
                             const jawabanAkhir = sb > 0 ? ((3 * skorA + sb) / 4) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
@@ -3082,7 +3125,8 @@
                             return saved ? parseFloat(saved.nilai) || 0 : 0;
                         }
 
-                        let kelompok = sessionStorage.getItem('kelompok11') || btn.dataset.kelompok || 'sains';
+                        let kelompok = sessionStorage.getItem('kelompok11') || btn.dataset.kelompok ||
+                            'sains';
                         window._kelompok11 = kelompok;
 
                         function hitungSkorA11() {
@@ -3162,7 +3206,8 @@
 
                         function computeFinal11() {
                             const skorA = updateSkorA11();
-                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                                ?.value ||
                                 0);
                             const jawabanAkhir = sb > 0 ? ((3 * skorA + sb) / 4) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
@@ -3221,7 +3266,8 @@
                             let skorA;
                             if (RI >= a) skorA = 4;
                             else if (RN >= b) skorA = 3 + (RI / a);
-                            else if (RI > 0 && RN > 0) skorA = 2 + (RI / a) + (RN / b) - (RI * RN) / (a * b);
+                            else if (RI > 0 && RN > 0) skorA = 2 + (RI / a) + (RN / b) - (RI * RN) / (a *
+                                b);
                             else if (RW >= c) skorA = 2;
                             else skorA = 1;
                             return {
@@ -3276,7 +3322,8 @@
 
                         function computeFinal14() {
                             const skorA = updateSkorA14();
-                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                                ?.value ||
                                 0);
                             const jawabanAkhir = sb > 0 ? ((3 * skorA + sb) / 4) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
@@ -3354,9 +3401,11 @@
                                 sumPub
                             } = hitungSkorA15();
                             document.getElementById('cv-sumpub').textContent = sumPub;
-                            document.getElementById('cv-pkim').textContent = pkim > 0 ? pkim.toFixed(1) + '%' :
+                            document.getElementById('cv-pkim').textContent = pkim > 0 ? pkim.toFixed(1) +
+                                '%' :
                                 '-';
-                            document.getElementById('cv-skora15').textContent = skorA > 0 ? skorA.toFixed(1) :
+                            document.getElementById('cv-skora15').textContent = skorA > 0 ? skorA.toFixed(
+                                    1) :
                                 '-';
                             return skorA;
                         }
@@ -3383,7 +3432,8 @@
 
                         function computeFinal15() {
                             const skorA = updateSkorA15();
-                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                                ?.value ||
                                 0);
                             const jawabanAkhir = (skorA > 0 && sb > 0) ? ((3 * skorA + sb) / 4) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
@@ -3467,9 +3517,11 @@
                                 skorA,
                                 skorB
                             } = hitungSkor16();
-                            document.getElementById('cv-skora16').textContent = skorA > 0 ? skorA.toFixed(1) :
+                            document.getElementById('cv-skora16').textContent = skorA > 0 ? skorA.toFixed(
+                                    1) :
                                 '-';
-                            document.getElementById('cv-skorB16').textContent = skorB > 0 ? skorB.toFixed(1) :
+                            document.getElementById('cv-skorB16').textContent = skorB > 0 ? skorB.toFixed(
+                                    1) :
                                 '-';
                             return {
                                 skorA,
@@ -3493,7 +3545,8 @@
                             const jawabanAkhir = (skorA > 0 && skorB > 0) ? ((skorA + 3 * skorB) / 4) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
 
-                            document.getElementById('cv-akhir16').textContent = jawabanAkhir > 0 ? jawabanAkhir
+                            document.getElementById('cv-akhir16').textContent = jawabanAkhir > 0 ?
+                                jawabanAkhir
                                 .toFixed(2) : '-';
                             document.getElementById('jawaban_hidden').value = jawabanAkhir;
                             document.getElementById('skor_a_hidden').value = skorA;
@@ -3576,13 +3629,17 @@
                                 pgblkl,
                                 skorB
                             } = hitungSkorB19();
-                            document.getElementById('cv-pds3').textContent = pds3 > 0 ? pds3.toFixed(2) + '%' :
+                            document.getElementById('cv-pds3').textContent = pds3 > 0 ? pds3.toFixed(2) +
+                                '%' :
                                 '-';
-                            document.getElementById('cv-skora19').textContent = skorA > 0 ? skorA.toFixed(1) :
+                            document.getElementById('cv-skora19').textContent = skorA > 0 ? skorA.toFixed(
+                                    1) :
                                 '-';
-                            document.getElementById('cv-pgblkl').textContent = pgblkl > 0 ? pgblkl.toFixed(2) +
+                            document.getElementById('cv-pgblkl').textContent = pgblkl > 0 ? pgblkl.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-skorB19').textContent = skorB > 0 ? skorB.toFixed(1) :
+                            document.getElementById('cv-skorB19').textContent = skorB > 0 ? skorB.toFixed(
+                                    1) :
                                 '-';
                             return {
                                 skorA,
@@ -3619,7 +3676,8 @@
                             } = updateSkor19();
                             const skorC = parseInt(document.querySelector('input[name="jawaban"]:checked')
                                 ?.value || 0);
-                            const jawabanAkhir = (skorA > 0 && skorB > 0 && skorC > 0) ? ((3 * (skorA + skorB) +
+                            const jawabanAkhir = (skorA > 0 && skorB > 0 && skorC > 0) ? ((3 * (skorA +
+                                    skorB) +
                                 skorC) / 7) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
 
@@ -3690,7 +3748,8 @@
                                 skorA
                             } = hitungSkorA20();
                             document.getElementById('cv-bkd').textContent = bkd > 0 ? bkd.toFixed(1) : '-';
-                            document.getElementById('cv-skora20').textContent = (bkd > 0) ? skorA.toFixed(2) :
+                            document.getElementById('cv-skora20').textContent = (bkd > 0) ? skorA.toFixed(
+                                    2) :
                                 '-';
                             return {
                                 bkd,
@@ -3796,8 +3855,10 @@
                                 rrd,
                                 skorA
                             } = hitungSkorA21();
-                            document.getElementById('cv-rrd21').textContent = ndtps > 0 ? rrd.toFixed(2) : '-';
-                            document.getElementById('cv-skora21').textContent = ndtps > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-rrd21').textContent = ndtps > 0 ? rrd.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-skora21').textContent = ndtps > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
                             return {
                                 ndtps,
@@ -3900,9 +3961,11 @@
                                 ndtpspk,
                                 skorA
                             } = hitungSkorA22();
-                            document.getElementById('cv-ndtpspk').textContent = ndtpspk > 0 ? ndtpspk.toFixed(
-                                1) + '%' : '-';
-                            document.getElementById('cv-skora22').textContent = ndtpspk > 0 ? skorA.toFixed(1) :
+                            document.getElementById('cv-ndtpspk').textContent = ndtpspk > 0 ? ndtpspk
+                                .toFixed(
+                                    1) + '%' : '-';
+                            document.getElementById('cv-skora22').textContent = ndtpspk > 0 ? skorA.toFixed(
+                                    1) :
                                 '-';
                             return {
                                 ndtpspk,
@@ -4007,8 +4070,9 @@
                             } = hitungSkorA23();
                             document.getElementById('cv-ntendikpk').textContent = ntendikpk > 0 ? ntendikpk
                                 .toFixed(1) + '%' : '-';
-                            document.getElementById('cv-skora23').textContent = ntendikpk > 0 ? skorA.toFixed(
-                                1) : '-';
+                            document.getElementById('cv-skora23').textContent = ntendikpk > 0 ? skorA
+                                .toFixed(
+                                    1) : '-';
                             return {
                                 ntendikpk,
                                 skorA
@@ -4041,7 +4105,8 @@
                             } = updateSkorA23();
                             const skorB = parseInt(document.querySelector('input[name="skor_b"]:checked')
                                 ?.value || 0);
-                            const jawabanAkhir = (ntendikpk > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) : 0;
+                            const jawabanAkhir = (ntendikpk > 0 && skorB > 0) ? ((3 * skorA + skorB) / 4) :
+                                0;
                             const nilaiAkhir = jawabanAkhir * poin;
 
                             const live = document.getElementById('live-final23');
@@ -4140,11 +4205,14 @@
                                 pmki,
                                 skorC
                             } = hitungSkorC33();
-                            document.getElementById('cv-pdippkm').textContent = ndtps > 0 ? pdippkm.toFixed(1) +
+                            document.getElementById('cv-pdippkm').textContent = ndtps > 0 ? pdippkm.toFixed(
+                                    1) +
                                 '%' : '-';
-                            document.getElementById('cv-skorB33').textContent = ndtps > 0 ? skorB.toFixed(1) :
+                            document.getElementById('cv-skorB33').textContent = ndtps > 0 ? skorB.toFixed(
+                                    1) :
                                 '-';
-                            document.getElementById('cv-pmki').textContent = nmk > 0 ? pmki.toFixed(1) + '%' :
+                            document.getElementById('cv-pmki').textContent = nmk > 0 ? pmki.toFixed(1) +
+                                '%' :
                                 '-';
                             document.getElementById('cv-skorC33').textContent = nmk > 0 ? skorC.toFixed(2) :
                                 '-';
@@ -4197,8 +4265,9 @@
                                 ?.value || 0);
                             // const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0)
                             //     ? (skorA + (3 * (skorB + skorC) + skorD) / 8) : 0;
-                            const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ? ((skorA + (
-                                3 * (skorB + skorC) + skorD)) / 8) : 0;
+                            const jawabanAkhir = (ndtps > 0 && nmk > 0 && skorA > 0 && skorD > 0) ? ((
+                                skorA + (
+                                    3 * (skorB + skorC) + skorD)) / 8) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
 
                             const live = document.getElementById('live-final33');
@@ -4269,8 +4338,10 @@
                                 ripk,
                                 skorA
                             } = hitungSkorA40();
-                            document.getElementById('cv-ripk').textContent = ripk > 0 ? ripk.toFixed(2) : '-';
-                            document.getElementById('cv-skora40').textContent = ripk > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-ripk').textContent = ripk > 0 ? ripk.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-skora40').textContent = ripk > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
                             return {
                                 ripk,
@@ -4475,9 +4546,11 @@
                                 pmtkPct,
                                 skorA
                             } = hitungSkorA42();
-                            document.getElementById('cv-pmtk').textContent = pmtkPct > 0 ? pmtkPct.toFixed(2) +
+                            document.getElementById('cv-pmtk').textContent = pmtkPct > 0 ? pmtkPct.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-skora42').textContent = pmtkPct > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-skora42').textContent = pmtkPct > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
                             return {
                                 pmtkPct,
@@ -4580,9 +4653,11 @@
                                 pkmsPct,
                                 skorA
                             } = hitungSkorA43();
-                            document.getElementById('cv-pkms').textContent = pkmsPct > 0 ? pkmsPct.toFixed(2) +
+                            document.getElementById('cv-pkms').textContent = pkmsPct > 0 ? pkmsPct.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-skora43').textContent = pkmsPct > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-skora43').textContent = pkmsPct > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
                             return {
                                 pkmsPct,
@@ -4719,17 +4794,24 @@
                             } = hitungResponden45();
                             const skorA = base > 0 ? base * faktor : 0;
 
-                            document.getElementById('cv-plb45').textContent = plb > 0 ? plb.toFixed(2) + '%' :
+                            document.getElementById('cv-plb45').textContent = plb > 0 ? plb.toFixed(2) +
+                                '%' :
                                 '-';
-                            document.getElementById('cv-base45').textContent = base > 0 ? base.toFixed(2) : '-';
-                            document.getElementById('cv-nlnj45').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            document.getElementById('cv-base45').textContent = base > 0 ? base.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-nlnj45').textContent = (nl > 0 && nj > 0) ? nl +
+                                ' / ' +
                                 nj : '-';
-                            document.getElementById('cv-pj45').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                            document.getElementById('cv-prmin45').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            document.getElementById('cv-pj45').textContent = pj > 0 ? pj.toFixed(2) + '%' :
+                                '-';
+                            document.getElementById('cv-prmin45').textContent = prmin > 0 ? prmin.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-faktor45').textContent = faktor < 1 ? faktor.toFixed(
-                                4) : (faktor > 0 ? '1' : '-');
-                            document.getElementById('cv-skora45').textContent = skorA > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-faktor45').textContent = faktor < 1 ? faktor
+                                .toFixed(
+                                    4) : (faktor > 0 ? '1' : '-');
+                            document.getElementById('cv-skora45').textContent = skorA > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
 
                             return {
@@ -4866,15 +4948,21 @@
 
                             document.getElementById('cv-wtmp46').textContent = wtmp > 0 ? wtmp.toFixed(1) +
                                 ' bln' : '-';
-                            document.getElementById('cv-base46').textContent = base > 0 ? base.toFixed(2) : '-';
-                            document.getElementById('cv-nlnj46').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            document.getElementById('cv-base46').textContent = base > 0 ? base.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-nlnj46').textContent = (nl > 0 && nj > 0) ? nl +
+                                ' / ' +
                                 nj : '-';
-                            document.getElementById('cv-pj46').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                            document.getElementById('cv-prmin46').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            document.getElementById('cv-pj46').textContent = pj > 0 ? pj.toFixed(2) + '%' :
+                                '-';
+                            document.getElementById('cv-prmin46').textContent = prmin > 0 ? prmin.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-faktor46').textContent = faktor < 1 ? faktor.toFixed(
-                                4) : (faktor > 0 ? '1' : '-');
-                            document.getElementById('cv-skora46').textContent = skorA > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-faktor46').textContent = faktor < 1 ? faktor
+                                .toFixed(
+                                    4) : (faktor > 0 ? '1' : '-');
+                            document.getElementById('cv-skora46').textContent = skorA > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
 
                             return {
@@ -5009,17 +5097,24 @@
                             } = hitungResponden47();
                             const skorA = base > 0 ? base * faktor : 0;
 
-                            document.getElementById('cv-pbs47').textContent = pbs > 0 ? pbs.toFixed(2) + '%' :
+                            document.getElementById('cv-pbs47').textContent = pbs > 0 ? pbs.toFixed(2) +
+                                '%' :
                                 '-';
-                            document.getElementById('cv-base47').textContent = base > 0 ? base.toFixed(2) : '-';
-                            document.getElementById('cv-nlnj47').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            document.getElementById('cv-base47').textContent = base > 0 ? base.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-nlnj47').textContent = (nl > 0 && nj > 0) ? nl +
+                                ' / ' +
                                 nj : '-';
-                            document.getElementById('cv-pj47').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                            document.getElementById('cv-prmin47').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            document.getElementById('cv-pj47').textContent = pj > 0 ? pj.toFixed(2) + '%' :
+                                '-';
+                            document.getElementById('cv-prmin47').textContent = prmin > 0 ? prmin.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-faktor47').textContent = faktor < 1 ? faktor.toFixed(
-                                4) : (faktor > 0 ? '1' : '-');
-                            document.getElementById('cv-skora47').textContent = skorA > 0 ? skorA.toFixed(2) :
+                            document.getElementById('cv-faktor47').textContent = faktor < 1 ? faktor
+                                .toFixed(
+                                    4) : (faktor > 0 ? '1' : '-');
+                            document.getElementById('cv-skora47').textContent = skorA > 0 ? skorA.toFixed(
+                                    2) :
                                 '-';
 
                             return {
@@ -5078,7 +5173,8 @@
 
                     } else if (isElemen48) {
                         // Element 48: TKi = (4×SB + 3×B + 2×C + K) / 100 → avg → Skor(a), radio Skor(b)
-                        const tkLabels = ['Etika', 'Keahlian bidang ilmu', 'Bahasa asing', 'TI', 'Komunikasi',
+                        const tkLabels = ['Etika', 'Keahlian bidang ilmu', 'Bahasa asing', 'TI',
+                            'Komunikasi',
                             'Kerjasama', 'Pengembangan diri', 'Berpikir kritis', 'Kreativitas'
                         ];
                         const v2id48 = {};
@@ -5251,19 +5347,27 @@
                                 const cell = document.getElementById('tki-cell-' + i);
                                 if (cell) cell.textContent = total > 0 ? (tki * 100) + "%" : '-';
                             });
-                            document.getElementById('cv-sum48').textContent = count > 0 ? (sum * 100).toFixed(
-                                2) + "%" : '-';
-                            document.getElementById('cv-avg48').textContent = count > 0 ? ((sum / count) * 100)
+                            document.getElementById('cv-sum48').textContent = count > 0 ? (sum * 100)
+                                .toFixed(
+                                    2) + "%" : '-';
+                            document.getElementById('cv-avg48').textContent = count > 0 ? ((sum / count) *
+                                    100)
                                 .toFixed(4) + "%" : '-';
-                            document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(4) : '-';
-                            document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl + ' / ' +
+                            document.getElementById('cv-base48').textContent = base > 0 ? base.toFixed(4) :
+                                '-';
+                            document.getElementById('cv-nlnj48').textContent = (nl > 0 && nj > 0) ? nl +
+                                ' / ' +
                                 nj : '-';
-                            document.getElementById('cv-pj48').textContent = pj > 0 ? pj.toFixed(2) + '%' : '-';
-                            document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(2) +
+                            document.getElementById('cv-pj48').textContent = pj > 0 ? pj.toFixed(2) + '%' :
+                                '-';
+                            document.getElementById('cv-prmin48').textContent = prmin > 0 ? prmin.toFixed(
+                                    2) +
                                 '%' : '-';
-                            document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor.toFixed(
-                                4) : (faktor > 0 ? '1' : '-');
-                            document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(4) :
+                            document.getElementById('cv-faktor48').textContent = faktor < 1 ? faktor
+                                .toFixed(
+                                    4) : (faktor > 0 ? '1' : '-');
+                            document.getElementById('cv-skora48').textContent = skorA > 0 ? skorA.toFixed(
+                                    4) :
                                 '-';
 
                             return {
@@ -5303,7 +5407,8 @@
                                 live.innerHTML =
                                     `Skor(a): <strong>${skorA.toFixed(4)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                             } else {
-                                live.innerHTML = 'Isi persentase TKi (SB, B, C, K), NL, NJ dan pilih Skor (b)';
+                                live.innerHTML =
+                                    'Isi persentase TKi (SB, B, C, K), NL, NJ dan pilih Skor (b)';
                             }
                             document.getElementById('jawaban_hidden').value = jawabanAkhir;
                             document.getElementById('skor_a_hidden').value = skorA;
@@ -5400,13 +5505,17 @@
                                 base
                             } = hitungSkorA53();
                             document.getElementById('cv-ndtps53').textContent = ndtps > 0 ? ndtps : '-';
-                            document.getElementById('cv-counts53').textContent = (ni + nn + nl > 0) ? ni + '/' +
+                            document.getElementById('cv-counts53').textContent = (ni + nn + nl > 0) ? ni +
+                                '/' +
                                 nn + '/' + nl : '-';
-                            document.getElementById('cv-ri53').textContent = ri > 0 ? ri.toFixed(2) : (ndtps >
+                            document.getElementById('cv-ri53').textContent = ri > 0 ? ri.toFixed(2) : (
+                                ndtps >
                                 0 ? '0' : '-');
-                            document.getElementById('cv-rn53').textContent = rn > 0 ? rn.toFixed(2) : (ndtps >
+                            document.getElementById('cv-rn53').textContent = rn > 0 ? rn.toFixed(2) : (
+                                ndtps >
                                 0 ? '0' : '-');
-                            document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(2) : (ndtps >
+                            document.getElementById('cv-rl53').textContent = rl > 0 ? rl.toFixed(2) : (
+                                ndtps >
                                 0 ? '0' : '-');
                             document.getElementById('cv-skora53').textContent = base > 0 ? base.toFixed(2) :
                                 '-';
@@ -5448,7 +5557,8 @@
                                 live.innerHTML =
                                     `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                             } else {
-                                live.innerHTML = 'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
+                                live.innerHTML =
+                                    'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
                             }
                             document.getElementById('jawaban_hidden').value = jawabanAkhir;
                             document.getElementById('skor_a_hidden').value = base;
@@ -5516,10 +5626,12 @@
                                 ppdm,
                                 base
                             } = hitungSkorA54();
-                            document.getElementById('cv-npmnpd54').textContent = (npm > 0 || npd > 0) ? npm +
+                            document.getElementById('cv-npmnpd54').textContent = (npm > 0 || npd > 0) ?
+                                npm +
                                 ' / ' + npd : '-';
-                            document.getElementById('cv-ppdm54').textContent = ppdm > 0 ? (ppdm * 100).toFixed(
-                                2) + '%' : (npd > 0 ? '0%' : '-');
+                            document.getElementById('cv-ppdm54').textContent = ppdm > 0 ? (ppdm * 100)
+                                .toFixed(
+                                    2) + '%' : (npd > 0 ? '0%' : '-');
                             document.getElementById('cv-skora54').textContent = base > 0 ? base.toFixed(2) :
                                 '-';
                             return {
@@ -5620,7 +5732,8 @@
                             if (ndtps <= 0) base = 0;
                             else if (ri >= A55) base = 4;
                             else if (rn >= B55) base = 3 + ri / A55;
-                            else if (ri > 0 && rn > 0) base = 2 + ri / A55 + rn / B55 - (ri * rn) / (A55 * B55);
+                            else if (ri > 0 && rn > 0) base = 2 + ri / A55 + rn / B55 - (ri * rn) / (A55 *
+                                B55);
                             else if (ri > 0) base = 2 + ri / A55;
                             else if (rn > 0) base = 2 + rn / B55;
                             else if (rw >= C55) base = 2;
@@ -5655,9 +5768,12 @@
                                 base
                             } = hitungSkorA55();
                             document.getElementById('cv-ndtps55').textContent = ndtps > 0 ? ndtps : '-';
-                            document.getElementById('cv-rw55').textContent = ndtps > 0 ? rw.toFixed(2) : '-';
-                            document.getElementById('cv-rn55').textContent = ndtps > 0 ? rn.toFixed(2) : '-';
-                            document.getElementById('cv-ri55').textContent = ndtps > 0 ? ri.toFixed(2) : '-';
+                            document.getElementById('cv-rw55').textContent = ndtps > 0 ? rw.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-rn55').textContent = ndtps > 0 ? rn.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-ri55').textContent = ndtps > 0 ? ri.toFixed(2) :
+                                '-';
                             document.getElementById('cv-skora55').textContent = base > 0 ? base.toFixed(2) :
                                 '-';
                             return {
@@ -5778,7 +5894,8 @@
                             document.getElementById('cv-ndtps56').textContent = ndtps > 0 ? ndtps : '-';
                             document.getElementById('cv-ppdtps56').textContent = ndtps > 0 ? (ppdtps * 100)
                                 .toFixed(2) + '%' : '-';
-                            document.getElementById('cv-skora56').textContent = base > 0 ? base : (ndtps > 0 ?
+                            document.getElementById('cv-skora56').textContent = base > 0 ? base : (ndtps >
+                                0 ?
                                 '1' : '-');
                             return {
                                 base
@@ -5892,7 +6009,8 @@
                                 ' / ' + ndtps : '-';
                             document.getElementById('cv-rsa57').textContent = rsa > 0 ? rsa.toFixed(2) : (
                                 ndtps > 0 ? '0' : '-');
-                            document.getElementById('cv-skora57').textContent = base > 0 ? base : (ndtps > 0 ?
+                            document.getElementById('cv-skora57').textContent = base > 0 ? base : (ndtps >
+                                0 ?
                                 '1' : '-');
                             return {
                                 base
@@ -5982,7 +6100,8 @@
                                 rl = nl / 3 / ndtps;
                                 if (ri >= A59) base = 4;
                                 else if (rn >= B59) base = 3 + ri / A59;
-                                else if (ri > 0 && rn > 0) base = 2 + ri / A59 + rn / B59 - (ri * rn) / (A59 *
+                                else if (ri > 0 && rn > 0) base = 2 + ri / A59 + rn / B59 - (ri * rn) / (
+                                    A59 *
                                     B59);
                                 else if (ri > 0) base = 2 + ri / A59;
                                 else if (rn > 0) base = 2 + rn / B59;
@@ -6019,11 +6138,15 @@
                                 base
                             } = hitungSkorA59();
                             document.getElementById('cv-ndtps59').textContent = ndtps > 0 ? ndtps : '-';
-                            document.getElementById('cv-rl59').textContent = ndtps > 0 ? rl.toFixed(2) : '-';
-                            document.getElementById('cv-rn59').textContent = ndtps > 0 ? rn.toFixed(2) : '-';
-                            document.getElementById('cv-ri59').textContent = ndtps > 0 ? ri.toFixed(2) : '-';
-                            document.getElementById('cv-skora59').textContent = base > 0 ? base.toFixed(2) : (
-                                ndtps > 0 ? '1' : '-');
+                            document.getElementById('cv-rl59').textContent = ndtps > 0 ? rl.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-rn59').textContent = ndtps > 0 ? rn.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-ri59').textContent = ndtps > 0 ? ri.toFixed(2) :
+                                '-';
+                            document.getElementById('cv-skora59').textContent = base > 0 ? base.toFixed(2) :
+                                (
+                                    ndtps > 0 ? '1' : '-');
                             return {
                                 base
                             };
@@ -6062,7 +6185,8 @@
                                 live.innerHTML =
                                     `Skor(a): <strong>${base.toFixed(2)}</strong> | Skor(b): <strong>${skorB}</strong> | Nilai: <strong>${jawabanAkhir.toFixed(2)}</strong> | Total: <strong>${nilaiAkhir.toFixed(2)}</strong>`;
                             } else {
-                                live.innerHTML = 'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
+                                live.innerHTML =
+                                    'Isi NI, NN, NL, NDTPS dan pilih Skor (b) untuk hasil akhir';
                             }
                             document.getElementById('jawaban_hidden').value = jawabanAkhir;
                             document.getElementById('skor_a_hidden').value = base;
@@ -6217,9 +6341,11 @@
                 <input type="hidden" name="jawaban" id="jawaban_hidden" value="${jawaban}">`);
 
                         function computeDual() {
-                            const sa = parseInt(document.querySelector('input[name="skor_a"]:checked')?.value ||
+                            const sa = parseInt(document.querySelector('input[name="skor_a"]:checked')
+                                ?.value ||
                                 0);
-                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')?.value ||
+                            const sb = parseInt(document.querySelector('input[name="skor_b"]:checked')
+                                ?.value ||
                                 0);
                             const jawabanAkhir = (sa && sb) ? ((3 * sa + sb) / 4) : 0;
                             const nilaiAkhir = jawabanAkhir * poin;
@@ -6362,10 +6488,16 @@
                         });
                     }
 
+                    document.getElementById('nav-loading').classList.remove(
+                        'show'); // 👈 sembunyikan (fade out)
+
+
                 });
             });
 
-            function saveCurrentForm() {
+
+
+            function saveCurrentForm(targetBtn) {
                 if (window.isAMISubmitted) return Promise.resolve();
                 const form = document.getElementById('kriteriaForm');
                 if (!form || !form.action) return Promise.resolve();
@@ -6373,6 +6505,7 @@
                 if (!formData.has('nilai_total')) return Promise.resolve();
                 const csrf = form.querySelector('input[name="_token"]');
                 if (!csrf) return Promise.resolve();
+
                 return fetch(form.action, {
                     method: 'POST',
                     body: formData,
@@ -6384,11 +6517,11 @@
                         console.error('Auto-save HTTP', r.status, r.statusText);
                         return r;
                     }
-                    const activeBtn = document.querySelector('.nav-item-btn.active');
-                    if (activeBtn) {
+                    // Gunakan targetBtn yang sudah ditangkap, BUKAN query '.active' lagi
+                    if (targetBtn) {
                         ['jawaban', 'nilai_total', 'link_bukti', 'temuan', 'saran'].forEach(k => {
                             const v = formData.get(k);
-                            if (v !== null) activeBtn.dataset[k] = v;
+                            if (v !== null) targetBtn.dataset[k] = v;
                         });
                     }
                     return r;

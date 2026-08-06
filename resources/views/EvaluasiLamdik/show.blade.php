@@ -21,6 +21,7 @@
         ])
     @else
         {{-- NAV TABS --}}
+        {{-- <h2 class="mb-2">Hasil AMI Jurusan {{ $userJurusan->homebase }}</h2> --}}
         <ul class="nav nav-tabs" id="perbandinganTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="evaluasi-tab" data-bs-toggle="tab" data-bs-target="#evaluasi" type="button"
