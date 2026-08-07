@@ -274,7 +274,7 @@ class UserController extends Controller
 
         // Borang, Ambil data auditor
         $kriteria = Kriteria::get();
-        $auditor = AuditorJurusan::with('user')->get();
+        $auditor = AuditorJurusan::with('user')->where('jurusan', $userJurusan->homebase)->get();
         // dd($auditor);
 // Ambil id jurusan
         $auditHeader = Audit::where('program_studi', $userJurusan->id ?? '')
@@ -300,6 +300,7 @@ class UserController extends Controller
             ->groupBy('id_matriks');
 
         // dd($auditKriterias);
+        // dd($userJurusan->homebase, $auditor);
 
         return view('auditor.evaluasi', compact('data', 'userJurusan', 'assigned', 'syarat3', 'syarat5', 'dataUnggul', 'kriteria', 'auditor', 'auditKriterias', 'auditHeader', 'jurusanMatrik', 'jurusanSubItems', 'tahun'));
     }
