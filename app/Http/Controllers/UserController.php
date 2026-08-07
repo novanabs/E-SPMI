@@ -274,7 +274,7 @@ class UserController extends Controller
 
         // Borang, Ambil data auditor
         $kriteria = Kriteria::get();
-        $auditor = AuditorJurusan::with('user')->where('jurusan', $userJurusan->homebase)->get();
+        $auditor = AuditorJurusan::with('user')->where('jurusan', $userJurusan->homebase)->where('tahun_audit', $tahun)->get();
         // dd($auditor);
 // Ambil id jurusan
         $auditHeader = Audit::where('program_studi', $userJurusan->id ?? '')
