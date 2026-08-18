@@ -660,13 +660,18 @@
             let status = "",
                 masa = "";
             if (NA >= 361) {
-                if (syarat5) {
+                if (syarat3 && syarat5) {
+                    // V + V
                     status = "Terakreditasi Unggul";
                     masa = "5 Tahun";
-                } else if (syarat3) {
+
+                } else if (syarat3 && !syarat5) {
+                    // V + X
                     status = "Terakreditasi Unggul";
                     masa = "3 Tahun";
+
                 } else {
+                    // X + X
                     status = "Terakreditasi";
                     masa = "5 Tahun";
                 }
