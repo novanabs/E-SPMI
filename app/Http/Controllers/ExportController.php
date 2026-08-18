@@ -1118,22 +1118,29 @@ class ExportController extends Controller
     private function hitungAkreditasiDenganSyarat(float $nilai, bool $syarat3, bool $syarat5): array
     {
         if ($nilai >= 361) {
-            if ($syarat5)
+            if ($syarat3 && $syarat5) {
+                // V + V
                 return ['status' => 'Terakreditasi Unggul', 'masa' => '5 Tahun'];
-            if ($syarat3)
+            } elseif ($syarat3 && !$syarat5) {
+                // V + X
                 return ['status' => 'Terakreditasi Unggul', 'masa' => '3 Tahun'];
-            return ['status' => 'Terakreditasi', 'masa' => '5 Tahun'];
+            } else {
+                // X + X
+                return ['status' => 'Terakreditasi', 'masa' => '5 Tahun'];
+            }
         }
+
         if ($nilai >= 321) {
-            if ($syarat5)
-                return ['status' => 'Terakreditasi Unggul', 'masa' => '5 Tahun'];
-            if ($syarat3)
+            if ($syarat3) {
                 return ['status' => 'Terakreditasi Unggul', 'masa' => '3 Tahun'];
+            }
             return ['status' => 'Terakreditasi', 'masa' => '5 Tahun'];
         }
+
         if ($nilai >= 200) {
             return ['status' => 'Terakreditasi', 'masa' => '5 Tahun'];
         }
+
         return ['status' => 'Tidak Terakreditasi', 'masa' => '-'];
     }
 }
