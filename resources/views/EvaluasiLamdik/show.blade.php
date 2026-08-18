@@ -213,7 +213,10 @@
                                         <th>Masa Berlaku</th>
                                     </tr>
                                 </thead>
+
                                 <tbody>
+
+                                    <!-- NA ≥ 361 -->
                                     <tr data-na-min="361" data-na-max="999" data-s3="1" data-s5="1">
                                         <td>1</td>
                                         <td><strong>NA ≥ 361</strong></td>
@@ -222,38 +225,64 @@
                                         <td><strong>Terakreditasi Unggul</strong></td>
                                         <td>5 Tahun</td>
                                     </tr>
+
                                     <tr data-na-min="361" data-na-max="999" data-s3="1" data-s5="0">
                                         <td>2</td>
                                         <td><strong>NA ≥ 361</strong></td>
                                         <td>Memenuhi</td>
-                                        <td>Tidak</td>
+                                        <td>Tidak Memenuhi</td>
                                         <td><strong>Terakreditasi Unggul</strong></td>
                                         <td>3 Tahun</td>
                                     </tr>
-                                    <tr data-na-min="321" data-na-max="361" data-s3="*" data-s5="*">
+
+                                    <tr data-na-min="361" data-na-max="999" data-s3="0" data-s5="0">
                                         <td>3</td>
-                                        <td><strong>321 ≤ NA &lt; 361</strong></td>
-                                        <td>V / X</td>
-                                        <td>V / X</td>
+                                        <td><strong>NA ≥ 361</strong></td>
+                                        <td>Tidak Memenuhi</td>
+                                        <td>Tidak Memenuhi</td>
                                         <td>Terakreditasi</td>
                                         <td>5 Tahun</td>
                                     </tr>
-                                    <tr data-na-min="200" data-na-max="321" data-s3="*" data-s5="*">
+
+                                    <!-- 321 ≤ NA < 361 -->
+                                    <tr data-na-min="321" data-na-max="361" data-s3="1" data-s5="*">
                                         <td>4</td>
+                                        <td><strong>321 ≤ NA &lt; 361</strong></td>
+                                        <td>Memenuhi</td>
+                                        <td>V / X</td>
+                                        <td><strong>Terakreditasi Unggul</strong></td>
+                                        <td>3 Tahun</td>
+                                    </tr>
+
+                                    <tr data-na-min="321" data-na-max="361" data-s3="0" data-s5="0">
+                                        <td>5</td>
+                                        <td><strong>321 ≤ NA &lt; 361</strong></td>
+                                        <td>Tidak Memenuhi</td>
+                                        <td>Tidak Memenuhi</td>
+                                        <td>Terakreditasi</td>
+                                        <td>5 Tahun</td>
+                                    </tr>
+
+                                    <!-- 200 ≤ NA < 321 -->
+                                    <tr data-na-min="200" data-na-max="321" data-s3="*" data-s5="*">
+                                        <td>6</td>
                                         <td><strong>200 ≤ NA &lt; 321</strong></td>
                                         <td>V / X</td>
                                         <td>V / X</td>
                                         <td>Terakreditasi</td>
                                         <td>5 Tahun</td>
                                     </tr>
+
+                                    <!-- NA < 200 -->
                                     <tr data-na-min="-999" data-na-max="200" data-s3="*" data-s5="*">
-                                        <td>5</td>
+                                        <td>7</td>
                                         <td><strong>NA &lt; 200</strong></td>
                                         <td>V / X</td>
                                         <td>V / X</td>
                                         <td>Tidak Terakreditasi</td>
                                         <td>-</td>
                                     </tr>
+
                                 </tbody>
                             </table>
                         </div>
