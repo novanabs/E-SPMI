@@ -573,15 +573,16 @@
                                                 <td class="text-center">{{ number_format($sA, 2) }}</td>
                                                 <td
                                                     class="text-center fw-semibold
-              @if ($selisih > 0) text-success
-              @elseif($selisih < 0) text-danger
-              @else text-secondary @endif">
+    @if ($selisih > 0) text-danger
+    @elseif($selisih < 0) text-success
+    @else text-secondary @endif">
+
                                                     @if ($selisih > 0)
                                                         <i
-                                                            class="bi bi-arrow-up-short"></i>+{{ number_format($selisih, 2) }}
+                                                            class="bi bi-arrow-down-short"></i>{{ number_format($selisih, 2) }}
                                                     @elseif($selisih < 0)
                                                         <i
-                                                            class="bi bi-arrow-down-short"></i>{{ number_format($selisih, 2) }}
+                                                            class="bi bi-arrow-up-short"></i>+{{ number_format(abs($selisih), 2) }}
                                                     @else
                                                         &mdash;
                                                     @endif
