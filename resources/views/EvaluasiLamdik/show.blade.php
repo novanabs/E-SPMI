@@ -671,10 +671,7 @@
                     masa = "5 Tahun";
                 }
             } else if (NA >= 321) {
-                if (syarat5) {
-                    status = "Terakreditasi Unggul";
-                    masa = "5 Tahun";
-                } else if (syarat3) {
+                if (syarat3) {
                     status = "Terakreditasi Unggul";
                     masa = "3 Tahun";
                 } else {
