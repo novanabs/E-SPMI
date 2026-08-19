@@ -7,7 +7,8 @@
 @endphp
 
 <div class="mb-3">
-    <h6 class="fw-bold text-uppercase" style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
+    <h6 class="fw-bold text-uppercase"
+        style="color: #173b70; font-size: 0.75rem; letter-spacing: 0.05em; border-bottom: 2px solid #173b70; padding-bottom: 4px; display: inline-block;">
         Data Saat Ini
     </h6>
     <div class="d-flex flex-wrap gap-2 mt-2">
@@ -16,7 +17,8 @@
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDL = {{ $d['NDL'] ?? 0 }}</span>
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDLK = {{ $d['NDLK'] ?? 0 }}</span>
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDGB = {{ $d['NDGB'] ?? 0 }}</span>
-            <small class="text-muted d-block mt-1 w-100">Total Lektor = <strong>{{ $d['totalLektor'] ?? 0 }}</strong></small>
+            <small class="text-muted d-block mt-1 w-100">Total Lektor =
+                <strong>{{ $d['totalLektor'] ?? 0 }}</strong></small>
         @elseif (in_array($su['nomor'], [2, 3, 4]))
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">Skor = {{ $d['skor'] ?? 0 }}</span>
         @elseif ($su['nomor'] == 5)
@@ -30,10 +32,16 @@
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">ISBN = {{ $d['ISBN'] ?? 0 }}</span>
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">PATEN = {{ $d['PATEN'] ?? 0 }}</span>
             @if (($d['NM'] ?? 0) > 0)
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) = {{ $d['total3'] ?? 0 }}</span>
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($d['persen3'] ?? 0, 1) }}% (3thn)</span>
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) = {{ $d['total5'] ?? 0 }}</span>
-                <span class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($d['persen5'] ?? 0, 1) }}% (5thn)</span>
+                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (3thn) =
+                    {{ $d['total3'] ?? 0 }}</span>
+                <span
+                    class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($d['persen3'] ?? 0, 1) }}%
+                    (3thn)</span>
+                <span class="badge bg-light text-dark border px-3 py-2 fs-6">Total (5thn) =
+                    {{ $d['total5'] ?? 0 }}</span>
+                <span
+                    class="badge bg-light text-dark border px-3 py-2 fs-6">{{ number_format($d['persen5'] ?? 0, 1) }}%
+                    (5thn)</span>
             @endif
         @elseif ($su['nomor'] == 6)
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDTPS = {{ $d['NDTPS'] ?? 0 }}</span>
@@ -44,8 +52,10 @@
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">INT = {{ $d['INT'] ?? 0 }}</span>
             @if (($d['NDTPS'] ?? 0) > 0)
                 <div class="mt-2 w-100">
-                    <small class="text-muted d-block">3 Tahun: Total = S4+S3+S2+S1+INT = <strong>{{ $d['total3'] ?? 0 }}</strong> → {{ number_format($d['persen3'] ?? 0, 1) }}%</small>
-                    <small class="text-muted d-block">5 Tahun: Total = S2+S1+INT = <strong>{{ $d['total5'] ?? 0 }}</strong> → {{ number_format($d['persen5'] ?? 0, 1) }}%</small>
+                    <small class="text-muted d-block">3 Tahun: Total = S4+S3+S2+S1+INT =
+                        <strong>{{ $d['total3'] ?? 0 }}</strong> → {{ number_format($d['persen3'] ?? 0, 1) }}%</small>
+                    <small class="text-muted d-block">5 Tahun: Total = S2+S1+INT =
+                        <strong>{{ $d['total5'] ?? 0 }}</strong> → {{ number_format($d['persen5'] ?? 0, 1) }}%</small>
                 </div>
             @endif
         @endif
@@ -55,7 +65,8 @@
 <div class="row g-3">
     {{-- 3 Tahun --}}
     <div class="col-md-6">
-        <div class="border rounded-3 p-3 h-100 bg-white" style="border-left: 4px solid {{ $border3 }} !important;">
+        <div class="border rounded-3 p-3 h-100 bg-white"
+            style="border-left: 4px solid {{ $border3 }} !important;">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="fw-semibold">Syarat 3 Tahun</span>
                 @if ($m3)
@@ -114,7 +125,8 @@
 
     {{-- 5 Tahun --}}
     <div class="col-md-6">
-        <div class="border rounded-3 p-3 h-100 bg-white" style="border-left: 4px solid {{ $border5 }} !important;">
+        <div class="border rounded-3 p-3 h-100 bg-white"
+            style="border-left: 4px solid {{ $border5 }} !important;">
             <div class="d-flex align-items-center justify-content-between mb-2">
                 <span class="fw-semibold">Syarat 5 Tahun</span>
                 @if ($m5)
@@ -133,15 +145,15 @@
                         &lt; 2 <i class="bi bi-x-circle-fill text-danger"></i>
                     @endif
                     &nbsp;|&nbsp;
-                    Lektor {{ $d['totalLektor'] ?? 0 }}
+                    Lektor & LK & GB {{ $d['totalLektor'] ?? 0 }}
                     @if (($d['totalLektor'] ?? 0) >= 2)
                         ≥ 2 <i class="bi bi-check-circle-fill text-success"></i>
                     @else
                         &lt; 2 <i class="bi bi-x-circle-fill text-danger"></i>
                     @endif
                     &nbsp;|&nbsp;
-                    LK {{ $d['NDLK'] ?? 0 }}
-                    @if (($d['NDLK'] ?? 0) >= 1)
+                    LK & GB {{ $d['efektifLK'] ?? 0 }}
+                    @if (($d['efektifLK'] ?? 0) >= 1)
                         ≥ 1 <i class="bi bi-check-circle-fill text-success"></i>
                     @else
                         &lt; 1 <i class="bi bi-x-circle-fill text-danger"></i>

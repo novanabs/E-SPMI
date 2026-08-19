@@ -822,7 +822,7 @@
             html += `</div><p class="mb-1 small text-muted">${su.syarat_5}</p>`;
             if (su.nomor == 1) {
                 html +=
-                    `<div class="small mt-1">NDS3 ${(d.NDS3??0)} ${(d.NDS3??0) >= 2 ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>' : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>'} &nbsp;|&nbsp; Lektor ${(d.totalLektor??0)} ${(d.totalLektor??0) >= 2 ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>' : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>'} &nbsp;|&nbsp; LK ${(d.NDLK??0)} ${(d.NDLK??0) >= 1 ? '≥ 1 <i class="bi bi-check-circle-fill text-success"></i>' : '< 1 <i class="bi bi-x-circle-fill text-danger"></i>'}</div>`;
+                    `<div class="small mt-1">NDS3 ${(d.NDS3??0)} ${(d.NDS3??0) >= 2 ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>' : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>'} &nbsp;|&nbsp; Lektor & LK & GB ${(d.totalLektor??0)} ${(d.totalLektor??0) >= 2 ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>' : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>'} &nbsp;|&nbsp; LK & GB ${(d.efektifLK??0)} ${(d.efektifLK??0) >= 1 ? '≥ 1 <i class="bi bi-check-circle-fill text-success"></i>' : '< 1 <i class="bi bi-x-circle-fill text-danger"></i>'}</div>`;
             } else if (su.nomor >= 2 && su.nomor <= 4) {
                 html +=
                     `<div class="small mt-1">Skor ${(d.skor??0).toFixed(2)} ${(d.skor??0) >= 3.5 ? '≥ 3.5 <i class="bi bi-check-circle-fill text-success"></i>' : '< 3.5 <i class="bi bi-x-circle-fill text-danger"></i>'}</div>`;

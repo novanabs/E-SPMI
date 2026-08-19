@@ -107,6 +107,7 @@ class EvaluasiLamdikController extends Controller
                     $item->memenuhi_3_tahun = true;
                 }
 
+                // if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) {
                 if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) {
                     $item->memenuhi_5_tahun = true;
                 }
@@ -515,10 +516,18 @@ class EvaluasiLamdikController extends Controller
                         if ($var == 'NDGB')
                             $NDGB = $n;
                     }
+                    // $totalLektor = $NDL + $NDLK + $NDGB;
+                    // $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
+                    // $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
+                    // $detail = ['NDS3' => $NDS3, 'NDL' => $NDL, 'NDLK' => $NDLK, 'NDGB' => $NDGB, 'totalLektor' => $totalLektor];
+
+                    // Diperbaiki pada 19 Agustus 2026
                     $totalLektor = $NDL + $NDLK + $NDGB;
+                    $efektifLK = $NDLK + $NDGB; // GB bisa menggantikan syarat LK karena jenjangnya lebih tinggi
                     $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
-                    $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
-                    $detail = ['NDS3' => $NDS3, 'NDL' => $NDL, 'NDLK' => $NDLK, 'NDGB' => $NDGB, 'totalLektor' => $totalLektor];
+                    $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1;
+                    $detail = ['NDS3' => $NDS3, 'NDL' => $NDL, 'NDLK' => $NDLK, 'NDGB' => $NDGB, 'totalLektor' => $totalLektor, 'efektifLK' => $efektifLK];
+                    // Batas
                 } elseif (in_array($item->nomor, [2, 3, 4])) {
                     $nilai = (float) ($matrikJawabanCallback($matriks) ?? 0);
                     $memenuhi3 = $nilai >= 3.0;
