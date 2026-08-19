@@ -1036,9 +1036,12 @@ class ExportController extends Controller
                     if ($sub->variabel == 'NDGB')
                         $NDGB = $n;
                 }
+
+                // diperbaiki 19 Agustus 2026
                 $totalLektor = $NDL + $NDLK + $NDGB;
+                $efektifLK = $NDLK + $NDGB;
                 $m3 = $NDS3 >= 1 && $totalLektor >= 2;
-                $m5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
+                $m5 = $NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1;
             } elseif (in_array($item->nomor, [2, 3, 4])) {
                 $jawaban = (float) ($matriks->userMatrik?->jawaban ?? 0);
                 $m3 = $jawaban >= 3.0;

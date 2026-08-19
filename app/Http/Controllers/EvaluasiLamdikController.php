@@ -102,13 +102,14 @@ class EvaluasiLamdikController extends Controller
                 }
 
                 $totalLektor = $NDL + $NDLK + $NDGB;
+                $efektifLK = $NDLK + $NDGB;
 
                 if ($NDS3 >= 1 && $totalLektor >= 2) {
                     $item->memenuhi_3_tahun = true;
                 }
 
                 // if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) {
-                if ($NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1) {
+                if ($NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1) {
                     $item->memenuhi_5_tahun = true;
                 }
             }
