@@ -571,6 +571,9 @@
 
                                 // Skor auditor untuk jurusan ini
                                 $skorA = $perAspekAuditor[$idJurusan] ?? [];
+
+                                // dd($perAspekAuditor, $skorA);
+
                             @endphp
 
                             <div class="table-responsive mt-3">

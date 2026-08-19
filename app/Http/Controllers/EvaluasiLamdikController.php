@@ -665,6 +665,7 @@ class EvaluasiLamdikController extends Controller
             $nama = $item->kriteria->name;
             $perAspekJurusan[$nama] = ($perAspekJurusan[$nama] ?? 0) + ($item->userMatrik->nilai_total ?? 0);
             foreach ($auditors as $auditor) {
+                // dd($auditors);
                 $score = $auditorScores[$item->id][$auditor->id] ?? null;
                 $perAspekAuditor[$auditor->id][$nama] = ($perAspekAuditor[$auditor->id][$nama] ?? 0) + ($score?->nilai_total ?? 0);
             }

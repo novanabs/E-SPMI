@@ -9,6 +9,7 @@ use App\Models\AuditorJurusan;
 use App\Models\Kriteria;
 use App\Models\MatriksLED;
 use App\Models\User;
+use App\Models\UsersMatrik;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -125,8 +126,13 @@ class HasilAMIController extends Controller
         ])->get();
 
 
-        $auditors = AuditorJurusan::where('jurusan', $jurusan->homebase)
-            ->get();
+        $auditors = collect([
+            (object) [
+                'id'            => $jurusanId,
+                'name'          => 'Auditor',
+                'auditor_label' => 'Auditor',
+            ],
+        ]);
 
         $data = MatriksLED::with([
             'kriteria',
@@ -136,16 +142,29 @@ class HasilAMIController extends Controller
             },
         ])->orderBy('nomor', 'asc')->get();
 
+        $auditorScores = UsersMatrik::where('id_user_jurusan', $jurusanId)
+            ->where('tahun', $tahun)
+            ->get()
+            ->groupBy('id_matriks_led') // grup dulu per matriks
+            ->map(fn($group) => $group->keyBy('id_users')); // lalu per auditor
+
+        // hasil: $auditorScores[id_matriks_led][id_users] = UsersMatrik model
+
+        // dd($auditorScores);
+
         $perAspekJurusan = [];
         $perAspekAuditor = []; // [auditor_id][kriteria_name] => total
         foreach ($data as $item) {
             $nama = $item->kriteria->name;
             $perAspekJurusan[$nama] = ($perAspekJurusan[$nama] ?? 0) + ($item->userMatrik->nilai_total ?? 0);
             foreach ($auditors as $auditor) {
+                // dd($auditors);
                 $score = $auditorScores[$item->id][$auditor->id] ?? null;
                 $perAspekAuditor[$auditor->id][$nama] = ($perAspekAuditor[$auditor->id][$nama] ?? 0) + ($score?->nilai_total ?? 0);
             }
         }
+
+        // dd($auditors, $perAspekJurusan, $perAspekAuditor);
 
 
         $pdf = Pdf::loadView(

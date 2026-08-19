@@ -56,12 +56,12 @@
 
         <tr>
             <td>Auditor I</td>
-            <td>{{ $auditors->get(0)?->user?->name }}</td>
+            <td>{{ optional($auditHeader->auditor1)->name ?? 'Auditor #' . $auditHeader->auditor_1_id }}</td>
         </tr>
 
         <tr>
             <td>Auditor II</td>
-            <td>{{ $auditors->get(1)?->user?->name }}</td>
+            <td>{{ optional($auditHeader->auditor2)->name ?? 'Auditor #' . $auditHeader->auditor_2_id }}</td>
         </tr>
 
         <tr>
@@ -76,6 +76,9 @@
         $kriteriaMap = $auditKriterias->keyBy('id');
 
         $skorA = $perAspekAuditor[$jurusan->id] ?? [];
+
+        // dd($perAspekAuditor, $skorA, $jurusan->id);
+
     @endphp
 
     <table border="1" width="100%" cellspacing="0" cellpadding="5">
@@ -169,15 +172,15 @@
             <td style="border:none;text-align:center">
                 Auditor I
                 <br><br><br><br><br><br><br>
-                <b>{{ $auditors->get(0)?->user?->name }}</b><br>
-                NIP. {{ $auditors->get(0)?->user?->nip }}
+                <b>{{ $auditHeader->auditor1->name }}</b><br>
+                NIP. {{ $auditHeader->auditor1->nip }}
             </td>
 
             <td style="border:none;text-align:center">
                 Auditor II
                 <br><br><br><br><br><br><br>
-                <b>{{ $auditors->get(1)?->user?->name }}</b><br>
-                NIP. {{ $auditors->get(1)?->user?->nip }}
+                <b>{{ $auditHeader->auditor2->name }}</b><br>
+                NIP. {{ $auditHeader->auditor2->nip }}
             </td>
 
 
