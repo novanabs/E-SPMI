@@ -17,7 +17,7 @@
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDL = {{ $d['NDL'] ?? 0 }}</span>
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDLK = {{ $d['NDLK'] ?? 0 }}</span>
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">NDGB = {{ $d['NDGB'] ?? 0 }}</span>
-            <small class="text-muted d-block mt-1 w-100">Total Lektor =
+            <small class="text-muted d-block mt-1 w-100">Total Lektor & Lk & GB =
                 <strong>{{ $d['totalLektor'] ?? 0 }}</strong></small>
         @elseif (in_array($su['nomor'], [2, 3, 4]))
             <span class="badge bg-light text-dark border px-3 py-2 fs-6">Skor = {{ $d['skor'] ?? 0 }}</span>

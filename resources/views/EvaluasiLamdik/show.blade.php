@@ -748,7 +748,7 @@
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">NDLK = ${d.NDLK ?? 0}</span>`;
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">NDGB = ${d.NDGB ?? 0}</span>`;
                 html +=
-                    `<small class="text-muted d-block mt-1 w-100">Total Lektor = <strong>${d.totalLektor ?? 0}</strong></small>`;
+                    `<small class="text-muted d-block mt-1 w-100">Total Lektor & LK & GB = <strong>${d.totalLektor ?? 0}</strong></small>`;
             } else if (su.nomor >= 2 && su.nomor <= 4) {
                 html += `<span class="badge bg-light text-dark border px-3 py-2 fs-6">Skor = ${d.skor ?? 0}</span>`;
             } else if (su.nomor == 5) {
