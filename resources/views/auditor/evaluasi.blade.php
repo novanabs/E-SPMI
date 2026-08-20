@@ -565,8 +565,10 @@
                                 }
                             }
                             $totalLektor = $NDL + $NDLK + $NDGB;
+                            $efektifLK = $NDLK + $NDGB;
+
                             $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
-                            $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
+                            $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1;
                         } elseif (in_array($item->nomor, [2, 3, 4])) {
                             $jawaban = (float) ($item->matriks->userMatrik->jawaban ?? 0);
                             $memenuhi3 = $jawaban >= 3.0;
@@ -869,10 +871,11 @@
                                                     NDS3 {{ $NDS3 }} {!! $NDS3 >= 2
                                                         ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>'
                                                         : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>' !!} &nbsp;|&nbsp;
-                                                    Lektor {{ $totalLektor ?? 0 }} {!! ($totalLektor ?? 0) >= 2
+                                                    Lektor & LK & GB {{ $totalLektor ?? 0 }} {!! ($totalLektor ?? 0) >= 2
                                                         ? '≥ 2 <i class="bi bi-check-circle-fill text-success"></i>'
-                                                        : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>' !!} &nbsp;|&nbsp;
-                                                    LK {{ $NDLK }} {!! $NDLK >= 1
+                                                        : '< 2 <i class="bi bi-x-circle-fill text-danger"></i>' !!}
+                                                    &nbsp;|&nbsp;
+                                                    LK & GB {{ $efektifLK }} {!! $efektifLK >= 1
                                                         ? '≥ 1 <i class="bi bi-check-circle-fill text-success"></i>'
                                                         : '< 1 <i class="bi bi-x-circle-fill text-danger"></i>' !!}
                                                 </div>
@@ -6663,12 +6666,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-                                                                                                                <div class="mb-3 mt-3">
-                                                                                                                    <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-                                                                                                                    <div class="border rounded p-2 bg-light">
-                                                                                                                        <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-                                                                                                                    </div>
-                                                                                                                </div>` : ''}
+                                                                                                                    <div class="mb-3 mt-3">
+                                                                                                                        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                                                                                                        <div class="border rounded p-2 bg-light">
+                                                                                                                            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                                                                                                        </div>
+                                                                                                                    </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
