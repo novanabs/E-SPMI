@@ -262,9 +262,11 @@ class EvaluasiDiriJurusan extends Controller
                             $NDGB = $n;
                     }
                     $totalLektor = $NDL + $NDLK + $NDGB;
+                    $efektifLK = $NDLK + $NDGB;
+
                     $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
-                    $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
-                    $detail = ['NDS3' => $NDS3, 'NDL' => $NDL, 'NDLK' => $NDLK, 'NDGB' => $NDGB, 'totalLektor' => $totalLektor];
+                    $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1;
+                    $detail = ['NDS3' => $NDS3, 'NDL' => $NDL, 'NDLK' => $NDLK, 'NDGB' => $NDGB, 'totalLektor' => $totalLektor, 'efektifLK' => $efektifLK];
                 } elseif (in_array($item->nomor, [2, 3, 4])) {
                     $nilai = (float) ($matrikJawabanCallback($matriks) ?? 0);
                     $memenuhi3 = $nilai >= 3.0;
@@ -531,8 +533,10 @@ class EvaluasiDiriJurusan extends Controller
                         $NDGB = $n;
                 }
                 $totalLektor = $NDL + $NDLK + $NDGB;
+                $efektifLK = $NDLK + $NDGB;
+
                 $item->memenuhi_3_tahun = $NDS3 >= 1 && $totalLektor >= 2;
-                $item->memenuhi_5_tahun = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
+                $item->memenuhi_5_tahun = $NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1;
             } elseif (in_array($item->nomor, [2, 3, 4])) {
                 $jawaban = (float) ($item->matriks->userMatrik->jawaban ?? 0);
                 $item->memenuhi_3_tahun = $jawaban >= 3.0;
