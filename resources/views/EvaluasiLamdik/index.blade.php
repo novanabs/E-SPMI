@@ -983,7 +983,7 @@
                                                         Lektor {!! ($totalLektor ?? 0) >= 2
                                                             ? '<i class="bi bi-check-circle-fill text-success"></i>'
                                                             : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 2 &nbsp;|&nbsp;
-                                                        LK & GB {!! $efektifLK >= 1
+                                                        LK & GB {!! $NDLK >= 1
                                                             ? '<i class="bi bi-check-circle-fill text-success"></i>'
                                                             : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 1
                                                     </div>
