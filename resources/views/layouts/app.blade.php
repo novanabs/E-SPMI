@@ -409,7 +409,31 @@
                                 alt="User Image" /> --}}
                             <span class="d-inline d-md-inline">
                                 @auth
-                                    {{ auth()->user()->name }} <i class="bi bi-caret-down"></i>
+                                    <span class="d-inline-flex align-items-center gap-1">
+                                        <span>
+                                            {{ auth()->user()->name }}
+                                            <small class="d-block text-muted" style="font-size: 10px;">
+                                                Role :
+                                                @switch(auth()->user()->role)
+                                                    @case('admin_jurusan')
+                                                        Admin Jurusan
+                                                    @break
+
+                                                    @case('admin_FKIP')
+                                                        Admin Fakultas (UPM)
+                                                    @break
+
+                                                    @case('auditor')
+                                                        Auditor
+                                                    @break
+
+                                                    @default
+                                                        {{ auth()->user()->role }}
+                                                @endswitch
+                                            </small>
+                                        </span>
+                                        <i class="bi bi-caret-down"></i>
+                                    </span>
                                 @else
                                     Belum Login <i class="bi bi-caret-down"></i>
                                 @endauth

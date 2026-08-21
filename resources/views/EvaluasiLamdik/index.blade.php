@@ -647,8 +647,10 @@
                                     }
                                 }
                                 $totalLektor = $NDL + $NDLK + $NDGB;
+                                $efektifLK = $NDLK + $NDGB;
+
                                 $memenuhi3 = $NDS3 >= 1 && $totalLektor >= 2;
-                                $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $NDLK >= 1;
+                                $memenuhi5 = $NDS3 >= 2 && $totalLektor >= 2 && $efektifLK >= 1;
                             } /* =========================
                        ELEMEN 2,3,4 — Skor berbasis
                     ========================= */ elseif (
@@ -983,7 +985,7 @@
                                                         Lektor {!! ($totalLektor ?? 0) >= 2
                                                             ? '<i class="bi bi-check-circle-fill text-success"></i>'
                                                             : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 2 &nbsp;|&nbsp;
-                                                        LK & GB {!! $NDLK >= 1
+                                                        LK & GB (INI HARUS CENTANG) {!! $efektifLK >= 1
                                                             ? '<i class="bi bi-check-circle-fill text-success"></i>'
                                                             : '<i class="bi bi-x-circle-fill text-danger"></i>' !!} ≥ 1
                                                     </div>
