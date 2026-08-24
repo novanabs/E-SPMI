@@ -1492,9 +1492,6 @@
 
                         let jurusan_id = document.getElementById('program_studi').value;
 
-                        cons
-
-
                         fetch(`/audit/${jurusan_id}/kriteria`, {
                                 method: 'POST',
                                 headers: {
@@ -6666,12 +6663,12 @@
                 formEl.insertAdjacentHTML('beforeend', `
 
     ${jurusanLink ? `
-                                                                                                                    <div class="mb-3 mt-3">
-                                                                                                                        <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
-                                                                                                                        <div class="border rounded p-2 bg-light">
-                                                                                                                            <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
-                                                                                                                        </div>
-                                                                                                                    </div>` : ''}
+                                                                                                                        <div class="mb-3 mt-3">
+                                                                                                                            <label class="form-label"><strong>Link Bukti (Jurusan)</strong></label>
+                                                                                                                            <div class="border rounded p-2 bg-light">
+                                                                                                                                <a href="${jurusanLink}" target="_blank" class="text-truncate d-inline-block" style="max-width:100%">${jurusanLink}</a>
+                                                                                                                            </div>
+                                                                                                                        </div>` : ''}
 
     <div class="mb-3">
         <label for="temuan" class="form-label"><strong>Temuan (Opsional)</strong></label>
