@@ -179,7 +179,8 @@
                                     @php
                                         $firstAuditorScore = $item->auditorMatriks->first()?->nilai_total ?? 0;
                                     @endphp
-                                    <span class="auditor-value">{{ $firstAuditorScore > 0 ? number_format($firstAuditorScore, 2) : '-' }}</span>
+                                    <span class="auditor-value"
+                                        data-raw="{{ $firstAuditorScore ?? 0 }}">{{ $firstAuditorScore > 0 ? number_format($firstAuditorScore, 2) : '-' }}</span>
                                 </td>
                                 <td class="selisih-cell text-center">
                                     {{ $item->userMatrik && $firstAuditorScore > 0
@@ -710,7 +711,7 @@
 
             let totalAuditor = 0;
             document.querySelectorAll(".nilai-auditor .auditor-value").forEach(el => {
-                totalAuditor += parseFloat(el.textContent) || 0;
+                totalAuditor += parseFloat(el.dataset.raw) || 0;
             });
 
             document.getElementById("nilai_jurusan").innerHTML = totalJurusan.toFixed(2);
@@ -775,6 +776,7 @@
                     let row = td.closest("tr");
                     let match = data.find(d => String(d.id_users) === auditorId);
                     let score = match ? match.nilai_total : null;
+                    valSpan.dataset.raw = score !== null && score > 0 ? score : 0;
                     valSpan.textContent = score !== null && score > 0 ? Number(score).toFixed(2) : "-";
 
                     let jurusanVal = parseFloat(row.querySelector(".nilai-jurusan").dataset.nilai) || 0;

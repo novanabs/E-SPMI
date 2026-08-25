@@ -211,6 +211,18 @@ Route::get('/login-auditor-ari', function () {
     return redirect('/dashboard-auditor');
 })->name('login-auditor-ari');
 
+Route::get('/login-test-jurusan', function () {
+    Auth::logout();
+    Auth::loginUsingId(100);
+    return redirect('/dashboard');
+})->name('login-test-jurusan');
+
+Route::get('/login-test-auditor', function () {
+    Auth::logout();
+    Auth::loginUsingId(101);
+    return redirect('/dashboard-auditor');
+})->name('login-test-auditor');
+
 // Ini sementara log-out lewat sini
 Route::get('/logout', function () {
     Auth::logout();

@@ -6400,12 +6400,15 @@
                                 let hasil = parseFloat(radio.value) * parseFloat(poin);
                                 liveSkor.innerHTML =
                                     `Skor dipilih: <strong>${radio.value}</strong> | Total: <strong>${hasil}</strong>`;
+                                const nt = document.getElementById('nilai_total');
+                                if (nt) nt.value = hasil;
                             }
                             radio.addEventListener('change', function() {
                                 let hasil = parseFloat(this.value) * parseFloat(poin);
                                 liveSkor.innerHTML =
                                     `Skor dipilih: <strong>${this.value}</strong> | Total: <strong>${hasil}</strong>`;
-                                document.getElementById('nilai_total').value = hasil;
+                                const nt = document.getElementById('nilai_total');
+                                if (nt) nt.value = hasil;
                             });
                         });
                     }
@@ -6480,13 +6483,16 @@
                     if (!container._autoSaveRegistered) {
                         container._autoSaveRegistered = true;
                         let saveTimer;
+                        let pendingTargetBtn;
                         container.addEventListener('change', () => {
                             clearTimeout(saveTimer);
-                            saveTimer = setTimeout(saveCurrentForm, 600);
+                            pendingTargetBtn = document.querySelector('.nav-item-btn.active');
+                            saveTimer = setTimeout(() => saveCurrentForm(pendingTargetBtn), 600);
                         });
                         container.addEventListener('input', () => {
                             clearTimeout(saveTimer);
-                            saveTimer = setTimeout(saveCurrentForm, 600);
+                            pendingTargetBtn = document.querySelector('.nav-item-btn.active');
+                            saveTimer = setTimeout(() => saveCurrentForm(pendingTargetBtn), 600);
                         });
                     }
 
@@ -6627,11 +6633,14 @@
         </script>
 
         <script>
-            window.addEventListener("load", function() {
+            function initPage() {
+                if (initPage._done) return;
+                initPage._done = true;
                 const overlay = document.getElementById('loading-overlay');
-
-                overlay.classList.add('fade-out');
-                setTimeout(() => overlay.remove(), 600);
+                if (overlay) {
+                    overlay.classList.add('fade-out');
+                    setTimeout(() => overlay.remove(), 600);
+                }
 
                 const last = localStorage.getItem('lastElement');
                 const selector = last ? `[data-id="${last}"]` : ".nav-item-btn";
@@ -6644,9 +6653,11 @@
                         behavior: "auto",
                         block: "center"
                     });
-                    // console.log("Memuat elemen:", selector);
                 }
-            });
+            }
+            document.addEventListener("DOMContentLoaded", initPage);
+            window.addEventListener("load", initPage);
+            setTimeout(initPage, 3000);
         </script>
 
         <script>

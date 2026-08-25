@@ -1704,7 +1704,7 @@
 
     <script>
         // Auto-save current form before navigating
-        function saveCurrentForm() {
+        function saveCurrentForm(targetBtn) {
             // Skip jika AMI sudah disubmit
             if (window.isAMISubmitted) return Promise.resolve();
             const form = document.getElementById('kriteriaForm');
@@ -1713,6 +1713,8 @@
             if (!formData.has('nilai_total')) return Promise.resolve();
             const csrf = form.querySelector('input[name="_token"]');
             if (!csrf) return Promise.resolve();
+            // Capture activeBtn SEBELUM fetch — class .active akan pindah ke tombol baru
+            const activeBtn = targetBtn || document.querySelector('.nav-item-btn.active');
             // Skip save if score is 0 AND no temuan/saran/link_bukti entered
             const nilaiTotal = parseFloat(formData.get('nilai_total')) || 0;
             const temuan = (formData.get('temuan') || '').trim();
@@ -1730,7 +1732,6 @@
                     console.error('Auto-save HTTP', r.status, r.statusText);
                     return r;
                 }
-                const activeBtn = document.querySelector('.nav-item-btn.active');
                 if (activeBtn) {
                     ['jawaban', 'nilai_total', 'link_bukti', 'temuan', 'saran'].forEach(k => {
                         const v = formData.get(k);
@@ -1743,8 +1744,10 @@
 
         document.querySelectorAll(".nav-item-btn").forEach(btn => {
             btn.addEventListener("click", () => {
+                // Tangkap tombol SEDANG aktif SEBELUM class .active berpindah
+                const prevActiveBtn = document.querySelector('.nav-item-btn.active');
                 // Auto-save current form before switching question
-                saveCurrentForm();
+                saveCurrentForm(prevActiveBtn);
 
                 localStorage.setItem('lastElement', btn.dataset.id);
                 // console.log('ID tersimpan:', btn.dataset.id);
@@ -6645,12 +6648,15 @@
                             let hasil = parseFloat(radio.value) * parseFloat(poin);
                             liveSkor.innerHTML =
                                 `Skor dipilih: <strong>${radio.value}</strong> | Nilai: <strong>${hasil}</strong>`;
+                            const nt = document.getElementById('nilai_total');
+                            if (nt) nt.value = hasil;
                         }
                         radio.addEventListener('change', function() {
                             let hasil = parseFloat(this.value) * parseFloat(poin);
                             liveSkor.innerHTML =
                                 `Skor dipilih: <strong>${this.value}</strong> | Nilai: <strong>${hasil}</strong>`;
-                            document.getElementById('nilai_total').value = hasil;
+                            const nt = document.getElementById('nilai_total');
+                            if (nt) nt.value = hasil;
                         });
                     });
                 }
@@ -6732,13 +6738,16 @@
                 if (!container._autoSaveRegistered) {
                     container._autoSaveRegistered = true;
                     let saveTimer;
+                    let pendingTargetBtn;
                     container.addEventListener('change', () => {
                         clearTimeout(saveTimer);
-                        saveTimer = setTimeout(saveCurrentForm, 600);
+                        pendingTargetBtn = document.querySelector('.nav-item-btn.active');
+                        saveTimer = setTimeout(() => saveCurrentForm(pendingTargetBtn), 600);
                     });
                     container.addEventListener('input', () => {
                         clearTimeout(saveTimer);
-                        saveTimer = setTimeout(saveCurrentForm, 600);
+                        pendingTargetBtn = document.querySelector('.nav-item-btn.active');
+                        saveTimer = setTimeout(() => saveCurrentForm(pendingTargetBtn), 600);
                     });
                 }
 
