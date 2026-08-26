@@ -180,11 +180,11 @@ class EvaluasiDiriJurusan extends Controller
         $auditorNameMap = [];
         $counter = 1;
         foreach ($auditorIdsWithData as $aid) {
-            $user = User::find($aid);
-            if ($user) {
+            $auditorUser = User::find($aid);
+            if ($auditorUser) {
                 $label = 'Auditor ' . $counter;
                 $auditorLabelMap[$aid] = $label;
-                $auditorNameMap[$label] = $user->name;
+                $auditorNameMap[$label] = $auditorUser->name;
                 $counter++;
             }
         }
