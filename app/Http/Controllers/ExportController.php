@@ -278,9 +278,18 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
+        // Syarat unggul untuk penilaian jurusan (self-assessment) : id_user_jurusan = NULL
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun, null);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
-        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
+
+        // Syarat unggul untuk penilaian auditor : id_user_jurusan = $idJurusan
+        if ($showAuditor) {
+            [$audSyarat3, $audSyarat5] = $this->computeSyaratForUser($idJurusan, $tahun, $idJurusan);
+        } else {
+            $audSyarat3 = $syarat3;
+            $audSyarat5 = $syarat5;
+        }
+        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $audSyarat3, $audSyarat5);
 
         // Per-aspek data for chart
         [$perAspekJurusan, $perAspekAuditor, $perAspekMax] = $this->computePerAspekData($elemen, $showAuditor, $idJurusan, $idUserUpm, $auditorScores);
@@ -422,9 +431,18 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
+        // Syarat unggul untuk penilaian jurusan (self-assessment) : id_user_jurusan = NULL
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun, null);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
-        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
+
+        // Syarat unggul untuk penilaian auditor : id_user_jurusan = $idJurusan
+        if ($showAuditor) {
+            [$audSyarat3, $audSyarat5] = $this->computeSyaratForUser($idJurusan, $tahun, $idJurusan);
+        } else {
+            $audSyarat3 = $syarat3;
+            $audSyarat5 = $syarat5;
+        }
+        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $audSyarat3, $audSyarat5);
 
         // Per-aspek data for chart
         [$perAspekJurusan, $perAspekAuditor, $perAspekMax] = $this->computePerAspekData($elemen, $showAuditor, $idJurusan, $idUserUpm, $auditorScores);
@@ -599,9 +617,18 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
+        // Syarat unggul untuk penilaian jurusan (self-assessment) : id_user_jurusan = NULL
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun, null);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
-        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
+
+        // Syarat unggul untuk penilaian auditor : id_user_jurusan = $idJurusan
+        if ($showAuditor) {
+            [$audSyarat3, $audSyarat5] = $this->computeSyaratForUser($idJurusan, $tahun, $idJurusan);
+        } else {
+            $audSyarat3 = $syarat3;
+            $audSyarat5 = $syarat5;
+        }
+        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $audSyarat3, $audSyarat5);
 
         // Per-aspek data for chart
         [$perAspekJurusan, $perAspekAuditor, $perAspekMax] = $this->computePerAspekData($elemen, $showAuditor, $idJurusan, $idUserUpm, $auditorScores);
@@ -740,9 +767,18 @@ class ExportController extends Controller
         /* ===============================
          * FUNGSI HITUNG AKREDITASI
          * =============================== */
-        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun);
+        // Syarat unggul untuk penilaian jurusan (self-assessment) : id_user_jurusan = NULL
+        [$syarat3, $syarat5] = $this->computeSyaratForUser($idJurusan, $tahun, null);
         $hasilJurusan = $this->hitungAkreditasiDenganSyarat($totalJurusan, $syarat3, $syarat5);
-        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $syarat3, $syarat5);
+
+        // Syarat unggul untuk penilaian auditor : id_user_jurusan = $idJurusan
+        if ($showAuditor) {
+            [$audSyarat3, $audSyarat5] = $this->computeSyaratForUser($idJurusan, $tahun, $idJurusan);
+        } else {
+            $audSyarat3 = $syarat3;
+            $audSyarat5 = $syarat5;
+        }
+        $hasilAuditor = $this->hitungAkreditasiDenganSyarat($totalAuditor, $audSyarat3, $audSyarat5);
 
         // Per-aspek data for chart
         [$perAspekJurusan, $perAspekAuditor, $perAspekMax] = $this->computePerAspekData($elemen, $showAuditor, $idJurusan, $idUserUpm, $auditorScores);
@@ -996,15 +1032,27 @@ class ExportController extends Controller
         return [$perAspekJurusan, $perAspekAuditor, $perAspekMax];
     }
 
-    private function computeSyaratForUser(int $userId, $tahun = null): array
+    private function computeSyaratForUser(int $userId, $tahun = null, $idUserJurusan = null): array
     {
         $dataSyaratUnggul = \App\Models\SyaratUnggul::with([
             'matriks.subItemElemen',
-            'matriks.userSubItemElements' => function ($q) use ($userId, $tahun) {
-                $q->where('id_users', $userId)->where('tahun', $tahun);
+            'matriks.userSubItemElements' => function ($q) use ($userId, $tahun, $idUserJurusan) {
+                $q->where('id_users', $userId);
+                if ($idUserJurusan === null) {
+                    $q->whereNull('id_user_jurusan');
+                } else {
+                    $q->where('id_user_jurusan', $idUserJurusan);
+                }
+                $q->where('tahun', $tahun);
             },
-            'matriks.userMatrik'          => function ($q) use ($userId, $tahun) {
-                $q->where('id_users', $userId)->where('tahun', $tahun);
+            'matriks.userMatrik'          => function ($q) use ($userId, $tahun, $idUserJurusan) {
+                $q->where('id_users', $userId);
+                if ($idUserJurusan === null) {
+                    $q->whereNull('id_user_jurusan');
+                } else {
+                    $q->where('id_user_jurusan', $idUserJurusan);
+                }
+                $q->where('tahun', $tahun);
             },
         ])->get();
 

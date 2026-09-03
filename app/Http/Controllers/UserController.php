@@ -342,6 +342,24 @@ class UserController extends Controller
             'id_matriks_led'     => $validated['id_matriks_led'],
         ]);
 
+        // Bersihkan duplikat lama yang mungkin terbentuk akibat race-condition auto-save
+        // (tanpa unique constraint di DB, updateOrCreate bisa menghasilkan baris ganda)
+        UsersMatrik::where('id_users', $sharedId)
+            ->where('id_user_jurusan', $sharedId)
+            ->where('id_matriks_led', $validated['id_matriks_led'])
+            ->where('tahun', $tahun)
+            ->where('id', '<>', function ($q) use ($sharedId, $validated, $tahun) {
+                $q->select('id')
+                    ->from('users_matrik')
+                    ->where('id_users', $sharedId)
+                    ->where('id_user_jurusan', $sharedId)
+                    ->where('id_matriks_led', $validated['id_matriks_led'])
+                    ->where('tahun', $tahun)
+                    ->orderBy('id')
+                    ->limit(1);
+            })
+            ->delete();
+
         // Save shared score to UsersMatrik: id_users = jurusan_id, id_user_jurusan = jurusan_id
         UsersMatrik::updateOrCreate(
             [

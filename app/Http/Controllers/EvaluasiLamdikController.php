@@ -303,6 +303,23 @@ class EvaluasiLamdikController extends Controller
             return redirect()->back()->with('error', 'Penilaian AMI sudah disubmit, tidak dapat diubah lagi.');
         }
 
+        // Bersihkan duplikat lama (race-condition auto-save tanpa unique constraint)
+        UsersMatrik::where('id_users', $validated['id_users'])
+            ->whereNull('id_user_jurusan')
+            ->where('id_matriks_led', $validated['id_matriks_led'])
+            ->where('tahun', $tahun)
+            ->where('id', '<>', function ($q) use ($validated, $tahun) {
+                $q->select('id')
+                    ->from('users_matrik')
+                    ->where('id_users', $validated['id_users'])
+                    ->whereNull('id_user_jurusan')
+                    ->where('id_matriks_led', $validated['id_matriks_led'])
+                    ->where('tahun', $tahun)
+                    ->orderBy('id')
+                    ->limit(1);
+            })
+            ->delete();
+
         UsersMatrik::updateOrCreate(
             [
                 'id_users'        => $validated['id_users'],
