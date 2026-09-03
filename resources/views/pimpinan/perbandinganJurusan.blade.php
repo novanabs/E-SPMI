@@ -165,10 +165,10 @@
             let masa = "";
 
             if (NA >= 361) {
-                if (syarat5) {
+                if (syarat3 && syarat5) {
                     status = "Terakreditasi Unggul";
                     masa = "5 Tahun";
-                } else if (syarat3) {
+                } else if (syarat3 && !syarat5) {
                     status = "Terakreditasi Unggul";
                     masa = "3 Tahun";
                 } else {
@@ -176,10 +176,7 @@
                     masa = "5 Tahun";
                 }
             } else if (NA >= 321) {
-                if (syarat5) {
-                    status = "Terakreditasi Unggul";
-                    masa = "5 Tahun";
-                } else if (syarat3) {
+                if (syarat3) {
                     status = "Terakreditasi Unggul";
                     masa = "3 Tahun";
                 } else {

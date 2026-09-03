@@ -444,12 +444,11 @@
         function hitungAkreditasi(NA, syarat3, syarat5) {
             let status = "", masa = "";
             if (NA >= 361) {
-                if (syarat5) { status = "Terakreditasi Unggul"; masa = "5 Tahun"; }
-                else if (syarat3) { status = "Terakreditasi Unggul"; masa = "3 Tahun"; }
+                if (syarat3 && syarat5) { status = "Terakreditasi Unggul"; masa = "5 Tahun"; }
+                else if (syarat3 && !syarat5) { status = "Terakreditasi Unggul"; masa = "3 Tahun"; }
                 else { status = "Terakreditasi"; masa = "5 Tahun"; }
             } else if (NA >= 321) {
-                if (syarat5) { status = "Terakreditasi Unggul"; masa = "5 Tahun"; }
-                else if (syarat3) { status = "Terakreditasi Unggul"; masa = "3 Tahun"; }
+                if (syarat3) { status = "Terakreditasi Unggul"; masa = "3 Tahun"; }
                 else { status = "Terakreditasi"; masa = "5 Tahun"; }
             } else if (NA >= 200) { status = "Terakreditasi"; masa = "5 Tahun"; }
             else { status = "Tidak Terakreditasi"; masa = "-"; }
