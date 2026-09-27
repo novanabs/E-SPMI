@@ -17,7 +17,7 @@ class PeningkatanController extends Controller
         }
 
         $id = auth()->id();
-        $data = Peningkatan::where('id_users', $id)->latest()->paginate(10);
+        $data = Peningkatan::where('id_users', $id)->latest()->get();
         return view('PPEPP.peningkatan.index', compact('data'));
     }
 

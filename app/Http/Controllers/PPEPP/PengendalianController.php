@@ -17,7 +17,7 @@ class PengendalianController extends Controller
         }
 
         $id = auth()->id();
-        $data = Pengendalian::where('id_users', $id)->latest()->paginate(10);
+        $data = Pengendalian::where('id_users', $id)->latest()->get();
         return view('PPEPP.pengendalian.index', compact('data'));
     }
 

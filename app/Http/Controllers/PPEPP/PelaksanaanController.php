@@ -18,7 +18,7 @@ class PelaksanaanController extends Controller
         }
 
         $id = auth()->id();
-        $data = Pelaksanaan::where('id_users', $id)->latest()->paginate(10);
+        $data = Pelaksanaan::where('id_users', $id)->latest()->get();
         return view('PPEPP.pelaksanaan.index', compact('data'));
     }
 
